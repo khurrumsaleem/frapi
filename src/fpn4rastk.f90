@@ -58,9 +58,9 @@ contains
         fpn % hdish   = 0.0094d0                     ! Dish height, in
         fpn % hplt    = 0.387d0                      ! Pellet height, in
         fpn % icm     = 4                            ! Cladding type, 4: Zircaloy-4
-        fpn % imox    = 0                            ! Fuel type, 0: UO_2
         fpn % idxgas  = 1                            ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
         fpn % iplant  =-2                            ! Plant type, -2: PWR, -3: BWR, -4: HBWR
+        fpn % imox    = 0                            ! Fuel type, 0: UO_2
         fpn % totl    = x(size(x)) * cmtoft          ! Total length of active fuel, ft
         fpn % roughc  = 1.97d-5                      ! Clad roughness, in
         fpn % roughf  = 7.87d-5                      ! Fuel roughness, in
@@ -78,6 +78,7 @@ contains
         fpn % go(1)   = go * ksm2tolbhrft2           ! Coolant mass flux around fuel rod, lb/hr * ft^2
         fpn % qf(:)   = 1.                           ! Ratio of linear power
         fpn % qmpy    = 1.D-3 * qmpy / mtoft         ! The linear heat generation rate, kW/ft
+        fpn % gadoln(:) = 0.D                        ! Weight fraction of gadolinia in the fuel
 
         call fpn % make() ! set default and check input variables
         call fpn % stp0() ! make the very first time step
