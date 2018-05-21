@@ -8,8 +8,11 @@ module fpn4rastk
     type(frapcon_type) :: fpn
 
     ! TEMPORARY VARIABLES
-    integer :: i
+    integer :: i, n, m
     real(8) :: a, b, c
+    real(8), allocatable :: area(:)
+    real(8), allocatable :: weight(:)
+    real(8), allocatable :: tmp0(:), tmp1(:)
 
 contains
 
@@ -79,6 +82,16 @@ contains
         call fpn % make() ! set default and check input variables
         call fpn % stp0() ! make the very first time step
 
+        ! ALLOCATION OF THE TEMPORARY ARRAYS
+
+        n = fpn % na ! number of axial nodes
+        m = fpn % nr ! number of radial nodes
+
+        allocate(area(n))
+        allocate(weight(m-1))
+        allocate(tmp0(m))
+        allocate(tmp1(n))
+
     end subroutine init
 
     subroutine next(dt)
@@ -105,7 +118,7 @@ contains
         case("coolant mass flux")
             fpn % go(1) = var(1) * ksm2tolbhrft2
         case default
-            write(*,*) 'ERROR: Variable', key, ' has not been found'
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
         end select
 
@@ -115,26 +128,35 @@ contains
 
         character(*) :: key
 
-        real(8) :: var(:)
+        real(8) :: var(:) ! array (n-1,)
 
         select case(key)
-        case('fuel average temperature')
-            !var = fpn % tmpfuel(:,:)
-            var(:) = 0
-        case('coolant average temperature')
-            var(:) = 0
+        case('axial fuel temperature')
+            area(1:n) = (/(  fpn % hrad(1,i)**2 - fpn % hrad(m,i)**2, i = 1, n )/)
+            do i = 1, n
+                weight(1:m-1) = ( fpn % hrad(1:m-1,i) - fpn % hrad(2:m,i) ) / area(i)
+                tmp0(1:m-1) = 0.5 * ( fpn % tmpfuel(1:m-1,i) + fpn % tmpfuel(2:m,i) )
+                tmp1(i) = sum(tmp0(:) * weight(:))
+            enddo
+            var(:) = 0.5 * ( tmp1(1:n-1) + tmp1(2:n) )
+            var(:) = (/( tfc(var(i)), i = 1, n-1 )/)
+        case('bulk coolant temperature')
+            var(:) = 0.5 * ( fpn % BulkCoolantTemp(1:n-1) + fpn % BulkCoolantTemp(2:n) )
+            var(:) = (/( tfc(var(i)), i = 1, n-1 )/)
         case('gap conductance')
-            var(:) = 0
+            var(:) = fpn % GapCond(1:n-1) * Bhft2FtoWm2K
         case('oxide thickness')
-            var(:) = 0
-        case('gap thickness')
-            var(:) = 0
+            var(:) = fpn % EOSZrO2Thk(1:n-1) * intomm
+        case('thermal gap thickness')
+            var(:) = fpn % gapplot(1:n-1) * miltomm
+        case('mechanical gap thickness')
+            var(:) = fpn % FuelCladGap(1:n-1) * 1.D+3 * miltomm
         case('gap pressure')
-            var(:) = 0
-        case('hoop strain')
-            var(:) = 0
-        case('hoop stress')
-            var(:) = 0
+            var(:) = fpn % GapPress(1:n-1) * PSItoMPa
+        case('cladding hoop strain')
+            var(:) = fpn % eps(1:n-1,1) * PSItoMPa
+        case('cladding hoop stress')
+            var(:) = fpn % sig(1:n-1,1) * PSItoMPa
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
