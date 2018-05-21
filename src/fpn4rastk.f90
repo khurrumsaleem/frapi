@@ -84,8 +84,8 @@ contains
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
 
-        n = fpn % na ! number of axial nodes
-        m = fpn % nr ! number of radial nodes
+        n = na ! number of axial nodes
+        m = nr ! number of radial nodes
 
         allocate(area(n))
         allocate(weight(m-1))

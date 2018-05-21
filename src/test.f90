@@ -198,8 +198,8 @@ program test
 
     enddo
 
-    call get('fuel average temperature', fue_avg_temp)
-    call get('coolant average temperature', coo_avg_temp)
+    call get('axial fuel temperature', fue_avg_temp)
+    call get('bulk coolant temperature', coo_avg_temp)
     call get('gap conductance', fue_dyn_hgap)
     call get('oxide thickness', t_oxidelayer)
     call get('gap thickness', t_fuecladgap)
