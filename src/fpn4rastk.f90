@@ -12,7 +12,7 @@ module fpn4rastk
     real(8) :: a, b, c
     real(8), allocatable :: area(:)
     real(8), allocatable :: weight(:)
-    real(8), allocatable :: tmp0(:), tmp1(:)
+    real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:)
 
 contains
 
@@ -84,13 +84,14 @@ contains
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
 
-        n = na ! number of axial nodes
-        m = nr ! number of radial nodes
+        n = na   ! number of axial segments
+        m = nr-1 ! number of radial segments
 
         allocate(area(n))
-        allocate(weight(m-1))
+        allocate(weight(m))
         allocate(tmp0(m))
         allocate(tmp1(n))
+        allocate(tmp2(m+1))
 
     end subroutine init
 
@@ -110,7 +111,7 @@ contains
         select case(key)
         case("linear power")
             fpn % qf(:) = var(:) / sum(var) * size(var)
-            fpn % qmpy  = 1.D-3 * sum(var) / mtoft
+            fpn % qmpy  = sum(var) / mtoft
         case("coolant temperature")
             fpn % tcoolant(:) = (/( tcf(var(i)), i = 1, size(var) )/)
         case("coolant pressure")
@@ -132,31 +133,31 @@ contains
 
         select case(key)
         case('axial fuel temperature')
-            area(1:n) = (/(  fpn % hrad(1,i)**2 - fpn % hrad(m,i)**2, i = 1, n )/)
+            area(:) = (/(  fpn % hrad(1,i)**2 - fpn % hrad(m+1,i)**2, i = 1, n )/)
             do i = 1, n
-                weight(1:m-1) = ( fpn % hrad(1:m-1,i) - fpn % hrad(2:m,i) ) / area(i)
-                tmp0(1:m-1) = 0.5 * ( fpn % tmpfuel(1:m-1,i) + fpn % tmpfuel(2:m,i) )
+                weight(:) = ( fpn % hrad(1:m,i) - fpn % hrad(2:m+1,i) ) / area(i)
+                tmp2(:) = 0.5 * ( fpn % tmpfuel(1:m+1,i) + fpn % tmpfuel(1:m+1,i+1) )
+                tmp0(:) = 0.5 * ( tmp2(1:m) + tmp2(2:m+1) )
                 tmp1(i) = sum(tmp0(:) * weight(:))
             enddo
-            var(:) = 0.5 * ( tmp1(1:n-1) + tmp1(2:n) )
-            var(:) = (/( tfc(var(i)), i = 1, n-1 )/)
+            var(:) = (/( tfc(tmp1(i)), i = 1, n )/)
         case('bulk coolant temperature')
-            var(:) = 0.5 * ( fpn % BulkCoolantTemp(1:n-1) + fpn % BulkCoolantTemp(2:n) )
-            var(:) = (/( tfc(var(i)), i = 1, n-1 )/)
+            var(:) = 0.5 * ( fpn % BulkCoolantTemp(1:n) + fpn % BulkCoolantTemp(2:n+1) )
+            var(:) = (/( tfc(var(i)), i = 1, n )/)
         case('gap conductance')
-            var(:) = fpn % GapCond(1:n-1) * Bhft2FtoWm2K
+            var(:) = fpn % GapCond(1:n) * Bhft2FtoWm2K
         case('oxide thickness')
-            var(:) = fpn % EOSZrO2Thk(1:n-1) * intomm
+            var(:) = fpn % EOSZrO2Thk(1:n) * intomm
         case('thermal gap thickness')
-            var(:) = fpn % gapplot(1:n-1) * miltomm
+            var(:) = fpn % gapplot(1:n) * miltomm
         case('mechanical gap thickness')
-            var(:) = fpn % FuelCladGap(1:n-1) * 1.D+3 * miltomm
+            var(:) = fpn % FuelCladGap(1:n) * 1.D+3 * miltomm
         case('gap pressure')
-            var(:) = fpn % GapPress(1:n-1) * PSItoMPa
+            var(:) = fpn % GapPress(1:n) * PSItoMPa
         case('cladding hoop strain')
-            var(:) = fpn % eps(1:n-1,1) * PSItoMPa
+            var(:) = fpn % eps(1:n,1) * PSItoMPa
         case('cladding hoop stress')
-            var(:) = fpn % sig(1:n-1,1) * PSItoMPa
+            var(:) = fpn % sig(1:n,1) * PSItoMPa
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

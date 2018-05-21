@@ -169,7 +169,7 @@ program test
 
     h_bu_step = 10.
 
-    do i_bu_step = 1, n_bu
+    do i_bu_step = 1, 1 !n_bu
 
         ! SPLINE INTERPOLATION OF THE RASP-K LINEAR POWER RATIO
         ix1(:) = height_RASTK(1:na_r) +  0.5 * thickness_RASTK(:)
@@ -198,14 +198,15 @@ program test
 
     enddo
 
+    ! GET OUTPUT VARIABLES FROM FRAPCON
     call get('axial fuel temperature', fue_avg_temp)
     call get('bulk coolant temperature', coo_avg_temp)
     call get('gap conductance', fue_dyn_hgap)
     call get('oxide thickness', t_oxidelayer)
-    call get('gap thickness', t_fuecladgap)
+    call get('mechanical gap thickness', t_fuecladgap)
     call get('gap pressure', gap_pressure)
-    call get('hoop strain', hoop_strain)
-    call get('hoop stress', hoop_stress)
+    call get('cladding hoop strain', hoop_strain)
+    call get('cladding hoop stress', hoop_stress)
 
     open(i_output_file, file=oname, status='unknown')
 
