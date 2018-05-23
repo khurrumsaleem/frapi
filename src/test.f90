@@ -1,5 +1,5 @@
 program test
-    use fpn4rastk, only : init, next, get, set
+    use fpn4rastk, only : init, next, get, set, stp0
 
     implicit none
 
@@ -25,11 +25,7 @@ program test
     real(8) :: inlet_temp_in
     real(8) :: mass_flow_rate_in
     real(8) :: init_den
-    real(8) :: h_bu_step
-    real(8) :: p2
-    real(8) :: tw
-    real(8) :: go(1)
-    real(8) :: qmpy
+    real(8) :: bu_step
 
     integer(4), allocatable :: z_meshes(:)
 
@@ -56,15 +52,12 @@ program test
     real(8), allocatable   ::  hoop_strain (:)
     real(8), allocatable   ::  hoop_stress (:)
 
-    ! ARRAYS NEEDED FOR SPLINE INTERPOLATION
-    real(8) :: ispline
-    real(8), allocatable  :: ix1(:), iy1(:), b1(:), c1(:), d1(:)
-    real(8), allocatable  :: ix2(:), iy2(:), b2(:), c2(:), d2(:)
-
     ! ARRAYS FOR FRAPCON
-    real(8), allocatable  :: qf_FRPCN(:)
+    real(8), allocatable  :: power_FRPCN(:)
     real(8), allocatable  :: tcool_FRPCN(:)
     real(8), allocatable  :: pcool_FRPCN(:)
+    real(8), allocatable  :: zmesh_FRPCN(:)
+    real(8)               :: fcool_FRPCN(1)
 
     ! ITERATIONAL VARIABLES
     integer :: i
@@ -123,19 +116,10 @@ program test
 
     close(i_input_file)
 
-    allocate(qf_FRPCN(1:na_in+1))
-    allocate(tcool_FRPCN(1:na_in+1))
-    allocate(pcool_FRPCN(1:na_in+1))
-    allocate(ix1(1:na_r))
-    allocate(iy1(1:na_r))
-    allocate(b1(1:na_r))
-    allocate(c1(1:na_r))
-    allocate(d1(1:na_r))
-    allocate(ix2(1:na_in))
-    allocate(iy2(1:na_in))
-    allocate(b2(1:na_in))
-    allocate(c2(1:na_in))
-    allocate(d2(1:na_in))
+    allocate(power_FRPCN(1:na_in))
+    allocate(tcool_FRPCN(1:na_in))
+    allocate(pcool_FRPCN(1:na_in))
+    allocate(zmesh_FRPCN(1:na_in))
 
     allocate(fue_avg_temp(1:na_in))
     allocate(coo_avg_temp(1:na_in))
@@ -146,10 +130,6 @@ program test
     allocate(hoop_strain (1:na_in))
     allocate(hoop_stress (1:na_in))
 
-    ! DATA PROCESSING
-    ! WTF ???
-    if(tmp_time(1) .lt. 0.5) tmp_time(1) = 0.5d0
-
     ! HEIGHTS FOR RASTK and FRAPCON, LIKE (0.5, 1.0, 1.5, 2.0, ...)
     height_RASTK(1)  = 0.
     height_RASTK(2:) = (/( sum(thickness_RASTK(1:i)) , i = 1, na_r )/)
@@ -158,62 +138,56 @@ program test
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
     ! FRAPCON INITIALIZATION
-    p2 = ctf_coo_pres(1,1)
-    tw = ctf_coo_temp(1,1)
-    go(1) = mass_flow_rate_in
-    qmpy = sum(line_pow_hist(:,1))
-    call init(n_fuel_rad_in, na_in, height_FRPCN, fuel_rad, gap_rad, &
-    clad_rad, pitch_in, init_den, init_enrich, p2, tw, go(1), qmpy)
+
+    call init(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
+              clad_rad, pitch_in, init_den, init_enrich)
 
     ! FRAPCON RUN
 
-    h_bu_step = 10.
+    do i_bu_step = 1, n_bu
 
-    do i_bu_step = 1, 1 !n_bu
+        power_FRPCN(1) = sum( line_pow_hist( 1:z_meshes(1), i_bu_step) * thickness_RASTK(1:z_meshes(1)) ) &
+                               / sum( thickness_RASTK(1:z_meshes(1)) )
 
-        ! SPLINE INTERPOLATION OF THE RASP-K LINEAR POWER RATIO
-        ix1(:) = height_RASTK(1:na_r) +  0.5 * thickness_RASTK(:)
-        iy1(:) = line_pow_hist(:,i_bu_step)
-        call spline(ix1, iy1, b1, c1, d1, na_r)
-        qf_FRPCN(:) = (/( ispline(height_FRPCN(i), ix1, iy1, b1, c1, d1, na_r), i = 1, na_in+1 )/)
+        power_FRPCN(2:na_in) = (/( sum( line_pow_hist(sum(z_meshes(:i)):sum(z_meshes(:i+1)),i_bu_step) &
+                                 * thickness_RASTK(sum(z_meshes(:i)):sum(z_meshes(:i+1))) ) &
+                                 / sum( thickness_RASTK(sum(z_meshes(:i)):sum(z_meshes(:i+1)))), i = 1, na_in-1 )/)
 
-        ! SPLINE INTERPOLATION OF THE RASP-K COOLANT TEMPERATURE
-        ix2(:) = height_FRPCN(1:na_in) +  0.5 * thickness_FRPCN(:)
-        iy2(:) = ctf_coo_temp(:,i_bu_step)
-        call spline(ix2, iy2, b2, c2, d2, na_in)
-        tcool_FRPCN(:) = (/( ispline(height_FRPCN(i), ix2, iy2, b2, c2, d2, na_in), i = 1, na_in+1 )/)
-
-        ! SPLINE INTERPOLATION OF THE RASP-K COOLANT PRESSURE
-        ix2(:) = height_FRPCN(1:na_in) +  0.5 * thickness_FRPCN(:)
-        iy2(:) = ctf_coo_pres(:,i_bu_step)
-        call spline(ix2, iy2, b2, c2, d2, na_in)
-        pcool_FRPCN(:) = (/( ispline(height_FRPCN(i), ix2, iy2, b2, c2, d2, na_in), i = 1, na_in+1 )/)
+        tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
+        pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
+        fcool_FRPCN(1) = mass_flow_rate_in
 
         ! SETUP THE UPDATED VARIABLES
-        call set("linear power", qf_FRPCN)
+        call set("linear power", power_FRPCN)
         call set("coolant temperature", tcool_FRPCN)
         call set("coolant pressure", pcool_FRPCN)
-        call set("coolant mass flux", go)
-        call next(h_bu_step)
+        call set("coolant mass flux", fcool_FRPCN)
+
+        ! VERY FIRST TIME STEP
+        if (i_bu_step == 1) call stp0()
+
+        ! REGULAR TIME STEP
+        if (i_bu_step >  1) call next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
 
     enddo
 
     ! GET OUTPUT VARIABLES FROM FRAPCON
-    call get('axial fuel temperature', fue_avg_temp)
-    call get('bulk coolant temperature', coo_avg_temp)
-    call get('gap conductance', fue_dyn_hgap)
-    call get('oxide thickness', t_oxidelayer)
-    call get('mechanical gap thickness', t_fuecladgap)
-    call get('gap pressure', gap_pressure)
-    call get('cladding hoop strain', hoop_strain)
-    call get('cladding hoop stress', hoop_stress)
+    call get('axial fuel temperature, C', fue_avg_temp)
+    call get('bulk coolant temperature, C', coo_avg_temp)
+    call get('gap conductance, W/(m^2*K)', fue_dyn_hgap)
+    call get('oxide thickness, um', t_oxidelayer)
+    call get('mechanical gap thickness, um', t_fuecladgap)
+    call get('gap pressure, MPa', gap_pressure)
+    call get('cladding hoop strain, %', hoop_strain)
+    call get('cladding hoop stress, MPa', hoop_stress)
+    call get('axial mesh, cm', zmesh_FRPCN)
 
     open(i_output_file, file=oname, status='unknown')
 
     do i = 1, na_in
         write(i_output_file,'(100es13.5)') fue_avg_temp(i), coo_avg_temp(i), &
         fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), gap_pressure(i), &
-        hoop_strain(i), hoop_stress(i)
+        hoop_strain(i), hoop_stress(i), zmesh_FRPCN(i)
     enddo
 
     write(*,*) 'done!'

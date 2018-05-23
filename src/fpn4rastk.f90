@@ -8,25 +8,25 @@ module fpn4rastk
     type(frapcon_type) :: fpn
 
     ! TEMPORARY VARIABLES
-    integer :: i, n, m
-    real(8) :: a, b, c
-    real(8), allocatable :: area(:)
+    integer :: i, j, n, m
+    real(8) :: a, b, c, volume
+    real(8), allocatable :: dx(:)
     real(8), allocatable :: weight(:)
-    real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:)
+    real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:), tmp3(:)
 
 contains
 
-    subroutine init(nr, na, x, radfuel, radgap, radclad, pitch, den, enrch, p2, tw, go, qmpy)
+    subroutine init(m_, n_, dx_, radfuel, radgap, radclad, pitch, den, enrch)
 
-        integer :: na          ! number of nodes in the axial mesh
-        integer :: nr          ! number of radial nodes in a pellet
+        integer :: n_          ! number of axial segments
+        integer :: m_          ! number of radial segments
         integer :: ngasr = 45  ! number of radial gas release nodes
         integer :: nce = 5     ! number of radial elements in the cladding for the FEA model
 
         integer :: mechan  = 2 ! cladding mechanical model (1: FEA, 2: FRACAS-I)
         integer :: ngasmod = 2 ! fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
 
-        real(8) :: x(:)        ! Elevation in each qf, x array defining a power shape
+        real(8) :: dx_(:)       ! Thickness of the axial nodes, cm
         real(8) :: radfuel
         real(8) :: radgap
         real(8) :: radclad
@@ -38,9 +38,12 @@ contains
         real(8) :: tw
         real(8) :: go
 
-        call fpn % init(na, ngasr, nr, nce, mechan, ngasmod)
+        n  = n_
+        m  = m_
 
-        fpn % cpl     = 6.3386d0 * cmtoin            ! Cold plenum length, in
+        call fpn % init(n, ngasr, m+1, nce, mechan, ngasmod)
+
+        fpn % cpl     = 6.3386d0                     ! Cold plenum length, in
         fpn % crdt    = 0.d0 * cmtoin                ! Crud thickness, in
         fpn % thkcld  = (radclad - radgap) * cmtoin  ! Thickness of cladding, in
         fpn % thkgap  = (radgap - radfuel) * cmtoin  ! Thickness of gap, in
@@ -61,10 +64,10 @@ contains
         fpn % idxgas  = 1                            ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
         fpn % iplant  =-2                            ! Plant type, -2: PWR, -3: BWR, -4: HBWR
         fpn % imox    = 0                            ! Fuel type, 0: UO_2
-        fpn % totl    = x(size(x)) * cmtoft          ! Total length of active fuel, ft
+        fpn % totl    = sum(dx_) * cmtoft            ! Total length of active fuel, ft
         fpn % roughc  = 1.97d-5                      ! Clad roughness, in
         fpn % roughf  = 7.87d-5                      ! Fuel roughness, in
-        fpn % vs      = 10.d0                        ! Number of spring turns
+        fpn % vs      = 30.d0                        ! Number of spring turns
         fpn % rsntr   = 100.d0                       ! Expected resintering density increase, kg/m**3
         fpn % nsp     = 0                            ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
         fpn % slim    = 0.05d0                       ! User supplied swelling limit (vol fraction) (Default = 0.05)
@@ -72,29 +75,36 @@ contains
         fpn % enrpu40 = 0.d0                         ! Fuel pellet Pu-240 content
         fpn % enrpu41 = 0.d0                         ! Fuel pellet Pu-241 content
         fpn % enrpu42 = 0.d0                         ! Fuel pellet Pu-242 content
-        fpn % x(:)    = x(:) * cmtoft                ! Elevation in each qf, x array defining a power shape, ft
-        fpn % tw(1)   = tcf(tw)                      ! Coolant inlet temperature, F
-        fpn % p2(1)   = p2 * MPatoPSI                ! Coolant System Pressure, Psi
-        fpn % go(1)   = go * ksm2tolbhrft2           ! Coolant mass flux around fuel rod, lb/hr * ft^2
+        fpn % tw(1)   = 600.                         ! Coolant inlet temperature, F
+        fpn % p2(1)   = 2000.                        ! Coolant System Pressure, Psi
+        fpn % go(1)   = 2.D+6                        ! Coolant mass flux around fuel rod, lb/hr * ft^2
         fpn % qf(:)   = 1.                           ! Ratio of linear power
-        fpn % qmpy    = 1.D-3 * qmpy / mtoft         ! The linear heat generation rate, kW/ft
-        fpn % gadoln(:) = 0.D                        ! Weight fraction of gadolinia in the fuel
+        fpn % qmpy    = 6.                           ! The linear heat generation rate, kW/ft (after make it turns to rod average heat flux, BTU/(hr*ft^2) )
+        fpn % gadoln(:) = 0.d0                       ! Weight fraction of gadolinia in the fuel
+
+        ! Elevation in each qf, x array defining a power shape, ft
+        fpn % x(1)     = 0.d0
+        fpn % x(2:n+1) = (/( sum(dx_(:i)), i = 1, n )/) * cmtoft
 
         call fpn % make() ! set default and check input variables
-        call fpn % stp0() ! make the very first time step
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
-
-        n = na   ! number of axial segments
-        m = nr-1 ! number of radial segments
-
-        allocate(area(n))
         allocate(weight(m))
         allocate(tmp0(m))
         allocate(tmp1(n))
         allocate(tmp2(m+1))
+        allocate(tmp3(n+1))
+        allocate(dx(n))
+
+        dx(:) = dx_(:)
 
     end subroutine init
+
+    subroutine stp0()
+
+        call fpn % stp0()  ! make the very first time step
+
+    end subroutine stp0
 
     subroutine next(dt)
 
@@ -107,18 +117,30 @@ contains
     subroutine set(key, var)
 
         character(*) :: key
+        integer      :: it
         real(8)      :: var(:)
+
+        it = fpn % it
 
         select case(key)
         case("linear power")
-            fpn % qf(:) = var(:) / sum(var) * size(var)
-            fpn % qmpy  = sum(var) / mtoft
+            call linterp(var, dx, tmp3, n)
+            a = sum( var(:) * fpn % deltaz(1:n) ) / fpn % totl /cmtoft ! W/ft
+            b = sum( fpn % deltaz(1:n) / fpn % dco(1:n) ) / fpn % totl / intoft ! 1/ft
+            fpn % qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
+            fpn % qf(:) = tmp3(:) / sum(tmp3)
         case("coolant temperature")
-            fpn % tcoolant(:) = (/( tcf(var(i)), i = 1, size(var) )/)
+            call linterp(var, dx, tmp3, n)
+            fpn % tw(it) = tcf(tmp3(1))
+            fpn % coolanttemp(1,1) = tcf(tmp3(1))
+            fpn % coolanttemp(1,2:n+2) = (/( tcf(tmp3(i)), i = 1, n )/)
         case("coolant pressure")
-            fpn % pcoolant(:) = var(:) * MPatoPSI
+            call linterp(var, dx, tmp3, n)
+            fpn % p2(it) = var(1) * MPatoPSI
+            fpn % coolantpressure(1,1) = var(1) * MPatoPSI
+            fpn % coolantpressure(1,2:n+2) = tmp3(:) * MPatoPSI
         case("coolant mass flux")
-            fpn % go(1) = var(1) * ksm2tolbhrft2
+            fpn % go(it) = var(1) * ksm2tolbhrft2
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -130,35 +152,53 @@ contains
 
         character(*) :: key
 
-        real(8) :: var(:) ! array (n-1,)
+        real(8) :: var(:) ! array (n,)
+
+        real(8) :: ra, rb, ya, yb, h, temper, volume
+
+        real(8) :: linteg ! integral of linear function
 
         select case(key)
-        case('axial fuel temperature')
-            area(:) = (/(  fpn % hrad(1,i)**2 - fpn % hrad(m+1,i)**2, i = 1, n )/)
+        case('axial fuel temperature, C')
             do i = 1, n
-                weight(:) = ( fpn % hrad(1:m,i) - fpn % hrad(2:m+1,i) ) / area(i)
-                tmp2(:) = 0.5 * ( fpn % tmpfuel(1:m+1,i) + fpn % tmpfuel(1:m+1,i+1) )
-                tmp0(:) = 0.5 * ( tmp2(1:m) + tmp2(2:m+1) )
-                tmp1(i) = sum(tmp0(:) * weight(:))
+                volume = 0
+                temper = 0
+                do j = 1, m
+                    ya = 1.d0
+                    yb = 1.d0
+                    ra = fpn % hrad(j+1,i)
+                    rb = fpn % hrad(j,i)
+                    h = fpn % x(i+1) - fpn % x(i)
+                    volume = volume + linteg(ya,yb,ra,rb,h)
+                    ya = fpn % tmpfuel(j+1,i)
+                    yb = fpn % tmpfuel(j,i)
+                    temper = temper + linteg(ya,yb,ra,rb,h)
+                enddo
+                var(i) = tfc(temper / volume)
             enddo
-            var(:) = (/( tfc(tmp1(i)), i = 1, n )/)
-        case('bulk coolant temperature')
+        case('bulk coolant temperature, C')
             var(:) = 0.5 * ( fpn % BulkCoolantTemp(1:n) + fpn % BulkCoolantTemp(2:n+1) )
             var(:) = (/( tfc(var(i)), i = 1, n )/)
-        case('gap conductance')
+        case('gap conductance, W/(m^2*K)')
             var(:) = fpn % GapCond(1:n) * Bhft2FtoWm2K
-        case('oxide thickness')
-            var(:) = fpn % EOSZrO2Thk(1:n) * intomm
-        case('thermal gap thickness')
-            var(:) = fpn % gapplot(1:n) * miltomm
-        case('mechanical gap thickness')
-            var(:) = fpn % FuelCladGap(1:n) * 1.D+3 * miltomm
-        case('gap pressure')
+        case('oxide thickness, um')
+            var(:) = fpn % EOSZrO2Thk(1:n) * 12000.d0 * miltoum
+        case('thermal gap thickness, um')
+            var(:) = fpn % gapplot(1:n) * miltoum
+        case('mechanical gap thickness, um')
+            var(:) = fpn % FuelCladGap(1:n) * 1.D+3 * miltoum
+        case('gap pressure, MPa')
             var(:) = fpn % GapPress(1:n) * PSItoMPa
-        case('cladding hoop strain')
-            var(:) = fpn % eps(1:n,1) * PSItoMPa
-        case('cladding hoop stress')
+        case('cladding hoop strain, %')
+            var(:) = fpn % eps(1:n,1) * 100
+        case('cladding hoop stress, MPa')
             var(:) = fpn % sig(1:n,1) * PSItoMPa
+        case('cladding axial stress, MPa')
+            var(:) = fpn % sig(1:n,2) * PSItoMPa
+        case('cladding radial stress, MPa')
+            var(:) = fpn % sig(1:n,3) * PSItoMPa
+        case('axial mesh, cm')
+            var(:) = 0.5d0 * (fpn % x(1:n) + fpn % x(2:n+1)) / cmtoft
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
