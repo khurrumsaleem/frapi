@@ -10,13 +10,12 @@ module fpn4rastk
     ! TEMPORARY VARIABLES
     integer :: i, j, n, m
     real(8) :: a, b, c, volume
-    real(8), allocatable :: dx(:)
     real(8), allocatable :: weight(:)
     real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:), tmp3(:)
 
 contains
 
-    subroutine init(m_, n_, dx_, radfuel, radgap, radclad, pitch, den, enrch)
+    subroutine init(m_, n_, dx, radfuel, radgap, radclad, pitch, den, enrch)
 
         integer :: n_          ! number of axial segments
         integer :: m_          ! number of radial segments
@@ -26,7 +25,7 @@ contains
         integer :: mechan  = 2 ! cladding mechanical model (1: FEA, 2: FRACAS-I)
         integer :: ngasmod = 2 ! fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
 
-        real(8) :: dx_(:)       ! Thickness of the axial nodes, cm
+        real(8) :: dx(:)       ! Thickness of the axial nodes, cm
         real(8) :: radfuel
         real(8) :: radgap
         real(8) :: radclad
@@ -64,7 +63,7 @@ contains
         fpn % idxgas  = 1                            ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
         fpn % iplant  =-2                            ! Plant type, -2: PWR, -3: BWR, -4: HBWR
         fpn % imox    = 0                            ! Fuel type, 0: UO_2
-        fpn % totl    = sum(dx_) * cmtoft            ! Total length of active fuel, ft
+        fpn % totl    = sum(dx) * cmtoft             ! Total length of active fuel, ft
         fpn % roughc  = 1.97d-5                      ! Clad roughness, in
         fpn % roughf  = 7.87d-5                      ! Fuel roughness, in
         fpn % vs      = 30.d0                        ! Number of spring turns
@@ -84,7 +83,9 @@ contains
 
         ! Elevation in each qf, x array defining a power shape, ft
         fpn % x(1)     = 0.d0
-        fpn % x(2:n+1) = (/( sum(dx_(:i)), i = 1, n )/) * cmtoft
+        fpn % x(2:n+1) = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
+        fpn % deltaz(1:n)= dx(:) * cmtoft
+        fpn % deltaz(n+1)= fpn % cpl
 
         call fpn % make() ! set default and check input variables
 
@@ -94,9 +95,6 @@ contains
         allocate(tmp1(n))
         allocate(tmp2(m+1))
         allocate(tmp3(n+1))
-        allocate(dx(n))
-
-        dx(:) = dx_(:)
 
     end subroutine init
 
@@ -123,23 +121,23 @@ contains
         it = fpn % it
 
         select case(key)
-        case("linear power")
-            call linterp(var, dx, tmp3, n)
+        case("linear power, W/cm")
+            call linterp(var, fpn % deltaz(1:n), tmp3, n)
             a = sum( var(:) * fpn % deltaz(1:n) ) / fpn % totl /cmtoft ! W/ft
             b = sum( fpn % deltaz(1:n) / fpn % dco(1:n) ) / fpn % totl / intoft ! 1/ft
             fpn % qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
             fpn % qf(:) = tmp3(:) / sum(tmp3)
-        case("coolant temperature")
-            call linterp(var, dx, tmp3, n)
+        case("coolant temperature, C")
+            call linterp(var,  fpn % deltaz(1:n), tmp3, n)
             fpn % tw(it) = tcf(tmp3(1))
             fpn % coolanttemp(1,1) = tcf(tmp3(1))
             fpn % coolanttemp(1,2:n+2) = (/( tcf(tmp3(i)), i = 1, n )/)
-        case("coolant pressure")
-            call linterp(var, dx, tmp3, n)
+        case("coolant pressure, MPa")
+            call linterp(var, fpn % deltaz(1:n), tmp3, n)
             fpn % p2(it) = var(1) * MPatoPSI
             fpn % coolantpressure(1,1) = var(1) * MPatoPSI
             fpn % coolantpressure(1,2:n+2) = tmp3(:) * MPatoPSI
-        case("coolant mass flux")
+        case("coolant mass flux, kg/(s*m^2)")
             fpn % go(it) = var(1) * ksm2tolbhrft2
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'

@@ -41,6 +41,7 @@ program test
     real(8), allocatable  :: ctf_coo_pres(:,:)
     real(8), allocatable  :: ctf_coo_temp(:,:)
     real(8), allocatable  :: ctf_clad_temp(:,:)
+    real(8), allocatable  :: power(:)
 
     real(8), allocatable   ::  fue_avg_temp(:)
     real(8), allocatable   ::  coo_avg_temp(:)
@@ -100,6 +101,7 @@ program test
     allocate(ctf_coo_pres(1:na_in,1:n_bu))
     allocate(ctf_coo_temp(1:na_in,1:n_bu))
     allocate(ctf_clad_temp(1:na_in,1:n_bu))
+    allocate(power(1:na_r))
 
     read(i_input_file,*) tmp_time(1:n_bu)  
 
@@ -146,22 +148,20 @@ program test
 
     do i_bu_step = 1, n_bu
 
-        power_FRPCN(1) = sum( line_pow_hist( 1:z_meshes(1), i_bu_step) * thickness_RASTK(1:z_meshes(1)) ) &
-                               / sum( thickness_RASTK(1:z_meshes(1)) )
+        power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
 
-        power_FRPCN(2:na_in) = (/( sum( line_pow_hist(sum(z_meshes(:i)):sum(z_meshes(:i+1)),i_bu_step) &
-                                 * thickness_RASTK(sum(z_meshes(:i)):sum(z_meshes(:i+1))) ) &
-                                 / sum( thickness_RASTK(sum(z_meshes(:i)):sum(z_meshes(:i+1)))), i = 1, na_in-1 )/)
+        power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
+        power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
 
         tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
         pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
         fcool_FRPCN(1) = mass_flow_rate_in
 
         ! SETUP THE UPDATED VARIABLES
-        call set("linear power", power_FRPCN)
-        call set("coolant temperature", tcool_FRPCN)
-        call set("coolant pressure", pcool_FRPCN)
-        call set("coolant mass flux", fcool_FRPCN)
+        call set("linear power, W/cm", power_FRPCN)
+        call set("coolant temperature, C", tcool_FRPCN)
+        call set("coolant pressure, MPa", pcool_FRPCN)
+        call set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
         ! VERY FIRST TIME STEP
         if (i_bu_step == 1) call stp0()

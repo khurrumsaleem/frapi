@@ -1,5 +1,6 @@
 function linteg(ya,yb,ra,rb,h) result(total)
-
+! Integral of the linear function
+! over cylindrical segment
     real(8) :: total
     real(8) :: pi = 3.14159265358979323846264338327950288d0
     real(8) :: ya, yb, ra, rb, h
@@ -9,4 +10,3 @@ function linteg(ya,yb,ra,rb,h) result(total)
     return
 
 end function linteg
-
