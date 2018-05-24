@@ -3,3 +3,9 @@
 build/
 test/
 *.png
+*.aux
+*.nav
+*.log
+*.gz
+*.pdf
+*.toc
