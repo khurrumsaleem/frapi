@@ -179,7 +179,7 @@ program test
     call get('mechanical gap thickness, um', t_fuecladgap)
     call get('gap pressure, MPa', gap_pressure)
     call get('cladding hoop strain, %', hoop_strain)
-    call get('cladding hoop stress, MPa', hoop_stress)
+    call get('cladding axial stress, MPa', hoop_stress)
     call get('axial mesh, cm', zmesh_FRPCN)
 
     open(i_output_file, file=oname, status='unknown')

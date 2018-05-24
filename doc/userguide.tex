@@ -1,0 +1,328 @@
+\documentclass[11pt]{beamer}
+
+\mode<presentation>
+\usetheme{Madrid}
+
+\setbeamertemplate{caption}[numbered]
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\author{Alexey L. Cherezov}
+\title{FRAPCON for RAST-K}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+%\logo{} 
+\institute{UNIST Core} 
+%\date{} 
+%\subject{} 
+
+\begin{document}
+
+\titlepage
+
+
+\begin{frame}{FRAPCON Physical Models}
+  \footnotesize
+  
+  \begin{columns}
+  \column{0.49\textwidth}
+  \begin{block}{Fuel rod thermal response}
+     \begin{itemize}
+     \item PWR, BWR or HBWR cores
+     \item Uranium or MOX fuel
+     \item Decay models: ANS-5.1 (2005)
+     \end{itemize}
+  \end{block}
+  \column{0.49\textwidth}  
+  \begin{block}{Fuel rod mechanical response}
+     \begin{itemize}
+     \item Solvers: FDM (code FRACAS-I) and FEM (code FEA)
+     \item Relocation models: FRAPCON 3.4 and 3.5
+     \end{itemize}  
+  \end{block}
+  \end{columns}
+
+  \begin{columns}
+  \column{0.49\textwidth}
+  \begin{block}{Internal gas pressure response}
+     \begin{itemize}
+     \item Models: ANS-5.4 (1952), ANS-5.4 (2011), Forsberg-Massih and FRAPFRG
+     \item Gases: fission products (Kr, He, Xe) + Nitrogen release
+     \end{itemize}
+  \end{block}
+  \column{0.49\textwidth}  
+  \begin{block}{Corrosion and Hydrogen pickup}
+     \begin{itemize}
+     \item Claddings: Zircaloy-2, Zircaloy-4, M5, ZIKLO and optimized ZKLO
+     \item Optional: zircaloy vintage (prior 1998)
+     \item Creep simulation: conservative or best estimated
+     \end{itemize}
+  \end{block}
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Code usage example}
+  
+  \footnotesize
+  
+  \begin{columns}
+  
+  \column{0.7\textwidth}
+
+  \begin{block}{}
+    \texttt{{\color{magenta}PROGRAM}}\\
+    \texttt{{\color{magenta}USE} fpn4rastk, {\color{magenta}ONLY} : INIT, STP0, NEXT, SET, GET}
+    \begin{itemize}
+    \item \texttt{INIT(m,n,dx,rf,rg,rc,pitch,den,enrch)}
+    \end{itemize}
+    \texttt{{\color{magenta}DO} i = 1, N}        
+    \begin{itemize}
+    \item \texttt{SET({\color{orange}"linear power, W/cm"}, power)}
+    \item \texttt{...}
+    \item \texttt{SET({\color{orange}"coolant temperature, C"}, tcool)}
+    \item \texttt{{\color{magenta}IF} (i == 1) STP0()}    
+    \item \texttt{{\color{magenta}IF} (i  > 1) NEXT(dtime)}        
+    \end{itemize}
+    \texttt{{\color{magenta}ENDDO}}
+    \begin{itemize}    
+    \item \texttt{GET({\color{orange}"axial fuel temperature, C"}, tfuel)}
+    \item \texttt{...}
+    \item \texttt{GET({\color{orange}"bulk coolant temperature, C"}, bulk)}    
+    \end{itemize}
+    \texttt{ {\color{magenta}END PROGRAM} }
+  \end{block}
+
+  \end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}{Running calculations: Initialization}
+  
+  \footnotesize
+
+  \centering\texttt{use fpn4rastk, only : init, next, get, set, stp0}
+
+  \begin{block}{Initialization: \texttt{init(<arguments>)}}
+    \begin{itemize}
+    \item \texttt{m, n} : number of radial and axial segments
+    \item \texttt{dx} : axial node thickness, cm
+    \item \texttt{rfuel, rgap, rclad} : radius of fuel, gap and cladding, cm
+    \item \texttt{pitch} : fuel rod pitch, cm
+    \item \texttt{den} : as-fabricated apparent fuel density, $\%$
+    \item \texttt{enrch} : initial fuel enrichment, $\%$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Running calculations: Settings of parameters}
+  
+  \footnotesize
+
+  \begin{block}{Set variables : \texttt{set(key, value)}}
+    \begin{itemize}
+    \item \texttt{key} : name of the variable
+    \item \texttt{value} : value of the variable    
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{List of the available parameters}
+    \begin{itemize}
+    \item linear power distribution, $\frac{W}{cm}$
+    \item coolant temperature distribution, $\degree C$
+    \item coolant pressure distribution, $MPa$
+    \item coolant mass flux, $\frac{kg}{s \cdot m^2}$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Running calculations: Time step}
+  
+  \footnotesize
+
+  \begin{block}{Very first time step: \texttt{stp0()}}
+  The first time step is needed in order to stabilize the time-integration scheme
+  \end{block}
+
+  \begin{block}{Next time step: \texttt{next(dtime)}}
+    \begin{itemize}
+    \item \texttt{dtime} : time step, $day$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+\begin{frame}{Running Calculations: Output Data}
+  
+  \footnotesize
+
+  \begin{block}{Get variables: \texttt{get(key, value)}}
+    \begin{itemize}
+    \item \texttt{key} : name of the variable
+    \item \texttt{value} : value of the variable    
+    \end{itemize}
+  \end{block}
+  
+  \begin{columns}
+  \column{0.49\textwidth}
+  \begin{block}{List of the available parameters}
+    \begin{itemize}
+    \item axial fuel temperature, $\degree C$
+    \item bulk coolant temperature, $\degree C$
+    \item gap conductance, $\frac{W}{m^2 \cdot K}$
+    \item thermal gap thickness, $\mu m$
+    \item mechanical gap thickness, $\mu m$
+    \end{itemize}
+  \end{block}
+
+  \column{0.49\textwidth}  
+  \begin{block}{}
+    \begin{itemize}
+    \item gap pressure, $MPa$
+    \item cladding hoop strain, $\%$
+    \item cladding hoop stress, $MPa$
+    \item cladding axial stress, $MPa$
+    \item cladding radial stress, $MPa$
+    \item cladding radial stress, $MPa$
+    \item axial mesh, $cm$
+    \end{itemize}
+  \end{block}
+
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Test Example}
+  
+  \footnotesize
+
+  \begin{block}{}
+    \begin{itemize}
+    \item Uranium fuel rod with the initial enrichment 3.42 $\%$
+    \item Transient during 40 days with the time step 5 days
+    \item Steady-state input parameters
+    \item Average linear heat rating is 14.6 $kW/m$
+    \item Coolant inlet temperature is 569 $K$
+    \item Coolant mass flux is 3857 $\frac{kg}{s \cdot m^2}$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Modified vs. Original Code Versions (1)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/axial_fuel_temperature}
+    \caption{Axial fuel temperature}
+    \label{fig:tfuel}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/bulk_coolant_temperature}    
+    \caption{Bulk coolant temperature}
+    \label{fig:tcool}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}{Modified vs. Original Code Versions (2)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/gap_conductance}
+    \caption{Gap conductance}
+    \label{fig:conduct}    
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/oxide_thickness}    
+    \caption{Oxide thickness}
+    \label{fig:oxide}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Modified vs. Original Code Versions (3)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/mechanical_gap_thickness}
+    \caption{Mechanical gap thickness}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/gap_pressure}    
+    \caption{Gap pressure}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}{Modified vs. Original Code Versions (4)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/cladding_hoop_strain}
+    \caption{Cladding hoop strain}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{figs/cladding_axial_stress}    
+    \caption{Cladding axial stress}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+\end{document}
+

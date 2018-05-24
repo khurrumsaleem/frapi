@@ -130,13 +130,11 @@ contains
         case("coolant temperature, C")
             call linterp(var,  fpn % deltaz(1:n), tmp3, n)
             fpn % tw(it) = tcf(tmp3(1))
-            fpn % coolanttemp(1,1) = tcf(tmp3(1))
-            fpn % coolanttemp(1,2:n+2) = (/( tcf(tmp3(i)), i = 1, n )/)
+            fpn % coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
         case("coolant pressure, MPa")
             call linterp(var, fpn % deltaz(1:n), tmp3, n)
             fpn % p2(it) = var(1) * MPatoPSI
-            fpn % coolantpressure(1,1) = var(1) * MPatoPSI
-            fpn % coolantpressure(1,2:n+2) = tmp3(:) * MPatoPSI
+            fpn % coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
         case("coolant mass flux, kg/(s*m^2)")
             fpn % go(it) = var(1) * ksm2tolbhrft2
         case default
@@ -175,7 +173,7 @@ contains
                 var(i) = tfc(temper / volume)
             enddo
         case('bulk coolant temperature, C')
-            var(:) = 0.5 * ( fpn % BulkCoolantTemp(1:n) + fpn % BulkCoolantTemp(2:n+1) )
+            var(:) = 0.5d0 * ( fpn % BulkCoolantTemp(1:n) + fpn % BulkCoolantTemp(2:n+1) )
             var(:) = (/( tfc(var(i)), i = 1, n )/)
         case('gap conductance, W/(m^2*K)')
             var(:) = fpn % GapCond(1:n) * Bhft2FtoWm2K
