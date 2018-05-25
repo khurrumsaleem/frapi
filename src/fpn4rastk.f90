@@ -15,7 +15,7 @@ module fpn4rastk
 
 contains
 
-    subroutine init(m_, n_, dx, radfuel, radgap, radclad, pitch, den, enrch)
+    subroutine make(m_, n_, dx, radfuel, radgap, radclad, pitch, den, enrch)
 
         integer :: n_          ! number of axial segments
         integer :: m_          ! number of radial segments
@@ -96,13 +96,13 @@ contains
         allocate(tmp2(m+1))
         allocate(tmp3(n+1))
 
-    end subroutine init
+    end subroutine make
 
-    subroutine stp0()
+    subroutine init()
 
         call fpn % stp0()  ! make the very first time step
 
-    end subroutine stp0
+    end subroutine init
 
     subroutine next(dt)
 

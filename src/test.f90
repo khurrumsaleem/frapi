@@ -1,5 +1,5 @@
 program test
-    use fpn4rastk, only : init, next, get, set, stp0
+    use fpn4rastk, only : make, init, next, get, set
 
     implicit none
 
@@ -141,7 +141,7 @@ program test
 
     ! FRAPCON INITIALIZATION
 
-    call init(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
+    call make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
               clad_rad, pitch_in, init_den, init_enrich)
 
     ! FRAPCON RUN
@@ -164,7 +164,7 @@ program test
         call set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
         ! VERY FIRST TIME STEP
-        if (i_bu_step == 1) call stp0()
+        if (i_bu_step == 1) call init()
 
         ! REGULAR TIME STEP
         if (i_bu_step >  1) call next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
