@@ -1,7 +1,8 @@
 
 .sconsign.dblite
+
 build/
-test/
+
 *.png
 *.aux
 *.nav
@@ -11,3 +12,4 @@ test/
 *.toc
 *.out
 *.snm
+*.out
