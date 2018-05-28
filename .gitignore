@@ -13,3 +13,5 @@ build/
 *.out
 *.snm
 *.out
+*.fdb_latexmk
+*.fls

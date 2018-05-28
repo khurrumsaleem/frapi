@@ -1,7 +1,8 @@
 \documentclass[11pt]{beamer}
 
 \mode<presentation>
-\usetheme{Frankfurt}
+%\usetheme{Frankfurt}
+\usetheme{Boadilla}
 
 \setbeamertemplate{caption}[numbered]
 
@@ -15,7 +16,7 @@
 \usetikzlibrary{arrows.meta}
 
 \author{Alexey L. Cherezov}
-\title{FRAPCON and RAST-K Coupling}
+\title{FRAPCON for RAST-K}
 %\setbeamercovered{transparent} 
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
@@ -42,7 +43,7 @@
 \titlepage
 
 
-\begin{frame}{Code structure}
+\begin{frame}{FRAPCON-4.0 and RAST-K Coupling}
 
 \footnotesize
 
@@ -54,19 +55,21 @@
 \begin{tikzpicture}[node distance=1.5cm, every node/.style={fill=white, font=\sffamily}, align=center]
 
   % Specification of nodes (position, etc.)
-  \node (onFrapcon)    [box0]                                  {FRAPCON-4.0};
-  \node (onFpn4rastk)  [box1, below of=onFrapcon, yshift=-0.2cm] {fpn4rastk};  
+  \node (onFrapcon)    [box0]                                      {FRAPCON-4.0};
+  \node (onDriver)     [box0, below of=onFrapcon, yshift=-0.1cm]   {DRIVER};
+  \node (onFpn4rastk)  [box1, below of=onDriver, yshift=-0.2cm]    {FPN4RASTK};  
   \node (onRastk)      [box0, below of=onFpn4rastk, yshift=-1.0cm] {RAST-K / CTF};  
   
   % Specification of lines between nodes specified above
   % with aditional nodes for description 
-  \draw[->]      (onFrapcon) --                                (onFpn4rastk);
+  \draw[->]      (onFrapcon) --                                (onDriver);
+  \draw[->]      (onDriver) --                                (onFpn4rastk);
   \draw[->]      (onFpn4rastk) -- node [xshift=0.9cm] {make \\ set, get \\ init, next}                      (onRastk);  
   \end{tikzpicture}
   
   \column{0.75\textwidth}
 
-  \begin{block}{}
+  \begin{block}{fpn4rastk usage:}
     \texttt{{\color{magenta}PROGRAM}}\\
     \texttt{{\color{magenta}USE} fpn4rastk, {\color{magenta}ONLY} : MAKE, INIT, NEXT, SET, GET}
     \begin{itemize}
@@ -88,12 +91,13 @@
 
 \end{frame}
 
-\begin{frame}{Capability of the fpn4rastk module}
+\begin{frame}{Features of the DRIVER module}
   \footnotesize
 
   \begin{block}{Time integration:}
   \begin{itemize}
-    \item ...
+    \item Restarting of the input data from the previous time step
+    \item Reading and adjustment of variables amid two time steps
   \end{itemize}
   \end{block}
 
@@ -336,6 +340,35 @@
   
   \end{columns}
 
+\end{frame}
+
+
+\begin{frame}{Conclusion}
+  \footnotesize 
+
+  \begin{block}{Have done}
+  \begin{itemize}
+  \item DRIVER module for FRAPCON which includes the \textbf{next} routine for the step-by-step integration of the fuel rod burnup transient problem
+  \item FPN4RASTK module for coupling with the RAST-K code
+  \end{itemize}
+  \end{block}
+  
+  \begin{block}{Future work}
+  \begin{itemize}
+  \item Fix the difference in oxide thickness and cladding hoop strain
+  \item Run the FPN4RASTK module along with the RAST-K code
+  \item Check other FRAPCON's physical models and capabilities
+  \item Write the documentation for the DRIVER and FPN4RASTK modules 
+  \item Verification of FRAPCON with the updated DRIVER module
+  \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{}
+ \Huge
+ \center
+ \includegraphics[width=100mm]{../../publications/UNIST_Sem_2018/figs/unist-core}
 \end{frame}
 
 \end{document}
