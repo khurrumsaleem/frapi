@@ -1,8 +1,8 @@
 from numpy import *
 import matplotlib.pyplot as plt
 
-ref = loadtxt('../../frapcon_standalone/working/0.out').T
-table = loadtxt('0.out').T
+ref = loadtxt('../../frapcon_standalone/working/1.out').T
+table = loadtxt('1.out').T
 data, mesh = table[:-1], table[-1]
 
 names = [
@@ -17,7 +17,6 @@ names = [
 ]   
 
 for i, name in enumerate(names):
-    if i == 3:
         fig, ax = plt.subplots()
         ax.plot(mesh, data[i], '-o', ms=10, lw=2, alpha=0.7, mfc='orange')
         ax.plot(mesh, ref[i], '-o', ms=10, lw=2, alpha=0.7, mfc='red')
