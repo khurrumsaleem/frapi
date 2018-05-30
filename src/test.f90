@@ -30,6 +30,7 @@ program test
     real(8) :: init_den
     real(8) :: bu_step
 
+    ! ARRAY OF FUEL RODS
     type(frod_type), allocatable :: frod(:)
 
     integer(4), allocatable :: z_meshes(:)
