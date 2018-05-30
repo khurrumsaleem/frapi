@@ -12,7 +12,7 @@ subroutine linterp(d0, dx, d1, n)
     d1(n+1) = ( d0(n) * ( 2*dx(n) + dx(n-1) ) - d0(n-1) * dx(n) ) / sum(dx(n-1:))
 
     ! in order to prevent a negative value at the ends
-    d1(1)   = max(d1(1), 0)
-    d1(n+1) = max(d1(n+1), 0)
+    d1(1)   = max(d1(1), 0.d0)
+    d1(n+1) = max(d1(n+1), 0.d0)
 
 end subroutine linterp

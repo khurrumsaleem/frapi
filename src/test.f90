@@ -149,17 +149,15 @@ program test
     height_FRPCN(2:) = (/( height_RASTK(sum(z_meshes(1:i))+1), i = 1, na_in )/)
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
-    ! FRAPCON INITIALIZATION
-
+    ! FUEL ROD INITIALIZATION
     call frod(i_frod) % make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
               clad_rad, pitch_in, init_den, init_enrich)
 
     ! FRAPCON RUN
+    do i_bu_step = 1, n_bu
 
-    do i_bu_step = 1, 3!n_bu
-
+        ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
         power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
-
         power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
         power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
 
@@ -173,25 +171,26 @@ program test
         call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
         call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
-        ! INITIAL VALUE
+        ! SET INITIAL VALUE
         if (i_bu_step == 1) call frod(i_frod) % init()
 
-        ! REGULAR TIME STEP
+        ! MAKE TIME STEP
         if (i_bu_step >  1) call frod(i_frod) % next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
+
+        ! TAKE OUTPUT VARIABLES FROM FRAPCON
+        call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
+        call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
+        call frod(i_frod) % get('gap conductance, W/(m^2*K)', fue_dyn_hgap)
+        call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
+        call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
+        call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
+        call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
+        call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
+        call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
 
     enddo
 
-    ! GET OUTPUT VARIABLES FROM FRAPCON
-    call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
-    call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-    call frod(i_frod) % get('gap conductance, W/(m^2*K)', fue_dyn_hgap)
-    call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
-    call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
-    call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
-    call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
-    call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
-    call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
-
+    ! SAVE LAST STATE
     open(i_output_file, file=oname, status='unknown')
 
     do i = 1, na_in
