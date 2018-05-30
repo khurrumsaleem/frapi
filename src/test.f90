@@ -156,7 +156,7 @@ program test
 
     ! FRAPCON RUN
 
-    do i_bu_step = 1, n_bu
+    do i_bu_step = 1, 3!n_bu
 
         power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
 

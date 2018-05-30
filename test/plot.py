@@ -1,8 +1,8 @@
 from numpy import *
 import matplotlib.pyplot as plt
 
-ref = loadtxt('../../frapcon_standalone/working/1.out').T
-table = loadtxt('1.out').T
+ref = loadtxt('../../frapcon_standalone/working/2.out').T
+table = loadtxt('2.out').T
 data, mesh = table[:-1], table[-1]
 
 names = [
