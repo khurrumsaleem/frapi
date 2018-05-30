@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8.9)
 #
 # Project name
-project(fpn4rastk)
+project(test)
 
 # Enable Fortran compiler
 enable_language (Fortran)
@@ -34,5 +34,5 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
 endif()
 
 file(GLOB SOURCES ${src})
-add_executable(fpn4rastk ${SOURCES})
-target_link_libraries(fpn4rastk frapcon4)
+add_executable(test ${SOURCES})
+target_link_libraries(test frapcon4)
