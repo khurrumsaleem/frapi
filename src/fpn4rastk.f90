@@ -194,8 +194,8 @@ contains
         case('bulk coolant temperature, C')
             var(:) = 0.5d0 * ( this % driver % BulkCoolantTemp(1:n) + this % driver % BulkCoolantTemp(2:n+1) )
             var(:) = (/( tfc(var(i)), i = 1, n )/)
-        case('gap conductance, W/(m^2*K)')
-            var(:) = this % driver % GapCond(1:n) * Bhft2FtoWm2K
+        case('total gap conductance, W/(m^2*K)')
+            var(:) = this % driver % TotalHgap(1:n) * Bhft2FtoWm2K
         case('oxide thickness, um')
             var(:) = this % driver % EOSZrO2Thk(1:n) * fttomil * miltoum
         case('thermal gap thickness, um')

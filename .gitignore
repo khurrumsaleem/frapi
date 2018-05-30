@@ -4,6 +4,7 @@
 build/
 test/
 
+*.inp
 *.png
 *.aux
 *.nav

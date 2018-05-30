@@ -181,7 +181,7 @@ program test
         ! TAKE OUTPUT VARIABLES FROM FRAPCON
         call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
         call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-        call frod(i_frod) % get('gap conductance, W/(m^2*K)', fue_dyn_hgap)
+        call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
         call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
         call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
         call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
