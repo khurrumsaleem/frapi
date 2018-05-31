@@ -1,4 +1,4 @@
-module fpn4rastk
+module fuelrod
 
     use conversions
     use frapcon41, only : driver_type
@@ -221,7 +221,7 @@ contains
 
     end subroutine frod_get
 
-end module fpn4rastk
+end module fuelrod
 
 
 

@@ -1,6 +1,6 @@
 program test
 
-    use fpn4rastk, only : frod_type
+    use fuelrod, only : frod_type
 
     implicit none
 
