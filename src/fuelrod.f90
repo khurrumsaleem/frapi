@@ -33,9 +33,6 @@ contains
         integer :: ngasr = 45  ! number of radial gas release nodes
         integer :: nce = 5     ! number of radial elements in the cladding for the FEA model
 
-        integer :: mechan  = 2 ! cladding mechanical model (1: FEA, 2: FRACAS-I)
-        integer :: ngasmod = 2 ! fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
-
         real(8) :: dx(:)       ! Thickness of the axial nodes, cm
         real(8) :: radfuel
         real(8) :: radgap
@@ -51,54 +48,56 @@ contains
         n  = n_
         m  = m_
 
-        call this % driver % init(n, ngasr, m+1, nce, mechan, ngasmod)
+        call this % driver % make(n, ngasr, m+1, nce)
 
-        this % driver % cpl     = 6.3386d0                     ! Cold plenum length, in
-        this % driver % crdt    = 0.d0 * cmtoin                ! Crud thickness, in
-        this % driver % thkcld  = (radclad - radgap) * cmtoin  ! Thickness of cladding, in
-        this % driver % thkgap  = (radgap - radfuel) * cmtoin  ! Thickness of gap, in
-        this % driver % dco     = 2 * radclad * cmtoin         ! Outer cladding diameter, in
-        this % driver % pitch   = pitch * cmtoin               ! Center to center rod distance, in
-        this % driver % rc      = 0.d0 * cmtoin                ! Radius of the fuel pellet central annulus, in
-        this % driver % fotmtl  = 2.d0                         ! Fuel oxygen-to-metal ratio
-        this % driver % dishsd  = 0.064d0                      ! Dish shoulder width, in
-        this % driver % den     = den * 10.40d0/10.96d0        ! As-fabricated apparent fuel density, %TD
-        this % driver % dspg    = 0.3                          ! Spring diameter, in
-        this % driver % fa      = 1.d0                         ! Peak-to-average power ratio
-        this % driver % dspgw   = 0.0394                       ! Spring wire diameter, in
-        this % driver % enrch   = enrch                        ! Fuel U-235 enrichment (atom per total heavy metal atoms)
-        this % driver % fgpav   = 340.84                       ! Fill gas pressure, psi
-        this % driver % hdish   = 0.0094d0                     ! Dish height, in
-        this % driver % hplt    = 0.387d0                      ! Pellet height, in
-        this % driver % icm     = 4                            ! Cladding type, 4: Zircaloy-4
-        this % driver % idxgas  = 1                            ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
-        this % driver % iplant  =-2                            ! Plant type, -2: PWR, -3: BWR, -4: HBWR
-        this % driver % imox    = 0                            ! Fuel type, 0: UO_2
-        this % driver % totl    = sum(dx) * cmtoft             ! Total length of active fuel, ft
-        this % driver % roughc  = 1.97d-5                      ! Clad roughness, in
-        this % driver % roughf  = 7.87d-5                      ! Fuel roughness, in
-        this % driver % vs      = 30.d0                        ! Number of spring turns
-        this % driver % rsntr   = 100.d0                       ! Expected resintering density increase, kg/m**3
-        this % driver % nsp     = 0                            ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
-        this % driver % slim    = 0.05d0                       ! User supplied swelling limit (vol fraction) (Default = 0.05)
-        this % driver % enrpu39 = 0.d0                         ! Fuel pellet Pu-239 content
-        this % driver % enrpu40 = 0.d0                         ! Fuel pellet Pu-240 content
-        this % driver % enrpu41 = 0.d0                         ! Fuel pellet Pu-241 content
-        this % driver % enrpu42 = 0.d0                         ! Fuel pellet Pu-242 content
-        this % driver % tw(1)   = 600.                         ! Coolant inlet temperature, F
-        this % driver % p2(1)   = 2000.                        ! Coolant System Pressure, Psi
-        this % driver % go(1)   = 2.D+6                        ! Coolant mass flux around fuel rod, lb/hr * ft^2
-        this % driver % qf(:)   = 1.                           ! Ratio of linear power
-        this % driver % qmpy    = 6.                           ! The linear heat generation rate, kW/ft (after make it turns to rod average heat flux, BTU/(hr*ft^2) )
-        this % driver % gadoln(:) = 0.d0                       ! Weight fraction of gadolinia in the fuel
+        call this % driver % deft()
 
-        ! Elevation in each qf, x array defining a power shape, ft
-        this % driver % x(1)     = 0.d0
-        this % driver % x(2:n+1) = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
-        this % driver % deltaz(1:n)= dx(:) * cmtoft
-        this % driver % deltaz(n+1)= this % driver % cpl
+        this % driver % mechan              = 2                           ! Cladding mechanical model
+        this % driver % ngasmod             = 2                           ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
+        this % driver % cpl                 = 6.3386d0                    ! Cold plenum length, in
+        this % driver % crdt                = 0.d0 * cmtoin               ! Crud thickness, in
+        this % driver % thkcld              = (radclad - radgap) * cmtoin ! Thickness of cladding, in
+        this % driver % thkgap              = (radgap - radfuel) * cmtoin ! Thickness of gap, in
+        this % driver % dco                 = 2 * radclad * cmtoin        ! Outer cladding diameter, in
+        this % driver % pitch               = pitch * cmtoin              ! Center to center rod distance, in
+        this % driver % rc                  = 0.d0 * cmtoin               ! Radius of the fuel pellet central annulus, in
+        this % driver % fotmtl              = 2.d0                        ! Fuel oxygen-to-metal ratio
+        this % driver % dishsd              = 0.064d0                     ! Dish shoulder width, in
+        this % driver % den                 = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
+        this % driver % dspg                = 0.3                         ! Spring diameter, in
+        this % driver % fa                  = 1.d0                        ! Peak-to-average power ratio
+        this % driver % dspgw               = 0.0394                      ! Spring wire diameter, in
+        this % driver % enrch               = enrch                       ! Fuel U-235 enrichment (atom per total heavy metal atoms)
+        this % driver % fgpav               = 340.84                      ! Fill gas pressure, psi
+        this % driver % hdish               = 0.0094d0                    ! Dish height, in
+        this % driver % hplt                = 0.387d0                     ! Pellet height, in
+        this % driver % icm                 = 4                           ! Cladding type, 4: Zircaloy-4
+        this % driver % idxgas              = 1                           ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
+        this % driver % iplant              =-2                           ! Plant type, -2: PWR, -3: BWR, -4: HBWR
+        this % driver % imox                = 0                           ! Fuel type, 0: UO_2
+        this % driver % totl                = sum(dx) * cmtoft            ! Total length of active fuel, ft
+        this % driver % roughc              = 1.97d-5                     ! Clad roughness, in
+        this % driver % roughf              = 7.87d-5                     ! Fuel roughness, in
+        this % driver % vs                  = 30.d0                       ! Number of spring turns
+        this % driver % rsntr               = 100.d0                      ! Expected resintering density increase, kg/m**3
+        this % driver % nsp                 = 0                           ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
+        this % driver % slim                = 0.05d0                      ! User supplied swelling limit (vol fraction) (Default = 0.05)
+        this % driver % enrpu39             = 0.d0                        ! Fuel pellet Pu-239 content
+        this % driver % enrpu40             = 0.d0                        ! Fuel pellet Pu-240 content
+        this % driver % enrpu41             = 0.d0                        ! Fuel pellet Pu-241 content
+        this % driver % enrpu42             = 0.d0                        ! Fuel pellet Pu-242 content
+        this % driver % tw(1)               = 600.                        ! Coolant inlet temperature, F
+        this % driver % p2(1)               = 2000.                       ! Coolant System Pressure, Psi
+        this % driver % go(1)               = 2.D+6                       ! Coolant mass flux around fuel rod, lb/hr * ft^2
+        this % driver % qf(:)               = 1.                          ! Ratio of linear power
+        this % driver % qmpy                = 6.                          ! The linear heat generation rate, kW/ft (after make it turns to rod average heat flux, BTU/(hr*ft^2) )
+        this % driver % gadoln(:)           = 0.d0                        ! Weight fraction of gadolinia in the fuel
+        this % driver % x(1)                = 0.d0                        ! Axial evaluation, ft
+        this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
+        this % driver % deltaz(1:n)         = dx(:) * cmtoft
+        this % driver % deltaz(n+1)         = this % driver % cpl
 
-        call this % driver % make() ! set default and check input variables
+        call this % driver % proc() ! processing and checking of input variables
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
         allocate(weight(m))
@@ -113,7 +112,7 @@ contains
 
         class (frod_type), intent(in) :: this
 
-        call this % driver % stp0()  ! make the very first time step
+        call this % driver % init()  ! make the very first time step
 
     end subroutine frod_init
 
