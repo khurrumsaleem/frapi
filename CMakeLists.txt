@@ -11,9 +11,9 @@ enable_language (Fortran)
 set(src "src/*.f90")
 #
 
-include_directories(../frapcon/build/debug)
+include_directories(../frapcon/build/debug /usr/local/hdf5/include)
 
-link_directories(../frapcon/build/debug)
+link_directories(../frapcon/build/debug /usr/local/hdf5/lib)
 
 if(CMAKE_Fortran_COMPILER_ID  STREQUAL "GNU")
 	set(f90flags "-D -cpp -std=f2008 -fbacktrace")
@@ -36,3 +36,4 @@ endif()
 file(GLOB SOURCES ${src})
 add_executable(frapcontest ${SOURCES})
 target_link_libraries(frapcontest frapcon4)
+#target_link_libraries(frapcontest hdf5_fortran)

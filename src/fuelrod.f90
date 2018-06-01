@@ -92,10 +92,11 @@ contains
         this % driver % qf(:)               = 1.                          ! Ratio of linear power
         this % driver % qmpy                = 6.                          ! The linear heat generation rate, kW/ft (after make it turns to rod average heat flux, BTU/(hr*ft^2) )
         this % driver % gadoln(:)           = 0.d0                        ! Weight fraction of gadolinia in the fuel
-        this % driver % x(1)                = 0.d0                        ! Axial evaluation, ft
+        this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
         this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
         this % driver % deltaz(1:n)         = dx(:) * cmtoft
         this % driver % deltaz(n+1)         = this % driver % cpl
+        this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
 
         call this % driver % proc() ! processing and checking of input variables
 
