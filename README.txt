@@ -1,4 +1,4 @@
-Module fpn4rastk
+Module fuelrod
 
 Requirements:
    frapcon
