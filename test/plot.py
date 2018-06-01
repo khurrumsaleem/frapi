@@ -25,6 +25,6 @@ for i, name in enumerate(names):
         ax.set_ylabel(name)
         ax.legend(['NEW FRAPCON', 'OLD FRAPCON'])
         ax.grid()
-    #plt.savefig('../doc/figs/%s.png'%name.split(',')[0].replace(' ','_'))
+        plt.savefig('../doc/UserGuide/figs/%s.png'%name.split(',')[0].replace(' ','_'))
 
-plt.show()
+#plt.show()

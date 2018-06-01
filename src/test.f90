@@ -1,9 +1,11 @@
 program test
 
     use fuelrod, only : frod_type
+    use h5file, only : tp_h5file
 
     implicit none
 
+    character(len = 32) :: i_bu_step_
     character(len = 32) :: iname
     character(len = 32) :: oname
 
@@ -68,6 +70,9 @@ program test
 
     ! ITERATIONAL VARIABLES
     integer :: i
+
+    ! HDF5 FOR DATA DUMPING
+    type(tp_h5file) :: ofile
 
     ! READING INPUT FILE
 
@@ -143,6 +148,9 @@ program test
     allocate(hoop_strain (1:na_in))
     allocate(hoop_stress (1:na_in))
 
+    ! CREATE HDF5 FILE
+    call ofile % open("data.h5")
+
     ! HEIGHTS FOR RASTK and FRAPCON, LIKE (0.5, 1.0, 1.5, 2.0, ...)
     height_RASTK(1)  = 0.
     height_RASTK(2:) = (/( sum(thickness_RASTK(1:i)) , i = 1, na_r )/)
@@ -189,6 +197,19 @@ program test
         call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
         call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
 
+        ! SAVE DATA IN HDF5 FILE
+        write(i_bu_step_, '(I10)') i_bu_step
+        call ofile % makegroup(i_bu_step_)
+        call ofile % dump('axial fuel temperature, C', fue_avg_temp)
+        call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
+        !call ofile % dump('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+        call ofile % dump('oxide thickness, um', t_oxidelayer)
+        call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
+        call ofile % dump('gap pressure, MPa', gap_pressure)
+        call ofile % dump('cladding hoop strain, %', hoop_strain)
+        call ofile % dump('cladding axial stress, MPa', hoop_stress)
+        call ofile % dump('axial mesh, cm', zmesh_FRPCN)
+        call ofile % closegroup()
     enddo
 
     ! SAVE LAST STATE
@@ -199,6 +220,8 @@ program test
         fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), gap_pressure(i), &
         hoop_strain(i), hoop_stress(i), zmesh_FRPCN(i)
     enddo
+
+    call ofile % close()
 
     write(*,*) 'done!'
 

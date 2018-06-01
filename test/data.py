@@ -11,10 +11,14 @@ ql = array([28.4344899,  76.8514270, 115.9701171, 147.6247860, 170.4726516, 186.
 	204.3632196, 204.3481327, 202.4115453, 198.9259190, 194.1176490, 188.0940199, 180.8592890, 172.3216961, 162.2942404, 
 	150.4931119, 136.5386277, 119.9671428, 100.2586532,  77.0396762,  50.0666976,  20.4187276])
 
-distortion = lambda t: 1. + 0.2 * sin(pi*t/1000.)
-
+distortion = lambda t: sin(pi*t/1000.)
 time = linspace(0,1500.,101.)
-data = array([distortion(time)]).T * hstack([tcool, pcool, ql])
+d = array([distortion(time)]).T
+
+tcool_ = tcool + 10 * d * linspace(0, 1, len(tcool))
+pcool_ = (1 + 0.2 * d) * pcool
+ql_    = (1 + 0.2 * d) * ql
+data = hstack([tcool_, pcool_, ql_])
 data = vstack([time, data.T])
 
 header="""17
@@ -33,4 +37,6 @@ header="""17
 1"""%len(time)
 
 savetxt('data.inp',data,fmt='%14.7f',header=header,comments='')
+
+
 
