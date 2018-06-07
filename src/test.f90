@@ -199,6 +199,9 @@ program test
             call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
             call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
             call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+
+            if(i_bu_step > 1) call frod(i_frod) % reject()
+
         enddo
 
         if(i_bu_step > 1) stop
