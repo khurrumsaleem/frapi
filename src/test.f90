@@ -185,7 +185,7 @@ program test
         if (i_bu_step == 1) call frod(i_frod) % init()
 
         ! DO COUPLING ITERATIONS
-        do i_iter = 1, 2000
+        do i_iter = 1, 10
             ! PERFORM TRIAL TIME STEP
             if (i_bu_step >  1) call frod(i_frod) % next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
 
@@ -200,7 +200,7 @@ program test
             call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
             call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
 
-            if(i_bu_step > 1) call frod(i_frod) % reject()
+            if((i_bu_step > 1) .and. (i_iter < 10)) call frod(i_frod) % reject()
 
         enddo
 
