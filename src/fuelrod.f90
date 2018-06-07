@@ -9,11 +9,12 @@ module fuelrod
     type, public :: frod_type
         type(driver_type) :: driver
     contains
-        procedure :: make => frod_make
-        procedure :: init => frod_init
-        procedure :: next => frod_next
-        procedure :: set  => frod_set
-        procedure :: get  => frod_get
+        procedure :: make   => frod_make   ! Initialize the fuel rod
+        procedure :: init   => frod_init   ! Set the initial fuel rod state, t = 0
+        procedure :: next   => frod_next   ! Perform the trial time step, dt > 0
+        procedure :: accept => frod_accept ! Accept the last time step
+        procedure :: set    => frod_set    ! Set variable value
+        procedure :: get    => frod_get    ! Catch variable value
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -50,7 +51,7 @@ contains
 
         call this % driver % make(n, ngasr, m+1, nce)
 
-        call this % driver % deft()
+        call this % driver % default()
 
         this % driver % mechan              = 2                           ! Cladding mechanical model
         this % driver % ngasmod             = 2                           ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
@@ -126,6 +127,18 @@ contains
        call this % driver % next(dt)
 
     end subroutine frod_next
+
+
+    subroutine frod_accept(this)
+
+       class (frod_type), intent(in) :: this
+
+       real(8) :: dt
+
+       call this % driver % accept()
+
+    end subroutine frod_accept
+
 
     subroutine frod_set(this, key, var)
 

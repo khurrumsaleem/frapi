@@ -2,6 +2,7 @@ Module fuelrod
 
 Requirements:
    frapcon
+   hdf5
 
 1. cd build/debug 
    or

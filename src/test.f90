@@ -21,6 +21,7 @@ program test
     integer(4) :: i_bu_step
     integer(4) :: n_frod
     integer(4) :: i_frod
+    integer(4) :: i_iter
 
     real(8) :: init_enrich
     real(8) :: pitch_in
@@ -183,19 +184,27 @@ program test
         ! SET INITIAL VALUE
         if (i_bu_step == 1) call frod(i_frod) % init()
 
-        ! MAKE TIME STEP
-        if (i_bu_step >  1) call frod(i_frod) % next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
+        ! DO COUPLING ITERATIONS
+        do i_iter = 1, 2000
+            ! PERFORM TRIAL TIME STEP
+            if (i_bu_step >  1) call frod(i_frod) % next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
 
-        ! TAKE OUTPUT VARIABLES FROM FRAPCON
-        call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
-        call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-        call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-        call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
-        call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
-        call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
-        call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
-        call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
-        call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+            ! TAKE OUTPUT VARIABLES FROM FRAPCON
+            call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
+            call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
+            call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+            call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
+            call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
+            call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
+            call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
+            call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
+            call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+        enddo
+
+        if(i_bu_step > 1) stop
+
+        ! ACCEPT THE LAST TIME STEP
+        !if (i_bu_step >  1) call frod(i_frod) % accept()
 
         ! SAVE DATA IN HDF5 FILE
         write(i_bu_step_, '(I10)') i_bu_step
@@ -223,6 +232,6 @@ program test
 
     call ofile % close()
 
-    write(*,*) 'done!'
+    write(*,*) 'Test done!'
 
 end program test
