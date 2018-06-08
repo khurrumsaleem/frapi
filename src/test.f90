@@ -15,11 +15,12 @@ program test
     integer(4) :: n_fuel_rad_in
     integer(4) :: na_r
     integer(4) :: na_in
-    integer(4) :: n_bu
+    integer(4) :: n_bu       ! Number of burnup steps
+    integer(4) :: n_iter     ! Number of coupling iterations
     integer(4) :: run_media
     integer(4) :: iz
     integer(4) :: i_bu_step
-    integer(4) :: n_frod
+    integer(4) :: n_frod     ! Number of fuel rods
     integer(4) :: i_frod
     integer(4) :: i_iter
 
@@ -32,6 +33,7 @@ program test
     real(8) :: mass_flow_rate_in
     real(8) :: init_den
     real(8) :: bu_step
+    real(8) :: dtime
 
     ! ARRAY OF FUEL RODS
     type(frod_type), allocatable :: frod(:)
@@ -131,8 +133,9 @@ program test
     close(i_input_file)
 
     ! ALLOCATE FUEL RODS ARRAY
-    n_frod = 1
-    i_frod = 1
+    n_frod = 2
+    n_iter = 2
+
     allocate(frod(n_frod))
 
     allocate(power_FRPCN(1:na_in))
@@ -152,6 +155,8 @@ program test
     ! CREATE HDF5 FILE
     call ofile % open("data.h5")
 
+    !-------------------- FUEL RODS INITIALIZATION-----------------------------
+
     ! HEIGHTS FOR RASTK and FRAPCON, LIKE (0.5, 1.0, 1.5, 2.0, ...)
     height_RASTK(1)  = 0.
     height_RASTK(2:) = (/( sum(thickness_RASTK(1:i)) , i = 1, na_r )/)
@@ -159,12 +164,18 @@ program test
     height_FRPCN(2:) = (/( height_RASTK(sum(z_meshes(1:i))+1), i = 1, na_in )/)
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
-    ! FUEL ROD INITIALIZATION
-    call frod(i_frod) % make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
-              clad_rad, pitch_in, init_den, init_enrich)
+    ! arguments must be the same for all fuel rods
+    do i_frod = 1, n_frod
+        call frod(i_frod) % make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
+                                 clad_rad, pitch_in, init_den, init_enrich)
+    enddo
 
-    ! FRAPCON RUN
-    do i_bu_step = 1, n_bu
+    !-------------------- INITIAL VALUE ---------------------------------------
+
+    i_bu_step = 1
+
+    ! SET INITIAL VALUE
+    do i_frod = 1, n_frod
 
         ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
         power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
@@ -181,50 +192,75 @@ program test
         call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
         call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
-        ! SET INITIAL VALUE
-        if (i_bu_step == 1) call frod(i_frod) % init()
+        call frod(i_frod) % init()
+    enddo
 
-        ! DO COUPLING ITERATIONS
-        do i_iter = 1, 10
-            ! PERFORM TRIAL TIME STEP
-            if (i_bu_step >  1) call frod(i_frod) % next(tmp_time(i_bu_step) - tmp_time(i_bu_step-1))
+    !------------------- RUN TIME STEPS ---------------------------------------
 
-            ! TAKE OUTPUT VARIABLES FROM FRAPCON
-            call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
-            call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-            call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-            call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
-            call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
-            call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
-            call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
-            call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
-            call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+    ! ITERATION OVER TIME
+    do i_bu_step = 2, n_bu
 
-            if((i_bu_step > 1) .and. (i_iter < 10)) call frod(i_frod) % reject()
+        dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
+
+        ! ITERATION OVER FUEL RODS
+        do i_frod = 1, n_frod
+
+            ! ITERATION BETWEEN RAST-K AND FRAPCON CODES
+            do i_iter = 1, n_iter
+
+                ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
+                power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
+                power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
+                power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
+
+                tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
+                pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
+                fcool_FRPCN(1) = mass_flow_rate_in
+
+                ! SETUP THE UPDATED VARIABLES
+                call frod(i_frod) % set("linear power, W/cm", power_FRPCN)
+                call frod(i_frod) % set("coolant temperature, C", tcool_FRPCN)
+                call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
+                call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
+
+                ! PERFORM TRIAL TIME STEP
+                call frod(i_frod) % next(dtime)
+
+                ! TAKE OUTPUT VARIABLES FROM FRAPCON
+                call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
+                call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
+                call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+                call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
+                call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
+                call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
+                call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
+                call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
+                call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+
+                ! REJECT TRIAL TIME STEPS
+                if(i_iter == n_iter) call frod(i_frod) % accept()
+            enddo
+
+            ! SAVE DATA IN HDF5 FILE
+!            write(i_bu_step_, '(I10)') i_bu_step
+!            call ofile % makegroup(i_bu_step_)
+!            call ofile % dump('axial fuel temperature, C', fue_avg_temp)
+!            call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
+!            !call ofile % dump('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+!            call ofile % dump('oxide thickness, um', t_oxidelayer)
+!            call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
+!            call ofile % dump('gap pressure, MPa', gap_pressure)
+!            call ofile % dump('cladding hoop strain, %', hoop_strain)
+!            call ofile % dump('cladding axial stress, MPa', hoop_stress)
+!            call ofile % dump('axial mesh, cm', zmesh_FRPCN)
+!            call ofile % closegroup()
 
         enddo
 
-        if(i_bu_step > 1) stop
-
-        ! ACCEPT THE LAST TIME STEP
-        !if (i_bu_step >  1) call frod(i_frod) % accept()
-
-        ! SAVE DATA IN HDF5 FILE
-        write(i_bu_step_, '(I10)') i_bu_step
-        call ofile % makegroup(i_bu_step_)
-        call ofile % dump('axial fuel temperature, C', fue_avg_temp)
-        call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
-        !call ofile % dump('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-        call ofile % dump('oxide thickness, um', t_oxidelayer)
-        call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
-        call ofile % dump('gap pressure, MPa', gap_pressure)
-        call ofile % dump('cladding hoop strain, %', hoop_strain)
-        call ofile % dump('cladding axial stress, MPa', hoop_stress)
-        call ofile % dump('axial mesh, cm', zmesh_FRPCN)
-        call ofile % closegroup()
     enddo
 
-    ! SAVE LAST STATE
+    !----------------------------- SAVE LAST STATE ------------------------------------
+
     open(i_output_file, file=oname, status='unknown')
 
     do i = 1, na_in

@@ -12,7 +12,7 @@ module fuelrod
         procedure :: make   => frod_make   ! Initialize the fuel rod
         procedure :: init   => frod_init   ! Set the initial fuel rod state, t = 0
         procedure :: next   => frod_next   ! Perform the trial time step, dt > 0
-        procedure :: reject => frod_reject ! Reject the last time step
+        procedure :: accept => frod_accept ! Reject the last time step
         procedure :: set    => frod_set    ! Set variable value
         procedure :: get    => frod_get    ! Catch variable value
     end type frod_type
@@ -101,48 +101,52 @@ contains
 
         call this % driver % proc() ! processing and checking of input variables
 
+        call this % driver % dump()
+
         ! ALLOCATION OF THE TEMPORARY ARRAYS
-        allocate(weight(m))
-        allocate(tmp0(m))
-        allocate(tmp1(n))
-        allocate(tmp2(m+1))
-        allocate(tmp3(n+1))
+        if(.not. allocated(weight)) allocate(weight(m))
+        if(.not. allocated(tmp0))   allocate(tmp0(m))
+        if(.not. allocated(tmp1))   allocate(tmp1(n))
+        if(.not. allocated(tmp2))   allocate(tmp2(m+1))
+        if(.not. allocated(tmp3))   allocate(tmp3(n+1))
 
     end subroutine frod_make
 
     subroutine frod_init(this)
 
-        class (frod_type), intent(in) :: this
+        class (frod_type), intent(inout) :: this
 
+        call this % driver % load()
         call this % driver % init()  ! make the very first time step
+        call this % driver % dump()
 
     end subroutine frod_init
 
     subroutine frod_next(this, dt)
 
-       class (frod_type), intent(inout) :: this
+        class (frod_type), intent(inout) :: this
 
-       real(8) :: dt
+        real(8) :: dt
 
-       call this % driver % dump()
-       call this % driver % next(dt)
+        call this % driver % load()
+        call this % driver % next(dt)
 
     end subroutine frod_next
 
-    subroutine frod_reject(this)
+    subroutine frod_accept(this)
 
-       class (frod_type), intent(in) :: this
+        class (frod_type), intent(inout) :: this
 
-       real(8) :: dt
+        real(8) :: dt
 
-       call this % driver % load()
+        call this % driver % dump()
 
-    end subroutine frod_reject
+    end subroutine frod_accept
 
 
-    subroutine frod_set(this, key, var)
+    subroutine frod_set_(this, key, var)
 
-        class (frod_type), intent(in) :: this
+        class (frod_type), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
@@ -172,7 +176,43 @@ contains
             stop
         end select
 
+    end subroutine frod_set_
+
+
+    subroutine frod_set(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key
+        integer      :: it
+        real(8)      :: var(:)
+
+        it = this % driver % r__it
+
+        select case(key)
+        case("linear power, W/cm")
+            call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
+            a = sum( var(:) * this % driver % r__deltaz(1:n) ) / this % driver % r__totl /cmtoft ! W/ft
+            b = sum( this % driver % r__deltaz(1:n) / this % driver % r__dco(1:n) ) / this % driver % r__totl / intoft ! 1/ft
+            this % driver % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
+            this % driver % r__qf(:) = tmp3(:) / sum(tmp3)
+        case("coolant temperature, C")
+            call linterp(var,  this % driver % r__deltaz(1:n), tmp3, n)
+            this % driver % r__tw(it) = tcf(tmp3(1))
+            this % driver % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
+        case("coolant pressure, MPa")
+            call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
+            this % driver % r__p2(it) = var(1) * MPatoPSI
+            this % driver % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
+        case("coolant mass flux, kg/(s*m^2)")
+            this % driver % r__go(it) = var(1) * ksm2tolbhrft2
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
     end subroutine frod_set
+
 
     subroutine frod_get(this, key, var)
 
