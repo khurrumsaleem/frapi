@@ -5,9 +5,10 @@ program test
 
     implicit none
 
-    character(len = 32) :: i_bu_step_
+    character(len = 32) :: i_frod_
     character(len = 32) :: iname
     character(len = 32) :: oname
+    character(len = 32) :: fh5name
 
     integer :: i_input_file = 42
     integer :: i_output_file = 43
@@ -32,7 +33,6 @@ program test
     real(8) :: inlet_temp_in
     real(8) :: mass_flow_rate_in
     real(8) :: init_den
-    real(8) :: bu_step
     real(8) :: dtime
 
     ! ARRAY OF FUEL RODS
@@ -60,7 +60,6 @@ program test
     real(8), allocatable   ::  t_oxidelayer(:)
     real(8), allocatable   ::  t_fuecladgap(:)
     real(8), allocatable   ::  gap_pressure(:)
-    real(8), allocatable   ::  contact_pres(:)
     real(8), allocatable   ::  hoop_strain (:)
     real(8), allocatable   ::  hoop_stress (:)
 
@@ -78,7 +77,6 @@ program test
     type(tp_h5file) :: ofile
 
     ! READING INPUT FILE
-
     call get_command_argument(1, iname)
     call get_command_argument(2, oname)
 
@@ -152,9 +150,6 @@ program test
     allocate(hoop_strain (1:na_in))
     allocate(hoop_stress (1:na_in))
 
-    ! CREATE HDF5 FILE
-    call ofile % open("data.h5")
-
     !-------------------- FUEL RODS INITIALIZATION-----------------------------
 
     ! HEIGHTS FOR RASTK and FRAPCON, LIKE (0.5, 1.0, 1.5, 2.0, ...)
@@ -200,6 +195,10 @@ program test
     ! ITERATION OVER TIME
     do i_bu_step = 2, n_bu
 
+        ! CREATE HDF5 FILE
+        write(fh5name, '(A,I0.10,A)') 'burnup_', i_bu_step, '.h5'
+        call ofile % open(fh5name)
+
         dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
 
         ! ITERATION OVER FUEL RODS
@@ -223,7 +222,7 @@ program test
                 call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
                 call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
-                ! PERFORM TRIAL TIME STEP
+                ! DO TRIAL TIME STEP
                 call frod(i_frod) % next(dtime)
 
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
@@ -237,25 +236,27 @@ program test
                 call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
                 call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
 
-                ! REJECT TRIAL TIME STEPS
+                ! ACCEPT THE LAST TRIAL TIME STEP
                 if(i_iter == n_iter) call frod(i_frod) % accept()
             enddo
 
             ! SAVE DATA IN HDF5 FILE
-!            write(i_bu_step_, '(I10)') i_bu_step
-!            call ofile % makegroup(i_bu_step_)
-!            call ofile % dump('axial fuel temperature, C', fue_avg_temp)
-!            call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
-!            !call ofile % dump('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-!            call ofile % dump('oxide thickness, um', t_oxidelayer)
-!            call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
-!            call ofile % dump('gap pressure, MPa', gap_pressure)
-!            call ofile % dump('cladding hoop strain, %', hoop_strain)
-!            call ofile % dump('cladding axial stress, MPa', hoop_stress)
-!            call ofile % dump('axial mesh, cm', zmesh_FRPCN)
-!            call ofile % closegroup()
+            write(i_frod_, '(I10)') i_frod
+            call ofile % makegroup(i_frod_)
+            call ofile % dump('axial fuel temperature, C', fue_avg_temp)
+            call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
+            call ofile % dump('total gap conductance, W_(m^2*K)', fue_dyn_hgap)
+            call ofile % dump('oxide thickness, um', t_oxidelayer)
+            call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
+            call ofile % dump('gap pressure, MPa', gap_pressure)
+            call ofile % dump('cladding hoop strain, %', hoop_strain)
+            call ofile % dump('cladding axial stress, MPa', hoop_stress)
+            call ofile % dump('axial mesh, cm', zmesh_FRPCN)
+            call ofile % closegroup()
 
         enddo
+
+        call ofile % close()
 
     enddo
 
@@ -268,8 +269,6 @@ program test
         fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), gap_pressure(i), &
         hoop_strain(i), hoop_stress(i), zmesh_FRPCN(i)
     enddo
-
-    call ofile % close()
 
     write(*,*) 'Test done!'
 
