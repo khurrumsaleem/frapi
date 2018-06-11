@@ -17,7 +17,7 @@ module fuelrod
         procedure :: get    => frod_get    ! Catch variable value
         procedure :: save   => frod_save   ! Save fuel rod state in a file
         procedure :: load   => frod_load   ! Load fuel rod state from a file
-        procedure :: finish => frod_finish ! Deallocate the fuel rod variables
+        procedure :: destroy=> frod_destroy! Deallocate the fuel rod variables
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -265,13 +265,13 @@ contains
 
     end subroutine frod_get
 
-    subroutine frod_finish(this)
+    subroutine frod_destroy(this)
 
         class (frod_type), intent(inout) :: this
 
-        call this % driver % finish()
+        call this % driver % destroy()
 
-    end subroutine frod_finish
+    end subroutine frod_destroy
 
 end module fuelrod
 

@@ -64,15 +64,16 @@
    FuelDeformation \\
    Temperature \\
    ZrModels CladCreep};
-  \node (onDriver_)    [box1, below of=onDriver,   yshift=-0.5cm]  
+  \node (onDriver_)    [box1, below of=onDriver,   yshift=-0.7cm]  
   {make : allocate vars \\ 
    proc : input process \\ 
    next : regular time step \\ 
    init : very first time step \\ 
    deft : default values \\ 
    save : save current state \\ 
-   load : load previous state};
-  \node (onFuelrod_)   [box1, below of=onFuelrod,  yshift=-0.7cm]  
+   load : load previous state \\
+   destroy : driver finilize};
+  \node (onFuelrod_)   [box1, below of=onFuelrod,  yshift=-0.9cm]  
   {make   : set mesh size \\ 
    init   : set initial state \\ 
    next   : trial time step \\ 
@@ -80,7 +81,8 @@
    get    : get variable \\ 
    set    : set variable \\ 
    save   : save current state \\ 
-   load   : load current state  };  
+   load   : load current state \\
+   destroy: fuelrod finilize };  
   
   \draw[->]      (onFrapcon) -- (onDriver);
   \draw[->]      (onDriver)  -- (onFuelrod);
@@ -88,35 +90,43 @@
   
 \end{frame}
 
-\begin{frame}{Class ``FuelRod" Usage}
+\begin{frame}{Usage of the ``FuelRod" Class}
   \footnotesize
+  \texttt{
   \begin{columns}
-  \column{0.6\textwidth}
+  \column{0.48\textwidth}
   \begin{block}{}
-    \texttt{
     {\color{magenta}PROGRAM} MAIN\\
     {\color{magenta}USE} fuelrod\\
     {\color{magenta}TYPE} (fuelrodtype) FR\\    
-    {\color{gray}!---------- Setup mesh size --------------}\\
+    {\color{gray}!--- Setup mesh size -----}\\
     {\color{magenta}CALL} FR $\%$ MAKE(<arguments>)\\
-    {\color{gray}!---------- Setup initial state ----------}\\    
-    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, variable)\\
+    {\color{gray}!--- Setup initial state ----}\\    
+    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
     {\color{magenta}CALL} FR $\%$ INIT()\\
-    {\color{gray}!---------- Burnup loop ------------------}\\        
+    {\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
+    {\color{gray}!--- Accept initial state ----}\\                
+    {\color{magenta}CALL} FR $\%$ ACCEPT()\\    
+  \end{block}
+  \column{0.48\textwidth}
+  \begin{block}{}
+    {\color{gray}!--- Burnup loop ---------}\\        
     {\color{magenta}DO} i = 1, N\\
-    {\color{gray}!---------- Trial time step --------------}\\            
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, variable)\\
+    {\color{gray}!--- Trial time step -----}\\            
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
     {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, variable)\\
-    {\color{gray}!---------- Accept time step -------------}\\                
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
+    {\color{gray}!--- Accept time step ----}\\                
     {\hspace{5mm}\color{magenta}CALL} FR $\%$ ACCEPT()\\    
-    {\color{gray}!---------- Save current state -----------}\\                
+    {\color{gray}!--- Save current state --}\\                
     {\hspace{5mm}\color{magenta}CALL} FR $\%$ SAVE({\color{orange}"filename"})\\    
     {\color{magenta}ENDDO} \\
+    {\color{gray}!--- Finilize -------------}\\                    
+    {\color{magenta}CALL} FR $\%$ DESTROY()\\            
     {\color{magenta}END PROGRAM}  MAIN
-    }        
   \end{block}
   \end{columns}
+  }
 \end{frame}
 
 

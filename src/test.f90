@@ -225,7 +225,7 @@ program test
 
     !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
     do i_frod = 1, n_frod
-        call frod(i_frod) % finish()
+        call frod(i_frod) % destroy()
     enddo
 
     !----------------------------- SAVE LAST STATE ------------------------------------
