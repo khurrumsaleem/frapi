@@ -4,6 +4,8 @@ program test
 
     implicit none
 
+    logical :: verbose = .false.
+
     character(len = 32) :: string
     character(len = 32) :: iname
     character(len = 32) :: oname
@@ -157,7 +159,7 @@ program test
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
         call frod(i_frod) % make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
-                                 clad_rad, pitch_in, init_den, init_enrich)
+                                 clad_rad, pitch_in, init_den, init_enrich, verbose)
     enddo
 
     !------------------- RUN TIME STEPS ---------------------------------------
@@ -219,6 +221,11 @@ program test
 
         enddo
 
+    enddo
+
+    !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
+    do i_frod = 1, n_frod
+        call frod(i_frod) % finish()
     enddo
 
     !----------------------------- SAVE LAST STATE ------------------------------------

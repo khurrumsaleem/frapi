@@ -17,6 +17,7 @@ module fuelrod
         procedure :: get    => frod_get    ! Catch variable value
         procedure :: save   => frod_save   ! Save fuel rod state in a file
         procedure :: load   => frod_load   ! Load fuel rod state from a file
+        procedure :: finish => frod_finish ! Deallocate the fuel rod variables
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -27,9 +28,11 @@ module fuelrod
 
 contains
 
-    subroutine frod_make(this, m_, n_, dx, radfuel, radgap, radclad, pitch, den, enrch)
+    subroutine frod_make(this, m_, n_, dx, radfuel, radgap, radclad, pitch, den, enrch, verbose)
 
         class (frod_type), intent(inout) :: this
+
+        logical :: verbose     ! Print the output data in terminal
 
         integer :: n_          ! number of axial segments
         integer :: m_          ! number of radial segments
@@ -51,7 +54,7 @@ contains
         n  = n_
         m  = m_
 
-        call this % driver % make(n, ngasr, m+1, nce)
+        call this % driver % make(n, ngasr, m+1, nce, verbose)
 
         call this % driver % deft()
 
@@ -164,42 +167,6 @@ contains
 
     end subroutine frod_accept
 
-
-    subroutine frod_set_(this, key, var)
-
-        class (frod_type), intent(inout) :: this
-
-        character(*) :: key
-        integer      :: it
-        real(8)      :: var(:)
-
-        it = this % driver % it
-
-        select case(key)
-        case("linear power, W/cm")
-            call linterp(var, this % driver % deltaz(1:n), tmp3, n)
-            a = sum( var(:) * this % driver % deltaz(1:n) ) / this % driver % totl /cmtoft ! W/ft
-            b = sum( this % driver % deltaz(1:n) / this % driver % dco(1:n) ) / this % driver % totl / intoft ! 1/ft
-            this % driver % qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
-            this % driver % qf(:) = tmp3(:) / sum(tmp3)
-        case("coolant temperature, C")
-            call linterp(var,  this % driver % deltaz(1:n), tmp3, n)
-            this % driver % tw(it) = tcf(tmp3(1))
-            this % driver % coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
-        case("coolant pressure, MPa")
-            call linterp(var, this % driver % deltaz(1:n), tmp3, n)
-            this % driver % p2(it) = var(1) * MPatoPSI
-            this % driver % coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
-        case("coolant mass flux, kg/(s*m^2)")
-            this % driver % go(it) = var(1) * ksm2tolbhrft2
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
-        end select
-
-    end subroutine frod_set_
-
-
     subroutine frod_set(this, key, var)
 
         class (frod_type), intent(inout) :: this
@@ -297,6 +264,14 @@ contains
         end select
 
     end subroutine frod_get
+
+    subroutine frod_finish(this)
+
+        class (frod_type), intent(inout) :: this
+
+        call this % driver % finish()
+
+    end subroutine frod_finish
 
 end module fuelrod
 

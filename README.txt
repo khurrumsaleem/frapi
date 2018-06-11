@@ -24,8 +24,9 @@ Dependencies:
 
 TODO:
 1. Extend the list of output variables
-2. Inlet temperature
-3. Supress output from frapcon
+2. Inlet temperature and pressure ...done!
+3. Supress output from frapcon ...done!
 4. Check failure of the fuel rod
 5. HDF5 for restart
 6. Parallelization with MPI or ZMQ
+7. Deallocation of FRAPCON variables ...done!
