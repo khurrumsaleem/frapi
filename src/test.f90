@@ -160,37 +160,10 @@ program test
                                  clad_rad, pitch_in, init_den, init_enrich)
     enddo
 
-    !-------------------- INITIAL VALUE ---------------------------------------
-
-    i_bu_step = 1
-
-    ! SET INITIAL VALUE
-    do i_frod = 1, n_frod
-
-        ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
-        power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
-        power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
-        power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
-
-        tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
-        pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
-        fcool_FRPCN(1) = mass_flow_rate_in
-
-        ! SETUP THE UPDATED VARIABLES
-        call frod(i_frod) % set("linear power, W/cm", power_FRPCN)
-        call frod(i_frod) % set("coolant temperature, C", tcool_FRPCN)
-        call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
-        call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
-
-        call frod(i_frod) % init()
-    enddo
-
     !------------------- RUN TIME STEPS ---------------------------------------
 
     ! ITERATION OVER TIME
-    do i_bu_step = 2, n_bu
-
-        dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
+    do i_bu_step = 1, n_bu
 
         ! ITERATION OVER FUEL RODS
         do i_frod = 1, n_frod
@@ -211,10 +184,18 @@ program test
                 call frod(i_frod) % set("linear power, W/cm", power_FRPCN)
                 call frod(i_frod) % set("coolant temperature, C", tcool_FRPCN)
                 call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
+                call frod(i_frod) % set("inlet coolant temperature, C", tcool_FRPCN(:2))
+                call frod(i_frod) % set("inlet coolant pressure, MPa", pcool_FRPCN(:2))
                 call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
 
-                ! DO TRIAL TIME STEP
-                call frod(i_frod) % next(dtime)
+                if(i_bu_step == 1) then
+                    ! DO INITIAL TIME STEP
+                    call frod(i_frod) % init()
+                else
+                    ! DO TRIAL TIME STEP
+                    dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
+                    call frod(i_frod) % next(dtime)
+                endif
 
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
                 call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)

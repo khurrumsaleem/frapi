@@ -120,7 +120,6 @@ contains
 
         call this % driver % load()
         call this % driver % init()  ! make the very first time step
-        call this % driver % dump()
 
     end subroutine frod_init
 
@@ -220,8 +219,11 @@ contains
             this % driver % r__qf(:) = tmp3(:) / sum(tmp3)
         case("coolant temperature, C")
             call linterp(var,  this % driver % r__deltaz(1:n), tmp3, n)
-            this % driver % r__tw(it) = tcf(tmp3(1))
             this % driver % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
+        case("inlet coolant temperature, C")
+            this % driver % r__tw(it) = tcf(var(1))
+        case("inlet coolant pressure, MPa")
+            this % driver % r__p2(it) = var(1) * MPatoPSI
         case("coolant pressure, MPa")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__p2(it) = var(1) * MPatoPSI
