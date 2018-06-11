@@ -15,6 +15,8 @@ module fuelrod
         procedure :: accept => frod_accept ! Reject the last time step
         procedure :: set    => frod_set    ! Set variable value
         procedure :: get    => frod_get    ! Catch variable value
+        procedure :: save   => frod_save   ! Save fuel rod state in a file
+        procedure :: load   => frod_load   ! Load fuel rod state from a file
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -132,6 +134,26 @@ contains
         call this % driver % next(dt)
 
     end subroutine frod_next
+
+    subroutine frod_save(this, filename)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: filename
+
+        call this % driver % save_state(filename)
+
+    end subroutine frod_save
+
+    subroutine frod_load(this, filename)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: filename
+        
+        call this % driver % load_state(filename)
+
+    end subroutine frod_load
 
     subroutine frod_accept(this)
 

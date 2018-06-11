@@ -27,13 +27,11 @@
 
 \tikzset{%
   >={Latex[width=2mm,length=2mm]},
-  % Specifications for style of nodes:
             base/.style = {rectangle, rounded corners, draw=black,
                            minimum width=4cm, minimum height=1cm,
                            text centered, font=\sffamily},
-  box0/.style = {base, minimum width=2.5cm, fill=white!30},
-  box1/.style = {base, minimum width=2.5cm, fill=green!15},
-  box2/.style = {base, minimum width=2.5cm, fill=orange!15},
+  box0/.style = {base, minimum width=2.5cm, fill=green!15},
+  box1/.style = {base, minimum width=2.5cm, fill=white!15, align=left},
   void/.style = {base, minimum width=2.5cm, fill=white!30, draw=white, align=left},
 }
 
@@ -43,53 +41,83 @@
 \titlepage
 
 
-\begin{frame}{FRAPCON-4.0 and RAST-K Coupling}
+\begin{frame}{Class ``FuelRod" Structure}
 
 \footnotesize
 
-
-  \begin{columns}
-
-  \column{0.25\textwidth}
-
 \begin{tikzpicture}[node distance=1.5cm, every node/.style={fill=white, font=\sffamily}, align=center]
 
-  % Specification of nodes (position, etc.)
-  \node (onFrapcon)    [box0]                                      {FRAPCON-4.0};
-  \node (onDriver)     [box0, below of=onFrapcon, yshift=-0.1cm]   {DRIVER};
-  \node (onFpn4rastk)  [box1, below of=onDriver, yshift=-0.2cm]    {FPN4RASTK};  
-  \node (onRastk)      [box0, below of=onFpn4rastk, yshift=-1.0cm] {RAST-K / CTF};  
+  \node (onFrapcon)    [box0]                                      {FRAPCON};
+  \node (onDriver)     [box0, right of=onFrapcon,  xshift= 2.5cm]  {DRIVER};
+  \node (onFuelrod)    [box0, right of=onDriver,   xshift= 2.5cm]  {FUELROD};  
+  \node (onFrapcon_)   [box1, below of=onFrapcon,  yshift=-1.7cm]  
+  {Variables Decay \\ 
+   Refabrication \\
+   FEASetup Comde Gas \\
+   CoolantData \\
+   CorrosionData \\
+   MaterialProperties \\
+   FissionGas Burn\\
+   MechanicalDeform \\
+   Plenum Void \\
+   CladDeformation \\
+   FuelDeformation \\
+   Temperature \\
+   ZrModels CladCreep};
+  \node (onDriver_)    [box1, below of=onDriver,   yshift=-0.5cm]  
+  {make : allocate vars \\ 
+   proc : input process \\ 
+   next : regular time step \\ 
+   init : very first time step \\ 
+   deft : default values \\ 
+   save : save current state \\ 
+   load : load previous state};
+  \node (onFuelrod_)   [box1, below of=onFuelrod,  yshift=-0.7cm]  
+  {make   : set mesh size \\ 
+   init   : set initial state \\ 
+   next   : trial time step \\ 
+   accept : accept time step \\ 
+   get    : get variable \\ 
+   set    : set variable \\ 
+   save   : save state \\ 
+   load   : load state  };  
   
-  % Specification of lines between nodes specified above
-  % with aditional nodes for description 
-  \draw[->]      (onFrapcon) --                                (onDriver);
-  \draw[->]      (onDriver) --                                (onFpn4rastk);
-  \draw[->]      (onFpn4rastk) -- node [xshift=0.9cm] {make \\ set, get \\ init, next}                      (onRastk);  
+  \draw[->]      (onFrapcon) -- (onDriver);
+  \draw[->]      (onDriver)  -- (onFuelrod);
   \end{tikzpicture}
   
-  \column{0.75\textwidth}
-
-  \begin{block}{fpn4rastk usage:}
-    \texttt{{\color{magenta}PROGRAM}}\\
-    \texttt{{\color{magenta}USE} fpn4rastk, {\color{magenta}ONLY} : MAKE, INIT, NEXT, SET, GET}
-    \begin{itemize}
-    \item \texttt{{\color{magenta}CALL} MAKE(<arguments>)}
-    \item \texttt{{\color{magenta}CALL} SET({\color{orange}"name"}, variable)}    
-    \item \texttt{{\color{magenta}CALL} INIT()}    
-    \end{itemize}
-    \texttt{{\color{magenta}DO} i = 1, N}        
-    \begin{itemize}
-    \item \texttt{{\color{magenta}CALL} SET({\color{orange}"name"}, variable)}
-    \item \texttt{{\color{magenta}CALL} NEXT(dtime)}        
-    \item \texttt{{\color{magenta}CALL} GET({\color{orange}"name"}, variable)}
-    \end{itemize}
-    \texttt{{\color{magenta}ENDDO}} \\
-    \texttt{{\color{magenta}END PROGRAM} }        
-  \end{block}
-
-  \end{columns}
-
 \end{frame}
+
+\begin{frame}{Class ``FuelRod" Usage}
+  \footnotesize
+  \begin{columns}
+  \column{0.6\textwidth}
+  \begin{block}{}
+    \texttt{
+    {\color{magenta}PROGRAM} MAIN\\
+    {\color{magenta}USE} fuelrod\\
+    {\color{magenta}TYPE} (fuelrodtype) FR\\    
+    {\color{gray}!---------- Setup mesh size --------------}\\
+    {\color{magenta}CALL} FR $\%$ MAKE(<arguments>)\\
+    {\color{gray}!---------- Setup initial state ----------}\\    
+    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, variable)\\
+    {\color{magenta}CALL} FR $\%$ INIT()\\
+    {\color{gray}!---------- Burnup loop ------------------}\\        
+    {\color{magenta}DO} i = 1, N\\
+    {\color{gray}!---------- Trial time step --------------}\\            
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, variable)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"name"}, variable)\\
+    {\color{gray}!---------- Accept time step -------------}\\                
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ ACCEPT()\\    
+    {\color{magenta}ENDDO} \\
+    {\color{magenta}END PROGRAM}  MAIN
+    }        
+  \end{block}
+  \end{columns}
+\end{frame}
+
+
 
 \begin{frame}{Features of the DRIVER module}
   \footnotesize

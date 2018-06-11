@@ -1,14 +1,12 @@
 program test
 
     use fuelrod, only : frod_type
-    use h5file, only : tp_h5file
 
     implicit none
 
-    character(len = 32) :: i_frod_
+    character(len = 32) :: string
     character(len = 32) :: iname
     character(len = 32) :: oname
-    character(len = 32) :: fh5name
 
     integer :: i_input_file = 42
     integer :: i_output_file = 43
@@ -72,9 +70,6 @@ program test
 
     ! ITERATIONAL VARIABLES
     integer :: i
-
-    ! HDF5 FOR DATA DUMPING
-    type(tp_h5file) :: ofile
 
     ! READING INPUT FILE
     call get_command_argument(1, iname)
@@ -195,10 +190,6 @@ program test
     ! ITERATION OVER TIME
     do i_bu_step = 2, n_bu
 
-        ! CREATE HDF5 FILE
-        write(fh5name, '(A,I0.10,A)') 'burnup_', i_bu_step, '.h5'
-        call ofile % open(fh5name)
-
         dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
 
         ! ITERATION OVER FUEL RODS
@@ -240,23 +231,12 @@ program test
                 if(i_iter == n_iter) call frod(i_frod) % accept()
             enddo
 
-            ! SAVE DATA IN HDF5 FILE
-            write(i_frod_, '(I10)') i_frod
-            call ofile % makegroup(i_frod_)
-            call ofile % dump('axial fuel temperature, C', fue_avg_temp)
-            call ofile % dump('bulk coolant temperature, C', coo_avg_temp)
-            call ofile % dump('total gap conductance, W_(m^2*K)', fue_dyn_hgap)
-            call ofile % dump('oxide thickness, um', t_oxidelayer)
-            call ofile % dump('mechanical gap thickness, um', t_fuecladgap)
-            call ofile % dump('gap pressure, MPa', gap_pressure)
-            call ofile % dump('cladding hoop strain, %', hoop_strain)
-            call ofile % dump('cladding axial stress, MPa', hoop_stress)
-            call ofile % dump('axial mesh, cm', zmesh_FRPCN)
-            call ofile % closegroup()
+            ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
+            write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
+            call frod(i_frod) % save(string)
+            call frod(i_frod) % load(string)
 
         enddo
-
-        call ofile % close()
 
     enddo
 
