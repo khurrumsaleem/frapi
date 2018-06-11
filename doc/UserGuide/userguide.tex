@@ -16,7 +16,7 @@
 \usetikzlibrary{arrows.meta}
 
 \author{Alexey L. Cherezov}
-\title{FRAPCON for RAST-K}
+\title{FRAPCON Coupling}
 %\setbeamercovered{transparent} 
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
@@ -41,7 +41,7 @@
 \titlepage
 
 
-\begin{frame}{Class ``FuelRod" Structure}
+\begin{frame}{FRAPCON Coupling Interface}
 
 \footnotesize
 
@@ -79,8 +79,8 @@
    accept : accept time step \\ 
    get    : get variable \\ 
    set    : set variable \\ 
-   save   : save state \\ 
-   load   : load state  };  
+   save   : save current state \\ 
+   load   : load current state  };  
   
   \draw[->]      (onFrapcon) -- (onDriver);
   \draw[->]      (onDriver)  -- (onFuelrod);
@@ -105,11 +105,13 @@
     {\color{gray}!---------- Burnup loop ------------------}\\        
     {\color{magenta}DO} i = 1, N\\
     {\color{gray}!---------- Trial time step --------------}\\            
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, variable)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, variable)\\
     {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"name"}, variable)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, variable)\\
     {\color{gray}!---------- Accept time step -------------}\\                
     {\hspace{5mm}\color{magenta}CALL} FR $\%$ ACCEPT()\\    
+    {\color{gray}!---------- Save current state -----------}\\                
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SAVE({\color{orange}"filename"})\\    
     {\color{magenta}ENDDO} \\
     {\color{magenta}END PROGRAM}  MAIN
     }        
@@ -139,11 +141,11 @@
 \end{frame}
 
 
-\begin{frame}{Running calculations: Initialization}
+\begin{frame}{Initialization and running}
   
   \footnotesize
 
-  \begin{block}{Initialization: \texttt{make(m,n,dx,rf,rg,rc,pitch,den,enrch)}}
+  \begin{block}{\texttt{make(m,n,dx,rf,rg,rc,pitch,den,enrch)}}
     \begin{itemize}
     \item \texttt{m, n} : number of radial and axial segments
     \item \texttt{dx} : axial node thickness, cm
@@ -154,6 +156,27 @@
     \end{itemize}
   \end{block}
 
+  \begin{block}{\texttt{init()}}
+  Make very first time step ($10^{-5}$ day) which is needed for stabilization of the time-integration scheme and initialization of the variables
+  \end{block}
+  
+  \begin{columns}
+
+  \column{0.48\textwidth}
+  \begin{block}{\texttt{next(dtime)}}
+    Performs the trial time step
+    \begin{itemize}
+    \item \texttt{dtime} : time step, $day$
+    \end{itemize}
+  \end{block}
+  
+  \column{0.48\textwidth}
+  \begin{block}{\texttt{accept()}}
+  If the routine is not called, the last time step would be rejected
+  \end{block}
+
+  \end{columns}
+  
 \end{frame}
 
 
@@ -175,24 +198,6 @@
     \item coolant temperature distribution, $\degree C$
     \item coolant pressure distribution, $MPa$
     \item coolant mass flux, $\frac{kg}{s \cdot m^2}$
-    \end{itemize}
-  \end{block}
-
-\end{frame}
-
-
-
-\begin{frame}{Running calculations: Time step}
-  
-  \footnotesize
-
-  \begin{block}{Very first time step: \texttt{init()}}
-  The first time step is needed in order to stabilize the time-integration scheme
-  \end{block}
-
-  \begin{block}{Next time step: \texttt{next(dtime)}}
-    \begin{itemize}
-    \item \texttt{dtime} : time step, $day$
     \end{itemize}
   \end{block}
 
