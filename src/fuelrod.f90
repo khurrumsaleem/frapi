@@ -210,12 +210,12 @@ contains
         class (frod_type), intent(in) :: this
 
         character(*) :: key
+        integer      :: it
+        real(8)      :: var(:) ! array (n,)
+        real(8)      :: ra, rb, ya, yb, h, temper, volume
+        real(8)      :: linteg ! integral of linear function
 
-        real(8) :: var(:) ! array (n,)
-
-        real(8) :: ra, rb, ya, yb, h, temper, volume
-
-        real(8) :: linteg ! integral of linear function
+        it = this % driver % it
 
         select case(key)
         case('axial fuel temperature, C')
@@ -250,14 +250,68 @@ contains
             var(:) = this % driver % GapPress(1:n) * PSItoMPa
         case('cladding hoop strain, %')
             var(:) = this % driver % eps(1:n,1) * 100
+        case('cladding axial strain, %')
+            var(:) = this % driver % eps(1:n,2) * 100
+        case('cladding radial strain, %')
+            var(:) = this % driver % eps(1:n,3) * 100
+        case('cladding permanent hoop strain, %')
+            var(:) = this % driver % epp(1:n,1) * 100
+        case('cladding permanent axial strain, %')
+            var(:) = this % driver % epp(1:n,2) * 100
+        case('cladding permanent radial strain, %')
+            var(:) = this % driver % epp(1:n,3) * 100
+        case('cladding termal hoop strain, %')
+            var(:) = this % driver % ThermalStrain(1:n,1) * 100
+        case('cladding termal axial strain, %')
+            var(:) = this % driver % ThermalStrain(1:n,2) * 100
+        case('cladding termal radial strain, %')
+            var(:) = this % driver % ThermalStrain(1:n,3) * 100
         case('cladding hoop stress, MPa')
             var(:) = this % driver % sig(1:n,1) * PSItoMPa
         case('cladding axial stress, MPa')
             var(:) = this % driver % sig(1:n,2) * PSItoMPa
         case('cladding radial stress, MPa')
             var(:) = this % driver % sig(1:n,3) * PSItoMPa
+        case('cladding inner radius displacement, mm')
+            var(:) = this % driver % totinner(:) * intomm
+        case('cladding outer radius displacement, mm')
+            var(:) = this % driver % totcrl(:) * intomm
+        case('cladding creep rate')
+            var(:) = this % driver % creapratearray(:)
+        case('fuel surface outward displacement, mm')
+            var(:) = this % driver % totdef(:) * intomm
+        case('fuel thermal expansion, mm')
+            var(:) = this % driver % fuelexptot(:) * intomm
+        case('fuel swelling, mm')
+            var(:) = this % driver % fuelswltot(:) * intomm
+        case('fuel creep, mm')
+            var(:) = this % driver % fuelcreeptot(:) * intomm
+        case('fuel densification, mm')
+            var(:) = this % driver % fueldentot(:) * intomm
+        case('fuel relocation, mm')
+            var(:) = this % driver % relocation(:) * intomm
+        case('oxide thickness, mm')
+            var(:) = this % driver % EOSZrO2Thk(:) * fttomil * intomm
+        case('cladding hydrogen concentration')
+            var(:) = this % driver % CladH2Concen(:)
+        case('coolant density, kg/m^3')
+            var(:) = this % driver % rhof * lbft3tokgm3
+        case('outlet coolant mass flux, kg/(s*m^2)')
+            var(1) = this % driver % go(it) * lbhrft2toksm2
+        case('coolant pressure, MPa')
+            var(:) = this % driver % coolantpressure(it,:) * PSItoMPa
         case('axial mesh, cm')
             var(:) = 0.5d0 * (this % driver % x(1:n) + this % driver % x(2:n+1)) / cmtoft
+        case('plenum gas temperature, C')
+            var(1) = tfc(this % driver % tplen)
+        case('plenum gas pressure, MPa')
+            var(1) = this % driver % press * PSItoMPa
+        case('gas release fractions')
+            var(:) = this % driver % RB_rod(1:11,it)
+        case('centerline temperature, C')
+            var(:) = (/( tfc(this % driver % tmpfuel(m,i)), i = 1, n )/)
+        case('fuel stored energy, J/kg')
+            var(:) = this % driver % StoredEnergy(:) * BTUlbtoJkg
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
