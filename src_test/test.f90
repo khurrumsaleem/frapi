@@ -180,21 +180,8 @@ program test
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
-        call frod(i_frod) % make(nr, na, ngasr, nce, thickness_FRPCN, fuel_rad, gap_rad, &
-                     clad_rad, pitch_in, init_den, init_enrich, mechan, ngasmod, verbose)
-
-        dco_FRPCN(:) = (/( 2 * clad_rad, i = 1, na )/)
-        thckgap_FRPCN(:) = (/( gap_rad-fuel_rad, i = 1, na )/)
-        thckclad_FRPCN(:) = (/( clad_rad-gap_rad, i = 1, na )/)
-        enrch_FRPCN(1) = init_enrich
-        pitch_FRPCN(1) = pitch_in
-        den_FRPCN(1) = init_den
-
-        !call frod(i_frod) % set("outer cladding diameter, cm", dco_FRPCN)
-        !call frod(i_frod) % set("gap thickness, cm", thckgap_FRPCN)
-        !call frod(i_frod) % set("cladding thickness, cm", thckclad_FRPCN)
-        !call frod(i_frod) % set("fuel enrichment u-235", enrch_FRPCN)
-        !call frod(i_frod) % set("fuel rod pitch, cm", pitch_FRPCN)
+        call frod(i_frod) % make(nr, na, ngasr, nce, mechan, ngasmod, fuel_rad, gap_rad, &
+                     clad_rad, pitch_in, init_den, init_enrich, thickness_FRPCN, verbose)
 
     enddo
 

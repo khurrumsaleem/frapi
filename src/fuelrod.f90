@@ -28,30 +28,24 @@ module fuelrod
 
 contains
 
-    subroutine frod_make(this, nr, na, ngasr, nce, dx, radfuel, radgap, radclad, pitch, den, enrch, mechan, ngasmod, verbose)
+    subroutine frod_make(this, nr, na, ngasr, nce, mechan, ngasmod, radfuel, radgap, radclad, pitch, den, enrch, dx, verbose)
 
         class (frod_type), intent(inout) :: this
 
-        logical :: verbose     ! Print the output data in terminal
-
-        integer :: na          ! number of axial segments
         integer :: nr          ! number of radial segments
+        integer :: na          ! number of axial segments
         integer :: ngasr       ! number of radial gas release nodes
         integer :: nce         ! number of radial elements in the cladding for the FEA model
         integer :: mechan      ! Cladding mechanical model
         integer :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
-
+        real(8) :: radfuel     ! Pellet outward radius, cm
+        real(8) :: radgap      ! Inner cladding radius, cm
+        real(8) :: radclad     ! Outer cladding radius, cm
+        real(8) :: pitch       ! Fuel rod pitch, cm
+        real(8) :: den         ! As-fabricated apparent fuel density, %TD
+        real(8) :: enrch       ! Fuel enrichment u-235
         real(8) :: dx(:)       ! Thickness of the axial nodes, cm
-        real(8) :: radfuel
-        real(8) :: radgap
-        real(8) :: radclad
-        real(8) :: pitch
-        real(8) :: den
-        real(8) :: enrch
-        real(8) :: p2
-        real(8) :: qmpy
-        real(8) :: tw
-        real(8) :: go
+        logical :: verbose     ! Print the output data in terminal
 
         n  = na
         m  = nr
