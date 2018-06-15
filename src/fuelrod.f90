@@ -178,6 +178,24 @@ contains
         it = this % driver % r__it
 
         select case(key)
+        case("fuel rod pitch, cm")
+        this % driver % r__pitch = var(1) * cmtoin
+        case("as-fabricated apparent fuel density, %TD")
+            this % driver % r__den = var(1)
+        case("fuel enrichment u-235")
+            this % driver % r__enrch(1:n) = var(:)
+        case("cladding thickness, cm")
+            this % driver % r__thkcld(1:n) = var(:) * cmtoin
+        case("gap thickness, cm")
+            this % driver % r__thkgap(1:n) = var(:) * cmtoin
+        case("outer cladding diameter, cm")
+            this % driver % r__dco(1:n) = var(:) * cmtoin
+        case("axial thickness, cm")
+            this % driver % r__x(1) = 0.d0
+            this % driver % r__x(2:n+1) = (/( sum(var(:i)), i = 1, n )/) * cmtoft
+            this % driver % r__deltaz(1:n) = var(:) * cmtoft
+            this % driver % r__deltaz(n+1) = sum(var) * cmtoft
+            this % driver % r__zcool(:) = this % driver % r__x(:)        ! Axial evaluation for coolant temperature distribution, ft
         case("linear power, W/cm")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             a = sum( var(:) * this % driver % r__deltaz(1:n) ) / this % driver % r__totl /cmtoft ! W/ft
