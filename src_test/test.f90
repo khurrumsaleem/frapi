@@ -215,9 +215,9 @@ program test
             enddo
 
             ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
-            write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
-            call frod(i_frod) % save(string)
-            call frod(i_frod) % load(string)
+            !write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
+            !call frod(i_frod) % save(string)
+            !call frod(i_frod) % load(string)
 
         enddo
 
