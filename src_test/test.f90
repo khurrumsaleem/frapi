@@ -13,6 +13,7 @@ program test
     integer :: i_input_file = 42
     integer :: i_output_file = 43
 
+    integer(4) :: mechan, ngasmod, na, ngasr, nr, nce
     integer(4) :: n_fuel_rad_in
     integer(4) :: na_r
     integer(4) :: na_in
@@ -69,6 +70,12 @@ program test
     real(8), allocatable  :: pcool_FRPCN(:)
     real(8), allocatable  :: zmesh_FRPCN(:)
     real(8)               :: fcool_FRPCN(1)
+    real(8)               :: pitch_FRPCN(1)
+    real(8)               :: den_FRPCN(1)
+    real(8), allocatable  :: dco_FRPCN(:)
+    real(8), allocatable  :: thckgap_FRPCN(:)
+    real(8), allocatable  :: thckclad_FRPCN(:)
+    real(8), allocatable  :: enrch_FRPCN(:)
 
     ! ITERATIONAL VARIABLES
     integer :: i
@@ -128,8 +135,8 @@ program test
     close(i_input_file)
 
     ! ALLOCATE FUEL RODS ARRAY
-    n_frod = 2
-    n_iter = 2
+    n_frod = 1
+    n_iter = 1
 
     allocate(frod(n_frod))
 
@@ -147,6 +154,11 @@ program test
     allocate(hoop_strain (1:na_in))
     allocate(hoop_stress (1:na_in))
 
+    allocate(dco_FRPCN(1:na_in))
+    allocate(thckgap_FRPCN(1:na_in))
+    allocate(thckclad_FRPCN(1:na_in))
+    allocate(enrch_FRPCN(1:na_in))
+
     !-------------------- FUEL RODS INITIALIZATION-----------------------------
 
     ! HEIGHTS FOR RASTK and FRAPCON, LIKE (0.5, 1.0, 1.5, 2.0, ...)
@@ -156,10 +168,34 @@ program test
     height_FRPCN(2:) = (/( height_RASTK(sum(z_meshes(1:i))+1), i = 1, na_in )/)
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
+    ! PHYSICAL MODELS and MESH SIZES (must be the same for all fuel rods)
+    mechan = 2
+    ngasmod = 2 
+    na = na_in
+    ngasr = 45
+    nr = n_fuel_rad_in-1
+    nce = 5
+    verbose = .false.
+
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
-        call frod(i_frod) % make(n_fuel_rad_in-1, na_in, thickness_FRPCN, fuel_rad, gap_rad, &
-                                 clad_rad, pitch_in, init_den, init_enrich, verbose)
+
+        call frod(i_frod) % make(nr, na, ngasr, nce, thickness_FRPCN, fuel_rad, gap_rad, &
+                     clad_rad, pitch_in, init_den, init_enrich, mechan, ngasmod, verbose)
+
+        dco_FRPCN(:) = (/( 2 * clad_rad, i = 1, na )/)
+        thckgap_FRPCN(:) = (/( gap_rad-fuel_rad, i = 1, na )/)
+        thckclad_FRPCN(:) = (/( clad_rad-gap_rad, i = 1, na )/)
+        enrch_FRPCN(1) = init_enrich
+        pitch_FRPCN(1) = pitch_in
+        den_FRPCN(1) = init_den
+
+        !call frod(i_frod) % set("outer cladding diameter, cm", dco_FRPCN)
+        !call frod(i_frod) % set("gap thickness, cm", thckgap_FRPCN)
+        !call frod(i_frod) % set("cladding thickness, cm", thckclad_FRPCN)
+        !call frod(i_frod) % set("fuel enrichment u-235", enrch_FRPCN)
+        !call frod(i_frod) % set("fuel rod pitch, cm", pitch_FRPCN)
+
     enddo
 
     !------------------- RUN TIME STEPS ---------------------------------------
