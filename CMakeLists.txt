@@ -9,7 +9,8 @@ enable_language (Fortran)
 #
 # Specify directories
 set(src "src/*.f90")
-set(src_test "src_test/*.f90")
+set(src0 "src_test/frapcon_input_file.f90")
+set(src1 "src_test/rastk_input_file.f90")
 #
 
 include_directories(../frapcon/build/debug)
@@ -17,7 +18,7 @@ include_directories(../frapcon/build/debug)
 link_directories(../frapcon/build/debug)
 
 if(CMAKE_Fortran_COMPILER_ID  STREQUAL "GNU")
-	set(f90flags "-D -cpp -std=f2008 -fbacktrace")
+	set(f90flags "-D -cpp -std=f2008 -fbacktrace -fall-intrinsics")
 	if(release)
 		set(CMAKE_Fortran_FLAGS "-O3 ${f90flags}")
 	else()
@@ -35,8 +36,10 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
 endif()
 
 file(GLOB SOURCES ${src})
-file(GLOB SOURCES_TEST ${src_test})
+file(GLOB SOURCES_0 ${src0})
+file(GLOB SOURCES_1 ${src1})
 add_library(fuelrod ${SOURCES})
-add_executable(frapcontest ${SOURCES_TEST})
-target_link_libraries(fuelrod frapcon)
-target_link_libraries(frapcontest fuelrod frapcon)
+add_executable(frapcon_input_file ${SOURCES_0})
+add_executable(rastk_input_file ${SOURCES_1})
+target_link_libraries(frapcon_input_file fuelrod frapcon)
+target_link_libraries(rastk_input_file fuelrod frapcon)

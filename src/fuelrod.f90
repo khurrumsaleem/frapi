@@ -9,15 +9,17 @@ module fuelrod
     type, public :: frod_type
         type(driver_type) :: driver
     contains
-        procedure :: make   => frod_make   ! Initialize the fuel rod
-        procedure :: init   => frod_init   ! Set the initial fuel rod state, t = 0
-        procedure :: next   => frod_next   ! Perform the trial time step, dt > 0
-        procedure :: accept => frod_accept ! Reject the last time step
-        procedure :: set    => frod_set    ! Set variable value
-        procedure :: get    => frod_get    ! Catch variable value
-        procedure :: save   => frod_save   ! Save fuel rod state in a file
-        procedure :: load   => frod_load   ! Load fuel rod state from a file
-        procedure :: destroy=> frod_destroy! Deallocate the fuel rod variables
+        procedure :: make      => frod_make         ! Initialize the fuel rod
+        procedure :: init      => frod_init         ! Set the initial fuel rod state, t = 0
+        procedure :: next      => frod_next         ! Perform the trial time step, dt > 0
+        procedure :: accept    => frod_accept       ! Reject the last time step
+        procedure :: set_value => frod_set_value    ! Set variable value
+        procedure :: set_array => frod_set_array    ! Set variable array
+        procedure :: get_value => frod_get_value    ! Catch variable value
+        procedure :: get_array => frod_get_array    ! Catch variable array
+        procedure :: save      => frod_save         ! Save fuel rod state in a file
+        procedure :: load      => frod_load         ! Load fuel rod state from a file
+        procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -28,7 +30,10 @@ module fuelrod
 
 contains
 
-    subroutine frod_make(this, nr, na, ngasr, nce, mechan, ngasmod, radfuel, radgap, radclad, pitch, den, enrch, dx, verbose)
+    subroutine frod_make(this, nr, na, ngasr, nce, radfuel, radgap, radclad, pitch,&
+                  den, enrch, dx, verbose, &
+                  mechan, ngasmod, icm, icor, iplant, &
+                  imox, igascal, zr2vintage, moxtype, idxgas)
 
         class (frod_type), intent(inout) :: this
 
@@ -36,8 +41,6 @@ contains
         integer :: na          ! number of axial segments
         integer :: ngasr       ! number of radial gas release nodes
         integer :: nce         ! number of radial elements in the cladding for the FEA model
-        integer :: mechan      ! Cladding mechanical model
-        integer :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
         real(8) :: radfuel     ! Pellet outward radius, cm
         real(8) :: radgap      ! Inner cladding radius, cm
         real(8) :: radclad     ! Outer cladding radius, cm
@@ -45,6 +48,18 @@ contains
         real(8) :: den         ! As-fabricated apparent fuel density, %TD
         real(8) :: enrch       ! Fuel enrichment u-235
         real(8) :: dx(:)       ! Thickness of the axial nodes, cm
+
+        integer, optional :: mechan      ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
+        integer, optional :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
+        integer, optional :: icm         ! cladding type 4: Zircaloy-4
+        integer, optional :: icor        ! crud model (0 or 1 = constant layer, 2= time dependent)
+        integer, optional :: iplant      ! plant type Plant type, -2: PWR, -3: BWR, -4: HBWR
+        integer, optional :: imox        ! fuel type (Fuel type, 0: UO_2)
+        integer, optional :: igascal     ! Internal pressure calculation for FEA model igascal=1 normal pressure calculation igascal=0 use prescribed pressure set by p1
+        integer, optional :: zr2vintage  ! zircaloy-2 vintage
+        integer, optional :: moxtype     ! flag for type of Pu used in MOX
+        integer, optional :: idxgas      ! fill gas type
+        
         logical :: verbose     ! Print the output data in terminal
 
         n  = na
@@ -54,8 +69,17 @@ contains
 
         call this % driver % deft()
 
-        this % driver % mechan              = mechan                      ! Cladding mechanical model
-        this % driver % ngasmod             = ngasmod                     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
+        if( .not. present(mechan    ) ) this % driver % mechan    = 2
+        if( .not. present(ngasmod   ) ) this % driver % ngasmod   = 2
+        if( .not. present(icm       ) ) this % driver % icm       = 4
+        if( .not. present(icor      ) ) this % driver % icor      = 0
+        if( .not. present(iplant    ) ) this % driver % iplant    =-2
+        if( .not. present(imox      ) ) this % driver % imox      = 0 
+        if( .not. present(igascal   ) ) this % driver % igascal   = 1
+        if( .not. present(zr2vintage) ) this % driver % zr2vintage= 1
+        if( .not. present(moxtype   ) ) this % driver % moxtype   = 0
+        if( .not. present(idxgas    ) ) this % driver % idxgas    = 1
+
         this % driver % thkcld              = (radclad - radgap) * cmtoin ! Thickness of cladding, in
         this % driver % thkgap              = (radgap - radfuel) * cmtoin ! Thickness of gap, in
         this % driver % dco                 = 2 * radclad * cmtoin        ! Outer cladding diameter, in
@@ -132,23 +156,173 @@ contains
 
     end subroutine frod_accept
 
-    subroutine frod_set(this, key, var)
+    subroutine frod_set_value(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key
+        integer      :: it
+        real(8)      :: var
+        real(8)      :: mmtoin = 1.d0/intomm
+
+        it = this % driver % r__it
+
+        select case(key)
+        case("fuel rod pitch, cm")
+            this % driver % r__pitch = var * cmtoin
+        case("as-fabricated apparent fuel density, %TD")
+            this % driver % r__den = var
+        case("coolant mass flux, kg/(s*m^2)")
+            this % driver % r__go(it) = var * ksm2tolbhrft2
+        case("additional fuel densification factor")
+            this % driver % r__afdn         = var
+        case("cladding type")
+            this % driver % r__icm          = var
+        case("crud model")
+            this % driver % r__icor         = var
+        case("clad texture factor")
+            this % driver % r__catexf       = var
+        case("as-fabricated clad hydrogen content, wt.ppm")
+            this % driver % r__chorg        = var                       
+        case("clad cold work")
+            this % driver % r__cldwks       = var                       
+        case("cold plenum length")
+            this % driver % r__cpl          = var                       
+        case("constant crud thickness")
+            this % driver % r__crdt         = var                       
+        case("crud accumulation rate")
+            this % driver % r__crdtr        = var                       
+        case("creep step duration, hr")
+            this % driver % r__crephr       = var                       
+        case("fuel open porosity fraction, %TD")
+            this % driver % r__deng         = var                       
+        case("spring diameter, mm")
+            this % driver % r__dspg         = var * mmtoin              
+        case("spring wire diameter, mm")
+            this % driver % r__dspgw        = var * mmtoin              
+        case("number of spring turns")
+            this % driver % r__vs           = var                       
+        case("peak-to-average power ratio")
+            this % driver % r__fa           = var                       
+        case("fill gas pressure, Pa")
+            this % driver % r__fgpav        = var * PatoPSI             
+        case("fuel oxygen-to-metal ratio")
+            this % driver % r__fotmtl       = var                       
+        case("fill gas type")
+            this % driver % r__idxgas       = var                       
+        case("plant type")
+            this % driver % r__iplant       = var                       
+        case("fuel type")
+            this % driver % r__imox         = var                       
+        case("weight ppm H2O in fuel, wt.ppm")
+            this % driver % r__ppmh2o       = var                       
+        case("weight ppm N2 in fuel, wt. ppm")
+            this % driver % r__ppmn2        = var                       
+        case("expected resintering density increase, kg/m^3")
+            this % driver % r__rsntr        = var                       
+        case("fision gas atoms per 100 fissions")
+            this % driver % r__sgapf        = var                       
+        case("swelling limit")
+            this % driver % r__slim         = var                       
+        case("pellet centering temperature, K")
+            this % driver % r__tsint        = tkf(var)                  
+        case("grain size of the fuel, um")
+            this % driver % r__grnsize      = var                       
+        case("FEA friction coefficient")
+            this % driver % r__frcoef       = var                       
+        case("FEA internal pressure flag")
+            this % driver % r__igascal      = var                       
+        case("percent IFBA rods in core, %")
+            this % driver % r__ifba         = var                       
+        case("boron-10 enrichment in ZrB2, atom %")
+            this % driver % r__b10          = var                       
+        case("ZrB2 thickness, mm")
+            this % driver % r__zrb2thick    = var * mmtoin               
+        case("ZrB2 density, mm")
+            this % driver % r__zrb2den      = var * mmtoin               
+        case("zircaloy-2 vintage")
+            this % driver % r__zr2vintage   = var                       
+        case("decay heat multiplier")
+            this % driver % r__fpdcay       = var                       
+        case("flag for type of Pu used in MOX")
+            this % driver % r__moxtype      = var                       
+        case("molar fraction of air")
+            this % driver % r__amfair       = var                       
+        case("molar fraction of argon")
+            this % driver % r__amfarg       = var                       
+        case("molar fraction of fission gas")
+            this % driver % r__amffg        = var                       
+        case("molar fraction of helium")
+            this % driver % r__amfhe        = var                       
+        case("molar fraction of hydrogen")
+            this % driver % r__amfh2        = var                       
+        case("molar fraction of water")
+            this % driver % r__amfh2o       = var                       
+        case("molar fraction of krypton")
+            this % driver % r__amfkry       = var                       
+        case("molar fraction of nitrogen")
+            this % driver % r__amfn2        = var                       
+        case("molar fraction of xenon")
+            this % driver % r__amfxe        = var                       
+        case("Bias on fuel thermal conductivity")
+            this % driver % r__sigftc       = var                       
+        case("Bias on fuel thermal expansion")
+            this % driver % r__sigftex      = var                       
+        case("Bias on fission gas release")
+            this % driver % r__sigfgr       = var                       
+        case("Bias on fuel swelling")
+            this % driver % r__sigswell     = var                       
+        case("Bias on cladding creep")
+            this % driver % r__sigcreep     = var                       
+        case("Bias on cladding axial growth")
+            this % driver % r__siggro       = var                       
+        case("Bias on cladding corrosion")
+            this % driver % r__sigcor       = var                       
+        case("Bias on cladding hydrogen pickup")
+            this % driver % r__sigh2        = var                       
+        case("fuel pellet Pu-239 content")
+            this % driver % r__enrpu39      = var                       
+        case("fuel pellet Pu-240 content")
+            this % driver % r__enrpu40      = var                       
+        case("fuel pellet Pu-241 content")
+            this % driver % r__enrpu41      = var                       
+        case("fuel pellet Pu-242 content")
+            this % driver % r__enrpu42      = var
+        case("pellet height, mm")
+            this % driver % r__hplt         = var * mmtoin
+        case("chamfer height, mm")
+            this % driver % r__chmfrh       = var * mmtoin
+        case("chamfer width, mm")
+            this % driver % r__chmfrw       = var * mmtoin
+        case("dish shoulder width, mm")
+            this % driver % r__dishsd       = var * mmtoin
+        case("clad roughness, mm")
+            this % driver % r__roughc       = var * mmtoin
+        case("fuel roughness, mm")
+            this % driver % r__roughf       = var * mmtoin
+        case("end-node to plenum heat transfer fraction")
+            this % driver % r__qend(it)     = var
+        case("rod internal pressure for each time tep for FEA model, MPa")
+            this % driver % r__p1(it)       = var * patoPSI
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_set_value
+
+    subroutine frod_set_array(this, key, var)
 
         class (frod_type), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
         real(8)      :: var(:)
+        real(8)      :: mmtoin = 1.d0/intomm
 
         it = this % driver % r__it
 
         select case(key)
-        case("fuel rod pitch, cm")
-        this % driver % r__pitch = var(1) * cmtoin
-        case("as-fabricated apparent fuel density, %TD")
-            this % driver % r__den = var(1)
-        case("fuel enrichment u-235")
-            this % driver % r__enrch(1:n) = var(:)
         case("cladding thickness, cm")
             this % driver % r__thkcld(1:n) = var(:) * cmtoin
         case("gap thickness, cm")
@@ -172,17 +346,55 @@ contains
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__p2(it) = var(1) * MPatoPSI
             this % driver % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
-        case("coolant mass flux, kg/(s*m^2)")
-            this % driver % r__go(it) = var(1) * ksm2tolbhrft2
+        case("input fuel burnup")
+            this % driver % r__buin(:)      = var(:) * MWskgUtoMWdMTU
+        case("PuO2 weight percent if MOX fuel, wt%")
+            this % driver % r__comp(:)      = var(:)
+        case("Heat flux, W/m^2")
+            this % driver % r__qc(:)        = var(:) / Bhft2toWm2
+        case("gadolinia content at each axial node")
+            this % driver % r__gadoln(:)    = var(:)
+        case("radius of the fuel pellet central annulus, mm")
+            this % driver % r__rc(:)        = var(:) * mmtoin
+        case("cladding surface temperature, K")
+            this % driver % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
+        case("axial crud thickness multiplier")
+            this % driver % r__crudmult(:)  = var(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
         end select
 
-    end subroutine frod_set
+    end subroutine frod_set_array
 
 
-    subroutine frod_get(this, key, var)
+    subroutine frod_get_value(this, key, var)
+
+        class (frod_type), intent(in) :: this
+
+        character(*) :: key
+        integer      :: it
+        real(8)      :: var
+        real(8)      :: ra, rb, ya, yb, h, temper, volume
+        real(8)      :: linteg ! integral of linear function
+
+        it = this % driver % it
+
+        select case(key)
+        case('outlet coolant mass flux, kg/(s*m^2)')
+            var = this % driver % go(it) * lbhrft2toksm2
+        case('plenum gas temperature, C')
+            var = tfc(this % driver % tplen)
+        case('plenum gas pressure, MPa')
+            var = this % driver % press * PSItoMPa
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_get_value
+
+    subroutine frod_get_array(this, key, var)
 
         class (frod_type), intent(in) :: this
 
@@ -273,16 +485,10 @@ contains
             var(:) = this % driver % CladH2Concen(:)
         case('coolant density, kg/m^3')
             var(:) = this % driver % rhof * lbft3tokgm3
-        case('outlet coolant mass flux, kg/(s*m^2)')
-            var(1) = this % driver % go(it) * lbhrft2toksm2
         case('coolant pressure, MPa')
             var(:) = this % driver % coolantpressure(it,:) * PSItoMPa
         case('axial mesh, cm')
             var(:) = 0.5d0 * (this % driver % x(1:n) + this % driver % x(2:n+1)) / cmtoft
-        case('plenum gas temperature, C')
-            var(1) = tfc(this % driver % tplen)
-        case('plenum gas pressure, MPa')
-            var(1) = this % driver % press * PSItoMPa
         case('gas release fractions')
             var(:) = this % driver % RB_rod(1:11,it)
         case('centerline temperature, C')
@@ -294,7 +500,7 @@ contains
             stop
         end select
 
-    end subroutine frod_get
+    end subroutine frod_get_array
 
     subroutine frod_destroy(this)
 

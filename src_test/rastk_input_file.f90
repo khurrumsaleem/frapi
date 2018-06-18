@@ -1,4 +1,4 @@
-program test
+program rastk_input_file
 
     use fuelrod, only : frod_type
 
@@ -169,8 +169,6 @@ program test
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
     ! PHYSICAL MODELS and MESH SIZES (must be the same for all fuel rods)
-    mechan = 2
-    ngasmod = 2 
     na = na_in
     ngasr = 45
     nr = n_fuel_rad_in-1
@@ -180,8 +178,8 @@ program test
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
-        call frod(i_frod) % make(nr, na, ngasr, nce, mechan, ngasmod, fuel_rad, gap_rad, &
-                     clad_rad, pitch_in, init_den, init_enrich, thickness_FRPCN, verbose)
+        call frod(i_frod) % make(nr, na, ngasr, nce, fuel_rad, gap_rad, &
+        clad_rad, pitch_in, init_den, init_enrich, thickness_FRPCN, verbose)
 
     enddo
 
@@ -203,15 +201,14 @@ program test
 
                 tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
                 pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
-                fcool_FRPCN(1) = mass_flow_rate_in
 
                 ! SETUP THE UPDATED VARIABLES
-                call frod(i_frod) % set("linear power, W/cm", power_FRPCN)
-                call frod(i_frod) % set("coolant temperature, C", tcool_FRPCN)
-                call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
-                call frod(i_frod) % set("inlet coolant temperature, C", tcool_FRPCN(:2))
-                call frod(i_frod) % set("inlet coolant pressure, MPa", pcool_FRPCN(:2))
-                call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
+                call frod(i_frod) % set_array("linear power, W/cm", power_FRPCN)
+                call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
+                call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
+                call frod(i_frod) % set_array("inlet coolant temperature, C", tcool_FRPCN(:2))
+                call frod(i_frod) % set_array("inlet coolant pressure, MPa", pcool_FRPCN(:2))
+                call frod(i_frod) % set_value("coolant mass flux, kg/(s*m^2)", mass_flow_rate_in)
 
                 if(i_bu_step == 1) then
                     ! DO INITIAL TIME STEP
@@ -223,15 +220,15 @@ program test
                 endif
 
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
-                call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
-                call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-                call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-                call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
-                call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
-                call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
-                call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
-                call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
-                call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+                call frod(i_frod) % get_array('axial fuel temperature, C', fue_avg_temp)
+                call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
+                call frod(i_frod) % get_array('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+                call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
+                call frod(i_frod) % get_array('mechanical gap thickness, um', t_fuecladgap)
+                call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
+                call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
+                call frod(i_frod) % get_array('cladding axial stress, MPa', hoop_stress)
+                call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
 
                 ! ACCEPT THE LAST TRIAL TIME STEP
                 if(i_iter == n_iter) call frod(i_frod) % accept()
@@ -263,4 +260,4 @@ program test
 
     write(*,*) 'Test done!'
 
-end program test
+end program rastk_input_file
