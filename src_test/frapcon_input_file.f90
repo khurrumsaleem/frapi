@@ -8,16 +8,10 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    logical :: verbose = .true.
-
     character(len=256) :: filename
 
     ! ITERATIONAL VARIABLES
     integer :: i, itime
-
-    real(8) :: or_pellet
-    real(8) :: or_clad
-    real(8) :: ir_clad
 
     real(8), allocatable :: thickness(:)
     real(8), allocatable :: linpow(:)
@@ -37,18 +31,21 @@ program frapcon_input_file
     allocate(f_cool(na))
 
     !-------------------- FUEL ROD INITIALIZATION-----------------------------
-    or_clad   = 0.5d0 * dco(1) * intocm
-    ir_clad   = or_clad - thkcld(1) * intocm
-    or_pellet = ir_clad - thkgap(1) * intocm
     thickness = (x(2:na+1) - x(1:na)) * ftocm
-    enrch(:)  = enrch(1)
     pitch     = pitch * intocm
+    thkcld    = thkcld * intocm
+    thkgap    = thkgap * intocm
+    dco       = dco * intocm
 
-    call frod % make(nr, na, ngasr, nce, or_pellet, ir_clad, &
-                 or_clad, pitch, den, enrch, thickness, &
-                 mechan, ngasmod, icm, icor, iplant, &
-                 imox, igascal, zr2vintage, moxtype, idxgas, &
-                 ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
+    call frod % make(nr, na, ngasr, nce, &
+        thkcld = thkcld(1), thkgap = thkgap(1), &
+        dco = dco(1), pitch = pitch, &
+        den = den, enrch = enrch(1), dx = thickness, &
+        mechan = mechan, ngasmod = ngasmod, &
+        icm = icm, icor = icor, iplant = iplant, &
+        imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
+        moxtype = moxtype, idxgas = idxgas, &
+        ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
                  verbose=.true.)
 
     !------------------- SETUP INPUT VARIABLES -------------------------------

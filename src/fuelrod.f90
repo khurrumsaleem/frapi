@@ -30,7 +30,7 @@ module fuelrod
 
 contains
 
-    subroutine frod_make(this, nr, na, ngasr, nce, radfuel, radgap, radclad, pitch,&
+    subroutine frod_make(this, nr, na, ngasr, nce, thkcld, thkgap, dco, pitch,&
                   den, enrch, dx, &
                   mechan, ngasmod, icm, icor, iplant, &
                   imox, igascal, zr2vintage, moxtype, idxgas, &
@@ -38,18 +38,18 @@ contains
 
         class (frod_type), intent(inout) :: this
 
-        integer :: nr          ! number of radial segments
-        integer :: na          ! number of axial segments
-        integer :: ngasr       ! number of radial gas release nodes
-        integer :: nce         ! number of radial elements in the cladding for the FEA model
-        real(8) :: radfuel     ! Pellet outward radius, cm
-        real(8) :: radgap      ! Inner cladding radius, cm
-        real(8) :: radclad     ! Outer cladding radius, cm
-        real(8) :: pitch       ! Fuel rod pitch, cm
-        real(8) :: den         ! As-fabricated apparent fuel density, %TD
-        real(8) :: enrch(:)    ! Fuel enrichment u-235
-        real(8) :: dx(:)       ! Thickness of the axial nodes, cm
+        integer :: nr                    ! number of radial segments
+        integer :: na                    ! number of axial segments
+        integer :: ngasr                 ! number of radial gas release nodes
+        integer :: nce                   ! number of radial elements in the cladding for the FEA model
 
+        real(8), optional :: thkcld      ! Cladding thickness, cm
+        real(8), optional :: thkgap      ! Gap thickness, cm
+        real(8), optional :: dco         ! Outer cladding diameter, cm
+        real(8), optional :: pitch       ! Fuel rod pitch, cm
+        real(8), optional :: den         ! As-fabricated apparent fuel density, %TD
+        real(8), optional :: enrch       ! Fuel enrichment u-235
+        real(8), optional :: dx(:)       ! Thickness of the axial nodes, cm
         integer, optional :: mechan      ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
         integer, optional :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
         integer, optional :: icm         ! cladding type 4: Zircaloy-4
@@ -72,7 +72,7 @@ contains
 
         if( present(verbose) ) verbose_ = verbose
 
-        call this % driver % make(n, ngasr, m+1, nce, verbose_)
+        call this % driver % make(na, ngasr, nr+1, nce, verbose_)
 
         call this % driver % deft()
 
@@ -86,19 +86,21 @@ contains
         if( present(zr2vintage ) ) this % driver % zr2vintage  = zr2vintage 
         if( present(moxtype    ) ) this % driver % moxtype     = moxtype    
         if( present(idxgas     ) ) this % driver % idxgas      = idxgas     
-
-        this % driver % thkcld              = (radclad - radgap) * cmtoin ! Thickness of cladding, in
-        this % driver % thkgap              = (radgap - radfuel) * cmtoin ! Thickness of gap, in
-        this % driver % dco                 = 2 * radclad * cmtoin        ! Outer cladding diameter, in
-        this % driver % den                 = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
-        this % driver % enrch(1:n)          = enrch(1:n)
-        this % driver % pitch               = pitch * cmtoin
-        this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
-        this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
-        this % driver % deltaz(1:n)         = dx(:) * cmtoft
-        this % driver % deltaz(n+1)         = this % driver % cpl
-        this % driver % totl                = sum(dx) * cmtoft            ! Total length of active fuel, ft
-        this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
+        if( present(thkcld     ) ) this % driver % thkcld      = thkcld * cmtoin ! Thickness of cladding, in
+        if( present(thkgap     ) ) this % driver % thkgap      = thkgap * cmtoin ! Thickness of gap, in
+        if( present(dco        ) ) this % driver % dco         = dco * cmtoin    ! Outer cladding diameter, in
+        if( present(den        ) ) this % driver % den         = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
+        if( present(enrch      ) ) this % driver % enrch(1:n)  = enrch
+        if( present(pitch      ) ) this % driver % pitch       = pitch * cmtoin
+        
+        if( present(dx         ) ) then
+            this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
+            this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
+            this % driver % deltaz(1:n)         = dx(:) * cmtoft
+            this % driver % deltaz(n+1)         = this % driver % cpl
+            this % driver % totl                = sum(dx) * cmtoft            ! Total length of active fuel, ft
+            this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
+        endif
 
         call this % driver % proc() ! processing and checking of input variables
 

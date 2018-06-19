@@ -171,14 +171,22 @@ program rastk_input_file
     ngasr = 45
     nr = n_fuel_rad_in-1
     nce = 5
-    enrch_FRPCN(:) = init_enrich
 
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
-        call frod(i_frod) % make(nr, na, ngasr, nce, fuel_rad, gap_rad, &
-        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, &
-        ifixedcoolt=1, ifixedcoolp=1, ifixedtsurf=0, verbose=.false.)
+        call frod(i_frod) % make(nr, na, ngasr, nce, &
+                                    thkcld = clad_rad - gap_rad, &
+                                    thkgap = gap_rad - fuel_rad,  &
+                                    dco = 2 * clad_rad, & 
+                                    pitch = pitch_in, &
+                                    den = init_den, &
+                                    enrch = init_enrich, &
+                                    dx = thickness_FRPCN, &
+                                    ifixedcoolt = 1, &
+                                    ifixedcoolp = 1, &
+                                    ifixedtsurf = 0, &
+                                    verbose = .false.)
 
     enddo
 
