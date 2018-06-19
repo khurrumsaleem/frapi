@@ -4,8 +4,6 @@ program rastk_input_file
 
     implicit none
 
-    logical :: verbose = .false.
-
     character(len = 32) :: string
     character(len = 32) :: iname
     character(len = 32) :: oname
@@ -173,15 +171,14 @@ program rastk_input_file
     ngasr = 45
     nr = n_fuel_rad_in-1
     nce = 5
-    verbose = .false.
     enrch_FRPCN(:) = init_enrich
 
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
         call frod(i_frod) % make(nr, na, ngasr, nce, fuel_rad, gap_rad, &
-        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, verbose, &
-        ifixedcoolt=1, ifixedcoolp=1, ifixedtsurf=0)
+        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, &
+        ifixedcoolt=1, ifixedcoolp=1, ifixedtsurf=0, verbose=.false.)
 
     enddo
 

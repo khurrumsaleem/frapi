@@ -45,10 +45,11 @@ program frapcon_input_file
     pitch     = pitch * intocm
 
     call frod % make(nr, na, ngasr, nce, or_pellet, ir_clad, &
-                 or_clad, pitch, den, enrch, thickness, verbose, &
+                 or_clad, pitch, den, enrch, thickness, &
                  mechan, ngasmod, icm, icor, iplant, &
                  imox, igascal, zr2vintage, moxtype, idxgas, &
-                 ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf)
+                 ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
+                 verbose=.true.)
 
     !------------------- SETUP INPUT VARIABLES -------------------------------
 

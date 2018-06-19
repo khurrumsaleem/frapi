@@ -31,10 +31,10 @@ module fuelrod
 contains
 
     subroutine frod_make(this, nr, na, ngasr, nce, radfuel, radgap, radclad, pitch,&
-                  den, enrch, dx, verbose, &
+                  den, enrch, dx, &
                   mechan, ngasmod, icm, icor, iplant, &
                   imox, igascal, zr2vintage, moxtype, idxgas, &
-                  ifixedcoolt, ifixedcoolp, ifixedtsurf)
+                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose)
 
         class (frod_type), intent(inout) :: this
 
@@ -63,13 +63,16 @@ contains
         integer, optional :: ifixedcoolt ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
+        logical, optional :: verbose     ! print output information
 
-        logical :: verbose     ! Print the output data in terminal
+        logical :: verbose_ = .false.     ! Print the output data in terminal
 
         n  = na
         m  = nr
 
-        call this % driver % make(n, ngasr, m+1, nce, verbose)
+        if( present(verbose) ) verbose_ = verbose
+
+        call this % driver % make(n, ngasr, m+1, nce, verbose_)
 
         call this % driver % deft()
 
