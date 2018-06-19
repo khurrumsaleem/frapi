@@ -46,7 +46,7 @@ contains
         real(8) :: radclad     ! Outer cladding radius, cm
         real(8) :: pitch       ! Fuel rod pitch, cm
         real(8) :: den         ! As-fabricated apparent fuel density, %TD
-        real(8) :: enrch       ! Fuel enrichment u-235
+        real(8) :: enrch(:)    ! Fuel enrichment u-235
         real(8) :: dx(:)       ! Thickness of the axial nodes, cm
 
         integer, optional :: mechan      ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
@@ -84,7 +84,7 @@ contains
         this % driver % thkgap              = (radgap - radfuel) * cmtoin ! Thickness of gap, in
         this % driver % dco                 = 2 * radclad * cmtoin        ! Outer cladding diameter, in
         this % driver % den                 = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
-        this % driver % enrch               = enrch
+        this % driver % enrch(1:n)          = enrch(1:n)
         this % driver % pitch               = pitch * cmtoin
         this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
         this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
@@ -186,10 +186,10 @@ contains
             this % driver % r__chorg        = var                       
         case("clad cold work")
             this % driver % r__cldwks       = var                       
-        case("cold plenum length")
-            this % driver % r__cpl          = var                       
+        case("cold plenum length, m")
+            this % driver % r__cpl          = var * mtoin
         case("constant crud thickness")
-            this % driver % r__crdt         = var                       
+            this % driver % r__crdt         = var / miltomm
         case("crud accumulation rate")
             this % driver % r__crdtr        = var                       
         case("creep step duration, hr")
@@ -201,7 +201,7 @@ contains
         case("spring wire diameter, mm")
             this % driver % r__dspgw        = var * mmtoin              
         case("number of spring turns")
-            this % driver % r__vs           = var                       
+            this % driver % r__vs           = var
         case("peak-to-average power ratio")
             this % driver % r__fa           = var                       
         case("fill gas pressure, Pa")
@@ -304,6 +304,10 @@ contains
             this % driver % r__qend(it)     = var
         case("rod internal pressure for each time tep for FEA model, MPa")
             this % driver % r__p1(it)       = var * patoPSI
+        case("inlet coolant temperature, C")
+            this % driver % r__tw(it) = tcf(var)
+        case("inlet coolant pressure, MPa")
+            this % driver % r__p2(it) = var * MPatoPSI
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -338,10 +342,6 @@ contains
         case("coolant temperature, C")
             call linterp(var,  this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
-        case("inlet coolant temperature, C")
-            this % driver % r__tw(it) = tcf(var(1))
-        case("inlet coolant pressure, MPa")
-            this % driver % r__p2(it) = var(1) * MPatoPSI
         case("coolant pressure, MPa")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__p2(it) = var(1) * MPatoPSI

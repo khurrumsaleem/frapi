@@ -8,18 +8,22 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    logical :: verbose = .false.
+    logical :: verbose = .true.
 
     character(len=256) :: filename
 
     ! ITERATIONAL VARIABLES
-    integer :: i
+    integer :: i, itime
 
     real(8) :: or_pellet
     real(8) :: or_clad
     real(8) :: ir_clad
 
     real(8), allocatable :: thickness(:)
+    real(8), allocatable :: linpow(:)
+    real(8), allocatable :: t_cool(:)
+    real(8), allocatable :: p_cool(:)
+    real(8), allocatable :: f_cool(:)
 
     ! READING INPUT FILE
     call get_command_argument(1, filename)
@@ -27,29 +31,37 @@ program frapcon_input_file
     call read_frapcon_file(filename)
 
     allocate(thickness(na))
+    allocate(linpow(na))
+    allocate(t_cool(na))
+    allocate(p_cool(na))
+    allocate(f_cool(na))
 
     !-------------------- FUEL ROD INITIALIZATION-----------------------------
-    or_clad   = 0.5d0 * dco(1)
-    ir_clad   = or_clad - thkcld(1)
-    or_pellet = ir_clad - thkgap(1)
-    thickness = x(2:na+1) - x(1:na)
+    or_clad   = 0.5d0 * dco(1) * intocm
+    ir_clad   = or_clad - thkcld(1) * intocm
+    or_pellet = ir_clad - thkgap(1) * intocm
+    thickness = (x(2:na+1) - x(1:na)) * ftocm
+    enrch(:)  = enrch(1)
+    pitch     = pitch * intocm
 
     call frod % make(nr, na, ngasr, nce, or_pellet, ir_clad, &
-                 or_clad, pitch, den, enrch(1), thickness, verbose, &
+                 or_clad, pitch, den, enrch, thickness, verbose, &
                  mechan, ngasmod, icm, icor, iplant, &
                  imox, igascal, zr2vintage, moxtype, idxgas)
+
+    !------------------- SETUP INPUT VARIABLES -------------------------------
 
     call frod % set_value("additional fuel densification factor", afdn)
     call frod % set_value("clad texture factor", catexf)
     call frod % set_value("as-fabricated clad hydrogen content, wt.ppm", chorg)
     call frod % set_value("clad cold work", cldwks)
-    call frod % set_value("cold plenum length", cpl)
-    call frod % set_value("constant crud thickness", crdt)
+    call frod % set_value("cold plenum length, m", cpl * intom)
+    call frod % set_value("constant crud thickness, mm", crdt * intomm)
     call frod % set_value("crud accumulation rate", crdtr)
     call frod % set_value("creep step duration, hr", crephr)
     call frod % set_value("fuel open porosity fraction, %TD", deng)
-    call frod % set_value("spring diameter, mm", dspg)
-    call frod % set_value("spring wire diameter, mm", dspgw)
+    call frod % set_value("spring diameter, mm", dspg*intomm)
+    call frod % set_value("spring wire diameter, mm", dspgw*intomm)
     call frod % set_value("number of spring turns", vs)
     call frod % set_value("peak-to-average power ratio", fa)
     call frod % set_value("fill gas pressure, Pa", fgpav/PatoPSI)
@@ -103,60 +115,82 @@ program frapcon_input_file
     call frod % set_array("rod internal pressure for each time tep for FEA model, MPa", p1/patoPSI)
     call frod % set_array("axial crud thickness multiplier", crudmult)
 
-    !------------------- RUN TIME STEPS ---------------------------------------
-!
-!    ! ITERATION OVER TIME
-!    do i_bu_step = 1, n_bu
+!------------------------ NOT USED: --------------------------------------------------------------
+!    ivardm                                  "Option to specify variable axial node length (1 = ON, 0 = OFF(Default))"
+!    irefab                                  "Timestep to start using refabricated values (Default = 10,000)"
+!    nrefab1                                 "Lower axial node for refabrication"
+!    nrefab2                                 "Upper axial node for refabrication"
+!    cplrefab                                "Refabricated upper plenum length"
+!    vsrefab                                 "Number of spring turns in refabricated upper plenum"
+!    dspgrefab                               "New plenum spring coil diameter"
+!    dspgwrefab                              "New plenum spring wire diameter"
+!    fgpavrefab                              "Fill gas pressure at time step of refabrication"
+!    airrefab                                "Fraction of air in refabricated rod"
+!    n2refab                                 "Fraction of nitrogen in refabricated rod"
+!    arrefab                                 "Fraction of argon in refabricated rod"
+!    fgrefab                                 "Fraction of fission gas in refabricated rod"
+!    herefab                                 "Fraction of helium in refabricated rod (Default = 1.0)"
+!    krrefab                                 "Fraction of krypton in refabricated rod"
+!    xerefab                                 "Fraction of xenon in refabricated rod"
+!    zcool                                   "Elevation defining the coolant temperature profile. Used when ifixedcoolt = 1."
+!    jstsurftemp                             "Sequential # of the cladding temperature profile to be used for each timestep"
+!    jnsurftemp                              "# of cladt, xt pairs for each axial temperature distribution"
+!    jn                                      "# of qf, x pairs for each axial power shape"
+!    ctmax                                   ""
+!    tcoolant                                "Bulk coolant temperature at each axial node & timestep"
+!    pcoolant                                "Bulk coolant pressure at each axial node & timestep"
+!    p2                                      "Coolant System Pressure, input for each timestep if nsp = 1"
+!    iq                                      "Axial power shape indicator (0 = user-input, 1 = chopped cosine)"
+!    igas                                    "Timestep to begin calculation of fission gas release"
+!    ifixedcoolt                             "Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)"
+!    ifixedcoolp                             "Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)"
+!    ifixedtsurf                             "Specify to use fixed cladding surface temperatures"
 
-             ! ITERATION BETWEEN RAST-K AND FRAPCON CODES
-!            do i_iter = 1, n_iter
-!
-!                ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
-!                power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
-!                power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
-!                power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
-!
-!                tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
-!                pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
-!                fcool_FRPCN(1) = mass_flow_rate_in
-!
-!                ! SETUP THE UPDATED VARIABLES
-!                call frod(i_frod) % set("linear power, W/cm", power_FRPCN)
-!                call frod(i_frod) % set("coolant temperature, C", tcool_FRPCN)
-!                call frod(i_frod) % set("coolant pressure, MPa", pcool_FRPCN)
-!                call frod(i_frod) % set("inlet coolant temperature, C", tcool_FRPCN(:2))
-!                call frod(i_frod) % set("inlet coolant pressure, MPa", pcool_FRPCN(:2))
-!                call frod(i_frod) % set("coolant mass flux, kg/(s*m^2)", fcool_FRPCN)
-!
-!                if(i_bu_step == 1) then
-!                    ! DO INITIAL TIME STEP
-!                    call frod(i_frod) % init()
-!                else
-!                    ! DO TRIAL TIME STEP
-!                    dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
-!                    call frod(i_frod) % next(dtime)
-!                endif
-!
-!                ! TAKE OUTPUT VARIABLES FROM FRAPCON
-!                call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
-!                call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
-!                call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
-!                call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
-!                call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
-!                call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
-!                call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
-!                call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
-!                call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
-!
-!                ! ACCEPT THE LAST TRIAL TIME STEP
-!                if(i_iter == n_iter) call frod(i_frod) % accept()
-!            enddo
-!
-!    enddo
+    !------------------- RUN TIME STEPS ---------------------------------------
+
+    ! ITERATION OVER TIME
+    do itime = 1, im
+
+        linpow = qmpy(itime) * qf(1-na+na*jst(itime):na*jst(itime)) * cmtoft
+        t_cool = (/( tfc(tcoolant(i+na*(itime-1))), i = 1, na )/)
+        p_cool = pcoolant(1+na*(itime-1):na+na*(itime-1)) * PSItoPa
+        f_cool = go(itime) * lbhrft2toksm2
+
+        ! SETUP THE UPDATED VARIABLES
+        call frod % set_array("linear power, W/cm", linpow)
+        call frod % set_array("coolant temperature, C", t_cool)
+        call frod % set_array("coolant pressure, MPa", p_cool)
+        call frod % set_value("inlet coolant temperature, C", tw(itime))
+        call frod % set_value("inlet coolant pressure, MPa", p2(itime))
+        call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime))
+
+        if (itime == 1) then
+            ! INITIAL STATE
+            call frod % init()
+        else
+            ! DO TRIAL TIME STEP
+            call frod % next(ProblemTime(itime) - ProblemTime(itime-1))
+        endif
+
+        ! TAKE OUTPUT VARIABLES FROM FRAPCON
+!        call frod(i_frod) % get('axial fuel temperature, C', fue_avg_temp)
+!        call frod(i_frod) % get('bulk coolant temperature, C', coo_avg_temp)
+!        call frod(i_frod) % get('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+!        call frod(i_frod) % get('oxide thickness, um', t_oxidelayer)
+!        call frod(i_frod) % get('mechanical gap thickness, um', t_fuecladgap)
+!        call frod(i_frod) % get('gap pressure, MPa', gap_pressure)
+!        call frod(i_frod) % get('cladding hoop strain, %', hoop_strain)
+!        call frod(i_frod) % get('cladding axial stress, MPa', hoop_stress)
+!        call frod(i_frod) % get('axial mesh, cm', zmesh_FRPCN)
+
+        ! ACCEPT THE LAST TRIAL TIME STEP
+        call frod % accept()
+
+    enddo
 
     !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
     call frod % destroy()
 
-    write(*,*) 'Test done!'
+    write(*,*) 'Successfully done!'
 
 end program frapcon_input_file

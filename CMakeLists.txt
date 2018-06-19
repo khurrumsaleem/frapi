@@ -13,12 +13,12 @@ set(src0 "src_test/frapcon_input_file.f90")
 set(src1 "src_test/rastk_input_file.f90")
 #
 
-include_directories(../frapcon/build/debug)
+include_directories(../frapcon/build/debug /usr/local/hdf5/include)
 
-link_directories(../frapcon/build/debug)
+link_directories(../frapcon/build/debug /usr/local/hdf5/lib)
 
 if(CMAKE_Fortran_COMPILER_ID  STREQUAL "GNU")
-	set(f90flags "-D -cpp -std=f2008 -fbacktrace -fall-intrinsics")
+	set(f90flags "-D -cpp -fbacktrace -fall-intrinsics -std=f2008") # -std=f2008
 	if(release)
 		set(CMAKE_Fortran_FLAGS "-O3 ${f90flags}")
 	else()
@@ -41,5 +41,5 @@ file(GLOB SOURCES_1 ${src1})
 add_library(fuelrod ${SOURCES})
 add_executable(frapcon_input_file ${SOURCES_0})
 add_executable(rastk_input_file ${SOURCES_1})
-target_link_libraries(frapcon_input_file fuelrod frapcon)
+target_link_libraries(frapcon_input_file fuelrod frapcon hdf5_fortran)
 target_link_libraries(rastk_input_file fuelrod frapcon)

@@ -174,12 +174,13 @@ program rastk_input_file
     nr = n_fuel_rad_in-1
     nce = 5
     verbose = .false.
+    enrch_FRPCN(:) = init_enrich
 
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
         call frod(i_frod) % make(nr, na, ngasr, nce, fuel_rad, gap_rad, &
-        clad_rad, pitch_in, init_den, init_enrich, thickness_FRPCN, verbose)
+        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, verbose)
 
     enddo
 
@@ -206,8 +207,8 @@ program rastk_input_file
                 call frod(i_frod) % set_array("linear power, W/cm", power_FRPCN)
                 call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
                 call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
-                call frod(i_frod) % set_array("inlet coolant temperature, C", tcool_FRPCN(:2))
-                call frod(i_frod) % set_array("inlet coolant pressure, MPa", pcool_FRPCN(:2))
+                call frod(i_frod) % set_value("inlet coolant temperature, C", tcool_FRPCN(1))
+                call frod(i_frod) % set_value("inlet coolant pressure, MPa", pcool_FRPCN(1))
                 call frod(i_frod) % set_value("coolant mass flux, kg/(s*m^2)", mass_flow_rate_in)
 
                 if(i_bu_step == 1) then
