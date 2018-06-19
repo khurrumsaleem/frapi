@@ -180,7 +180,8 @@ program rastk_input_file
     do i_frod = 1, n_frod
 
         call frod(i_frod) % make(nr, na, ngasr, nce, fuel_rad, gap_rad, &
-        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, verbose)
+        clad_rad, pitch_in, init_den, enrch_FRPCN, thickness_FRPCN, verbose, &
+        ifixedcoolt=1, ifixedcoolp=1, ifixedtsurf=0)
 
     enddo
 

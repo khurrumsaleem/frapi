@@ -47,7 +47,8 @@ program frapcon_input_file
     call frod % make(nr, na, ngasr, nce, or_pellet, ir_clad, &
                  or_clad, pitch, den, enrch, thickness, verbose, &
                  mechan, ngasmod, icm, icor, iplant, &
-                 imox, igascal, zr2vintage, moxtype, idxgas)
+                 imox, igascal, zr2vintage, moxtype, idxgas, &
+                 ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf)
 
     !------------------- SETUP INPUT VARIABLES -------------------------------
 

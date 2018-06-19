@@ -33,7 +33,8 @@ contains
     subroutine frod_make(this, nr, na, ngasr, nce, radfuel, radgap, radclad, pitch,&
                   den, enrch, dx, verbose, &
                   mechan, ngasmod, icm, icor, iplant, &
-                  imox, igascal, zr2vintage, moxtype, idxgas)
+                  imox, igascal, zr2vintage, moxtype, idxgas, &
+                  ifixedcoolt, ifixedcoolp, ifixedtsurf)
 
         class (frod_type), intent(inout) :: this
 
@@ -59,7 +60,10 @@ contains
         integer, optional :: zr2vintage  ! zircaloy-2 vintage
         integer, optional :: moxtype     ! flag for type of Pu used in MOX
         integer, optional :: idxgas      ! fill gas type
-        
+        integer, optional :: ifixedcoolt ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
+        integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
+        integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
+
         logical :: verbose     ! Print the output data in terminal
 
         n  = na
@@ -69,16 +73,16 @@ contains
 
         call this % driver % deft()
 
-        if( .not. present(mechan    ) ) this % driver % mechan    = 2
-        if( .not. present(ngasmod   ) ) this % driver % ngasmod   = 2
-        if( .not. present(icm       ) ) this % driver % icm       = 4
-        if( .not. present(icor      ) ) this % driver % icor      = 0
-        if( .not. present(iplant    ) ) this % driver % iplant    =-2
-        if( .not. present(imox      ) ) this % driver % imox      = 0 
-        if( .not. present(igascal   ) ) this % driver % igascal   = 1
-        if( .not. present(zr2vintage) ) this % driver % zr2vintage= 1
-        if( .not. present(moxtype   ) ) this % driver % moxtype   = 0
-        if( .not. present(idxgas    ) ) this % driver % idxgas    = 1
+        if( present(mechan     ) ) this % driver % mechan      = mechan     
+        if( present(ngasmod    ) ) this % driver % ngasmod     = ngasmod    
+        if( present(icm        ) ) this % driver % icm         = icm        
+        if( present(icor       ) ) this % driver % icor        = icor       
+        if( present(iplant     ) ) this % driver % iplant      = iplant     
+        if( present(imox       ) ) this % driver % imox        = imox        
+        if( present(igascal    ) ) this % driver % igascal     = igascal    
+        if( present(zr2vintage ) ) this % driver % zr2vintage  = zr2vintage 
+        if( present(moxtype    ) ) this % driver % moxtype     = moxtype    
+        if( present(idxgas     ) ) this % driver % idxgas      = idxgas     
 
         this % driver % thkcld              = (radclad - radgap) * cmtoin ! Thickness of cladding, in
         this % driver % thkgap              = (radgap - radfuel) * cmtoin ! Thickness of gap, in
@@ -94,6 +98,10 @@ contains
         this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
 
         call this % driver % proc() ! processing and checking of input variables
+
+        if( present(ifixedcoolt) ) this % driver % ifixedcoolt = ifixedcoolt
+        if( present(ifixedcoolp) ) this % driver % ifixedcoolp = ifixedcoolp
+        if( present(ifixedtsurf) ) this % driver % ifixedtsurf = ifixedtsurf
 
         call this % driver % dump()
 
