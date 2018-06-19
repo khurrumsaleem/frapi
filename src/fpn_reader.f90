@@ -88,6 +88,37 @@ module fpn_reader
         allocate(zcool(1:na+1))
         allocate(pcoolant(1:(na+1)*im))
 
+        buin(:) = 0.d0
+        comp(:) = 0.d0
+        ctmax(:) = 0.d0
+        dco(:) = 0.d0
+        deltaz(:) = 0.d0
+        enrch(:) = 0.d0
+        flux(:) = 0.d0
+        gadoln(:) = 0.d0
+        go(:) = 0.d0
+        jn(:) = 0.d0
+        jst(:) = 0.d0
+        p2(:) = 0.d0
+        ProblemTime(:) = 0.d0
+        qend(:) = 0.d0
+        qf(:) = 0.d0
+        qmpy(:) = 0.d0
+        rc(:) = 0.d0
+        thkcld(:) = 0.d0
+        thkgap(:) = 0.d0
+        tw(:) = 0.d0
+        x(:) = 0.d0
+        xt(:) = 0.d0
+        cladt(:) = 0.d0
+        jstsurftemp(:) = 0.d0
+        jnsurftemp(:) = 0.d0
+        p1(:) = 0.d0
+        crudmult(:) = 0.d0
+        tcoolant(:) = 0.d0
+        zcool(:) = 0.d0
+        pcoolant(:) = 0.d0
+
         read(ifile, frpcon, iostat=ierror)
         !read(ifile, frpmox, iostat=ierror)
 

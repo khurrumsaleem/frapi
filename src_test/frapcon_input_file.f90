@@ -19,6 +19,20 @@ program frapcon_input_file
     real(8), allocatable :: p_cool(:)
     real(8), allocatable :: f_cool(:)
 
+    mechan      = 2
+    ngasmod     = 2
+    icm         = 4
+    icor        = 0
+    iplant      =-2
+    imox        = 0
+    igascal     = 1
+    zr2vintage  = 1
+    moxtype     = 0
+    idxgas      = 1
+    ifixedcoolt = 0
+    ifixedcoolp = 0
+    ifixedtsurf = 0
+
     ! READING INPUT FILE
     call get_command_argument(1, filename)
 
@@ -44,9 +58,9 @@ program frapcon_input_file
         mechan = mechan, ngasmod = ngasmod, &
         icm = icm, icor = icor, iplant = iplant, &
         imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
-        moxtype = moxtype, idxgas = idxgas, &
+        moxtype = moxtype, idxgas = idxgas, iq = iq, &
         ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
-                 verbose=.true.)
+        verbose=.true.)
 
     !------------------- SETUP INPUT VARIABLES -------------------------------
 
@@ -105,13 +119,13 @@ program frapcon_input_file
     call frod % set_value("clad roughness, mm", roughc * intomm)
     call frod % set_value("fuel roughness, mm", roughf * intomm)
     call frod % set_value("percent IFBA rods in core, %", ifba)
+    call frod % set_value("end-node to plenum heat transfer fraction", qend(1))    
+    call frod % set_value("rod internal pressure for FEA model, MPa", p1(1)/patoPSI)
     call frod % set_array("input fuel burnup", buin / MWskgUtoMWdMTU)
     call frod % set_array("PuO2 weight percent if MOX fuel, wt%", comp)
     call frod % set_array("gadolinia content at each axial node", gadoln)
-    call frod % set_array("end-node to plenum heat transfer fraction", qend)
     call frod % set_array("radius of the fuel pellet central annulus, mm", rc * intomm)
     call frod % set_array("cladding surface temperature, K", (/( tfk(cladt(i)), i = 1, na )/) )
-    call frod % set_array("rod internal pressure for each time tep for FEA model, MPa", p1/patoPSI)
     call frod % set_array("axial crud thickness multiplier", crudmult)
 
 !------------------------ NOT USED: --------------------------------------------------------------
@@ -136,15 +150,8 @@ program frapcon_input_file
 !    jnsurftemp                              "# of cladt, xt pairs for each axial temperature distribution"
 !    jn                                      "# of qf, x pairs for each axial power shape"
 !    ctmax                                   ""
-!    tcoolant                                "Bulk coolant temperature at each axial node & timestep"
-!    pcoolant                                "Bulk coolant pressure at each axial node & timestep"
 !    p2                                      "Coolant System Pressure, input for each timestep if nsp = 1"
-!    iq                                      "Axial power shape indicator (0 = user-input, 1 = chopped cosine)"
 !    igas                                    "Timestep to begin calculation of fission gas release"
-!    ifixedcoolt                             "Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)"
-!    ifixedcoolp                             "Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)"
-!    ifixedtsurf                             "Specify to use fixed cladding surface temperatures"
-
     !------------------- RUN TIME STEPS ---------------------------------------
 
     ! ITERATION OVER TIME

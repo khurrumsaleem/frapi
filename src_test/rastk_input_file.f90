@@ -186,6 +186,7 @@ program rastk_input_file
                                     ifixedcoolt = 1, &
                                     ifixedcoolp = 1, &
                                     ifixedtsurf = 0, &
+                                    iq = 0, &
                                     verbose = .false.)
 
     enddo

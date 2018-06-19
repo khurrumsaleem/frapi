@@ -33,7 +33,7 @@ contains
     subroutine frod_make(this, nr, na, ngasr, nce, thkcld, thkgap, dco, pitch,&
                   den, enrch, dx, &
                   mechan, ngasmod, icm, icor, iplant, &
-                  imox, igascal, zr2vintage, moxtype, idxgas, &
+                  imox, igascal, zr2vintage, moxtype, idxgas, iq, &
                   ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose)
 
         class (frod_type), intent(inout) :: this
@@ -60,6 +60,7 @@ contains
         integer, optional :: zr2vintage  ! zircaloy-2 vintage
         integer, optional :: moxtype     ! flag for type of Pu used in MOX
         integer, optional :: idxgas      ! fill gas type
+        integer, optional :: iq          ! Axial power shape indicator (0 = user-input, 1 = chopped cosine)
         integer, optional :: ifixedcoolt ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
@@ -92,13 +93,14 @@ contains
         if( present(den        ) ) this % driver % den         = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
         if( present(enrch      ) ) this % driver % enrch(1:n)  = enrch
         if( present(pitch      ) ) this % driver % pitch       = pitch * cmtoin
-        
+        if( present(iq         ) ) this % driver % iq          = iq
+
         if( present(dx         ) ) then
+            this % driver % deltaz(1:n)         = dx(:) * cmtoft            
             this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
-            this % driver % x(2:n+1)            = (/( sum(dx(:i)), i = 1, n )/) * cmtoft
-            this % driver % deltaz(1:n)         = dx(:) * cmtoft
+            this % driver % x(2:n+1)            = (/( sum(this % driver % deltaz(:i)), i = 1, n )/)
             this % driver % deltaz(n+1)         = this % driver % cpl
-            this % driver % totl                = sum(dx) * cmtoft            ! Total length of active fuel, ft
+            this % driver % totl                = sum(this % driver % deltaz(1:n))            ! Total length of active fuel, ft
             this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
         endif
 
@@ -201,7 +203,7 @@ contains
             this % driver % r__cldwks       = var                       
         case("cold plenum length, m")
             this % driver % r__cpl          = var * mtoin
-        case("constant crud thickness")
+        case("constant crud thickness, mm")
             this % driver % r__crdt         = var / miltomm
         case("crud accumulation rate")
             this % driver % r__crdtr        = var                       
@@ -315,7 +317,7 @@ contains
             this % driver % r__roughf       = var * mmtoin
         case("end-node to plenum heat transfer fraction")
             this % driver % r__qend(it)     = var
-        case("rod internal pressure for each time tep for FEA model, MPa")
+        case("rod internal pressure for FEA model, MPa")
             this % driver % r__p1(it)       = var * patoPSI
         case("inlet coolant temperature, C")
             this % driver % r__tw(it) = tcf(var)
