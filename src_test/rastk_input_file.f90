@@ -134,7 +134,7 @@ program rastk_input_file
 
     ! ALLOCATE FUEL RODS ARRAY
     n_frod = 1
-    n_iter = 1
+    n_iter = 2
 
     allocate(frod(n_frod))
 
@@ -166,28 +166,21 @@ program rastk_input_file
     height_FRPCN(2:) = (/( height_RASTK(sum(z_meshes(1:i))+1), i = 1, na_in )/)
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
-    ! PHYSICAL MODELS and MESH SIZES (must be the same for all fuel rods)
-    na = na_in
-    ngasr = 45
-    nr = n_fuel_rad_in-1
-    nce = 5
-
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
-        call frod(i_frod) % make(nr, na, ngasr, nce, &
-                                    thkcld = clad_rad - gap_rad, &
-                                    thkgap = gap_rad - fuel_rad,  &
-                                    dco = 2 * clad_rad, & 
-                                    pitch = pitch_in, &
-                                    den = init_den, &
-                                    enrch = init_enrich, &
-                                    dx = thickness_FRPCN, &
-                                    ifixedcoolt = 1, &
-                                    ifixedcoolp = 1, &
-                                    ifixedtsurf = 0, &
-                                    iq = 0, &
-                                    verbose = .false.)
+        call frod(i_frod) % make(nr=n_fuel_rad_in-1, na=na_in, ngasr=45, nce=5, &
+                                 ifixedcoolt = 1, ifixedcoolp = 1, ifixedtsurf = 0, &
+                                 iq = 0, ivardm = 1, verbose = .true.)
+
+        call frod(i_frod) % set_value("cladding thickness, cm", clad_rad - gap_rad)
+        call frod(i_frod) % set_value("gap thickness, cm", gap_rad - fuel_rad)
+        call frod(i_frod) % set_value("outer cladding diameter, cm", 2 * clad_rad)
+        call frod(i_frod) % set_value("fuel rod pitch, cm", pitch_in)
+        call frod(i_frod) % set_value("as-fabricated apparent fuel density, %TD", init_den * 10.40d0/10.96d0)
+        call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
+        call frod(i_frod) % set_array("thickness of the axial nodes, cm", thickness_FRPCN)
+        
 
     enddo
 

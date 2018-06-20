@@ -30,26 +30,17 @@ module fuelrod
 
 contains
 
-    subroutine frod_make(this, nr, na, ngasr, nce, thkcld, thkgap, dco, pitch,&
-                  den, enrch, dx, &
+    subroutine frod_make(this, nr, na, ngasr, nce, &
                   mechan, ngasmod, icm, icor, iplant, &
-                  imox, igascal, zr2vintage, moxtype, idxgas, iq, &
+                  imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
                   ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose)
 
         class (frod_type), intent(inout) :: this
 
-        integer :: nr                    ! number of radial segments
-        integer :: na                    ! number of axial segments
-        integer :: ngasr                 ! number of radial gas release nodes
-        integer :: nce                   ! number of radial elements in the cladding for the FEA model
-
-        real(8), optional :: thkcld      ! Cladding thickness, cm
-        real(8), optional :: thkgap      ! Gap thickness, cm
-        real(8), optional :: dco         ! Outer cladding diameter, cm
-        real(8), optional :: pitch       ! Fuel rod pitch, cm
-        real(8), optional :: den         ! As-fabricated apparent fuel density, %TD
-        real(8), optional :: enrch       ! Fuel enrichment u-235
-        real(8), optional :: dx(:)       ! Thickness of the axial nodes, cm
+        integer, optional :: nr          ! number of radial segments
+        integer, optional :: na          ! number of axial segments
+        integer, optional :: ngasr       ! number of radial gas release nodes
+        integer, optional :: nce         ! number of radial elements in the cladding for the FEA model
         integer, optional :: mechan      ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
         integer, optional :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
         integer, optional :: icm         ! cladding type 4: Zircaloy-4
@@ -61,19 +52,28 @@ contains
         integer, optional :: moxtype     ! flag for type of Pu used in MOX
         integer, optional :: idxgas      ! fill gas type
         integer, optional :: iq          ! Axial power shape indicator (0 = user-input, 1 = chopped cosine)
+        integer, optional :: ivardm      ! Option to specify variable axial node length (1 is on, 0 is off (default))
         integer, optional :: ifixedcoolt ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
-        logical, optional :: verbose     ! print output information
+        logical, optional :: verbose     ! Print the output data in terminal
 
-        logical :: verbose_ = .false.     ! Print the output data in terminal
+        integer :: nr_ = 17
+        integer :: na_ = 10
+        integer :: ngasr_ = 45
+        integer :: nce_ = 5
+        logical :: verbose_ = .false. 
 
         n  = na
         m  = nr
 
+        if( present(nr     ) ) nr_      = nr     
+        if( present(na     ) ) na_      = na     
+        if( present(ngasr  ) ) ngasr_   = ngasr  
+        if( present(nce    ) ) nce_     = nce    
         if( present(verbose) ) verbose_ = verbose
 
-        call this % driver % make(na, ngasr, nr+1, nce, verbose_)
+        call this % driver % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
         call this % driver % deft()
 
@@ -87,25 +87,8 @@ contains
         if( present(zr2vintage ) ) this % driver % zr2vintage  = zr2vintage 
         if( present(moxtype    ) ) this % driver % moxtype     = moxtype    
         if( present(idxgas     ) ) this % driver % idxgas      = idxgas     
-        if( present(thkcld     ) ) this % driver % thkcld      = thkcld * cmtoin ! Thickness of cladding, in
-        if( present(thkgap     ) ) this % driver % thkgap      = thkgap * cmtoin ! Thickness of gap, in
-        if( present(dco        ) ) this % driver % dco         = dco * cmtoin    ! Outer cladding diameter, in
-        if( present(den        ) ) this % driver % den         = den * 10.40d0/10.96d0       ! As-fabricated apparent fuel density, %TD
-        if( present(enrch      ) ) this % driver % enrch(1:n)  = enrch
-        if( present(pitch      ) ) this % driver % pitch       = pitch * cmtoin
         if( present(iq         ) ) this % driver % iq          = iq
-
-        if( present(dx         ) ) then
-            this % driver % deltaz(1:n)         = dx(:) * cmtoft            
-            this % driver % x(1)                = 0.d0                        ! Axial evaluation for linear power distribution, ft
-            this % driver % x(2:n+1)            = (/( sum(this % driver % deltaz(:i)), i = 1, n )/)
-            this % driver % deltaz(n+1)         = this % driver % cpl
-            this % driver % totl                = sum(this % driver % deltaz(1:n))            ! Total length of active fuel, ft
-            this % driver % zcool(:)            = this % driver % x(:)        ! Axial evaluation for coolant temperature distribution, ft
-        endif
-
-        call this % driver % proc() ! processing and checking of input variables
-
+        if( present(ivardm     ) ) this % driver % ivardm      = ivardm
         if( present(ifixedcoolt) ) this % driver % ifixedcoolt = ifixedcoolt
         if( present(ifixedcoolp) ) this % driver % ifixedcoolp = ifixedcoolp
         if( present(ifixedtsurf) ) this % driver % ifixedtsurf = ifixedtsurf
@@ -119,6 +102,15 @@ contains
         if(.not. allocated(tmp2))   allocate(tmp2(m+1))
         if(.not. allocated(tmp3))   allocate(tmp3(n+1))
 
+!        real(8), optional :: thkcld      ! Cladding thickness, cm
+!        real(8), optional :: thkgap      ! Gap thickness, cm
+!        real(8), optional :: dco         ! Outer cladding diameter, cm
+!        real(8), optional :: pitch       ! Fuel rod pitch, cm
+!        real(8), optional :: den         ! As-fabricated apparent fuel density, %TD
+!        real(8), optional :: enrch       ! Fuel enrichment u-235
+!        real(8), optional :: dx(:)       ! Thickness of the axial nodes, cm
+
+
     end subroutine frod_make
 
     subroutine frod_init(this)
@@ -126,7 +118,8 @@ contains
         class (frod_type), intent(inout) :: this
 
         call this % driver % load()
-        call this % driver % init()  ! make the very first time step
+        call this % driver % proc() ! processing and checking of input variables
+        call this % driver % init() ! make the very first time step
 
     end subroutine frod_init
 
@@ -323,6 +316,14 @@ contains
             this % driver % r__tw(it) = tcf(var)
         case("inlet coolant pressure, MPa")
             this % driver % r__p2(it) = var * MPatoPSI
+        case("fuel enrichment by u-235, %")
+            this % driver % r__enrch(:) = var
+        case("cladding thickness, cm")
+            this % driver % r__thkcld(1:n) = var * cmtoin
+        case("gap thickness, cm")
+            this % driver % r__thkgap(1:n) = var * cmtoin
+        case("outer cladding diameter, cm")
+            this % driver % r__dco(1:n) = var * cmtoin
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -342,6 +343,13 @@ contains
         it = this % driver % r__it
 
         select case(key)
+        case("thickness of the axial nodes, cm")
+            this % driver % r__deltaz(1:n) = var(:) * cmtoft            
+            this % driver % r__x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
+            this % driver % r__x(2:n+1)    = (/( sum(this % driver % r__deltaz(:i)), i = 1, n )/)
+            this % driver % r__deltaz(n+1) = this % driver % r__cpl
+            this % driver % r__totl        = sum(this % driver % r__deltaz(1:n))            ! Total length of active fuel, ft
+            this % driver % r__zcool(:)    = this % driver % r__x(:)        ! Axial evaluation for coolant temperature distribution, ft
         case("cladding thickness, cm")
             this % driver % r__thkcld(1:n) = var(:) * cmtoin
         case("gap thickness, cm")
@@ -357,10 +365,12 @@ contains
         case("coolant temperature, C")
             call linterp(var,  this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
+            this % driver % r__tcoolant(1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
         case("coolant pressure, MPa")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             this % driver % r__p2(it) = var(1) * MPatoPSI
             this % driver % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
+            this % driver % r__pcoolant(1:n+1) = tmp3(:) * MPatoPSI
         case("input fuel burnup")
             this % driver % r__buin(:)      = var(:) * MWskgUtoMWdMTU
         case("PuO2 weight percent if MOX fuel, wt%")
