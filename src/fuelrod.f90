@@ -246,8 +246,8 @@ contains
             this % driver % r__b10          = var                       
         case("ZrB2 thickness, mm")
             this % driver % r__zrb2thick    = var * mmtoin               
-        case("ZrB2 density, mm")
-            this % driver % r__zrb2den      = var * mmtoin               
+        case("ZrB2 density, %TD")
+            this % driver % r__zrb2den      = var
         case("zircaloy-2 vintage")
             this % driver % r__zr2vintage   = var                       
         case("decay heat multiplier")
@@ -324,6 +324,8 @@ contains
             this % driver % r__thkgap(1:n) = var * cmtoin
         case("outer cladding diameter, cm")
             this % driver % r__dco(1:n) = var * cmtoin
+        case("coolant system pressure, MPa")
+            this % driver % r__p2(it) = var * MPatoPSI
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

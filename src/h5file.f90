@@ -64,8 +64,8 @@ contains
 
         class (tp_h5file), intent(in) :: this
 
-        character(*) :: dataname
-
+        character(*)    :: dataname
+        integer         :: i
         real(8), target :: value(:)
 
         INTEGER(HID_T)     :: dset_id      ! Dataset identifier 
@@ -77,7 +77,9 @@ contains
         ! Open an existing group in the specified file.
         !
         !CALL h5gopen_f(this % file_id, groupname, this % group_id, error)
-
+        !
+        !i = scan(dataname, '/')
+        !dataname(1) = '|'
         !
         ! Create dataspaces for datasets
         !
