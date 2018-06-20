@@ -16,6 +16,8 @@ program frapcon_input_file
     ! ITERATIONAL VARIABLES
     integer :: i, itime
 
+    real(8) :: qtot
+
     real(8), allocatable :: value(:)
     real(8), allocatable :: linpow(:)
     real(8), allocatable :: t_cool(:)
@@ -144,10 +146,10 @@ program frapcon_input_file
     ! ITERATION OVER TIME
     do itime = 1, im-1
 
+        qtot = 1.D+3 * qmpy(itime) * sum(x(2:na+1) - x(1:na)) ! Wt
         value = (qf(1-na+na*jst(itime):na*jst(itime)) + qf(2-na+na*jst(itime):na*jst(itime)+1))/2
-
-        linpow = 1.D+3 * qmpy(itime)/ftocm * value(:)
-
+        linpow = qtot * value/sum(value) / (x(2:na+1) - x(1:na)) / ftocm ! Wt/cm
+      
         t_cool = (/( tfc(tcoolant(i+na*(itime-1))), i = 1, na )/)
         p_cool = pcoolant(1+na*(itime-1):na+na*(itime-1)) * PSItoPa
         f_cool = go(itime) * lbhrft2toksm2
