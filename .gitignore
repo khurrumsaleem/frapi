@@ -2,7 +2,7 @@
 .sconsign.dblite
 
 build/
-test/
+#test/
 
 !test/IFA-432/*
 

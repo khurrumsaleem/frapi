@@ -1,0 +1,83 @@
+***********************************************************************
+*     frapcon, steady-state fuel rod analysis code
+*----------------------------------------------------------------------
+*
+*       CASE DESCRIPTION: MOX example rod
+*
+* UNIT  FILE DESCRIPTION
+*---------------------------------------------------Output:
+*       Output :
+*    6  STANDARD PRINTER OUTPUT
+*
+*       Scratch:
+*    5  SCRATCH INPUT FILE FROM ECH01
+*
+* Input: FRAPCON INPUT FILE (UNIT 55)
+*
+***********************************************************************
+* GOESINS:
+FILE05='nullfile.out', STATUS='UNKNOWN', FORM='FORMATTED',
+CARRIAGE CONTROL='NONE'
+*
+* GOESOUTS:
+FILE06='MOXexample.out',
+STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
+FILE66='MOXexample.plot', STATUS='UNKNOWN', FORM='FORMATTED',
+CARRIAGE CONTROL='LIST'
+/**********************************************************************
+        MOX Example Rod
+$frpcn
+im=50, na=4,
+ngasr = 45,
+$end
+$frpcon
+cpl = 2., crdt = 0.0, thkcld = 0.0224, thkgap = 0.0033,
+dco = 0.374, pitch = 0.5,nplot=1,
+rc = 0.0453, fotmtl = 1.997,dishsd=0.06488,
+den = 94.43, dspg = 0.3,fa = 1.,
+dspgw = 0.03, enrch = 0.229, fgpav = 382, hdish = 0.011,
+hplt = 0.5, icm = 4, imox = 1, comp = 5.945,
+idxgas = 1, iplant =-2, iq = 0, jdlpr = 0,
+jn = 5,5,
+totl = 1.31, roughc = 3.94e-5, roughf = 7.9e-5, vs = 10.0,
+nunits = 1, rsntr = 52., nsp = 1,
+p2(1) = 44*2250., p2(45) = 6*2352,
+tw(1) = 44*570, tw(45) = 6*590
+go(1) = 50*2.0e6,
+jst = 44*1, 6*2
+qf(1) = 1.0, 1.0, 1.0, 1.0, 1.0
+x(1) = 0.0, 0.3275, 0.6650, 0.9925, 1.31
+qf(6) = 0.9, 1.0, 1.1, 1.0, 0.9
+x(6) = 0.0, 0.3275, 0.6650, 0.9925, 1.31
+ProblemTime=
+0.1, 0.2, 0.3, 0.4, 0.5,
+0.6, 30., 60., 90., 120.,
+150., 180., 210., 240., 270.,
+300., 331., 360., 390., 420.,
+450., 480., 510., 540., 570.,
+600., 625., 650., 700., 750.,
+800., 850., 900., 945., 990.,
+1000., 1050., 1100., 1150., 1200.,
+1250., 1300., 1350., 1400
+1401., 1402., 1403., 1404., 1405.,
+1406.
+qmpy =
+1,2,3,4,5,
+6., 6.7, 6.7, 6.7, 6.7,
+5*6.7
+6.7, 6.7, 7.0, 7.0, 7.0,
+5*7.0,
+7.0, 7.0, 7.0, 5.8, 5.8,
+5*5.8,
+5*4.11,
+4.11, 4.11, 4.11, 4.11,
+4.0, 3.5, 3.0,
+2.5, 2.0, 1.5
+slim = .05,
+$end
+$frpmox
+enrpu39 = 65.83,
+enrpu40 = 23.45,
+enrpu41 = 7.39,
+enrpu42 = 3.33,
+$end
