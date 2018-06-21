@@ -30,10 +30,10 @@ program frapcon_input_file
     call read_frapcon_file(filename)
 
     allocate(value(na))
-    allocate(linpow(na))
-    allocate(t_cool(na))
-    allocate(p_cool(na))
-    allocate(f_cool(na))
+    allocate(linpow(na+1))
+    allocate(t_cool(na+1))
+    allocate(p_cool(na+1))
+    allocate(f_cool(na+1))
 
     ! CREATE HDF5 FILE
     i = scan(filename, '.', back=.true.)
@@ -44,7 +44,8 @@ program frapcon_input_file
         mechan = mechan, ngasmod = ngasmod, &
         icm = icm, icor = icor, iplant = iplant, &
         imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
-        moxtype = moxtype, idxgas = idxgas, iq = iq, &
+        moxtype = moxtype, idxgas = idxgas, &
+        iq = iq, ivardm=ivardm, &
         ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
         verbose=.true.)
 
@@ -75,7 +76,7 @@ program frapcon_input_file
     call frod % set_value("expected resintering density increase, kg/m^3", rsntr)
     call frod % set_value("fision gas atoms per 100 fissions", sgapf)
     call frod % set_value("swelling limit", slim)
-    call frod % set_value("pellet centering temperature, K", tkf(tsint))
+    call frod % set_value("pellet centering temperature, K", tsint)
     call frod % set_value("grain size of the fuel, um", grnsize)
     call frod % set_value("FEA friction coefficient", frcoef)
     call frod % set_value("boron-10 enrichment in ZrB2, atom %", b10)
@@ -112,13 +113,13 @@ program frapcon_input_file
     call frod % set_value("percent IFBA rods in core, %", ifba)
     call frod % set_value("end-node to plenum heat transfer fraction", qend(1))    
     call frod % set_value("rod internal pressure for FEA model, MPa", p1(1)/patoPSI)
+    call frod % set_value("radius of the fuel pellet central annulus, mm", rc(1) * intomm)
+    call frod % set_value("coolant system pressure, MPa", p2(1) * PSItoMPa)
     call frod % set_array("input fuel burnup", buin / MWskgUtoMWdMTU)
     call frod % set_array("PuO2 weight percent if MOX fuel, wt%", comp)
     call frod % set_array("gadolinia content at each axial node", gadoln)
-    call frod % set_array("radius of the fuel pellet central annulus, mm", rc * intomm)
     call frod % set_array("cladding surface temperature, K", (/( tfk(cladt(i)), i = 1, na )/) )
     call frod % set_array("axial crud thickness multiplier", crudmult)
-    call frod % set_value("coolant system pressure, MPa", p2(1) * PSItoMPa)
 
 !------------------------ NOT USED: --------------------------------------------------------------
 !    irefab                                  "Timestep to start using refabricated values (Default = 10,000)"
@@ -144,34 +145,60 @@ program frapcon_input_file
     !------------------- RUN TIME STEPS ---------------------------------------
 
     ! ITERATION OVER TIME
-    do itime = 1, im-1
+    do itime = 1, im
 
-        qtot = 1.D+3 * qmpy(itime) * sum(x(2:na+1) - x(1:na)) ! Wt
-        value = (qf(1-na+na*jst(itime):na*jst(itime)) + qf(2-na+na*jst(itime):na*jst(itime)+1))/2
-        linpow = qtot * value/sum(value) / (x(2:na+1) - x(1:na)) / ftocm ! Wt/cm
+        !qtot = 1.D+3 * qmpy(itime) * sum(x(2:na+1) - x(1:na)) ! Wt
+        !value = (qf(1-na+na*jst(itime):na*jst(itime)) + qf(2-na+na*jst(itime):na*jst(itime)+1))/2
+        !linpow = qtot * value/sum(value) / (x(2:na+1) - x(1:na)) / ftocm ! Wt/cm
+
+        qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
+        linpow = qf(1-na+na*jst(itime):na*jst(itime)+1)
+        linpow = qtot * linpow / sum(linpow)
       
-        t_cool = (/( tfc(tcoolant(i+na*(itime-1))), i = 1, na )/)
-        p_cool = pcoolant(1+na*(itime-1):na+na*(itime-1)) * PSItoPa
-        f_cool = go(itime) * lbhrft2toksm2
+        t_cool = (/( tfc(tcoolant(i+(na+1)*(itime-1))), i = 1, na+1 )/)
+        p_cool = pcoolant(1+(na+1)*(itime-1):na+1+(na+1)*(itime-1)) * PSItoPa
 
-        ! SETUP THE UPDATED VARIABLES
-        call frod % set_array("linear power, W/cm", linpow)
-        call frod % set_array("coolant temperature, C", t_cool)
-        call frod % set_array("coolant pressure, MPa", p_cool)
-        call frod % set_value("inlet coolant temperature, C", tw(itime))
-        call frod % set_value("inlet coolant pressure, MPa", p2(itime))
-        call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime))
-
+        ! INITIAL STATE
         if (itime == 1) then
-            ! INITIAL STATE
+            ! SETUP THE UPDATED VARIABLES
+            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-coolant temperature, C", t_cool)
+            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
+            call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
+            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+
             call frod % init()
+            call frod % accept()
+
+            ! SETUP THE UPDATED VARIABLES
+            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-coolant temperature, C", t_cool)
+            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
+            call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
+            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+
+            call frod % next(ProblemTime(itime-1))
+
+            call frod % accept()
+
         else
-            ! DO TRIAL TIME STEP
+
+            ! SETUP THE UPDATED VARIABLES
+            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-coolant temperature, C", t_cool)
+            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
+            call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
+            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+
             call frod % next(ProblemTime(itime-1) - ProblemTime(itime-2))
+
+            call frod % accept()
+
         endif
 
-        ! ACCEPT THE LAST TRIAL TIME STEP
-        call frod % accept()
 
         write(string, '(I0.10)') itime
         call ofile % makegroup(string)

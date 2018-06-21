@@ -101,7 +101,7 @@ module fpn_reader
         iq                  = 1                           
         jdlpr               = 0                           
         nunits              = 1                           
-        ivardm              = 1                           
+        ivardm              = 0
         nsp                 = 1                           
         chmfrh              = 0.d0                        
         chmfrw              = 0.d0                        
@@ -178,14 +178,14 @@ module fpn_reader
         pitch               = 0.5_r8k                     
         rc                  = 0.0_r8k                     
         fotmtl              = 2.d0                        
-        dishsd              = 0.064d0                     
+        dishsd              = 0.0d0                     
         den                 = 94.43_r8k                   
         dspg                = 0.3                         
         fa                  = 1.d0                        
         dspgw               = 0.0394                      
         enrch               = 1.0_r8k                     
         fgpav               = 340.84                      
-        hdish               = 0.0094d0                    
+        hdish               = 0.d0                    
         hplt                = 0.387d0                     
         idxgas              = 1                           
         iplant              =-2                           

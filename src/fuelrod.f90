@@ -319,13 +319,15 @@ contains
         case("fuel enrichment by u-235, %")
             this % driver % r__enrch(:) = var
         case("cladding thickness, cm")
-            this % driver % r__thkcld(1:n) = var * cmtoin
+            this % driver % r__thkcld(:) = var * cmtoin
         case("gap thickness, cm")
-            this % driver % r__thkgap(1:n) = var * cmtoin
+            this % driver % r__thkgap(:) = var * cmtoin
         case("outer cladding diameter, cm")
-            this % driver % r__dco(1:n) = var * cmtoin
+            this % driver % r__dco(:) = var * cmtoin
         case("coolant system pressure, MPa")
             this % driver % r__p2(it) = var * MPatoPSI
+        case("radius of the fuel pellet central annulus, mm")
+            this % driver % r__rc(:) = var * mmtoin           
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -358,6 +360,20 @@ contains
             this % driver % r__thkgap(1:n) = var(:) * cmtoin
         case("outer cladding diameter, cm")
             this % driver % r__dco(1:n) = var(:) * cmtoin
+
+        case("-linear power, W/cm")
+            this % driver % r__qmpy(it) = sum(var) / cmtoft * & 
+            sum(this % driver % r__deltaz(1:n) / this % driver % r__dco(1:n)) / pi / intoft * WtoBTUh / this % driver % r__totl
+            this % driver % r__qf(:) = var(:) / sum(var)
+        case("-coolant temperature, C")
+            this % driver % r__coolanttemp(it,1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
+            this % driver % r__tcoolant(1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
+        case("-coolant pressure, MPa")
+            this % driver % r__p2(it) = var(1) * MPatoPSI
+            this % driver % r__coolantpressure(it,1:n+1) = var(:) * MPatoPSI
+            this % driver % r__pcoolant(1:n+1) = var(:) * MPatoPSI
+
+
         case("linear power, W/cm")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             a = sum( var(:) * this % driver % r__deltaz(1:n) ) / this % driver % r__totl /cmtoft ! W/ft
@@ -381,8 +397,6 @@ contains
             this % driver % r__qc(:)        = var(:) / Bhft2toWm2
         case("gadolinia content at each axial node")
             this % driver % r__gadoln(:)    = var(:)
-        case("radius of the fuel pellet central annulus, mm")
-            this % driver % r__rc(:)        = var(:) * mmtoin
         case("cladding surface temperature, K")
             this % driver % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
         case("axial crud thickness multiplier")
