@@ -4,7 +4,9 @@
 build/
 test/
 
+!test/IFA-432/*
 
+*.h5
 *.png
 *.aux
 *.nav
