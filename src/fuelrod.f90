@@ -468,7 +468,7 @@ contains
         case('bulk coolant temperature, C')
             var(:) = 0.5d0 * ( this % driver % BulkCoolantTemp(1:n) + this % driver % BulkCoolantTemp(2:n+1) )
             var(:) = (/( tfc(var(i)), i = 1, n )/)
-        case('total gap conductance, W/(m^2*K)')
+        case('total gap conductance, W|(m^2*K)')
             var(:) = this % driver % TotalHgap(1:n) * Bhft2FtoWm2K
         case('oxide thickness, um')
             var(:) = this % driver % EOSZrO2Thk(1:n) * fttomil * miltoum
@@ -503,39 +503,39 @@ contains
         case('cladding radial stress, MPa')
             var(:) = this % driver % sig(1:n,3) * PSItoMPa
         case('cladding inner radius displacement, mm')
-            var(:) = this % driver % totinner(:) * intomm
+            var(:) = this % driver % totinner(1:n) * intomm
         case('cladding outer radius displacement, mm')
-            var(:) = this % driver % totcrl(:) * intomm
+            var(:) = this % driver % totcrl(1:n) * intomm
         case('cladding creep rate')
-            var(:) = this % driver % creapratearray(:)
+            var(:) = this % driver % creapratearray(1:n)
         case('fuel surface outward displacement, mm')
-            var(:) = this % driver % totdef(:) * intomm
+            var(:) = this % driver % totdef(1:n) * intomm
         case('fuel thermal expansion, mm')
-            var(:) = this % driver % fuelexptot(:) * intomm
+            var(:) = this % driver % fuelexptot(1:n) * intomm
         case('fuel swelling, mm')
-            var(:) = this % driver % fuelswltot(:) * intomm
+            var(:) = this % driver % fuelswltot(1:n) * intomm
         case('fuel creep, mm')
-            var(:) = this % driver % fuelcreeptot(:) * intomm
+            var(:) = this % driver % fuelcreeptot(1:n) * intomm
         case('fuel densification, mm')
-            var(:) = this % driver % fueldentot(:) * intomm
+            var(:) = this % driver % fueldentot(1:n) * intomm
         case('fuel relocation, mm')
-            var(:) = this % driver % relocation(:) * intomm
+            var(:) = this % driver % relocation(1:n) * intomm
         case('oxide thickness, mm')
-            var(:) = this % driver % EOSZrO2Thk(:) * fttomil * intomm
+            var(:) = this % driver % EOSZrO2Thk(1:n) * fttomil * intomm
         case('cladding hydrogen concentration')
-            var(:) = this % driver % CladH2Concen(:)
-        case('coolant density, kg/m^3')
-            var(:) = this % driver % rhof * lbft3tokgm3
+            var(:) = this % driver % CladH2Concen(1:n)
+        case('coolant density, kg|m^3')
+            var(:) = this % driver % rhof(1:n) * lbft3tokgm3
         case('coolant pressure, MPa')
-            var(:) = this % driver % coolantpressure(it,:) * PSItoMPa
+            var(:) = this % driver % coolantpressure(it,1:n) * PSItoMPa
         case('axial mesh, cm')
             var(:) = 0.5d0 * (this % driver % x(1:n) + this % driver % x(2:n+1)) / cmtoft
         case('gas release fractions')
             var(:) = this % driver % RB_rod(1:11,it)
         case('centerline temperature, C')
             var(:) = (/( tfc(this % driver % tmpfuel(m,i)), i = 1, n )/)
-        case('fuel stored energy, J/kg')
-            var(:) = this % driver % StoredEnergy(:) * BTUlbtoJkg
+        case('fuel stored energy, J|kg')
+            var(:) = this % driver % StoredEnergy(1:n) * BTUlbtoJkg
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

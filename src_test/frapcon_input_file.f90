@@ -11,7 +11,8 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    character(len=256) :: filename, string, varname
+    integer, parameter :: ivars = 34
+    character(len=256) :: filename, string, varname(ivars)
 
     ! ITERATIONAL VARIABLES
     integer :: i, itime
@@ -23,6 +24,41 @@ program frapcon_input_file
     real(8), allocatable :: t_cool(:)
     real(8), allocatable :: p_cool(:)
     real(8), allocatable :: f_cool(:)
+
+    varname( 1) = 'bulk coolant temperature, C'
+    varname( 2) = 'total gap conductance, W|(m^2*K)'
+    varname( 3) = 'oxide thickness, um'
+    varname( 4) = 'thermal gap thickness, um'
+    varname( 5) = 'mechanical gap thickness, um'
+    varname( 6) = 'gap pressure, MPa'
+    varname( 7) = 'cladding hoop strain, %'
+    varname( 8) = 'cladding axial strain, %'
+    varname( 9) = 'cladding radial strain, %'
+    varname(10) = 'cladding permanent hoop strain, %'
+    varname(11) = 'cladding permanent axial strain, %'
+    varname(12) = 'cladding permanent radial strain, %'
+    varname(13) = 'cladding termal hoop strain, %'
+    varname(14) = 'cladding termal axial strain, %'
+    varname(15) = 'cladding termal radial strain, %'
+    varname(16) = 'cladding hoop stress, MPa'
+    varname(17) = 'cladding axial stress, MPa'
+    varname(18) = 'cladding radial stress, MPa'
+    varname(19) = 'cladding inner radius displacement, mm'
+    varname(20) = 'cladding outer radius displacement, mm'
+    varname(21) = 'cladding creep rate'
+    varname(22) = 'fuel surface outward displacement, mm'
+    varname(23) = 'fuel thermal expansion, mm'
+    varname(24) = 'fuel swelling, mm'
+    varname(25) = 'fuel creep, mm'
+    varname(26) = 'fuel densification, mm'
+    varname(27) = 'fuel relocation, mm'
+    varname(28) = 'oxide thickness, mm'
+    varname(29) = 'cladding hydrogen concentration'
+    varname(30) = 'coolant density, kg|m^3'
+    varname(31) = 'coolant pressure, MPa'
+    varname(32) = 'axial mesh, cm'
+    varname(33) = 'centerline temperature, C'
+    varname(34) = 'fuel stored energy, J|kg'
 
     ! READING INPUT FILE
     call get_command_argument(1, filename)
@@ -199,49 +235,13 @@ program frapcon_input_file
 
         endif
 
-
         write(string, '(I0.10)') itime
         call ofile % makegroup(string)
 
-        varname = 'centerline temperature, C'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'axial fuel temperature, C'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'bulk coolant temperature, C'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        !varname = 'total gap conductance, W/(m^2*K)'
-        !call frod % get_array(varname, value)
-        !call ofile % dump(varname, value)
-
-        varname = 'oxide thickness, um'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'mechanical gap thickness, um'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'gap pressure, MPa'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'cladding hoop strain, %'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'cladding axial stress, MPa'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
-
-        varname = 'axial mesh, cm'
-        call frod % get_array(varname, value)
-        call ofile % dump(varname, value)
+        do i = 1, ivars
+            call frod % get_array(varname(i), value)
+            call ofile % dump(varname(i), value)
+        enddo
 
         call ofile % closegroup()
 
