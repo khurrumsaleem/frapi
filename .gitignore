@@ -2,9 +2,6 @@
 .sconsign.dblite
 
 build/
-#test/
-
-!test/IFA-432/*
 
 *.h5
 *.png

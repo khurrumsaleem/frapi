@@ -183,10 +183,6 @@ program frapcon_input_file
     ! ITERATION OVER TIME
     do itime = 1, im
 
-        !qtot = 1.D+3 * qmpy(itime) * sum(x(2:na+1) - x(1:na)) ! Wt
-        !value = (qf(1-na+na*jst(itime):na*jst(itime)) + qf(2-na+na*jst(itime):na*jst(itime)+1))/2
-        !linpow = qtot * value/sum(value) / (x(2:na+1) - x(1:na)) / ftocm ! Wt/cm
-
         qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
         linpow = qf(1-na+na*jst(itime):na*jst(itime)+1)
         linpow = qtot * linpow / sum(linpow)
