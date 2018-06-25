@@ -11,8 +11,9 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    integer, parameter :: ivars = 34
-    character(len=256) :: filename, string, varname(ivars)
+    integer, parameter :: ivars_array = 34, ivars_value = 3
+    character(len=256) :: filename, string
+    character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
     ! ITERATIONAL VARIABLES
     integer :: i, itime
@@ -25,40 +26,44 @@ program frapcon_input_file
     real(8), allocatable :: p_cool(:)
     real(8), allocatable :: f_cool(:)
 
-    varname( 1) = 'bulk coolant temperature, C'
-    varname( 2) = 'total gap conductance, W|(m^2*K)'
-    varname( 3) = 'oxide thickness, um'
-    varname( 4) = 'thermal gap thickness, um'
-    varname( 5) = 'mechanical gap thickness, um'
-    varname( 6) = 'gap pressure, MPa'
-    varname( 7) = 'cladding hoop strain, %'
-    varname( 8) = 'cladding axial strain, %'
-    varname( 9) = 'cladding radial strain, %'
-    varname(10) = 'cladding permanent hoop strain, %'
-    varname(11) = 'cladding permanent axial strain, %'
-    varname(12) = 'cladding permanent radial strain, %'
-    varname(13) = 'cladding termal hoop strain, %'
-    varname(14) = 'cladding termal axial strain, %'
-    varname(15) = 'cladding termal radial strain, %'
-    varname(16) = 'cladding hoop stress, MPa'
-    varname(17) = 'cladding axial stress, MPa'
-    varname(18) = 'cladding radial stress, MPa'
-    varname(19) = 'cladding inner radius displacement, mm'
-    varname(20) = 'cladding outer radius displacement, mm'
-    varname(21) = 'cladding creep rate'
-    varname(22) = 'fuel surface outward displacement, mm'
-    varname(23) = 'fuel thermal expansion, mm'
-    varname(24) = 'fuel swelling, mm'
-    varname(25) = 'fuel creep, mm'
-    varname(26) = 'fuel densification, mm'
-    varname(27) = 'fuel relocation, mm'
-    varname(28) = 'oxide thickness, mm'
-    varname(29) = 'cladding hydrogen concentration'
-    varname(30) = 'coolant density, kg|m^3'
-    varname(31) = 'coolant pressure, MPa'
-    varname(32) = 'axial mesh, cm'
-    varname(33) = 'centerline temperature, C'
-    varname(34) = 'fuel stored energy, J|kg'
+    varname_array( 1) = 'bulk coolant temperature, C'
+    varname_array( 2) = 'total gap conductance, W|(m^2*K)'
+    varname_array( 3) = 'oxide thickness, um'
+    varname_array( 4) = 'thermal gap thickness, um'
+    varname_array( 5) = 'mechanical gap thickness, um'
+    varname_array( 6) = 'gap pressure, MPa'
+    varname_array( 7) = 'cladding hoop strain, %'
+    varname_array( 8) = 'cladding axial strain, %'
+    varname_array( 9) = 'cladding radial strain, %'
+    varname_array(10) = 'cladding permanent hoop strain, %'
+    varname_array(11) = 'cladding permanent axial strain, %'
+    varname_array(12) = 'cladding permanent radial strain, %'
+    varname_array(13) = 'cladding termal hoop strain, %'
+    varname_array(14) = 'cladding termal axial strain, %'
+    varname_array(15) = 'cladding termal radial strain, %'
+    varname_array(16) = 'cladding hoop stress, MPa'
+    varname_array(17) = 'cladding axial stress, MPa'
+    varname_array(18) = 'cladding radial stress, MPa'
+    varname_array(19) = 'cladding inner radius displacement, mm'
+    varname_array(20) = 'cladding outer radius displacement, mm'
+    varname_array(21) = 'cladding creep rate'
+    varname_array(22) = 'fuel surface outward displacement, mm'
+    varname_array(23) = 'fuel thermal expansion, mm'
+    varname_array(24) = 'fuel swelling, mm'
+    varname_array(25) = 'fuel creep, mm'
+    varname_array(26) = 'fuel densification, mm'
+    varname_array(27) = 'fuel relocation, mm'
+    varname_array(28) = 'oxide thickness, mm'
+    varname_array(29) = 'cladding hydrogen concentration'
+    varname_array(30) = 'coolant density, kg|m^3'
+    varname_array(31) = 'coolant pressure, MPa'
+    varname_array(32) = 'axial mesh, cm'
+    varname_array(33) = 'centerline temperature, C'
+    varname_array(34) = 'fuel stored energy, J|kg'
+
+    varname_value( 1) = 'fission gas release, %'
+    varname_value( 2) = 'time, day'
+    varname_value( 3) = 'average linear power, W|cm'
 
     ! READING INPUT FILE
     call get_command_argument(1, filename)
@@ -183,8 +188,10 @@ program frapcon_input_file
     ! ITERATION OVER TIME
     do itime = 1, im
 
+        write(*,*) 'time step : ', itime
+
         qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
-        linpow = qf(1-na+na*jst(itime):na*jst(itime)+1)
+        linpow = qf((na+1) * (jst(itime)-1) + 1 : (na+1) * (jst(itime)-1) + na + 1)
         linpow = qtot * linpow / sum(linpow)
       
         t_cool = (/( tfc(tcoolant(i+(na+1)*(itime-1))), i = 1, na+1 )/)
@@ -192,7 +199,7 @@ program frapcon_input_file
 
         ! INITIAL STATE
         if (itime == 1) then
-            ! SETUP THE UPDATED VARIABLES
+
             call frod % set_array("-linear power, W/cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
@@ -203,7 +210,6 @@ program frapcon_input_file
             call frod % init()
             call frod % accept()
 
-            ! SETUP THE UPDATED VARIABLES
             call frod % set_array("-linear power, W/cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
@@ -217,7 +223,6 @@ program frapcon_input_file
 
         else
 
-            ! SETUP THE UPDATED VARIABLES
             call frod % set_array("-linear power, W/cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
@@ -234,9 +239,14 @@ program frapcon_input_file
         write(string, '(I0.10)') itime
         call ofile % makegroup(string)
 
-        do i = 1, ivars
-            call frod % get_array(varname(i), value)
-            call ofile % dump(varname(i), value)
+        do i = 1, ivars_array
+            call frod % get_array(varname_array(i), value)
+            call ofile % dump(varname_array(i), value)
+        enddo
+
+        do i = 1, ivars_value
+            call frod % get_value(varname_value(i), value(1))
+            call ofile % dump(varname_value(i), value(:2))
         enddo
 
         call ofile % closegroup()

@@ -1,27 +1,33 @@
-#!/bin/env/python
+#!/usr/bin/python 
 # -*- coding:utf-8 -*-
 import argparse
 from h5py import *
 
-MWskgUtoMWdMTU = 1000.0
-fttoin = 12.0
-intocm = 2.54
-miltoft = 0.001
-miltomm = 0.01
-BTUlbtoJkg = 2326.000292
-Bhft2FtoWm2K = 5.678263
-lbtog = 453.5923699997481
-lbft3tokgm3 = 16.0184634
-WtoBTUh = 3.41214163513
-PSItoMPa = 1.0E-3
+MWskgUtoMWdMTU = lambda x: x * 1000.0
+fttoin = lambda x: x * 12.0
+intocm = lambda x: x * 2.54
+fttocm = lambda x: fttoin(intocm(x))
+miltoft = lambda x: x * 0.001
+miltomm = lambda x: x * 0.01
+miltoum = lambda x: miltomm(x) * 1.E+3
+BTUlbtoJkg = lambda x: x * 2326.000292
+Bhft2FtoWm2K = lambda x: x * 5.678263
+lbtog = lambda x: x * 453.5923699997481
+lbft3tokgm3 = lambda x: x * 16.0184634
+WtoBTUh = lambda x: x * 3.41214163513
+PSItoMPa = lambda x: x * 1.0E-3
 ktf = lambda x: x * 1.8 - 459.67
 ftk = lambda x: (x + 459.67) / 1.8
+ftoc = lambda x: ftk(x) - 273.15
+kwfttowcm = lambda x: x * 1.E+3 / 12.0 / 2.54
+pct = lambda x: x * 100
+none = lambda x: x
 
 keylist={
- 1  : 'time, days',
- 2  : 'linear power, W|cm',
- 20 : 'peak linear power, W|cm',
- 10 : 'average burnup,  MWd|kgU',
+ 1  : ('time, day', none),
+ 2  : ('average linear power, W|cm' , kwfttowcm),
+# 20 : 'peak linear power, W|cm', 
+ 10 : ('average burnup,  MWd|kgU', none),
 # 35 : 'peak power burnup, MWd/kgU',
 # 34 : 'na na Peak Power Axial Element Indicator',
 # 36 : 'F K Peak Power Pellet CenterLine Temperature',
@@ -30,14 +36,14 @@ keylist={
 # 39 : 'F K Peak Power Clad Outside Temperature',
 # 8  : 'F K Average Fuel Temperature',
 # 9  : 'Btu/lbm j/kg Fuelled Region Stored Energy',
- 5  : 'plenum gas temperature, C',
- 6  : 'plenum gas pressure, MPa',
+ 5  : ('plenum gas temperature, C', ftoc),
+ 6  : ('plenum gas pressure, MPa', PSItoMPa),
 # 7  : 'in^3 cm^3 Total Void Volume',
 # 3  : 'in mm Fuel Stack Axial Extension',
 # 4  : 'in mm Cladding Axial Extension (Including Irrad Growth)',
 # 33 : '% % Relative Cladding Axial Extension',
 # 40 : '% % Relative Fuel Axial Extension',
- 11 : 'fission gas release, %',
+ 11 : ('fission gas release, %', none),
 # 21 : '% % Molar Fraction of He',
 # 22 : '% % Molar Fraction of Fission Products (Xe+Kr)',
 # 23 : '% % Molar Fraction of Air',
@@ -45,13 +51,13 @@ keylist={
 # 25 : 'na na Free Gas in the Rod cm3STP',
 # 26 : 'na na Moles of Fission Gas Released',
 # 28 : 'na na Moles of Gas in Rod',
- 130: 'axial linear power, W|cm',
+ 130: ('axial linear power, W|cm', kwfttowcm),
 # 156: 'na na Normalized axial node power',
 # 116: 'Btu/(hr-ft^2) W/(m^2) Surface Heat Flux',
 # 142: 'GWd/MTU GWd/MTU Nodal Burnup',
 # 157: 'n/m^2 n/m^2 Axial Fast Fluence',
  #150: 'ft m Axial Element Elevation',
- 122: 'centerline temperature, C',
+ 122: ('centerline temperature, C', ftoc),
 # 123: 'F K Fuel Pellet Surface Temperature',
 # 145: 'F K Fuel Volume Average Temperature',
 # 158: 'F K Gap Average Temperature',
@@ -61,37 +67,37 @@ keylist={
 # 139: 'F K Oxide Surface Temperature',
 # 127: 'F K Bulk Coolant Temperature',
 # 114: 'na na Fuel Duty Index',
- 121: 'fuel stored energy, J|kg',
- 107: 'cladding axial stress, MPa',
- 108: 'cladding hoop stress, MPa',
- 109: 'effective cladding stress, MPa',
- 101: 'cladding axial strain, MPa',
- 102: 'cladding hoop strain, MPa',
- 103: 'cladding radial strain, MPa',
- 136: 'cladding elastic hoop strain, MPa',
- 137: 'cladding elastic axial strain, MPa',
- 138: 'cladding elastic radial strain, MPa',
- 104: 'cladding permanent axial strain, MPa',
- 105: 'cladding permanent hoop strain, MPa',
- 106: 'cladding permanent radial strain, MPa',
- 144: 'cladding creep rate',
+ 121: ('fuel stored energy, J|kg', BTUlbtoJkg),
+ 107: ('cladding axial stress, MPa', PSItoMPa),
+ 108: ('cladding hoop stress, MPa', PSItoMPa),
+ 109: ('effective cladding stress, MPa', PSItoMPa),
+ 101: ('cladding axial strain, %', pct),
+ 102: ('cladding hoop strain, %', pct),
+ 103: ('cladding radial strain, %', pct),
+ 136: ('cladding elastic hoop strain, %', pct),
+ 137: ('cladding elastic axial strain, %', pct),
+ 138: ('cladding elastic radial strain, %', pct),
+ 104: ('cladding permanent axial strain, %', pct),
+ 105: ('cladding permanent hoop strain, %', pct),
+ 106: ('cladding permanent radial strain, %', pct),
+ 144: ('cladding creep rate', none),
 # 152: '% % Axial Strain due to Irradiation growth',
- 169: 'cladding inner radius total deformation, um',
- 170: 'cladding outer radius total deformation, um',
- 128: 'fuel surface displacement, um',
- 161: 'fuel thermal Expansion, um',
- 162: 'fuel swelling, um',
- 164: 'fuel densification, um',
- 165: 'fuel relocation, um',
- 143: 'fuel swelling rate',
- 133: 'fuel surface axial strain',
+ 169: ('cladding inner radius total deformation, um', miltoum),
+ 170: ('cladding outer radius total deformation, um', miltoum),
+ 128: ('fuel surface displacement, um',  miltoum),
+ 161: ('fuel thermal Expansion, um',  miltoum),
+ 162: ('fuel swelling, um',  miltoum),
+ 164: ('fuel densification, um',  miltoum),
+ 165: ('fuel relocation, um',  miltoum),
+ 143: ('fuel swelling rate', none),
+ 133: ('fuel surface axial strain', none),
 # 141: '% % Nodal FGR',
- 131: 'gap pressure, MPa',
+ 131: ('gap pressure, MPa', PSItoMPa),
 # 129: 'psia mpa Gap Gas Pressure',
- 155: 'mechanical gap, um',
- 112: 'thermal gap, um',
- 146: 'gap conductance, W|(m^2K)',
- 115: 'oxide thickness, um',
+ 155: ('mechanical gap, um', miltoum),
+ 112: ('thermal gap, um', miltoum),
+ 146: ('gap conductance, W|(m^2K)', Bhft2FtoWm2K),
+ 115: ('oxide thickness, um', miltoum),
 # 140: 'ppm ppm Zircaloy-2 Hydrogen Concentration',
 # 117: 'lbm/ft^3 kg/m^3 Coolant Density',
 # 118: 'lb/(hr-ft^2) kg/(s-m^2) Coolant Mass Flux',
@@ -127,4 +133,5 @@ if __name__ == '__main__':
 			group = f.create_group("%06i"%itime)
 			group.attrs['time, day'] = d[1]
 			for i in keylist:
-				group[keylist[i]] = d[i]
+				key, conv = keylist[i]
+				group[key] = map(conv, d[i])

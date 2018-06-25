@@ -422,12 +422,24 @@ contains
         it = this % driver % it
 
         select case(key)
+        case('average linear power, W|cm')
+            var = this % driver % qmpy(it) * BTUhtokW * &
+                 (this % driver % dcoBOL * intoft * pi) / this % driver % fa * &
+                  1.D+3 * cmtoft
         case('outlet coolant mass flux, kg/(s*m^2)')
             var = this % driver % go(it) * lbhrft2toksm2
         case('plenum gas temperature, C')
             var = tfc(this % driver % tplen)
         case('plenum gas pressure, MPa')
             var = this % driver % press * PSItoMPa
+        case('fission gas release, %')
+            if(this % driver % ngasmod == 4) then
+                var = sum(this % driver % rb_rod(:,it)) * 100.d0
+            else
+                var = this % driver % tfgfr * 100.d0
+            endif
+        case('time, day')
+            var = this % driver % ProblemTime(it) * sectoday
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
