@@ -535,8 +535,6 @@ contains
             var(:) = this % driver % fueldentot(1:n) * intomm
         case('fuel relocation, mm')
             var(:) = this % driver % relocation(1:n) * intomm
-        case('oxide thickness, mm')
-            var(:) = this % driver % EOSZrO2Thk(1:n) * fttomil * intomm
         case('cladding hydrogen concentration')
             var(:) = this % driver % CladH2Concen(1:n)
         case('coolant density, kg|m^3')
@@ -551,6 +549,8 @@ contains
             var(:) = (/( tfc(this % driver % tmpfuel(m+1,i)), i = 1, n )/)
         case('fuel stored energy, J|kg')
             var(:) = this % driver % StoredEnergy(1:n) * BTUlbtoJkg
+        case('fuel burnup, MW*s|kg')
+            var(:) = this % driver % EOSNodeburnup(1:n) * 1.D-3 / MWskgUtoMWdMTU
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

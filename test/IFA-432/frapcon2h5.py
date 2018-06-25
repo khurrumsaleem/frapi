@@ -3,19 +3,20 @@
 import argparse
 from h5py import *
 
-MWskgUtoMWdMTU = lambda x: x * 1000.0
+MWdMTUtoMWskgU = lambda x: x * 86.4
 fttoin = lambda x: x * 12.0
 intocm = lambda x: x * 2.54
 fttocm = lambda x: fttoin(intocm(x))
 miltoft = lambda x: x * 0.001
-miltomm = lambda x: x * 0.01
+miltomm = lambda x: intocm(x) * 0.01
 miltoum = lambda x: miltomm(x) * 1.E+3
+fttoum = lambda x: intocm(fttoin(x)) * 1.E+5
 BTUlbtoJkg = lambda x: x * 2326.000292
 Bhft2FtoWm2K = lambda x: x * 5.678263
 lbtog = lambda x: x * 453.5923699997481
 lbft3tokgm3 = lambda x: x * 16.0184634
 WtoBTUh = lambda x: x * 3.41214163513
-PSItoMPa = lambda x: x * 1.0E-3
+PSItoMPa = lambda x: x * 6.89475728E-3
 ktf = lambda x: x * 1.8 - 459.67
 ftk = lambda x: (x + 459.67) / 1.8
 ftoc = lambda x: (x - 32.0) / 1.8
@@ -34,7 +35,7 @@ keylist={
 # 37 : 'F K Peak Power Pellet Surface Temperature',
 # 38 : 'F K Peak Power Clad Inside Temperature',
 # 39 : 'F K Peak Power Clad Outside Temperature',
-# 8  : 'F K Average Fuel Temperature',
+ 8  : ('average fuel temperature, C', ftoc),
 # 9  : 'Btu/lbm j/kg Fuelled Region Stored Energy',
  5  : ('plenum gas temperature, C', ftoc),
  6  : ('plenum gas pressure, MPa', PSItoMPa),
@@ -54,18 +55,18 @@ keylist={
  130: ('axial linear power, W|cm', kwfttowcm),
 # 156: 'na na Normalized axial node power',
 # 116: 'Btu/(hr-ft^2) W/(m^2) Surface Heat Flux',
-# 142: 'GWd/MTU GWd/MTU Nodal Burnup',
+ 142: ('fuel burnup, MW*s|kg', MWdMTUtoMWskgU),
 # 157: 'n/m^2 n/m^2 Axial Fast Fluence',
- #150: 'ft m Axial Element Elevation',
+ 150: ('axial mesh, cm', fttocm),
  122: ('centerline temperature, C', ftoc),
-# 123: 'F K Fuel Pellet Surface Temperature',
-# 145: 'F K Fuel Volume Average Temperature',
-# 158: 'F K Gap Average Temperature',
-# 124: 'F K Cladding Inside Temperature',
-# 125: 'F K Cladding Average Temperature',
-# 126: 'F K Cladding Outside Temperature',
-# 139: 'F K Oxide Surface Temperature',
-# 127: 'F K Bulk Coolant Temperature',
+ 123: ('fuel pellet surface temperature, C', ftoc),
+ 145: ('fuel volume average temperature, C', ftoc),
+ 158: ('gap average temperature, C', ftoc),
+ 124: ('cladding inside temperature, C', ftoc),
+ 125: ('cladding average temperature, C', ftoc),
+ 126: ('cladding outside temperature, C', ftoc),
+ 139: ('oxide surface temperature, C', ftoc),
+ 127: ('bulk coolant temperature, C', ftoc),
 # 114: 'na na Fuel Duty Index',
  121: ('fuel stored energy, J|kg', BTUlbtoJkg),
  107: ('cladding axial stress, MPa', PSItoMPa),
@@ -92,16 +93,16 @@ keylist={
  143: ('fuel swelling rate', none),
  133: ('fuel surface axial strain', none),
 # 141: '% % Nodal FGR',
- 131: ('gap pressure, MPa', PSItoMPa),
-# 129: 'psia mpa Gap Gas Pressure',
+ 131: ('gap interface pressure, MPa', PSItoMPa),
+ 129: ('gap pressure, MPa',PSItoMPa),
  155: ('mechanical gap, um', miltoum),
  112: ('thermal gap, um', miltoum),
- 146: ('gap conductance, W|(m^2K)', Bhft2FtoWm2K),
+ 146: ('total gap conductance, W|(m^2*K)', Bhft2FtoWm2K),
  115: ('oxide thickness, um', miltoum),
 # 140: 'ppm ppm Zircaloy-2 Hydrogen Concentration',
 # 117: 'lbm/ft^3 kg/m^3 Coolant Density',
 # 118: 'lb/(hr-ft^2) kg/(s-m^2) Coolant Mass Flux',
-# 119: 'psia mpa Coolant Pressure',
+ 119: ('coolant pressure, MPa', PSItoMPa),
 # 201: 'F K Fuel Rod Mesh Temperatures',
  }
 

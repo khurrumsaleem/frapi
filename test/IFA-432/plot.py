@@ -6,17 +6,17 @@ f0 = File('432r1.h5')
 f1 = File('plot432r1.h5')
 
 names = [
-'centerline temperature, C',
+#'centerline temperature, C',
 #'fission gas release, %',
 #'average linear power, W|cm',
 #'bulk coolant temperature, C',
-#'total gap conductance, W/(m^2*K)',
+#'total gap conductance, W|(m^2*K)',
 #'oxide thickness, um',
 #'mechanical gap thickness, um',
 #'gap pressure, MPa',
 #'cladding hoop strain, %',
 #'cladding hoop stress, MPa',
-#'cladding axial stress, MPa',
+'fuel burnup, MW*s|kg',
 ]   
 
 for i, name in enumerate(names):
