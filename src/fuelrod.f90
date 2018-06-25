@@ -401,6 +401,9 @@ contains
             this % driver % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
         case("axial crud thickness multiplier")
             this % driver % r__crudmult(:)  = var(:)
+        case("neutron flux, 1|(cm^2*s)")
+            this % driver % r__flux(:)  = var(:)
+
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -545,7 +548,7 @@ contains
         case('gas release fractions')
             var(:) = this % driver % RB_rod(1:11,it)
         case('centerline temperature, C')
-            var(:) = (/( tfc(this % driver % tmpfuel(m,i)), i = 1, n )/)
+            var(:) = (/( tfc(this % driver % tmpfuel(m+1,i)), i = 1, n )/)
         case('fuel stored energy, J|kg')
             var(:) = this % driver % StoredEnergy(1:n) * BTUlbtoJkg
         case default

@@ -161,6 +161,7 @@ program frapcon_input_file
     call frod % set_array("gadolinia content at each axial node", gadoln)
     call frod % set_array("cladding surface temperature, K", (/( tfk(cladt(i)), i = 1, na )/) )
     call frod % set_array("axial crud thickness multiplier", crudmult)
+    call frod % set_array("neutron flux, 1|(cm^2*s)", flux)
 
 !------------------------ NOT USED: --------------------------------------------------------------
 !    irefab                                  "Timestep to start using refabricated values (Default = 10,000)"
