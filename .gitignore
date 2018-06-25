@@ -4,6 +4,7 @@
 build/
 
 *.h5
+*.n
 *.png
 *.aux
 *.nav
