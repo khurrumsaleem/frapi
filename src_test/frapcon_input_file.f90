@@ -90,6 +90,11 @@ program frapcon_input_file
         ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
         verbose=.true.)
 
+    if (.not. (jn(1) == na+1) ) then
+        x(2: ) = (/( i * (x(jn(1)) - x(1)) / na, i = 1, na )/)
+        qf(2:) = qf(1)
+    endif
+
     call frod % set_value("cladding thickness, cm", thkcld(1) * intocm)
     call frod % set_value("gap thickness, cm", thkgap(1) * intocm)
     call frod % set_value("outer cladding diameter, cm", dco(1) * intocm)
