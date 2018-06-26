@@ -204,12 +204,12 @@ program rastk_input_file
                 pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
 
                 ! SETUP THE UPDATED VARIABLES
-                call frod(i_frod) % set_array("linear power, W/cm", power_FRPCN)
+                call frod(i_frod) % set_array("linear power, W|cm", power_FRPCN)
                 call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
                 call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
                 call frod(i_frod) % set_value("inlet coolant temperature, C", tcool_FRPCN(1))
                 call frod(i_frod) % set_value("inlet coolant pressure, MPa", pcool_FRPCN(1))
-                call frod(i_frod) % set_value("coolant mass flux, kg/(s*m^2)", mass_flow_rate_in)
+                call frod(i_frod) % set_value("coolant mass flux, kg|(s*m^2)", mass_flow_rate_in)
 
                 if(i_bu_step == 1) then
                     ! DO INITIAL TIME STEP
@@ -223,7 +223,7 @@ program rastk_input_file
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
                 call frod(i_frod) % get_array('axial fuel temperature, C', fue_avg_temp)
                 call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
-                call frod(i_frod) % get_array('total gap conductance, W/(m^2*K)', fue_dyn_hgap)
+                call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
                 call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
                 call frod(i_frod) % get_array('mechanical gap thickness, um', t_fuecladgap)
                 call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
