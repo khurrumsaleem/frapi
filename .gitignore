@@ -17,3 +17,5 @@ build/
 *.out
 *.fdb_latexmk
 *.fls
+*.plot
+*.tmp

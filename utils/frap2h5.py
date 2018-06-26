@@ -121,15 +121,16 @@ def txt2array(d):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(prog="Make *.h5 file from frapcon output")
-	parser.add_argument("fname", nargs='?', help="output frapcon file")
+	parser.add_argument("ifile", nargs='?', help="output frapcon file")
+	parser.add_argument("ofile", nargs='?', help="output HDF5 file")
 	args = parser.parse_args()
 
-	with open(args.fname) as f:
+	with open(args.ifile) as f:
 		data = f.read()
 		data = data.split("===next time step")[1:]
 		data = map(txt2array, data)
 
-	with File(args.fname.split('.')[0]+'.h5') as f:
+	with File(args.ofile) as f:
 		for itime, d in enumerate(data):
 			group = f.create_group("%06i"%itime)
 			group.attrs['time, day'] = d[1]

@@ -3,8 +3,8 @@ FILE05='nullfile.tmp', STATUS='unknown', FORM='FORMATTED',
 CARRIAGE CONTROL='LIST'
 *
 * GOESOUTS:
-FILE06='out432r1.n', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
-FILE66='plot432r1.n', STATUS='UNKNOWN', FORM='FORMATTED'
+FILE06='IFA-432-r1.out', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
+FILE66='IFA-432-r1.plot', STATUS='UNKNOWN', FORM='FORMATTED'
 /**********************************************************************
 ifa 432 rod 1
 $frpcn
