@@ -304,6 +304,8 @@ contains
             this % driver % r__chmfrw       = var * mmtoin
         case("dish shoulder width, mm")
             this % driver % r__dishsd       = var * mmtoin
+        case("dish height, mm")
+            this % driver % r__hdish        = var * mmtoin
         case("clad roughness, mm")
             this % driver % r__roughc       = var * mmtoin
         case("fuel roughness, mm")

@@ -33,6 +33,7 @@ program rastk_input_file
     real(8) :: mass_flow_rate_in
     real(8) :: init_den
     real(8) :: dtime
+    real(8) :: hdish, dishsd
 
     ! ARRAY OF FUEL RODS
     type(frod_type), allocatable :: frod(:)
@@ -166,6 +167,9 @@ program rastk_input_file
     height_FRPCN(2:) = (/( height_RASTK(sum(z_meshes(1:i))+1), i = 1, na_in )/)
     thickness_FRPCN(:) = height_FRPCN(2:na_in+1) - height_FRPCN(1:na_in)
 
+    dishsd = 0.064d0 * 2.54d0 * 10.d0
+    hdish  = 0.0094d0 * 2.54d0 * 10.d0
+
     ! arguments must be the same for all fuel rods
     do i_frod = 1, n_frod
 
@@ -180,7 +184,8 @@ program rastk_input_file
         call frod(i_frod) % set_value("as-fabricated apparent fuel density, %TD", init_den * 10.40d0/10.96d0)
         call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
         call frod(i_frod) % set_array("thickness of the axial nodes, cm", thickness_FRPCN)
-        
+        call frod(i_frod) % set_value("dish shoulder width, mm", dishsd)
+        call frod(i_frod) % set_value("dish height, mm", hdish)
 
     enddo
 
