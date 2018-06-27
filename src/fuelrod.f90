@@ -465,23 +465,29 @@ contains
         it = this % driver % it
 
         select case(key)
-        case('axial fuel temperature, C')
-            do i = 1, n
-                volume = 0
-                temper = 0
-                do j = 1, m
-                    ya = 1.d0
-                    yb = 1.d0
-                    ra = this % driver % hrad(j+1,i)
-                    rb = this % driver % hrad(j,i)
-                    h = this % driver % x(i+1) - this % driver % x(i)
-                    volume = volume + linteg(ya,yb,ra,rb,h)
-                    ya = this % driver % tmpfuel(j+1,i)
-                    yb = this % driver % tmpfuel(j,i)
-                    temper = temper + linteg(ya,yb,ra,rb,h)
-                enddo
-                var(i) = tfc(temper / volume)
-            enddo
+!        case('axial fuel temperature, C')
+!            do i = 1, n
+!                volume = 0
+!                temper = 0
+!                do j = 1, m
+!                    ya = 1.d0
+!                    yb = 1.d0
+!                    ra = this % driver % hrad(j+1,i)
+!                    rb = this % driver % hrad(j,i)
+!                    h = this % driver % x(i+1) - this % driver % x(i)
+!                    volume = volume + linteg(ya,yb,ra,rb,h)
+!                    ya = this % driver % tmpfuel(j+1,i)
+!                    yb = this % driver % tmpfuel(j,i)
+!                    temper = temper + linteg(ya,yb,ra,rb,h)
+!                enddo
+!                var(i) = tfc(temper / volume)
+!            enddo
+        case('average fuel temperature, C')
+            var(:) = (/( tfc(this % driver % PelAveTemp(i)), i = 1, n )/)
+        case('average gap temperature, C')
+            var(:) = (/( tfc(this % driver % GapAveTemp(i)), i = 1, n )/)
+        case('average cladding temperature, C')
+            var(:) = (/( tfc(this % driver % CladAveTemp(i)), i = 1, n )/)
         case('bulk coolant temperature, C')
             var(:) = 0.5d0 * ( this % driver % BulkCoolantTemp(1:n) + this % driver % BulkCoolantTemp(2:n+1) )
             var(:) = (/( tfc(var(i)), i = 1, n )/)

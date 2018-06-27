@@ -226,7 +226,7 @@ program rastk_input_file
                 endif
 
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
-                call frod(i_frod) % get_array('axial fuel temperature, C', fue_avg_temp)
+                call frod(i_frod) % get_array('average fuel temperature, C', fue_avg_temp)
                 call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
                 call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
                 call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
@@ -239,6 +239,11 @@ program rastk_input_file
                 ! ACCEPT THE LAST TRIAL TIME STEP
                 if(i_iter == n_iter) call frod(i_frod) % accept()
             enddo
+
+            write(*,*) 'time step : ', i_bu_step, dtime
+            write(*,*) power_FRPCN
+            write(*,*) fue_avg_temp
+            write(*,*) coo_avg_temp
 
             ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
             !write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'

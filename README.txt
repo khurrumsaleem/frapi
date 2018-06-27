@@ -33,3 +33,4 @@ TODO:
 7. Deallocation of FRAPCON variables ...done!
 8. Memory cost reduction
 9. Double the fuel rod stack
+10. Fix error with the initial state fuel temperature
