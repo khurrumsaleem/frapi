@@ -180,7 +180,7 @@ contains
             this % driver % r__pitch = var * cmtoin
         case("as-fabricated apparent fuel density, %TD")
             this % driver % r__den = var
-        case("coolant mass flux, kg/(s*m^2)")
+        case("coolant mass flux, kg|(s*m^2)")
             this % driver % r__go(it) = var * ksm2tolbhrft2
         case("additional fuel densification factor")
             this % driver % r__afdn         = var
@@ -226,7 +226,7 @@ contains
             this % driver % r__ppmh2o       = var                       
         case("weight ppm N2 in fuel, wt. ppm")
             this % driver % r__ppmn2        = var                       
-        case("expected resintering density increase, kg/m^3")
+        case("expected resintering density increase, kg|m^3")
             this % driver % r__rsntr        = var                       
         case("fision gas atoms per 100 fissions")
             this % driver % r__sgapf        = var                       
@@ -361,7 +361,7 @@ contains
         case("outer cladding diameter, cm")
             this % driver % r__dco(1:n) = var(:) * cmtoin
 
-        case("-linear power, W/cm")
+        case("-linear power, W|cm")
             this % driver % r__qmpy(it) = sum(var) / cmtoft * & 
             sum(this % driver % r__deltaz(1:n) / this % driver % r__dco(1:n)) / pi / intoft * WtoBTUh / this % driver % r__totl
             this % driver % r__qf(:) = var(:) / sum(var)
@@ -374,7 +374,7 @@ contains
             this % driver % r__pcoolant(1:n+1) = var(:) * MPatoPSI
 
 
-        case("linear power, W/cm")
+        case("linear power, W|cm")
             call linterp(var, this % driver % r__deltaz(1:n), tmp3, n)
             a = sum( var(:) * this % driver % r__deltaz(1:n) ) / this % driver % r__totl /cmtoft ! W/ft
             b = sum( this % driver % r__deltaz(1:n) / this % driver % r__dco(1:n) ) / this % driver % r__totl / intoft ! 1/ft
@@ -393,7 +393,7 @@ contains
             this % driver % r__buin(:)      = var(:) * MWskgUtoMWdMTU
         case("PuO2 weight percent if MOX fuel, wt%")
             this % driver % r__comp(:)      = var(:)
-        case("Heat flux, W/m^2")
+        case("Heat flux, W|m^2")
             this % driver % r__qc(:)        = var(:) / Bhft2toWm2
         case("gadolinia content at each axial node")
             this % driver % r__gadoln(:)    = var(:)
@@ -429,7 +429,7 @@ contains
             var = this % driver % qmpy(it) * BTUhtokW * &
                  (this % driver % dcoBOL * intoft * pi) / this % driver % fa * &
                   1.D+3 * cmtoft
-        case('outlet coolant mass flux, kg/(s*m^2)')
+        case('outlet coolant mass flux, kg|(s*m^2)')
             var = this % driver % go(it) * lbhrft2toksm2
         case('plenum gas temperature, C')
             var = tfc(this % driver % tplen)

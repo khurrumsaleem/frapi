@@ -2,6 +2,7 @@ Module fuelrod
 
 Dependencies:
    frapcon
+   hdf5
 
 1. cd build/debug 
    or
@@ -23,10 +24,12 @@ Dependencies:
    python plot.py
 
 TODO:
-1. Extend the list of output variables
+1. Extend the list of output variables ...done!
 2. Inlet temperature and pressure ...done!
 3. Supress output from frapcon ...done!
 4. Check failure of the fuel rod
 5. HDF5 for restart
 6. Parallelization with MPI or ZMQ
 7. Deallocation of FRAPCON variables ...done!
+8. Memory cost reduction
+9. Double the fuel rod stack
