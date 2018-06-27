@@ -1,5 +1,6 @@
 #!/usr/bin/python 
 # -*- coding:utf-8 -*-
+import os
 import argparse
 from h5py import *
 
@@ -124,6 +125,8 @@ if __name__ == '__main__':
 	parser.add_argument("ifile", nargs='?', help="output frapcon file")
 	parser.add_argument("ofile", nargs='?', help="output HDF5 file")
 	args = parser.parse_args()
+
+	if os.path.isfile(args.ofile): os.remove(args.ofile)
 
 	with open(args.ifile) as f:
 		data = f.read()

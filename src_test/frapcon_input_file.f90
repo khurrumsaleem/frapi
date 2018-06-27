@@ -119,7 +119,7 @@ program frapcon_input_file
     call frod % set_value("fuel oxygen-to-metal ratio", fotmtl)
     call frod % set_value("weight ppm H2O in fuel, wt.ppm", ppmh2o)
     call frod % set_value("weight ppm N2 in fuel, wt. ppm", ppmn2)
-    call frod % set_value("expected resintering density increase, kg/m^3", rsntr)
+    call frod % set_value("expected resintering density increase, kg|m^3", rsntr)
     call frod % set_value("fision gas atoms per 100 fissions", sgapf)
     call frod % set_value("swelling limit", slim)
     call frod % set_value("pellet centering temperature, K", tsint)
@@ -206,22 +206,22 @@ program frapcon_input_file
         ! INITIAL STATE
         if (itime == 1) then
 
-            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-linear power, W|cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
-            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+            call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
             call frod % init()
             call frod % accept()
 
-            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-linear power, W|cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
-            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+            call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
             call frod % next(ProblemTime(itime-1))
 
@@ -229,12 +229,12 @@ program frapcon_input_file
 
         else
 
-            call frod % set_array("-linear power, W/cm", linpow)
+            call frod % set_array("-linear power, W|cm", linpow)
             call frod % set_array("-coolant temperature, C", t_cool)
             call frod % set_array("-coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
-            call frod % set_value("coolant mass flux, kg/(s*m^2)", go(itime)*lbhrft2toksm2)
+            call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
             call frod % next(ProblemTime(itime-1) - ProblemTime(itime-2))
 
