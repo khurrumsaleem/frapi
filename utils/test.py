@@ -6,19 +6,30 @@ from subprocess import call
 from h5py import File
 import matplotlib.pyplot as plt
 
+
 names = [
-'centerline temperature, C',
-'fission gas release, %',
 'average linear power, W|cm',
-'bulk coolant temperature, C',
-'total gap conductance, W|(m^2*K)',
-'oxide thickness, um',
-#'mechanical gap thickness, um',
-'gap pressure, MPa',
-'cladding hoop strain, %',
-'cladding hoop stress, MPa',
 'fuel burnup, MW*s|kg',
-]   
+'centerline temperature, C',
+'fuel volume average temperature, C',
+'gap average temperature, C',
+'cladding average temperature, C',
+'bulk coolant temperature, C',
+'cladding axial strain, %',
+'cladding radial strain, %',
+'cladding hoop strain, %',
+'cladding axial stress, MPa',
+'cladding hoop stress, MPa',
+'gap pressure, MPa',
+'oxide thickness, um',
+'cladding hydrogen concentration, ppm',
+'fission gas release, %',
+'total gap conductance, W|(m^2*K)',
+#'cladding creep rate',
+#'fuel swelling, um',
+'fuel stored energy, J|kg',
+]
+
 
 def make(filename):
     call(["../../build/debug/frapcon_input_file", "%s.inp"%filename])
@@ -57,7 +68,7 @@ def draw(filename):
     
     #plt.show()
 
-    f0.close()
+    f0.close()  
     f1.close()  
 
 if __name__ == '__main__':

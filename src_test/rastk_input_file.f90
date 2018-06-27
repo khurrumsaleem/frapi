@@ -226,7 +226,7 @@ program rastk_input_file
                 endif
 
                 ! TAKE OUTPUT VARIABLES FROM FRAPCON
-                call frod(i_frod) % get_array('average fuel temperature, C', fue_avg_temp)
+                call frod(i_frod) % get_array('fuel volume average temperature, C', fue_avg_temp)
                 call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
                 call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
                 call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)

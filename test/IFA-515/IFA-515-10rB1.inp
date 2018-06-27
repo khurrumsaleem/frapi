@@ -1,0 +1,58 @@
+IFA-515.10 Rod B1
+* GOESINS:
+FILE05='nullfile.out', STATUS='UNKNOWN', FORM='FORMATTED',
+CARRIAGE CONTROL='NONE'
+*
+* GOESOUTS:
+FILE06='IFA-515-10rB1.out',
+STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
+FILE66='IFA-515-10rB1.plot',
+STATUS='UNKNOWN', FORM='FORMATTED',CARRIAGE CONTROL='LIST'
+/**********************************************************************
+IFA-515.10 Rod B1
+$frpcn
+im=40, nr=17, ngasr=45, na=9 ,
+$end
+$frpcon
+dco=0.2571, thkcld=0.01811, thkgap=0.00098, totl=0.72835, cpl=0.7362
+dspg=0.2165, dspgw=0.0394, vs=10 ,
+hplt=0.2362, rc=0.0354, hdish=0, dishsd=0.1094
+enrch=11.5, imox=0, comp=0
+fotmtl=2, gadoln=0, ppmh2o=0, ppmn2=0
+den=96.8, deng=0, roughf=0.0000787, rsntr=100, tsint=2911
+icm=2, cldwks=0, roughc=0.0000197, catexf=0.05, chorg=10
+fgpav=145.04, idxgas=1
+iplant=-4, pitch=0.2956, icor=0, crdt=0, crdtr=0, flux=10*5000000000000000
+crephr=10, sgapf=31, slim=0.05, qend=0.3
+jdlpr=1, nopt=0, nplot=1, ntape=0, nread=0, nrestr=0
+ProblemTime=
+1.76, 7.17, 17.96, 20.77, 35.11
+41.35, 56.52, 62.89, 89.29, 107.35
+109.54, 142.21, 143.12, 176.3, 187.99
+200.79, 218.3, 224.35, 235.42, 240.14
+249.35, 261.35, 274.08, 281.12, 286.32
+287.95, 311.54, 314.11, 323.98, 327.96
+331.17, 349.94, 362.57, 382.06, 383.84
+411.15, 414.89, 422.56, 444.82, 455.78
+qmpy=
+6.048, 2.978, 2.991, 5.208, 5.681
+4.972, 4.959, 5.103, 2.689, 4.985
+4.644, 4.605, 3.24, 3.24, 5.379
+4.5, 4.618, 4.369, 4.369, 4.67
+4.67, 4.972, 4.592, 5.589, 6.533
+6.166, 6.153, 6.547, 6.533, 6.914
+6.455, 6.284, 6.402, 6.035, 5.313
+5.313, 6.166, 6.35, 6.271, 6.979
+nsp=0
+p2(1:)= 40*493.13,tw(1:)= 40*464, go(1:)= 40*0
+iq=0, fa=1
+x(1:)=
+0, 0.72835
+qf(1:)=
+1, 1
+jn(1:)=2
+jst(1:)=
+40*1,
+$end
+
+

@@ -461,6 +461,7 @@ contains
         real(8)      :: var(:) ! array (n,)
         real(8)      :: ra, rb, ya, yb, h, temper, volume
         real(8)      :: linteg ! integral of linear function
+        real(8)      :: intoum = intomm * 1.D+3
 
         it = this % driver % it
 
@@ -482,11 +483,11 @@ contains
 !                enddo
 !                var(i) = tfc(temper / volume)
 !            enddo
-        case('average fuel temperature, C')
+        case('fuel volume average temperature, C')
             var(:) = (/( tfc(this % driver % PelAveTemp(i)), i = 1, n )/)
-        case('average gap temperature, C')
+        case('gap average temperature, C')
             var(:) = (/( tfc(this % driver % GapAveTemp(i)), i = 1, n )/)
-        case('average cladding temperature, C')
+        case('cladding average temperature, C')
             var(:) = (/( tfc(this % driver % CladAveTemp(i)), i = 1, n )/)
         case('bulk coolant temperature, C')
             var(:) = 0.5d0 * ( this % driver % BulkCoolantTemp(1:n) + this % driver % BulkCoolantTemp(2:n+1) )
@@ -535,15 +536,15 @@ contains
             var(:) = this % driver % totdef(1:n) * intomm
         case('fuel thermal expansion, mm')
             var(:) = this % driver % fuelexptot(1:n) * intomm
-        case('fuel swelling, mm')
-            var(:) = this % driver % fuelswltot(1:n) * intomm
+        case('fuel swelling, um')
+            var(:) = this % driver % fuelswltot(1:n) * intoum
         case('fuel creep, mm')
             var(:) = this % driver % fuelcreeptot(1:n) * intomm
         case('fuel densification, mm')
             var(:) = this % driver % fueldentot(1:n) * intomm
         case('fuel relocation, mm')
             var(:) = this % driver % relocation(1:n) * intomm
-        case('cladding hydrogen concentration')
+        case('cladding hydrogen concentration, ppm')
             var(:) = this % driver % CladH2Concen(1:n)
         case('coolant density, kg|m^3')
             var(:) = this % driver % rhof(1:n) * lbft3tokgm3

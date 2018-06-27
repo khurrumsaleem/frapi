@@ -11,7 +11,7 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    integer, parameter :: ivars_array = 34, ivars_value = 3
+    integer, parameter :: ivars_array = 37, ivars_value = 3
     character(len=256) :: filename, string
     character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
@@ -49,17 +49,20 @@ program frapcon_input_file
     varname_array(21) = 'cladding creep rate'
     varname_array(22) = 'fuel surface outward displacement, mm'
     varname_array(23) = 'fuel thermal expansion, mm'
-    varname_array(24) = 'fuel swelling, mm'
+    varname_array(24) = 'fuel swelling, um'
     varname_array(25) = 'fuel creep, mm'
     varname_array(26) = 'fuel densification, mm'
     varname_array(27) = 'fuel relocation, mm'
-    varname_array(28) = 'cladding hydrogen concentration'
+    varname_array(28) = 'cladding hydrogen concentration, ppm'
     varname_array(29) = 'coolant density, kg|m^3'
     varname_array(30) = 'coolant pressure, MPa'
     varname_array(31) = 'axial mesh, cm'
     varname_array(32) = 'centerline temperature, C'
     varname_array(33) = 'fuel stored energy, J|kg'
     varname_array(34) = 'fuel burnup, MW*s|kg'
+    varname_array(35) = 'fuel volume average temperature, C'
+    varname_array(36) = 'gap average temperature, C'
+    varname_array(37) = 'cladding average temperature, C'
 
     varname_value( 1) = 'fission gas release, %'
     varname_value( 2) = 'time, day'

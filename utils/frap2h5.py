@@ -100,7 +100,7 @@ keylist={
  112: ('thermal gap, um', miltoum),
  146: ('total gap conductance, W|(m^2*K)', Bhft2FtoWm2K),
  115: ('oxide thickness, um', miltoum),
-# 140: 'ppm ppm Zircaloy-2 Hydrogen Concentration',
+ 140: ('cladding hydrogen concentration, ppm', none),
 # 117: 'lbm/ft^3 kg/m^3 Coolant Density',
 # 118: 'lb/(hr-ft^2) kg/(s-m^2) Coolant Mass Flux',
  119: ('coolant pressure, MPa', PSItoMPa),
