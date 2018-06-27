@@ -164,9 +164,16 @@ program frapcon_input_file
     call frod % set_value("rod internal pressure for FEA model, MPa", p1(1)/patoPSI)
     call frod % set_value("radius of the fuel pellet central annulus, mm", rc(1) * intomm)
     call frod % set_value("coolant system pressure, MPa", p2(1) * PSItoMPa)
+
+    gadoln(:) = gadoln(1)
+    flux(:)   = flux(1)
+    comp(:)   = comp(1)
+    buin(:)   = buin(1)
+    crudmult(:) = crudmult(1)
+
     call frod % set_array("input fuel burnup", buin / MWskgUtoMWdMTU)
     call frod % set_array("PuO2 weight percent if MOX fuel, wt%", comp)
-    call frod % set_array("gadolinia content at each axial node", gadoln)
+    call frod % set_array("gadolinia weight, wt%", gadoln)
     call frod % set_array("cladding surface temperature, K", (/( tfk(cladt(i)), i = 1, na )/) )
     call frod % set_array("axial crud thickness multiplier", crudmult)
     call frod % set_array("neutron flux, 1|(cm^2*s)", flux)

@@ -3,5 +3,5 @@
 
 from subprocess import call
 
-for x in "IFA-515-10rB2".split():
+for x in "IFA-515-10rA2".split():
     call(['../../utils/test.py', x])

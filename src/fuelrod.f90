@@ -397,7 +397,7 @@ contains
             this % driver % r__comp(:)      = var(:)
         case("Heat flux, W|m^2")
             this % driver % r__qc(:)        = var(:) / Bhft2toWm2
-        case("gadolinia content at each axial node")
+        case("gadolinia weight, wt%")
             this % driver % r__gadoln(:)    = var(:)
         case("cladding surface temperature, K")
             this % driver % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
