@@ -2,6 +2,7 @@ module fuelrod
 
     use conversions
     use frapcon41, only : driver_type
+!    use fraptran, only : FuelRod_
 
     implicit none
 
