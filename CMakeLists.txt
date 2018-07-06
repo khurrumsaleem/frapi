@@ -12,6 +12,7 @@ set(src "src/*.f90")
 set(src0 "src_test/frapcon_input_file.f90")
 set(src1 "src_test/rastk_input_file.f90")
 set(src2 "src_test/frapcon_original.f90")
+set(src3 "src_test/fraptran_original.f90")
 #
 
 include_directories(/usr/local/include/frapcon /usr/local/include/fraptran /usr/local/hdf5/include)
@@ -40,15 +41,18 @@ file(GLOB SOURCES ${src})
 file(GLOB SOURCES_0 ${src0})
 file(GLOB SOURCES_1 ${src1})
 file(GLOB SOURCES_2 ${src2})
+file(GLOB SOURCES_3 ${src3})
 add_library(frapi ${SOURCES})
 target_link_libraries(frapi frapcon fraptran)
 
 add_executable(frapcon_input_file ${SOURCES_0})
 add_executable(rastk_input_file ${SOURCES_1})
 add_executable(frapcon_original ${SOURCES_2})
+add_executable(fraptran_original ${SOURCES_3})
 target_link_libraries(frapcon_input_file frapi hdf5_fortran)
 target_link_libraries(rastk_input_file frapi)
 target_link_libraries(frapcon_original frapi)
+target_link_libraries(fraptran_original frapi)
 
 install( TARGETS frapi
          RUNTIME DESTINATION bin
