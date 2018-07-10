@@ -11,7 +11,7 @@ program frapcon_input_file
 
     type (frod_type) :: frod
 
-    integer, parameter :: ivars_array = 37, ivars_value = 3
+    integer, parameter :: ivars_array = 37, ivars_value = 4
     character(len=256) :: filename, string
     character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
@@ -59,7 +59,7 @@ program frapcon_input_file
     varname_array(31) = 'axial mesh, cm'
     varname_array(32) = 'centerline temperature, C'
     varname_array(33) = 'fuel stored energy, J|kg'
-    varname_array(34) = 'fuel burnup, MW*s|kg'
+    varname_array(34) = 'fuel burnup, MW*d|kg'
     varname_array(35) = 'fuel volume average temperature, C'
     varname_array(36) = 'gap average temperature, C'
     varname_array(37) = 'cladding average temperature, C'
@@ -67,6 +67,7 @@ program frapcon_input_file
     varname_value( 1) = 'fission gas release, %'
     varname_value( 2) = 'time, day'
     varname_value( 3) = 'average linear power, W|cm'
+    varname_value( 4) = 'average fuel burnup, MW*d|kg'
 
     ! READING INPUT FILE
     call get_command_argument(1, filename)
@@ -91,7 +92,7 @@ program frapcon_input_file
         moxtype = moxtype, idxgas = idxgas, &
         iq = iq, ivardm=ivardm, &
         ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
-        verbose=.true.)
+        verbose=.false.)
 
     if (.not. (jn(1) == na+1) ) then
         x(2: ) = (/( i * (x(jn(1)) - x(1)) / na, i = 1, na )/)

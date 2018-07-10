@@ -449,6 +449,8 @@ contains
             endif
         case('time, day')
             var = this % fc_driver % ProblemTime(it) * sectoday
+        case('average fuel burnup, MW*d|kg')
+            var = this % fc_driver % bu * 1.D-3
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -562,8 +564,8 @@ contains
             var(:) = (/( tfc(this % fc_driver % tmpfuel(m+1,i)), i = 1, n )/)
         case('fuel stored energy, J|kg')
             var(:) = this % fc_driver % StoredEnergy(1:n) * BTUlbtoJkg
-        case('fuel burnup, MW*s|kg')
-            var(:) = this % fc_driver % EOSNodeburnup(1:n) * 1.D-3 / MWskgUtoMWdMTU
+        case('fuel burnup, MW*d|kg')
+            var(:) = this % fc_driver % EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

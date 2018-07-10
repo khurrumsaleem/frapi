@@ -4,7 +4,7 @@ import os
 import argparse
 from h5py import *
 
-MWdMTUtoMWskgU = lambda x: x * 86.4
+MWdMTUtoMWskgU = lambda x: x * 86.4 * 1.E-3
 fttoin = lambda x: x * 12.0
 intocm = lambda x: x * 2.54
 fttocm = lambda x: fttoin(intocm(x))
@@ -29,7 +29,7 @@ keylist={
  1  : ('time, day', none),
  2  : ('average linear power, W|cm' , kwfttowcm),
 # 20 : 'peak linear power, W|cm', 
- 10 : ('average burnup,  MWd|kgU', none),
+ 10 : ('average fuel burnup, MW*d|kg', none),
 # 35 : 'peak power burnup, MWd/kgU',
 # 34 : 'na na Peak Power Axial Element Indicator',
 # 36 : 'F K Peak Power Pellet CenterLine Temperature',
@@ -56,7 +56,7 @@ keylist={
  130: ('axial linear power, W|cm', kwfttowcm),
 # 156: 'na na Normalized axial node power',
 # 116: 'Btu/(hr-ft^2) W/(m^2) Surface Heat Flux',
- 142: ('fuel burnup, MW*s|kg', MWdMTUtoMWskgU),
+ 142: ('fuel burnup, MW*d|kg', none),
 # 157: 'n/m^2 n/m^2 Axial Fast Fluence',
  150: ('axial mesh, cm', fttocm),
  122: ('centerline temperature, C', ftoc),

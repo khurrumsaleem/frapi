@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 names = [
 'average linear power, W|cm',
-'fuel burnup, MW*s|kg',
+'fuel burnup, MW*d|kg',
+'average fuel burnup, MW*d|kg',
 'centerline temperature, C',
 'fuel volume average temperature, C',
 'gap average temperature, C',
@@ -49,17 +50,17 @@ def draw(filename):
 
         time0 , data0 = [], []
         for group in f0.keys():
-            time0.append(f0[group]['time, day'][0])
+            time0.append(f0[group]['average fuel burnup, MW*d|kg'][0])
             data0.append(f0[group][name][0])
 
         time1 , data1 = [], []    
         for group in f1.keys():        
-            time1.append(f1[group]['time, day'])
+            time1.append(f1[group]['average fuel burnup, MW*d|kg'])
             data1.append(f1[group][name][0]) 
 
         ax.plot(time0, data0, '-o', ms=1, lw=2, alpha=0.7, mfc='orange')
         ax.plot(time1, data1, '-o', ms=1, lw=2, alpha=0.7, mfc='blue')
-        ax.set_xlabel('Time, day')
+        ax.set_xlabel('Average fuel burnup, MW*d/kg')
         ax.set_ylabel(name)
         ax.legend(['NEW FRAPCON', 'OLD FRAPCON'])
         ax.grid()

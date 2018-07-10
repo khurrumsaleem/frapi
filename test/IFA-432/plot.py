@@ -2,8 +2,8 @@ from h5py import *
 from numpy import *
 import matplotlib.pyplot as plt
 
-f0 = File('432r1.h5')
-f1 = File('plot432r1.h5')
+f0 = File('IFA-432-r1.h5')
+f1 = File('IFA-432-r1-plot.h5')
 
 names = [
 #'centerline temperature, C',
@@ -16,7 +16,7 @@ names = [
 #'gap pressure, MPa',
 #'cladding hoop strain, %',
 #'cladding hoop stress, MPa',
-'fuel burnup, MW*s|kg',
+'fuel burnup, MW*d|kg',
 ]   
 
 for i, name in enumerate(names):
