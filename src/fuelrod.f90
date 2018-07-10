@@ -1,4 +1,4 @@
-module fuelrod
+module frapi
 
     use conversions
     use frapcon,  only : frapcon_driver
@@ -591,7 +591,4 @@ contains
 
     end subroutine p_transient
 
-end module fuelrod
-
-
-
+end module frapi

@@ -1,6 +1,6 @@
 program rastk_input_file
 
-    use fuelrod, only : frod_type
+    use frapi, only : frod_type
 
     implicit none
 

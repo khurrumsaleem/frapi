@@ -3,7 +3,7 @@ program frapcon_input_file
     use h5file
     use conversions
     use fpn_reader
-    use fuelrod, only : frod_type
+    use frapi, only : frod_type
 
     implicit none
 
