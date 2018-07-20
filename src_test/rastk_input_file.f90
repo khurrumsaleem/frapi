@@ -135,7 +135,7 @@ program rastk_input_file
 
     ! ALLOCATE FUEL RODS ARRAY
     n_frod = 1
-    n_iter = 2
+    n_iter = 1
 
     allocate(frod(n_frod))
 
@@ -239,11 +239,6 @@ program rastk_input_file
                 ! ACCEPT THE LAST TRIAL TIME STEP
                 if(i_iter == n_iter) call frod(i_frod) % accept()
             enddo
-
-            write(*,*) 'time step : ', i_bu_step, dtime
-            write(*,*) power_FRPCN
-            write(*,*) fue_avg_temp
-            write(*,*) coo_avg_temp
 
             ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
             !write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
