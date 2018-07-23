@@ -1,7 +1,8 @@
-Module fuelrod
+Module frapi
 
 Dependencies:
    frapcon
+   fraptran
    hdf5
 
 1. cd build/debug 
@@ -27,10 +28,11 @@ TODO:
 1. Extend the list of output variables ...done!
 2. Inlet temperature and pressure ...done!
 3. Supress output from frapcon ...done!
-4. Check failure of the fuel rod
-5. HDF5 for restart
+4. Check fuel rod failure conditions
+5. HDF5 or binary file for restart ...done!
 6. Parallelization with MPI or ZMQ
 7. Deallocation of FRAPCON variables ...done!
-8. Memory cost reduction
-9. Double the fuel rod stack
-10. Fix error with the initial state fuel temperature
+8. Memory cost reduction ...? (now it is about 7 KB per fuel rod)
+9. Double the fuel rod stack ...? (will increase memory costs)
+10. Fix error with the initial state fuel temperature ...done!
+11. Check isotopes concentrations

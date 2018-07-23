@@ -2,6 +2,7 @@
 .sconsign.dblite
 
 build/
+work/
 
 *.h5
 *.n
