@@ -16,7 +16,7 @@
 \usetikzlibrary{arrows.meta}
 
 %\author{Alexey L. Cherezov}
-\title{FUELROD \\ Nuclear Fuel Performance Analysis Package}
+\title{FRAPI \\ Fuel Rod Analysis Program Interface}
 %\setbeamercovered{transparent} 
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
@@ -30,8 +30,8 @@
             base/.style = {rectangle, rounded corners, draw=black,
                            minimum width=4cm, minimum height=1cm,
                            text centered, font=\sffamily},
-  box0/.style = {base, minimum width=2.5cm, fill=green!15},
-  box1/.style = {base, minimum width=2.5cm, fill=white!15, align=left},
+  box0/.style = {base, minimum width=2.5cm, fill=green!15, align=center},
+  box1/.style = {base, minimum width=2.5cm, fill=white!15, align=center},
   void/.style = {base, minimum width=2.5cm, fill=white!30, draw=white, align=left},
 }
 
@@ -40,13 +40,29 @@
 
 \titlepage
 
-\begin{frame}{FUELROD}
+\begin{frame}{Fuel Rod Analysis Program Interface}
+ \begin{center}
+ \begin{tikzpicture}[node distance=1.5cm, align=center]
+
+  \node (onFRAPI)    [box0]                                   {FRAPI};
+  \node (onFRAPCON)  [box1, below of=onFRAPI, xshift=-2.5cm]  {FRAPCON 4.0};
+  \node (onFRAPTRAN) [box1, below of=onFRAPI, xshift= 2.5cm]  {FRAPTRAN 2.0};  
+  
+  \draw[<-]      (onFRAPI) -| (onFRAPCON);
+  \draw[<-]      (onFRAPI) -| (onFRAPTRAN);
+  \end{tikzpicture}
+  \end{center}
+  
+  \begin{itemize}
+    \item Steady-state long-term burnup simulation
+    \item Transient and hypotherical accidents simulation
+  \end{itemize}
+  
+\end{frame}
+
+
+\begin{frame}{FRAPCON}
 \scriptsize
-   - coupling interface ...
-
-  \begin{columns}
-
-  \column{0.48\textwidth}
 
   \begin{block}{FRAPCON-4.0}
    Steady-state Long-term Burnup
@@ -59,7 +75,10 @@
    \end{itemize}
   \end{block}
 
-  \column{0.48\textwidth}
+\end{frame}
+
+\begin{frame}{FRAPTRAN}
+\scriptsize
 
   \begin{block}{FRAPTRAN-2.0}
    Transient and Hypotherical Accidents
@@ -71,8 +90,6 @@
    \item Cladding balooning failure model
    \end{itemize}
   \end{block}
-  
-  \end{columns}
 
 \end{frame}
 

@@ -217,9 +217,9 @@ program frapcon_input_file
         ! INITIAL STATE
         if (itime == 1) then
 
-            call frod % set_array("-linear power, W|cm", linpow)
-            call frod % set_array("-coolant temperature, C", t_cool)
-            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
+            call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
+            call frod % set_array("FRAPCON FORMAT: coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
@@ -227,9 +227,9 @@ program frapcon_input_file
             call frod % init()
             call frod % accept()
 
-            call frod % set_array("-linear power, W|cm", linpow)
-            call frod % set_array("-coolant temperature, C", t_cool)
-            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
+            call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
+            call frod % set_array("FRAPCON FORMAT: coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
@@ -240,9 +240,9 @@ program frapcon_input_file
 
         else
 
-            call frod % set_array("-linear power, W|cm", linpow)
-            call frod % set_array("-coolant temperature, C", t_cool)
-            call frod % set_array("-coolant pressure, MPa", p_cool)
+            call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
+            call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
+            call frod % set_array("FRAPCON FORMAT: coolant pressure, MPa", p_cool)
             call frod % set_value("inlet coolant temperature, C", tfc(tw(itime)))
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
