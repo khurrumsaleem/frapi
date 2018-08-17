@@ -4,14 +4,12 @@ program rastk_input_file
 
     implicit none
 
-    character(len = 32) :: string
     character(len = 32) :: iname
     character(len = 32) :: oname
 
     integer :: i_input_file = 42
     integer :: i_output_file = 43
 
-    integer(4) :: mechan, ngasmod, na, ngasr, nr, nce
     integer(4) :: n_fuel_rad_in
     integer(4) :: na_r
     integer(4) :: na_in
@@ -68,9 +66,6 @@ program rastk_input_file
     real(8), allocatable  :: tcool_FRPCN(:)
     real(8), allocatable  :: pcool_FRPCN(:)
     real(8), allocatable  :: zmesh_FRPCN(:)
-    real(8)               :: fcool_FRPCN(1)
-    real(8)               :: pitch_FRPCN(1)
-    real(8)               :: den_FRPCN(1)
     real(8), allocatable  :: dco_FRPCN(:)
     real(8), allocatable  :: thckgap_FRPCN(:)
     real(8), allocatable  :: thckclad_FRPCN(:)

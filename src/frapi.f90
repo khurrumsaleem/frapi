@@ -9,6 +9,7 @@ module frapi
     type, public :: frod_type
         type( frapcon_driver) :: dfcon          ! Burnup steady-state calculations
         type(fraptran_driver) :: dftran          ! Transient calculations
+
     contains
         procedure :: make      => frod_make         ! Initialize the fuel rod
         procedure :: init      => frod_init         ! Set the initial fuel rod state, t = 0
@@ -16,13 +17,13 @@ module frapi
         procedure :: accept    => frod_accept       ! Reject the last time step
         procedure :: set_value => frod_set_value    ! Set variable value
         procedure :: set_array => frod_set_array    ! Set variable array
-        procedure :: get_value => frod_get_value    ! Catch variable value
-        procedure :: get_array => frod_get_array    ! Catch variable array
+        procedure :: get_value => frod_get_value    ! Get variable value
+        procedure :: get_array => frod_get_array    ! Get variable array
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
-        procedure :: transient => p_transient       ! Transient time step
-        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
+!        procedure :: transient => p_transient       ! Transient time step
+!        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -174,8 +175,6 @@ contains
 
         class (frod_type), intent(inout) :: this
 
-        real(8) :: dt
-
         call this % dfcon % dump()
 
     end subroutine frod_accept
@@ -200,10 +199,6 @@ contains
             this % dfcon % r__go(it) = var * ksm2tolbhrft2
         case("additional fuel densification factor")
             this % dfcon % r__afdn         = var
-        case("cladding type")
-            this % dfcon % r__icm          = var
-        case("crud model")
-            this % dfcon % r__icor         = var
         case("clad texture factor")
             this % dfcon % r__catexf       = var
         case("as-fabricated clad hydrogen content, wt.ppm")
@@ -232,12 +227,6 @@ contains
             this % dfcon % r__fgpav        = var * PatoPSI             
         case("fuel oxygen-to-metal ratio")
             this % dfcon % r__fotmtl       = var                       
-        case("fill gas type")
-            this % dfcon % r__idxgas       = var                       
-        case("plant type")
-            this % dfcon % r__iplant       = var                       
-        case("fuel type")
-            this % dfcon % r__imox         = var                       
         case("weight ppm H2O in fuel, wt.ppm")
             this % dfcon % r__ppmh2o       = var                       
         case("weight ppm N2 in fuel, wt. ppm")
@@ -254,8 +243,6 @@ contains
             this % dfcon % r__grnsize      = var                       
         case("FEA friction coefficient")
             this % dfcon % r__frcoef       = var                       
-        case("FEA internal pressure flag")
-            this % dfcon % r__igascal      = var                       
         case("percent IFBA rods in core, %")
             this % dfcon % r__ifba         = var                       
         case("boron-10 enrichment in ZrB2, atom %")
@@ -264,12 +251,8 @@ contains
             this % dfcon % r__zrb2thick    = var * mmtoin               
         case("ZrB2 density, %TD")
             this % dfcon % r__zrb2den      = var
-        case("zircaloy-2 vintage")
-            this % dfcon % r__zr2vintage   = var                       
         case("decay heat multiplier")
             this % dfcon % r__fpdcay       = var                       
-        case("flag for type of Pu used in MOX")
-            this % dfcon % r__moxtype      = var                       
         case("molar fraction of air")
             this % dfcon % r__amfair       = var                       
         case("molar fraction of argon")
@@ -360,7 +343,7 @@ contains
         character(*) :: key
         integer      :: it
         real(8)      :: var(:)
-        real(8)      :: mmtoin = 1.d0/intomm
+!        real(8)      :: mmtoin = 1.d0/intomm
 
         it = this % dfcon % r__it
 
@@ -439,8 +422,8 @@ contains
         character(*) :: key
         integer      :: it
         real(8)      :: var
-        real(8)      :: ra, rb, ya, yb, h, temper, volume
-        real(8)      :: linteg ! integral of linear function
+!        real(8)      :: ra, rb, ya, yb, h, temper, volume
+!        real(8)      :: linteg ! integral of linear function
 
         it = this % dfcon % it
 
@@ -479,8 +462,8 @@ contains
         character(*) :: key
         integer      :: it
         real(8)      :: var(:) ! array (n,)
-        real(8)      :: ra, rb, ya, yb, h, temper, volume
-        real(8)      :: linteg ! integral of linear function
+!        real(8)      :: ra, rb, ya, yb, h, temper, volume
+!        real(8)      :: linteg ! integral of linear function
         real(8)      :: intoum = intomm * 1.D+3
 
         it = this % dfcon % it
@@ -609,91 +592,91 @@ contains
     end subroutine p_transient
 
 
-    subroutine p_frapc2t(this)
+!    subroutine p_frapc2t(this)
 
-        class (frod_type), intent(inout) :: this
+!        class (frod_type), intent(inout) :: this
 
-        this % dfcon  % restfs()
-        this % dftran % restfs()
-
-        it = this % dfcon % it
-
-        ! Oxidation layer thickness at cladding outside surface, inches
-        this % dftran % BOSOxideThick(1:n) = this % dfcon % EOSZrO2Thk(1:n) * fttoin
-
-        ! Excess H2 concenctration in cladding (ppm)
-        this % dftran % cexh2a(1:n) = this % dfcon % CladH2Concen(1:n)
-
-        ! Peak historic cladding temp. (K) 
-        ! WTF?? << units missmatch !!!
-        this % dftran % CladMaxT(1:n) = this % dfcon % ctmax(1:n)
-
-        ! Open porosity at each axial node (fraction of pellet volume)
-        this % dftran % OpenPorosity(1:n) = this % dfcon % FuelPorosity(1:n)
-
-        ! Fuel burnup  (MW-sec/kg)
-        this % dftran % AxBurnup(1:n) = this % dfcon % EOSNodeburnup(1:n) * 86.4D0
-
-        ! Fast neutron fluence, n/m^2
-        tflux = this % dfcon % ProblemTime(it)
-        this % dftran % restfluence(1:n)= this % dfcon % FastFluence(1:n) / tflux
-
-        ! Gram-moles of gas in fuel rod
-        this % dftran % TotalGasMoles = this % dfcon % gasmo(it)
-
-        ! Fraction of each component of gas
-        ! Assume that nitrogen is set to 0.0 as this was not part of the original restart
-        this % dftran % GasFraction(1) = this % dfcon % gases(1) ! Helium
-        this % dftran % GasFraction(2) = this % dfcon % gases(2) ! Argon
-        this % dftran % GasFraction(3) = this % dfcon % gases(3) ! Krypton
-        this % dftran % GasFraction(4) = this % dfcon % gases(4) ! Xenon
-        this % dftran % GasFraction(5) = this % dfcon % gases(5) ! Hydrogen
-        this % dftran % GasFraction(6) = 0.D0                    ! << WTF??
-        this % dftran % GasFraction(7) = this % dfcon % gases(6) ! Nitrogen
-        this % dftran % GasFraction(8) = this % dfcon % gases(7) ! Air
-
-        ! Normalize radii to match FrapTran value
-        radnorm = RadialBound(igpnod) / radfs(nfofs)
-        radfsn(1:nfofs) = radfs(1:nfofs) * radnorm
-
-        ! Cladding plastic strains
-        this % dftran % CldPlasStrnFrapcon(1:n, 1:3) = this % dfcon % epp(1:n, 1:3)
-
-        ! Cladding effective plastic strain
-        this % dftran % EffStrain(1:n) = this % dfcon % efstrn(1:n)
-
-!        this % dftran % FrapconTemp(1:nfmesh,n) = this % dfcon % tmpfuel(1:n)
-! TODO: interpolation of the fuel/cladding temperatures
-
-        ! Net permanent fuel deformation due to fuel swelling and densification (no relocation); inches, convert to feet
-        this % dftran % SwellDispl(1:n) = this % dfcon % colddef(1:n) / 12.D0
-
-        ! Net permanent cladding deformation; inches, convert to feet
-        this % dftran % colddec(k:n) = this % dfcon % colddec(1:n) / 12.D0
-
-        ! Permanent fuel relocation displacement; inches, convert to feet
-        this % dftran % ureloc(1:n) = this % dfcon % ureloc(1:n) / 12.D0
-
-        ! Gadolinia content of fuel (WTF?? > currently only reads for 1 axial node)
-        this % dftran % gadolin(1:n) = this % dfcon % gadolin(1:n)
-
-        ! Radial burnup profile at each axial node
-        ! this % dftran % burado(1:n,1:m) = this % dfcon % brnup3(1:n,1:m)
-        ! Interpolate to define burnup profile at FrapTran nodes
-        ! TODO: interpolation of the burnup profile
-        ! burad(1:n,igpnod) <= burado(1:n,1:m)
-
-        ! Radial power profile at each axial node
-        ! TODO: interpolate the power profile
-        ! this % dftran % radsrco(1:n,1:igpnod) <= this % dfcon % rapow(1:n,1:m)
-
-        ! FRAPCON fission gas release model
-        this % dftran % ngasmod = this % dfcon % ngasmod
-        this % dftran % ansr(:) = this % dfcon % ansr(:)
-        this % dftran % gasavail1(:,:) = this % dfcon % gasavail1(:,:)
-        this % dftran % gasavail2(:,:) = this % dfcon % gasavail2(:,:)
-        this % dftran % fmgp(:) = this % dfcon % fmgp(:)
-
-    end subroutine p_frapc2t
+!        this % dfcon  % restfs()
+!        this % dftran % restfs()
+!
+!        it = this % dfcon % it
+!
+!        ! Oxidation layer thickness at cladding outside surface, inches
+!        this % dftran % BOSOxideThick(1:n) = this % dfcon % EOSZrO2Thk(1:n) * fttoin
+!
+!        ! Excess H2 concenctration in cladding (ppm)
+!        this % dftran % cexh2a(1:n) = this % dfcon % CladH2Concen(1:n)
+!
+!        ! Peak historic cladding temp. (K) 
+!        ! WTF?? << units missmatch !!!
+!        this % dftran % CladMaxT(1:n) = this % dfcon % ctmax(1:n)
+!
+!        ! Open porosity at each axial node (fraction of pellet volume)
+!        this % dftran % OpenPorosity(1:n) = this % dfcon % FuelPorosity(1:n)
+!
+!        ! Fuel burnup  (MW-sec/kg)
+!        this % dftran % AxBurnup(1:n) = this % dfcon % EOSNodeburnup(1:n) * 86.4D0
+!
+!        ! Fast neutron fluence, n/m^2
+!        tflux = this % dfcon % ProblemTime(it)
+!        this % dftran % restfluence(1:n)= this % dfcon % FastFluence(1:n) / tflux
+!
+!        ! Gram-moles of gas in fuel rod
+!        this % dftran % TotalGasMoles = this % dfcon % gasmo(it)
+!
+!        ! Fraction of each component of gas
+!        ! Assume that nitrogen is set to 0.0 as this was not part of the original restart
+!        this % dftran % GasFraction(1) = this % dfcon % gases(1) ! Helium
+!        this % dftran % GasFraction(2) = this % dfcon % gases(2) ! Argon
+!        this % dftran % GasFraction(3) = this % dfcon % gases(3) ! Krypton
+!        this % dftran % GasFraction(4) = this % dfcon % gases(4) ! Xenon
+!        this % dftran % GasFraction(5) = this % dfcon % gases(5) ! Hydrogen
+!        this % dftran % GasFraction(6) = 0.D0                    ! << WTF??
+!        this % dftran % GasFraction(7) = this % dfcon % gases(6) ! Nitrogen
+!        this % dftran % GasFraction(8) = this % dfcon % gases(7) ! Air
+!
+!        ! Normalize radii to match FrapTran value
+!        radnorm = RadialBound(igpnod) / radfs(nfofs)
+!        radfsn(1:nfofs) = radfs(1:nfofs) * radnorm
+!
+!        ! Cladding plastic strains
+!        this % dftran % CldPlasStrnFrapcon(1:n, 1:3) = this % dfcon % epp(1:n, 1:3)
+!
+!        ! Cladding effective plastic strain
+!        this % dftran % EffStrain(1:n) = this % dfcon % efstrn(1:n)
+!
+!!        this % dftran % FrapconTemp(1:nfmesh,n) = this % dfcon % tmpfuel(1:n)
+!! TODO: interpolation of the fuel/cladding temperatures
+!
+!        ! Net permanent fuel deformation due to fuel swelling and densification (no relocation); inches, convert to feet
+!        this % dftran % SwellDispl(1:n) = this % dfcon % colddef(1:n) / 12.D0
+!
+!        ! Net permanent cladding deformation; inches, convert to feet
+!        this % dftran % colddec(k:n) = this % dfcon % colddec(1:n) / 12.D0
+!
+!        ! Permanent fuel relocation displacement; inches, convert to feet
+!        this % dftran % ureloc(1:n) = this % dfcon % ureloc(1:n) / 12.D0
+!
+!        ! Gadolinia content of fuel (WTF?? > currently only reads for 1 axial node)
+!        this % dftran % gadolin(1:n) = this % dfcon % gadolin(1:n)
+!
+!        ! Radial burnup profile at each axial node
+!        ! this % dftran % burado(1:n,1:m) = this % dfcon % brnup3(1:n,1:m)
+!        ! Interpolate to define burnup profile at FrapTran nodes
+!        ! TODO: interpolation of the burnup profile
+!        ! burad(1:n,igpnod) <= burado(1:n,1:m)
+!
+!        ! Radial power profile at each axial node
+!        ! TODO: interpolate the power profile
+!        ! this % dftran % radsrco(1:n,1:igpnod) <= this % dfcon % rapow(1:n,1:m)
+!
+!        ! FRAPCON fission gas release model
+!        this % dftran % ngasmod = this % dfcon % ngasmod
+!        this % dftran % ansr(:) = this % dfcon % ansr(:)
+!        this % dftran % gasavail1(:,:) = this % dfcon % gasavail1(:,:)
+!        this % dftran % gasavail2(:,:) = this % dfcon % gasavail2(:,:)
+!        this % dftran % fmgp(:) = this % dfcon % fmgp(:)
+!
+!    end subroutine p_frapc2t
 
 end module frapi

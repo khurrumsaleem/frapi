@@ -41,7 +41,7 @@ def draw(filename):
     f0 = File('%s.h5'%filename)
     f1 = File('%s-plot.h5'%filename)
 
-    dirname = '../../doc/UserGuide/figs/%s'%filename
+    dirname = '../../doc/graphics/%s'%filename
     if not os.path.isdir(dirname): 
         os.mkdir(dirname)
 
