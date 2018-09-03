@@ -1,69 +1,69 @@
-# CMAKE minimum version
 cmake_minimum_required(VERSION 2.8.9)
-#
-# Project name
+
 project(frapi)
 
-# Enable Fortran compiler
 enable_language (Fortran)
-#
-# Specify directories
-set(src "src/*.f90")
-set(src0 "src_test/frapcon_input_file.f90")
-set(src1 "src_test/rastk_input_file.f90")
-set(src2 "src_test/frapcon_original.f90")
-set(src3 "src_test/fraptran_original.f90")
 
-#
+set(frapcon_dating "frapcon/Dating/*.f90")
+set(frapcon_frap   "frapcon/frap/*.f90")
+set(frapcon_matpro "frapcon/matpro/*.f90")
+set(frapcon_mech   "frapcon/mech/*.f90")
+set(frapcon_vars   "frapcon/vars/*.f90")
+
+set(fraptran_envrl "fraptran/envrl/*.f90")
+set(fraptran_frap  "fraptran/frap/*.f90")
+set(fraptran_matpro"fraptran/matpro/*.f90")
+set(fraptran_mech  "fraptran/mech/*.f90")
+
+set(frapi_files  "frapi/*.f90")
+
+set(test_src0 "src_test/frapcon_input_file.f90")
+set(test_src1 "src_test/rastk_input_file.f90")
+set(test_src2 "src_test/frapcon_original.f90")
+set(test_src3 "src_test/fraptran_original.f90")
 
 include_directories(/usr/local/include/frapcon /usr/local/include/fraptran /usr/local/hdf5/include)
+include_directories(./frapcon/Include)
 
 link_directories(/usr/local/lib /usr/local/hdf5/lib)
 
-if(CMAKE_Fortran_COMPILER_ID  STREQUAL "GNU")
-	set(f90flags "-D -cpp -fbacktrace -fall-intrinsics -std=f2008") # -std=f2008
-	if(release)
-		set(CMAKE_Fortran_FLAGS "-O3 ${f90flags}")
-	else()
-		set(CMAKE_Fortran_FLAGS "-g -Wall -fbounds-check -ffpe-trap=invalid,overflow,underflow ${f90flags}")
-	endif()
+set(CMAKE_Fortran_FLAGS "-std=f2008 -D -cpp")
+set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=invalid,overflow,underflo -fbacktrace")
+set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-	set(f90flags "-fpp -std08 -assume byterecl -traceback")
-	
-	if(debug)
-		set(CMAKE_Fortran_FLAGS "-g -warn -ftrapuv -fp-stack-check -check all -fpe0 ${f90flags}")
-	else()
-		set(CMAKE_Fortran_FLAGS "-O3 ${f90flags}")
-	endif()
-endif()
+file(GLOB frapcon_src ${frapcon_dating} ${frapcon_frap} ${frapcon_matpro} ${frapcon_mech} ${frapcon_vars})
+file(GLOB fraptran_src ${fraptran_envrl} ${fraptran_frap} ${fraptran_matpro} ${fraptran_mech})
+#file(GLOB frapi_src ${frapi_files})
+#file(GLOB test_src0 ${frapi_src0})
+#file(GLOB test_src1 ${frapi_src1})
+#file(GLOB test_src2 ${frapi_src2})
+#file(GLOB test_src3 ${frapi_src3})
 
-file(GLOB SOURCES ${src})
-file(GLOB SOURCES_0 ${src0})
-file(GLOB SOURCES_1 ${src1})
-file(GLOB SOURCES_2 ${src2})
-file(GLOB SOURCES_3 ${src3})
-add_library(frapi ${SOURCES})
-target_link_libraries(frapi frapcon fraptran)
+add_library(frapcon SHARED ${frapcon_src})
+add_library(fraptran SHARED ${fraptran_src})
+#add_library(frapi ${frapi_src})
 
-add_executable(frapcon_input_file ${SOURCES_0})
-add_executable(rastk_input_file ${SOURCES_1})
-add_executable(frapcon_original ${SOURCES_2})
-add_executable(fraptran_original ${SOURCES_3})
-target_link_libraries(frapcon_input_file frapi hdf5_fortran)
-target_link_libraries(rastk_input_file frapi)
-target_link_libraries(frapcon_original frapi)
-target_link_libraries(fraptran_original frapi)
+#target_link_libraries(frapi frapcon fraptran)
 
-install( TARGETS frapi
-         RUNTIME DESTINATION bin
-         LIBRARY DESTINATION lib
-         ARCHIVE DESTINATION lib
-         PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+#add_executable(frapcon_input_file ${test_src0})
+#add_executable(rastk_input_file ${test_src1})
+#add_executable(frapcon_original ${test_src2})
+#add_executable(fraptran_original ${test_src3})
 
-file( GLOB module_files 
-      ./build/debug/*.mod )
+#target_link_libraries(frapcon_input_file frapi hdf5_fortran)
+#target_link_libraries(rastk_input_file frapi)
+#target_link_libraries(frapcon_original frapi)
+#target_link_libraries(fraptran_original frapi)
 
-install( FILES ${module_files}
-         DESTINATION include/frapi
-         PERMISSIONS OWNER_READ OWNER_WRITE)
+#install( TARGETS frapi
+#         RUNTIME DESTINATION bin
+#         LIBRARY DESTINATION lib
+#         ARCHIVE DESTINATION lib
+#         PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+
+#file( GLOB module_files 
+#      ./build/debug/*.mod )
+
+#install( FILES ${module_files}
+#         DESTINATION include/frapi
+#         PERMISSIONS OWNER_READ OWNER_WRITE)

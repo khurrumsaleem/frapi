@@ -62,7 +62,7 @@ def draw(filename):
         ax.plot(time1, data1, '-o', ms=1, lw=2, alpha=0.7, mfc='blue')
         ax.set_xlabel('Average fuel burnup, MW*d/kg')
         ax.set_ylabel(name)
-        ax.legend(['NEW FRAPCON', 'OLD FRAPCON'])
+        ax.legend(['FRAPI', 'FRAPCON'])
         ax.grid()
 
         plt.savefig('%s/%s.png'%(dirname, name.split(',')[0].replace(' ','_')))

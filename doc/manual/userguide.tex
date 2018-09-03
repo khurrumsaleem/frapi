@@ -2,9 +2,11 @@
 
 \mode<presentation>
 %\usetheme{Frankfurt}
-\usetheme{Boadilla}
-
+%\usetheme{Boadilla}
+\usetheme{Copenhagen}
+\setbeamertemplate{navigation symbols}{} 
 \setbeamertemplate{caption}[numbered]
+\setbeamercolor{block title}{bg=blue}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -16,7 +18,7 @@
 \usetikzlibrary{arrows.meta}
 
 %\author{Alexey L. Cherezov}
-\title{FRAPI \\ Fuel Rod Analysis Program Interface}
+\title{Fuel Rod Analysis Program Interface \\(FRAPI)}
 %\setbeamercovered{transparent} 
 %\setbeamertemplate{navigation symbols}{} 
 %\logo{} 
@@ -30,8 +32,10 @@
             base/.style = {rectangle, rounded corners, draw=black,
                            minimum width=4cm, minimum height=1cm,
                            text centered, font=\sffamily},
-  box0/.style = {base, minimum width=2.5cm, fill=green!15, align=center},
-  box1/.style = {base, minimum width=2.5cm, fill=white!15, align=center},
+  box0/.style = {base, minimum width=2.5cm, fill=white!15, align=center},
+  box1/.style = {base, minimum width=2.5cm, fill=blue!15, align=center},
+  box2/.style = {base, minimum width=2.5cm, fill=red!5, align=center},  
+  box3/.style = {base, minimum width=2.5cm, fill=green!15, align=center},    
   void/.style = {base, minimum width=2.5cm, fill=white!30, draw=white, align=left},
 }
 
@@ -40,25 +44,268 @@
 
 \titlepage
 
-\begin{frame}{Fuel Rod Analysis Program Interface}
+\begin{frame}{FRAPI Designation}
+
+    \centering{\textbf{The new program interface for FRAPCON and FRAPTRAN}}
+
  \begin{center}
  \begin{tikzpicture}[node distance=1.5cm, align=center]
 
-  \node (onFRAPI)    [box0]                                   {FRAPI};
-  \node (onFRAPCON)  [box1, below of=onFRAPI, xshift=-2.5cm]  {FRAPCON 4.0};
-  \node (onFRAPTRAN) [box1, below of=onFRAPI, xshift= 2.5cm]  {FRAPTRAN 2.0};  
+  \node (onFRAPI)    [box0]                                   {\textbf{FRAPI}};
+  \node (onCode)     [box3, above of=onFRAPI               ]  {External code};
+  \node (onFRAPCON)  [box1, below of=onFRAPI, xshift=-2.5cm]  {\textbf{FRAPCON 4.0}};
+  \node (onFRAPTRAN) [box2, below of=onFRAPI, xshift= 2.5cm]  {\textbf{FRAPTRAN 2.0}};  
+  \node (on_text_1)  [box1, below of=onFRAPCON, yshift=0.1cm, xshift=0.cm]  {Simulation of \\ steady-state and \\ long-term burnup};
+  \node (on_text_2 ) [box2, below of=onFRAPTRAN, yshift=0.1cm, xshift=0cm]  {Simulation of \\ transient and \\ hypoth. accidents};  
   
   \draw[<-]      (onFRAPI) -| (onFRAPCON);
-  \draw[<-]      (onFRAPI) -| (onFRAPTRAN);
+  \draw[<-][densely dotted]      (onFRAPI) -| (onFRAPTRAN);
+  \draw[->]      (onFRAPI) -- (onCode);  
   \end{tikzpicture}
-  \end{center}
+  \end{center} 
+
+\end{frame}
+
+\begin{frame}{FRAPI Abilities}
+
+    \centering{\textbf{The FRAPI code:}}
+
+  \begin{block}{}
+  1. Provides an access to the most of capability of FRAPCON 
+  \textit{\small Except of the decay model ANS-5.1 and the fission gas model ANS-5.4}
+  \end{block}
+
+  \begin{block}{}
+  2. Exchanges the fuel rod data and algorithm options with an external code ``on the flight", at every time step
+  \end{block}
+
+  \begin{block}{}
+  3. Dumps the fuel rod data in output file for future restart of a calculation, starting of any chosen time moment
+  \end{block}
   
-  \begin{itemize}
-    \item Steady-state long-term burnup simulation
-    \item Transient and hypotherical accidents simulation
-  \end{itemize}
+  \vspace{0.5cm}
+  \setbeamercolor{block title}{bg=green}
+  \begin{block}{}
+  \center
+  The connection with FRAPTRAN is in progress
+  \end{block}
   
 \end{frame}
+
+\begin{frame}{FRAPI Testing}
+
+  \scriptsize
+   
+ \centering{\textbf{Considered 5 benchmarks from NEA Data Bank} \\ 
+ \textbf{FRAPI cross-verified with the original FRAPCON version}}
+
+ \begin{center}
+ \begin{tikzpicture}[node distance=1.5cm, align=center]
+
+  \node (onIFA)   [box0]                                 {\textbf{IFA}};
+  \node (on432)   [box0, below of=onIFA, xshift=-2.5cm]  {\textbf{432}};
+  \node (on515)   [box0, below of=onIFA, xshift= 2.5cm]  {\textbf{515}};  
+  \node (on515_)  [box0, below of=on515, xshift= 0.0cm]  {10RA1 10RA2 \\ 10RB1 10RB2};    
+  
+  \draw[->] (onIFA) -| (on432);
+  \draw[->] (onIFA) -| (on515);
+  \draw[->] (on515) -- (on515_);
+  \end{tikzpicture}
+  \end{center} 
+
+\end{frame}
+
+
+\begin{frame}{IFA-432-R3 Benchmark}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/average_fuel_burnup}
+    \caption{Mechanical gap thickness}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/average_linear_power}    
+    \caption{Average linear power}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{IFA-432-R3 Benchmark (continuous)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/centerline_temperature}
+    \caption{Centerline fuel temperature, $C$}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/cladding_average_temperature}    
+    \caption{Cladding average temperature, $C$}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}{IFA-432-R3 Benchmark (continuous)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/cladding_hoop_strain}
+    \caption{Cladding hoop strain}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/cladding_hoop_stress}    
+    \caption{Cladding hoop stress}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+
+\begin{frame}{IFA-432-R3 Benchmark (continuous)}
+  \footnotesize 
+  
+  \begin{columns}[t]
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/fission_gas_release}
+    \caption{Fission gas release}
+  \end{figure}  
+
+  \column{.49\textwidth}
+
+  \begin{figure}[h]
+    \includegraphics[width=1.\textwidth]{../graphics/IFA-432-r3/oxide_thickness}    
+    \caption{Oxide thickness}
+  \end{figure}  
+  
+  \end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}{FRAPI Usage Example}
+  \footnotesize
+  \texttt{
+  \begin{columns}
+  \column{0.48\textwidth}
+  \begin{block}{}
+    {\color{magenta}PROGRAM} MAIN\\
+    {\color{magenta}USE} frapi, {\color{magenta}ONLY}: frodtype\\
+    {\color{magenta}TYPE} (frodtype) FR\\    
+    {\color{gray}!--- Setup mesh size -----}\\
+    {\color{magenta}CALL} FR $\%$ MAKE(<arguments>)\\
+    {\color{gray}!--- Setup initial state ----}\\    
+    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
+    {\color{magenta}CALL} FR $\%$ INIT()\\
+    {\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
+    {\color{gray}!--- Accept initial state ----}\\                
+    {\color{magenta}CALL} FR $\%$ ACCEPT()\\    
+  \end{block}
+  \column{0.48\textwidth}
+  \begin{block}{}
+    {\color{gray}!--- Burnup loop ---------}\\        
+    {\color{magenta}DO} i = 1, N\\
+    {\color{gray}!--- Trial time step -----}\\            
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
+    {\color{gray}!--- Accept time step ----}\\                
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ ACCEPT()\\    
+    {\color{gray}!--- Save current state --}\\                
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SAVE({\color{orange}"filename"})\\    
+    {\color{magenta}ENDDO} \\
+    {\color{gray}!--- Finilize -------------}\\                    
+    {\color{magenta}CALL} FR $\%$ DESTROY()\\            
+    {\color{magenta}END PROGRAM}  MAIN
+  \end{block}
+  \end{columns}
+  }
+\end{frame}
+
+
+\begin{frame}{FRAPI Initialization}
+  
+  \scriptsize
+  
+  \centering{\textbf{List of ``MAKE"" arguments:}}
+
+  \begin{block}{}
+    \begin{itemize}
+    \item \texttt{NR} : number of radial segments
+    \item \texttt{NA} : number of axial segments
+    \item \texttt{NGASR} : number of radial gas release nodes
+    \item \texttt{NCE} : number of radial nodes in a cladding of FEA model
+    \item \texttt{MECHAN} : cladding mechaniccal model (1: FEA, 2: FRACAS)
+    \item \texttt{NGASMOD} : fission gas release model
+    \item \texttt{ICM} : cladding type
+    \item \texttt{ICOR} : crud model (0 or 1 : constant, 2: time dependent)    
+    \item \texttt{IPLANT} : plant type (-2: PWR, -3: BWR, -4: HBWR)
+    \item \texttt{IMOX} : fuel type   
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+
+\begin{frame}{FRAPI Initialization (continuous)}
+  
+  \scriptsize
+  
+  \centering{\textbf{List of ``MAKE"" arguments:}}
+
+  \begin{block}{}
+    \begin{itemize}
+    \item \texttt{IGASCAL} : internal pressure calculation for FEA model 
+    \item \texttt{ZR2VINTAGE} : zircaloy-2 vintage
+    \item \texttt{MOXTYPE} : flag for type of Pu used in MOX
+    \item \texttt{IDXGAS} : fill gas type
+    \item \texttt{IQ} : axial power shape indicator (0 = user-input, 1 = chopped cosine)
+    \item \texttt{IVARDM} : option to specify variable axial node length (1 is on, 0 is off)
+    \item \texttt{IFFIXEDCOOLT} : specify user-supplied coolant temperatures (0: off, 1: on)
+    \item \texttt{IFFIXEDCOOLP} : Specify use user-supplied coolant pressures (0: off, 1: on)
+    \item \texttt{IFFIXEDSURF} : Specify to use fixed cladding surface temperatures
+    \item \texttt{VERBOSE} : Print the output data in terminal   
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%555
+
+
 
 
 \begin{frame}{FRAPCON}
@@ -142,44 +389,6 @@
   
 \end{frame}
 
-\begin{frame}{Usage of the ``FuelRod" Class}
-  \footnotesize
-  \texttt{
-  \begin{columns}
-  \column{0.48\textwidth}
-  \begin{block}{}
-    {\color{magenta}PROGRAM} MAIN\\
-    {\color{magenta}USE} fuelrod\\
-    {\color{magenta}TYPE} (fuelrodtype) FR\\    
-    {\color{gray}!--- Setup mesh size -----}\\
-    {\color{magenta}CALL} FR $\%$ MAKE(<arguments>)\\
-    {\color{gray}!--- Setup initial state ----}\\    
-    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
-    {\color{magenta}CALL} FR $\%$ INIT()\\
-    {\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
-    {\color{gray}!--- Accept initial state ----}\\                
-    {\color{magenta}CALL} FR $\%$ ACCEPT()\\    
-  \end{block}
-  \column{0.48\textwidth}
-  \begin{block}{}
-    {\color{gray}!--- Burnup loop ---------}\\        
-    {\color{magenta}DO} i = 1, N\\
-    {\color{gray}!--- Trial time step -----}\\            
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"varname"}, var)\\
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"varname"}, var)\\
-    {\color{gray}!--- Accept time step ----}\\                
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ ACCEPT()\\    
-    {\color{gray}!--- Save current state --}\\                
-    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SAVE({\color{orange}"filename"})\\    
-    {\color{magenta}ENDDO} \\
-    {\color{gray}!--- Finilize -------------}\\                    
-    {\color{magenta}CALL} FR $\%$ DESTROY()\\            
-    {\color{magenta}END PROGRAM}  MAIN
-  \end{block}
-  \end{columns}
-  }
-\end{frame}
 
 
 

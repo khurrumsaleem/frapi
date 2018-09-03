@@ -1,8 +1,8 @@
 module frapi
 
     use conversions
-    use frapcon,  only : frapcon_driver
-    use fraptran, only : fraptran_driver
+    use frapcon4,  only : frapcon_driver
+    use fraptran2, only : fraptran_driver
 
     implicit none
 
@@ -19,11 +19,13 @@ module frapi
         procedure :: set_array => frod_set_array    ! Set variable array
         procedure :: get_value => frod_get_value    ! Get variable value
         procedure :: get_array => frod_get_array    ! Get variable array
+		procedure :: get_array_dim_2 => frod_get_array_dim_2 
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
 !        procedure :: transient => p_transient       ! Transient time step
 !        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
+        procedure :: chk_cvg=> frod_chk_converge
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -76,7 +78,7 @@ contains
         if( present(ngasr  ) ) ngasr_   = ngasr  
         if( present(nce    ) ) nce_     = nce    
         if( present(verbose) ) verbose_ = verbose
-
+		
         call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
         call this % dfcon % deft()
@@ -328,7 +330,10 @@ contains
         case("coolant system pressure, MPa")
             this % dfcon % r__p2(it) = var * MPatoPSI
         case("radius of the fuel pellet central annulus, mm")
-            this % dfcon % r__rc(:) = var * mmtoin           
+            this % dfcon % r__rc(:) = var * mmtoin  
+        case("total gap conductance, W|(m^2*K)") ! YU JIANKAI
+            this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
+            this % dfcon % r__hgapt_flag   = .true.			
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -550,7 +555,8 @@ contains
         case('cladding hydrogen concentration, ppm')
             var(:) = this % dfcon % CladH2Concen(1:n)
         case('coolant density, kg|m^3')
-            var(:) = this % dfcon % rhof(1:n) * lbft3tokgm3
+            ! var(:) = this % dfcon % rhof(1:n) * lbft3tokgm3 ! YU JIANKAI
+			var(:) = 0.5d0*(this % dfcon % rhof(1:n) + this % dfcon % rhof(2:n+1)) * lbft3tokgm3 
         case('coolant pressure, MPa')
             var(:) = this % dfcon % coolantpressure(it,1:n) * PSItoMPa
         case('axial mesh, cm')
@@ -563,12 +569,67 @@ contains
             var(:) = this % dfcon % StoredEnergy(1:n) * BTUlbtoJkg
         case('fuel burnup, MW*d|kg')
             var(:) = this % dfcon % EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
+	    ! MODIFICATION BY YU JIANKAI
+	    case('cladding inner temperature, C')
+        	var(:) = (/(tfc(this % dfcon % CladInSurfTemp(i)), i = 1, n )/) 
+        case('cladding outer temperature, C')	
+        	var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i)), i = 1, n )/)  
+        case('cladding middle temperature, C')	
+        	var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i) + this % dfcon % CladOutSurfTemp(i))*0.5d0, i = 1, n )/)  
+        case('radial meshes, cm')	
+            var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
+			var(:) = var(:) * intocm
+	    ! END MODIFICATION
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
         end select
 
     end subroutine frod_get_array
+
+
+    subroutine frod_get_array_dim_2(this, key, var)
+
+        class (frod_type), intent(in) :: this
+
+        character(*) :: key
+        integer      :: it
+        real(8)      :: var(:,:) ! array (n,)
+!        real(8)      :: ra, rb, ya, yb, h, temper, volume
+!        real(8)      :: linteg ! integral of linear function
+        real(8)      :: intoum = intomm * 1.D+3
+
+        it = this % dfcon % it
+
+        select case(key)
+	    case('fuel temperature distribution, C') ! YU JIANKAI
+			do i = 1, n 
+   			   do j = 1, m + 1
+                  var(j,i) = tfc(this % dfcon % tmpfuel(m + 2 - j, i))
+               end do 
+			end do 
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_get_array_dim_2
+    
+    subroutine frod_chk_converge(this, flag)
+    use Variables 
+    implicit none
+    class (frod_type), intent(inout) :: this
+    logical(4),intent(out)   :: flag
+    ! 
+    if(this % dfcon % iquit == 0) then 
+       flag = .true.
+	else 
+	   flag = .false.
+    end if
+    ! 
+    return
+    end subroutine frod_chk_converge
+	
 
     subroutine frod_destroy(this)
 
