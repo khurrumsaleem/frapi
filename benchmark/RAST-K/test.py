@@ -5,4 +5,5 @@ from subprocess import call
 
 call(['../../build/debug/test_rastk', 'data.inp', 'data.out'])
 
-import plot
+import err
+#import plot

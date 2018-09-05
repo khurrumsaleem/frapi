@@ -170,7 +170,7 @@ program rastk_input_file
 
         call frod(i_frod) % make(nr=n_fuel_rad_in-1, na=na_in, ngasr=45, nce=5, &
                                  ifixedcoolt = 1, ifixedcoolp = 1, ifixedtsurf = 0, &
-                                 iq = 0, ivardm = 1, verbose = .true.)
+                                 iq = 0, ivardm = 1, verbose = .false.)
 
         call frod(i_frod) % set_value("cladding thickness, cm", clad_rad - gap_rad)
         call frod(i_frod) % set_value("gap thickness, cm", gap_rad - fuel_rad)
