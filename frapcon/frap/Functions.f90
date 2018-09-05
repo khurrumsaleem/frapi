@@ -636,63 +636,63 @@ MODULE Functions
     !
     !
     !
-    PURE FUNCTION TO_UPPERCASE (String) RESULT (NewString)
-    USE Kinds
-    IMPLICIT NONE
-    !>@brief
-    !> This function changes lowercase text in a string to uppercase text
-    !>@author
-    !> Ian Porter, NRC
-    !>@date
-    !> 1/30/2015
-    INTEGER(ipk) :: i, j
-    CHARACTER(LEN=*), INTENT(IN) :: String
-    CHARACTER(LEN=LEN_TRIM(String)) :: NewString
-    CHARACTER(LEN=26), PARAMETER :: CAPL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    CHARACTER(LEN=26), PARAMETER :: LOWL = 'abcdefghijklmnopqrstuvwxyz'
-    !
-    NewString = ''
-    !
-    DO i = 1, LEN_TRIM(String)
-        j = INDEX(LOWL, String(i:i))
-        IF (j > 0) THEN
-            NewString(i:i) = CAPL(j:j)
-        ELSE
-            NewString(i:i) = string(i:i)
-        ENDIF
-    ENDDO
-    !
-    END FUNCTION TO_UPPERCASE
-    !
-    !
-    !
-    PURE FUNCTION TO_LOWERCASE (String) RESULT (NewString)
-    USE Kinds
-    IMPLICIT NONE
-    !>@brief
-    !> This function changes uppercase text in a string to lowercase text
-    !>@author
-    !> Ian Porter, NRC
-    !>@date
-    !> 1/30/2015
-    INTEGER(ipk) :: i, j
-    CHARACTER(LEN=*), INTENT(IN) :: String
-    CHARACTER(LEN=LEN_TRIM(String)) :: NewString
-    CHARACTER(LEN=26), PARAMETER :: CAPL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    CHARACTER(LEN=26), PARAMETER :: LOWL = 'abcdefghijklmnopqrstuvwxyz'
-    !
-    NewString = ''
-    !
-    DO i = 1, LEN_TRIM(String)
-        j = INDEX(CAPL, String(i:i))
-        IF (j > 0) THEN
-            NewString(i:i) = LOWL(j:j)
-        ELSE
-            NewString(i:i) = string(i:i)
-        ENDIF
-    ENDDO
-    !
-    END FUNCTION TO_LOWERCASE
+!    PURE FUNCTION TO_UPPERCASE (String) RESULT (NewString)
+!    USE Kinds
+!    IMPLICIT NONE
+!    !>@brief
+!    !> This function changes lowercase text in a string to uppercase text
+!    !>@author
+!    !> Ian Porter, NRC
+!    !>@date
+!    !> 1/30/2015
+!    INTEGER(ipk) :: i, j
+!    CHARACTER(LEN=*), INTENT(IN) :: String
+!    CHARACTER(LEN=LEN_TRIM(String)) :: NewString
+!    CHARACTER(LEN=26), PARAMETER :: CAPL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+!    CHARACTER(LEN=26), PARAMETER :: LOWL = 'abcdefghijklmnopqrstuvwxyz'
+!    !
+!    NewString = ''
+!    !
+!    DO i = 1, LEN_TRIM(String)
+!        j = INDEX(LOWL, String(i:i))
+!        IF (j > 0) THEN
+!            NewString(i:i) = CAPL(j:j)
+!        ELSE
+!            NewString(i:i) = string(i:i)
+!        ENDIF
+!    ENDDO
+!    !
+!    END FUNCTION TO_UPPERCASE
+!    !
+!    !
+!    !
+!    PURE FUNCTION TO_LOWERCASE (String) RESULT (NewString)
+!    USE Kinds
+!    IMPLICIT NONE
+!    !>@brief
+!    !> This function changes uppercase text in a string to lowercase text
+!    !>@author
+!    !> Ian Porter, NRC
+!    !>@date
+!    !> 1/30/2015
+!    INTEGER(ipk) :: i, j
+!    CHARACTER(LEN=*), INTENT(IN) :: String
+!    CHARACTER(LEN=LEN_TRIM(String)) :: NewString
+!    CHARACTER(LEN=26), PARAMETER :: CAPL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+!    CHARACTER(LEN=26), PARAMETER :: LOWL = 'abcdefghijklmnopqrstuvwxyz'
+!    !
+!    NewString = ''
+!    !
+!    DO i = 1, LEN_TRIM(String)
+!        j = INDEX(CAPL, String(i:i))
+!        IF (j > 0) THEN
+!            NewString(i:i) = LOWL(j:j)
+!        ELSE
+!            NewString(i:i) = string(i:i)
+!        ENDIF
+!    ENDDO
+!    !
+!    END FUNCTION TO_LOWERCASE
     !
     !
     !
