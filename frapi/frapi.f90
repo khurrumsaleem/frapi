@@ -83,12 +83,12 @@ contains
         n  = na
         m  = nr
 
-        if( present(nr     ) ) nr_      = nr     
-        if( present(na     ) ) na_      = na     
-        if( present(ngasr  ) ) ngasr_   = ngasr  
-        if( present(nce    ) ) nce_     = nce    
+        if( present(nr     ) ) nr_      = nr
+        if( present(na     ) ) na_      = na
+        if( present(ngasr  ) ) ngasr_   = ngasr
+        if( present(nce    ) ) nce_     = nce
         if( present(verbose) ) verbose_ = verbose
-		
+
         call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
         call this % dfcon % deft()
@@ -659,6 +659,15 @@ contains
         call this % dftran % next(dt)
 
     end subroutine p_transient
+
+    subroutine p_frapc2t(this)
+
+        class (frod_type), intent(inout) :: this
+
+        this % dfcon  % restfs()
+        this % dftran % restfs()
+
+    end subroutine p_frapc2t
 
 
 !    subroutine p_frapc2t(this)

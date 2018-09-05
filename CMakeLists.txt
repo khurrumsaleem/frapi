@@ -23,7 +23,7 @@ file(GLOB fraptran_src "fraptran/envrl/*.f90"
 
 file(GLOB frapi_src     "frapi/*.f90")
 
-include_directories(/usr/local/include/frapcon /usr/local/include/fraptran)# /usr/local/hdf5/include)
+#include_directories(/usr/local/include/frapcon /usr/local/include/fraptran)# /usr/local/hdf5/include)
 
 include_directories(./frapcon/Include)
 

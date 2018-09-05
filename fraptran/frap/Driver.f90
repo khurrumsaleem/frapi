@@ -197,9 +197,9 @@ module fraptran2
     subroutine p_next(this, dt)
 
         class (fraptran_driver), intent(inout) :: this
-        
-		real(8) :: dt
-		
+
+        real(8) :: dt
+
         CALL setup6
 
         n2 = 1

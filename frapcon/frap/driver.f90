@@ -60,6 +60,7 @@ module frapcon4
         procedure :: save_state => driver_save_state
         procedure :: load_state => driver_load_state
         procedure :: destroy => driver_destroy
+        procedure :: rastfs => driver_rastfs
 
     end type frapcon_driver
 
@@ -1566,6 +1567,9 @@ contains
 10      FORMAT ('FRAPCON code execution finished with a problem time of ',f11.4,' days.')
         !
     end subroutine FRAPCON_4_0_Patch_1
+
+    subroutine rastfs
+    end subroutine rastfs
 
 end module frapcon4
 
