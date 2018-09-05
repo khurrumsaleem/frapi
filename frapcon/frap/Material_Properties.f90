@@ -57,7 +57,7 @@ MODULE Material_Properties
     REAL(r8k), INTENT(IN) :: Temperature
     REAL(r8k), INTENT(IN), OPTIONAL :: Burnup, Burnup_prev, Power
     CHARACTER(LEN=*), INTENT(IN) :: Material, Property
-    
+
     ! Only assign values if at least one of the optional arguments are present (used for fuel parameters)
     IF (PRESENT(Burnup)) THEN
         burn = Burnup
