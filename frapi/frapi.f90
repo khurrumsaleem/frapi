@@ -15,12 +15,22 @@ module frapi
         procedure :: init      => frod_init         ! Set the initial fuel rod state, t = 0
         procedure :: next      => frod_next         ! Perform the trial time step, dt > 0
         procedure :: accept    => frod_accept       ! Reject the last time step
-        procedure :: set_value => frod_set_value    ! Set variable value
-        procedure :: set_array => frod_set_array    ! Set variable array
-        procedure :: get_value => frod_get_value    ! Get variable value
-        procedure :: get_array => frod_get_array    ! Get variable array
-        procedure :: get_f_2   => frod_get_f_2 
-        procedure :: get_i_0   => frod_get_i_0
+
+        ! old interface: ---------------------------------------------------
+        procedure :: set_value => frod_set_r8_0    ! Set variable value
+        procedure :: set_array => frod_set_r8_1    ! Set variable array
+        procedure :: get_value => frod_get_r8_0    ! Get variable value
+        procedure :: get_array => frod_get_r8_1    ! Get variable array
+        !--------------------------------------------------------------------
+
+        procedure :: set_r8_0  => frod_set_r8_0     ! set real variable
+        procedure :: set_r8_1  => frod_set_r8_1     ! set real array of dimension 1
+
+        procedure :: get_r8_0  => frod_get_r8_0     ! get real variable
+        procedure :: get_r8_1  => frod_get_r8_1     ! get real array of dimension 1
+        procedure :: get_r8_2  => frod_get_r8_2     ! get real array of dimension 2
+        procedure :: get_i4_0  => frod_get_i4_0     ! get integer variable
+
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
@@ -181,7 +191,7 @@ contains
 
     end subroutine frod_accept
 
-    subroutine frod_set_value(this, key, var)
+    subroutine frod_set_r8_0(this, key, var)
 
         class (frod_type), intent(inout) :: this
 
@@ -339,9 +349,9 @@ contains
             stop
         end select
 
-    end subroutine frod_set_value
+    end subroutine frod_set_r8_0
 
-    subroutine frod_set_array(this, key, var)
+    subroutine frod_set_r8_1(this, key, var)
 
         class (frod_type), intent(inout) :: this
 
@@ -417,9 +427,9 @@ contains
             stop
         end select
 
-    end subroutine frod_set_array
+    end subroutine frod_set_r8_1
 
-    subroutine frod_get_i_0(this, key, var)
+    subroutine frod_get_i4_0(this, key, var)
 
         class (frod_type), intent(in) :: this
 
@@ -437,9 +447,9 @@ contains
             stop
         end select
 
-    end subroutine frod_get_i_0
+    end subroutine frod_get_i4_0
 
-    subroutine frod_get_value(this, key, var)
+    subroutine frod_get_r8_0(this, key, var)
 
         class (frod_type), intent(in) :: this
 
@@ -477,9 +487,9 @@ contains
             stop
         end select
 
-    end subroutine frod_get_value
+    end subroutine frod_get_r8_0
 
-    subroutine frod_get_array(this, key, var)
+    subroutine frod_get_r8_1(this, key, var)
 
         class (frod_type), intent(in) :: this
 
@@ -601,10 +611,10 @@ contains
             stop
         end select
 
-    end subroutine frod_get_array
+    end subroutine frod_get_r8_1
 
 
-    subroutine frod_get_f_2(this, key, var)
+    subroutine frod_get_r8_2(this, key, var)
 
         class (frod_type), intent(in) :: this
 
@@ -627,7 +637,7 @@ contains
             stop
         end select
 
-    end subroutine frod_get_f_2
+    end subroutine frod_get_r8_2
 
     subroutine frod_destroy(this)
 
