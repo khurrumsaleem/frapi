@@ -1,6 +1,6 @@
 MODULE Restart
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE rlpst
     IMPLICIT NONE
     !>@brief
@@ -35,7 +35,7 @@ MODULE Restart
       &                AxBurnup, RadialBound, GasPress, igpnod, GapThick, GasFraction, TotalGasMoles, &
       &                gadolin, burad, radsrco, colddec, ureloc, FastFlux, tflux)
     USE Kinds
-    USE Variables, ONLY : ngasr, ansr, fmgp, gasavail1, gasavail2, ounit, fcunit
+    USE variables_fraptran, ONLY : ngasr, ansr, fmgp, gasavail1, gasavail2, ounit, fcunit
     USE resti_h, ONLY : nmesh, ncladi, naxn
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
@@ -375,3 +375,4 @@ MODULE Restart
     END SUBROUTINE restfs
     !
     END MODULE Restart
+

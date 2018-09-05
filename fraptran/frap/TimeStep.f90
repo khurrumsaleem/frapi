@@ -15,7 +15,7 @@ MODULE TimeStep
     !
     SUBROUTINE crank6
     USE Kinds
-    USE Variables, ONLY : ounit, afrap, Time
+    USE variables_fraptran, ONLY : ounit, afrap, Time
     USE CoolantProperties, ONLY : tc1, tc2
     USE Dyna_h
     USE collct_h
@@ -70,8 +70,8 @@ MODULE TimeStep
     !
     SUBROUTINE store6
     USE Kinds
-    USE Conversions, ONLY : ftin, tfk
-    USE Variables
+    USE conversions_fraptran, ONLY : ftin, tfk
+    USE variables_fraptran
     USE rlpst, ONLY : rlpst3
     USE PlotFile
     USE OutputFile
@@ -464,7 +464,8 @@ MODULE TimeStep
     !
     SUBROUTINE setup6
     USE Kinds
-    USE Variables, ONLY : ncards, ncool, ndtad, t1, t2, IndexTempConverg, time, ntstep, ncall, t0, tmax, vsn, vs0, tEnd, coupled
+    USE variables_fraptran, ONLY : ncards, ncool, ndtad, t1, t2, &
+    & IndexTempConverg, time, ntstep, ncall, t0, tmax, vsn, vs0, tEnd, coupled
     IMPLICIT NONE
     !>@brief
     !> This Subroutine sets up variables for time step advancement by subroutine comput
@@ -498,7 +499,7 @@ MODULE TimeStep
     !
     SUBROUTINE init6
     USE Kinds
-    USE Variables, ONLY : ounit, afrap, maxidx, amatpc, unit, apowrd, aprntb, a1, time, DebugTime, fdial, acoold, arest1, &
+    USE variables_fraptran, ONLY : ounit, afrap, maxidx, amatpc, unit, apowrd, aprntb, a1, time, DebugTime, fdial, acoold, arest1, &
       &                   irest2, irest3, aexcb, tz1, ithymx, ablona, trecrd, ascal1, ascal2, ascal3, ftmelt, aflcht
     USE collct_h
     IMPLICIT NONE
@@ -644,7 +645,7 @@ MODULE TimeStep
     !
     SUBROUTINE restrw
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     IMPLICIT NONE
     !> @brief
     !> Subroutine stores all information needed for restarting into array afrap, which is stored in lcm.
@@ -787,9 +788,9 @@ MODULE TimeStep
     !
     SUBROUTINE comput
     USE Kinds
-    USE Conversions, ONLY : pi, ftom, powcnv, tfk
+    USE conversions_fraptran, ONLY : pi, ftom, powcnv, tfk
     USE Functions, ONLY : polate, terp
-    USE Variables
+    USE variables_fraptran
     USE rlpst, ONLY : rlpst2
     USE frapc, ONLY : coupled, t12, t22
     USE Deformation
@@ -1845,7 +1846,7 @@ MODULE TimeStep
     !
     SUBROUTINE honr (xi, xo, xnew, np)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine honr performs higher order newton-raphson estimate of quantity being iterated upon
@@ -1918,7 +1919,7 @@ MODULE TimeStep
     !
     SUBROUTINE timstp
     USE Kinds
-    USE Variables, ONLY : ounit, timeincrement, dtp, nitdt, dtenfb, dtenfo, dtold
+    USE variables_fraptran, ONLY : ounit, timeincrement, dtp, nitdt, dtenfb, dtenfo, dtold
     IMPLICIT NONE
     !> @brief
     !> Subroutine computes new time step. extimate is made of largest
@@ -1952,3 +1953,4 @@ MODULE TimeStep
     END SUBROUTINE timstp
 !
 END MODULE TimeStep
+

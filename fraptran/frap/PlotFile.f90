@@ -1,9 +1,9 @@
 MODULE PlotFile
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE Dyna_h
     USE resti_h
-    USE Conversions, ONLY : pi, coneu
+    USE conversions_fraptran, ONLY : pi, coneu
     USE Uncertainty_Vals
     !>@brief
     !> This module contains the subroutines needed to make the plot file
@@ -137,8 +137,8 @@ MODULE PlotFile
     !
     SUBROUTINE grafout ()
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_fraptran
+    USE variables_fraptran
     USE Temperature
     IMPLICIT NONE
     !>@brief
@@ -719,3 +719,4 @@ MODULE PlotFile
     END SUBROUTINE grafout
     !
     END MODULE PlotFile
+

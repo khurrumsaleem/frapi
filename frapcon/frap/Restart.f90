@@ -1,7 +1,7 @@
 MODULE Restart
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE Comde
     USE FissionGas
     IMPLICIT NONE
@@ -18,7 +18,7 @@ MODULE Restart
     !
     SUBROUTINE WriteRestart
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine writes to the restart file
@@ -320,7 +320,7 @@ MODULE Restart
     !
     SUBROUTINE ReadRestart
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine reads the restart file
@@ -657,8 +657,8 @@ MODULE Restart
     !
     SUBROUTINE restfs
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : na, nr, im, ngasr, gadoln, colddef, colddec, ProblemTime, rlcstrn, fgmgp, epp, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : na, nr, im, ngasr, gadoln, colddef, colddec, ProblemTime, rlcstrn, fgmgp, epp, &
       &                   gasmo, rapow, ifixedcoolp, CoolantPressure, crad, gases, press, it, nt, rci, rp, dcoBOL
     USE FissionGas, ONLY : FGRData
     IMPLICIT NONE
@@ -941,3 +941,4 @@ MODULE Restart
     END SUBROUTINE restfs
     !
 END MODULE Restart
+

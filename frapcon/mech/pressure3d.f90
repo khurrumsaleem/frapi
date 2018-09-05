@@ -1,6 +1,6 @@
 MODULE pressure3d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -41,7 +41,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pressure3d database
@@ -88,7 +88,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_setpress (label, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set pressures for the set label
@@ -109,7 +109,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_updval (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update pressure values
@@ -139,7 +139,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_create (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new PRESSURE3D element
@@ -194,7 +194,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_fext()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 2D pressure load contribution to the external force vector
@@ -248,7 +248,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the pressure loads
@@ -283,7 +283,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -302,7 +302,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write pressure data
@@ -326,7 +326,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk), INTENT(IN) :: nunit
@@ -382,7 +382,7 @@ MODULE pressure3d
     !
     SUBROUTINE pressure3d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate pressure3d database
@@ -399,3 +399,4 @@ MODULE pressure3d
     END SUBROUTINE pressure3d_deallocate
     !
 END MODULE pressure3d
+

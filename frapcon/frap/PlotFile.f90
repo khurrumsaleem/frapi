@@ -1,7 +1,7 @@
 MODULE PlotFile
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE Gas, ONLY : ngases
     USE RunProperties
     IMPLICIT NONE
@@ -17,7 +17,7 @@ MODULE PlotFile
     !
     SUBROUTINE grafini ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Refabrication, ONLY : irefab, nrefab1, nrefab2
     IMPLICIT NONE
     !>@brief
@@ -199,7 +199,7 @@ MODULE PlotFile
     !
     SUBROUTINE grafout
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE FissionGas, ONLY : FGRData
     USE Comde
     IMPLICIT NONE
@@ -1159,3 +1159,4 @@ MODULE PlotFile
     END SUBROUTINE grafout
     !
 END MODULE PlotFile
+

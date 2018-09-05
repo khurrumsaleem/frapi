@@ -1,7 +1,7 @@
 MODULE Plenum
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : ounit
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
@@ -22,9 +22,9 @@ MODULE Plenum
     SUBROUTINE plnt (od, id, vp, powrod, tau, slen, diac, dias, tip, tsurf, PlenumGasMoles, GasFraction, &
       &              denc, NSteadyTrans, Ncoils, nodpln, q1, q2, abar, bbar, tp, GasPress, nconv)
     USE Kinds
-    USE Conversions, ONLY : pi, sechr, psinm2, gtolb, tfk, tfr
+    USE conversions_fraptran, ONLY : pi, sechr, psinm2, gtolb, tfk, tfr
     USE Functions, ONLY : simq
-    USE Variables, ONLY : ounit, ndebug
+    USE variables_fraptran, ONLY : ounit, ndebug
     USE Material_Properties, ONLY : MatProperty
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
@@ -445,9 +445,9 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Grashof (Length, Tplen, Tfuel)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Material_Properties, ONLY : MatProperty
-    USE Variables, ONLY : GasFraction
+    USE variables_fraptran, ONLY : GasFraction
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Grashof Number
@@ -514,9 +514,9 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Prandtl (Tplen)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Material_Properties, ONLY : MatProperty
-    USE Variables, ONLY : GasFraction
+    USE variables_fraptran, ONLY : GasFraction
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Prandtl Number
@@ -572,7 +572,7 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Nusselt (Gr, Pr, Orientation, Geometry, HeatType)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Nusselt Number based on the following:
@@ -722,3 +722,4 @@ MODULE Plenum
     END FUNCTION Nusselt
     !
 END MODULE Plenum
+

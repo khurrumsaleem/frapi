@@ -1,7 +1,7 @@
 MODULE CorrosionData
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : calcoxide, icm, iplant, ounit, sigh2, zr2vintage, EOSZrO2Thk, sigcor, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : calcoxide, icm, iplant, ounit, sigh2, zr2vintage, EOSZrO2Thk, sigcor, &
       &                   FastFlux, dco, dci, dp, StartofStepPickupH2Con, EndofStepPickupH2Con, &
       &                   CladH2Concen, ExcessH2Concen, ZrO2ThkNoAd, EOSNodeBurnup, &
       &                   qc, CladOutSurfTemp, j, iter, zro2wg, cladavgtemp, delhs, &
@@ -19,7 +19,7 @@ MODULE CorrosionData
     !
     SUBROUTINE Corrosion
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine is called from frpcon and calculates the corrosion layer thickness, 
@@ -74,7 +74,7 @@ MODULE CorrosionData
     !
     SUBROUTINE corros (tcoi, qci, zoxki)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine corros calculates the ZrO2 water-side corrosion oxide thickness
@@ -248,7 +248,7 @@ MODULE CorrosionData
     !
     SUBROUTINE chuptk (dp, dco, dci, tcoi, qci, zoxki)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> chuptk calculates average concentration of hydrogen in zircaloy cladding.
@@ -374,3 +374,4 @@ MODULE CorrosionData
     END SUBROUTINE chuptk
     !
 END MODULE CorrosionData
+

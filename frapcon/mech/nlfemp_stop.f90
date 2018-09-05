@@ -1,6 +1,6 @@
    SUBROUTINE nlfemp_stop (wrtout)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE FEA_IO, ONLY : write_output
     USE FEA_deallocate
@@ -25,3 +25,4 @@
     STOP
 
    END SUBROUTINE nlfemp_stop
+

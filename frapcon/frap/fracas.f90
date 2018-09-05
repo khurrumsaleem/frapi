@@ -1,6 +1,6 @@
 MODULE MechanicalDeform
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Deformation
     IMPLICIT NONE
     !
@@ -10,9 +10,9 @@ MODULE MechanicalDeform
     !
     SUBROUTINE fracas
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE FEModel
-    USE Variables
+    USE variables_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk) :: i, ii, l, nrelax, m1, m2, m3, m4, m5, m6, kflag, n1, n22, n3, n4, jjj
@@ -122,3 +122,4 @@ MODULE MechanicalDeform
     END SUBROUTINE fracas
     !
 END MODULE MechanicalDeform
+

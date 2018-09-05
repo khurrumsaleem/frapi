@@ -1,7 +1,7 @@
 MODULE Functions
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This module contains the main functions used by FRAPCON
@@ -15,7 +15,7 @@ MODULE Functions
     !
     REAL(r8k) FUNCTION polate (xy, xx, nn, kk)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Polate is a linear interpolation function
@@ -157,7 +157,7 @@ MODULE Functions
     !
     REAL(r8k) FUNCTION terp (tt, ti, td, n)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Interpolates to find a value terp from the td (dependent) array to correspond to the
@@ -260,7 +260,7 @@ MODULE Functions
     !
     REAL(r8k) FUNCTION bes2 (arg, n, m, ier)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> To calculate i and k bessel functions of order 0 and 1
@@ -353,7 +353,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bi0l (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -367,7 +367,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bi0g (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -381,7 +381,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bi1l (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -395,7 +395,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bk0l (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -409,7 +409,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bk0g (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -423,7 +423,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bk1l (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -437,7 +437,7 @@ MODULE Functions
         !
         REAL(r8k) FUNCTION bk1g (x)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
         REAL(r8k), INTENT(IN) :: x
@@ -453,7 +453,7 @@ MODULE Functions
     !
     SUBROUTINE ShiftArray (size1, size2, ArrayVal, ShiftType)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine increases an array from (array1, size1) to (array2, size2) using either 
@@ -511,7 +511,7 @@ MODULE Functions
     !
     SUBROUTINE ReAllocateArray (size_old, size_new, startval, RealArray)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine re-allocates the array size but keeps the data in the same location
@@ -550,7 +550,7 @@ MODULE Functions
     !
     SUBROUTINE ReAllocateArray1DInteger (size_old, size_new, startval, IntArray)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine re-allocates the array size but keeps the data in the same location
@@ -590,7 +590,7 @@ MODULE Functions
     !
     SUBROUTINE ReAllocateArray2D (size1_old, size1_new, startval1, size2_old, size2_new, startval2, RealArray)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine re-allocates the 2-D array size but keeps the data in the same location
@@ -637,7 +637,7 @@ MODULE Functions
     SUBROUTINE ReAllocateArray3D(size1_old, size1_new, startval1, size2_old, size2_new, startval2, &
       &                          size3_old, size3_new, startval3, RealArray)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine re-allocates the 3-D array size but keeps the data in the same location
@@ -689,7 +689,7 @@ MODULE Functions
     !
     SUBROUTINE simq (a, b, n, ks)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine simq obtains solution of a set of simultaneous linear equations, ax=b
@@ -809,3 +809,4 @@ MODULE Functions
     END SUBROUTINE simq
     !
 END MODULE Functions
+

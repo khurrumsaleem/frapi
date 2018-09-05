@@ -1,6 +1,6 @@
 MODULE materials
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE cladding
     USE m5_cladding
@@ -41,7 +41,7 @@ MODULE materials
     !
     SUBROUTINE mat_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers
@@ -61,7 +61,7 @@ MODULE materials
     !
     SUBROUTINE mat_create(mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create material database if label does not exist
@@ -111,7 +111,7 @@ MODULE materials
     !
     SUBROUTINE mat_create_par (mat, label, ndata)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk), INTENT(IN) :: mat, ndata
@@ -197,7 +197,7 @@ MODULE materials
     !
     REAL(r8k) FUNCTION mat_par (number, temp, keyword)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Linear interpolation for the material parameter given as a function of temperature
@@ -300,7 +300,7 @@ MODULE materials
     !
     FUNCTION mat_plastic (mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Return true if material has plasticity properties
@@ -348,7 +348,7 @@ MODULE materials
     !
     FUNCTION mat_volstr (mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Return true if material has prescribed volumetric strains
@@ -382,7 +382,7 @@ MODULE materials
     !
     FUNCTION mat_creep (mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Return true if material has creep properties
@@ -430,7 +430,7 @@ MODULE materials
     !
     SUBROUTINE mat_radial_return (mat, temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Radial return
@@ -496,7 +496,7 @@ MODULE materials
     !
     SUBROUTINE mat_creep_calc(mat, temp, mu, dtime, epseff0, taueff, gamma, deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Return creep strain increment using Nortons power law
@@ -568,7 +568,7 @@ MODULE materials
     !
     SUBROUTINE mat_maximums (mat, epseff, sigeff, plSED, sigma)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update maximum parameters for the material
@@ -604,7 +604,7 @@ MODULE materials
     !
     SUBROUTINE mat_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write material data to the output file
@@ -640,7 +640,7 @@ MODULE materials
     !
     SUBROUTINE mat_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write material data to the output file
@@ -759,7 +759,7 @@ MODULE materials
     !
     SUBROUTINE mat_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate materials database
@@ -785,3 +785,4 @@ MODULE materials
     END SUBROUTINE mat_deallocate
     !
 END MODULE materials
+

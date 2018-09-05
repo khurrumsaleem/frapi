@@ -1,6 +1,6 @@
 MODULE Deformation
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines subroutines related to PCMI and cladding deformation.
@@ -14,7 +14,7 @@ MODULE Deformation
     !
     REAL(r8k) FUNCTION crapf (sag, edot, ProblemTime, tc, phi, ecreep)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> crapf is called from creep.
@@ -72,8 +72,8 @@ MODULE Deformation
       &                       OldCoolPress, OldFuelDispl, j, nrelax, dtime, ProblemTime, CreepStrain, crep, &
       &                       CladH2Concen, ExcessH2Concen, na, nplast)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladAveTemp, FuelSurfDispl, CladEffPlasStrain, CoolantPress, GapPress
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladAveTemp, FuelSurfDispl, CladEffPlasStrain, CoolantPress, GapPress
     IMPLICIT NONE
     !>@brief
     !> This routine calculates gap thickness
@@ -156,8 +156,8 @@ MODULE Deformation
       &                ProblemTime, crep, CladH2Concen, ExcessH2Concen, iquit, nplast, it, &
       &                alfdt, flux)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !
@@ -355,8 +355,8 @@ MODULE Deformation
       &              OldFuelDispl, IgapIndexOld, eppsav, dtime, ProblemTime, CreepStrain, repsav, &
       &              rfpsav, epp1, CladH2Concen, ExcessH2Concen, UniformAxNodStrn, iquit, jjj, it, nplast, nrelax)
     USE Kinds
-    USE Conversions
-    USE Variables,  ONLY : CladAveTemp, sigeff, sigy, FuelSurfDispl, &
+    USE conversions_frapcon
+    USE variables_frapcon,  ONLY : CladAveTemp, sigeff, sigy, FuelSurfDispl, &
       &                    CladInSurDisp, AxialNodLength, PrevCladEffPlasStrn, CoolantPress, &
       &                    RinterfacPress, FuelCladGap, GapPress, PlastStrnep1, ounit, na, &
       &                    ThermalStrain, epsav, eps1, sig1, dp, dci, dco, nt, FastFlux
@@ -574,7 +574,7 @@ MODULE Deformation
       &               fs, nrelax, dtime, ProblemTime, CreepStrain, CladH2Concen, ExcessH2Concen, &
       &               nplast, sigeff, sigy, alfdt, j, jcreep)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -682,8 +682,8 @@ MODULE Deformation
       &                nrelax, dtime, ProblemTime, CreepStrain, CladH2Concen, ExcessH2Concen, &
       &                na, iquit, nplast)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladAveTemp, FuelSurfDispl, PrevCladEffPlasStrn, ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladAveTemp, FuelSurfDispl, PrevCladEffPlasStrn, ounit
     IMPLICIT NONE
     !>@brief
     !> This routine seeks out the point of gap closure gapcls is called from fcmi
@@ -862,8 +862,8 @@ MODULE Deformation
     !
     SUBROUTINE crepr (sig, edot, CladAveTemp, GapPress, CoolantPress, rci, rco, ProblemTime, j, dtime, jcreep)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : icm, sigcreep, stold, stnew, deltimeold, deltimenew, FastFlux, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : icm, sigcreep, stold, stnew, deltimeold, deltimenew, FastFlux, &
       &                   sagold, sagnew, delsagold, delsagnew, delst, fnck, cwkf
     IMPLICIT NONE
     !
@@ -1012,8 +1012,8 @@ MODULE Deformation
     !
     SUBROUTINE creep (sig, edot, z, CladAveTemp, phi, ecreep, iquit)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> creep is called from couple and stack and searches for the correct value of stress
@@ -1137,8 +1137,8 @@ MODULE Deformation
     !
     SUBROUTINE stress (sig, dep, epplas, CladAveTemp, cexh2)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit
     USE Material_Properties, ONLY : MatProp
     USE ZrModels
     IMPLICIT NONE
@@ -1203,7 +1203,7 @@ MODULE Deformation
     !
     SUBROUTINE strain (sig, eps, epplas, CladAveTemp, ExcessH2Concen)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties, ONLY : MatProp
     USE ZrModels
     IMPLICIT NONE
@@ -1269,3 +1269,4 @@ MODULE Deformation
     END SUBROUTINE strain
     !
 END MODULE Deformation
+

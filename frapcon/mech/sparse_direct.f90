@@ -1,6 +1,6 @@
 MODULE sparse_direct
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -45,7 +45,7 @@ MODULE sparse_direct
 CONTAINS
     SUBROUTINE sparse_direct_graph (n, nvalues, rowindex, diagindex, columns)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Form an undirected graph from a sparse matrix
@@ -86,7 +86,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_level (droot, n, level, maxlevel, visited, maxwidth)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Form the rooted level structure for the sparse matrix starting from droot
@@ -138,7 +138,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_root_sloan (n, nroot, roots, roote)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Sloan algorithm to find a pseudo pheripheral vertices
@@ -237,7 +237,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_sloan (n, droots, droote, numbered)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Use Sloan's algorithm to reorder the numbering of unknowns
@@ -343,7 +343,7 @@ CONTAINS
     !
     FUNCTION sparse_direct_profile(n) RESULT(prof)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate matrix profile
@@ -365,7 +365,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_reorder (n, nvalues, rowindex, diagindex, columns)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Reorder the numbering of unknownss to reduce the profile of the sparse matrix
@@ -462,7 +462,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_ldlt (n, nvalues, rowindex, diagindex, columns, values, lidef)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> LDL^T factorization of the sparse matrix
@@ -530,7 +530,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_lu (n, nvalues, rowindex, diagindex, columns, values, lidef)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> LU decomposition of nonsymmetric sparse matrix
@@ -619,7 +619,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_ldltsol (n, r, x)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solve the linear equation group using LDL^T factored matrix
@@ -676,7 +676,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_lusol (n, r, x)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solve the linear equation group using LDL^T factored matrix
@@ -728,7 +728,7 @@ CONTAINS
     !
     SUBROUTINE sparse_direct_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate all the arrays
@@ -745,3 +745,4 @@ CONTAINS
     END SUBROUTINE sparse_direct_deallocate
     !
 END MODULE sparse_direct
+

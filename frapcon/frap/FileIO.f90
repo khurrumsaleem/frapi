@@ -7,9 +7,9 @@ MODULE FileIO
     !
     SUBROUTINE iofiles
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : iunit, ounit, scrunit
+    USE variables_frapcon, ONLY : iunit, ounit, scrunit
     IMPLICIT NONE
     !> @brief
     !> Subroutine iofiles reads the command line to get the input file name, opens the input file
@@ -335,8 +335,8 @@ MODULE FileIO
     !
     SUBROUTINE IOEcho
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : iunit, ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : iunit, ounit
     IMPLICIT NONE
     !>@brief
     !> IOEcho reads the input file and echos it to the scratch and output files
@@ -388,7 +388,7 @@ MODULE FileIO
     !
     SUBROUTINE Namelist_Read_Error (FileUnit, NameListBlock)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This subroutine reads the input line that had an error and writes it to the screen and output file
@@ -419,3 +419,4 @@ MODULE FileIO
     END SUBROUTINE Namelist_Read_Error
     !
 END MODULE FileIO
+

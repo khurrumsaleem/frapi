@@ -1,7 +1,7 @@
 MODULE Refabrication
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, gasmo, x, qf, totl, cpl, it, airin, an2in, argin, fgin, hein, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit, gasmo, x, qf, totl, cpl, it, airin, an2in, argin, fgin, hein, &
       &                   kryin, xein, cpl, totl, deltaz, jmin, jmax, Spring
     USE RunProperties
     IMPLICIT NONE
@@ -32,7 +32,7 @@ MODULE Refabrication
     !
     SUBROUTINE RodRefabrication
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine writes out the information needed for fuel rod refabrication
@@ -101,8 +101,8 @@ MODULE Refabrication
     !
     SUBROUTINE axhef2 (qf1, x1)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : nunits, na, deltaz, qaxnorm, iq, qend, WorkArray1, WorkArray2, WorkArray3, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : nunits, na, deltaz, qaxnorm, iq, qend, WorkArray1, WorkArray2, WorkArray3, &
       &                   ounit, naxim, jn, jpeak, avgqi, fa, ir1, jjc, nt, jmin, jmax
     IMPLICIT NONE
     !>@brief
@@ -360,3 +360,4 @@ MODULE Refabrication
     END SUBROUTINE axhef2
     !
 END MODULE Refabrication
+

@@ -1,6 +1,6 @@
 MODULE StaticFEA
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to run the Cladding Static FEA calculation.
@@ -16,7 +16,7 @@ MODULE StaticFEA
     !
     SUBROUTINE comput_static()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE materials
@@ -34,7 +34,7 @@ MODULE StaticFEA
     USE cont1d
     USE cont2d
     USE cont3d
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     USE FEA_IO, ONLY : line_search, write_output
     IMPLICIT NONE
     !>@brief
@@ -345,7 +345,7 @@ MODULE StaticFEA
     !
     SUBROUTINE forced_displ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -381,7 +381,7 @@ MODULE StaticFEA
     !
     SUBROUTINE gascav_pressure()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE gascav1d
     USE gascav2d
@@ -421,7 +421,7 @@ MODULE StaticFEA
     !
     SUBROUTINE init_displ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -460,7 +460,7 @@ MODULE StaticFEA
     !
     SUBROUTINE load_step()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -485,7 +485,7 @@ MODULE StaticFEA
     !
     Subroutine number_dofs()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     USE spring
@@ -587,7 +587,7 @@ MODULE StaticFEA
     !
     SUBROUTINE rupture()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE solid1d
     USE quad4
@@ -657,11 +657,11 @@ MODULE StaticFEA
     !
     SUBROUTINE time_step (lsubstp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE quad4
     USE hex8
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Calculate load and temperature increments
@@ -750,7 +750,7 @@ MODULE StaticFEA
     !
     SUBROUTINE update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE sparse_matrix
@@ -885,7 +885,7 @@ MODULE StaticFEA
     !
     SUBROUTINE update_database()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE quad4
     USE hex8
@@ -1154,7 +1154,7 @@ MODULE StaticFEA
     !
     SUBROUTINE update_displ (dl0, dl)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -1180,3 +1180,4 @@ MODULE StaticFEA
     END SUBROUTINE update_displ
     !
 END MODULE StaticFEA
+

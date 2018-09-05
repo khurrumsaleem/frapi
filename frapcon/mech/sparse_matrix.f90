@@ -1,6 +1,6 @@
 MODULE sparse_matrix
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE sparse_direct
     USE common_parameters
     IMPLICIT NONE
@@ -45,7 +45,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_init(n)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialization of sparse matrix solver
@@ -71,7 +71,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_add_member (icol, irow)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     ! Add a nonzero member for the row
@@ -120,7 +120,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_add_element (en, numbers)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Add element to the sparse matrix storage
@@ -147,7 +147,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_storage_form()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Print out the pointer vectors from linked list to the INTEGER arrays
@@ -220,7 +220,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_zero_values()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     ! Zero the values in sparse matrix storage
@@ -233,7 +233,7 @@ MODULE sparse_matrix
     !
     FUNCTION sparse_matrix_pointer(i,j) RESULT (ip)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Return pointer to the sparse matrix storage
@@ -257,7 +257,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_place_value (i, j, value_ij)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Add value to the sparse matrix storage
@@ -298,7 +298,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_place_element (ne, dofnum, K_e)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Place element matrix to the global matrix storage
@@ -328,7 +328,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_prnmat()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Print matrix to a text file using Matrix Market FORMAT
@@ -361,7 +361,7 @@ MODULE sparse_matrix
     !
     SUBROUTINE sparse_matrix_solve (symmetric_matrix, n, b, x)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solution of the linear system
@@ -421,3 +421,4 @@ MODULE sparse_matrix
     END SUBROUTINE sparse_matrix_deallocate
     !
 END MODULE sparse_matrix
+

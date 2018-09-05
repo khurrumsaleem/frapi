@@ -1,6 +1,6 @@
 MODULE Initialization
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
     IMPLICIT NONE
     !>@brief
@@ -16,9 +16,9 @@ MODULE Initialization
     !
     SUBROUTINE inital
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables
+    USE variables_frapcon
     USE DatingData
     USE Refabrication
     USE Output_Data, ONLY : print1
@@ -814,8 +814,8 @@ MODULE Initialization
     !
     SUBROUTINE check
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE DatingData
     IMPLICIT NONE
     !>@brief
@@ -1147,8 +1147,8 @@ MODULE Initialization
     !
     SUBROUTINE ResetTimesteps
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE Functions, ONLY : ShiftArray
     !>@brief
     !> This subroutine resets the # of timesteps to a user specified timestep interval
@@ -1333,3 +1333,4 @@ MODULE Initialization
     END SUBROUTINE ResetTimesteps
     !
 END MODULE Initialization
+

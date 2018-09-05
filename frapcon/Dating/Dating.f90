@@ -4,9 +4,9 @@ MODULE DatingData
     !> Modified by I. Porter & P. Raynaud, NRC & K. Geelhood, PNNL
     !> @date
     !> March 2014
-    USE Variables, ONLY : na, ounit, im, nunits, ddunit
+    USE variables_frapcon, ONLY : na, ounit, im, nunits, ddunit
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     !
     ! Input
     !
@@ -208,8 +208,8 @@ MODULE DatingData
     !
     SUBROUTINE Datingdriver
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladAveTemp, FastFluence, sig
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladAveTemp, FastFluence, sig
     IMPLICIT NONE
     !> @brief
     !> This is the driver Subroutine for the dating module. It is called from frpcon after the in-reactor analysis is completed.
@@ -259,7 +259,7 @@ MODULE DatingData
     !
     SUBROUTINE Dating_Main
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> Dating_Main writes summaries to the output and calls DRIVE to perform the DATING calculation
@@ -579,7 +579,7 @@ MODULE DatingData
     !
     SUBROUTINE DRIVE (T0, Y0)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> DRIVE writes summaries to the output and calls STIFF for the DATING calculation
@@ -976,7 +976,7 @@ MODULE DatingData
     !
     SUBROUTINE INTERP (TOUT, Y, Y0)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> INTERP computes interpolated values of the dependent variable Y and stores them in Y0. the interpolation is to the
@@ -1027,7 +1027,7 @@ MODULE DatingData
     !
     SUBROUTINE STIFF (Y, NQ)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> STIFF performs one step of the integration of an initial value problem for a system of ordinary differential equations.
@@ -1623,7 +1623,7 @@ MODULE DatingData
     !
     SUBROUTINE DIFFUN (Y, YDOT)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     ! CREEP ADDED FOR REVISED COBLE AND CLIMB CREEP EQUATIONS WITH DG WIDTH
     !> @brief
@@ -1842,7 +1842,7 @@ MODULE DatingData
     !
     SUBROUTINE COSET (NQ, EL, TQ)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> COSET is called by STIFF and sets coefficients for use there.
@@ -1919,7 +1919,7 @@ MODULE DatingData
     !
     SUBROUTINE PSET (Y, CON, IER)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> PSET is called by STIFF to compute and to process the matrix PW = I - (H/EL(2))*J, where J is an approximation to the
@@ -1978,7 +1978,7 @@ MODULE DatingData
     !
     SUBROUTINE DEC (A, IP, IER)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> DEC performs matrix triangularization by gaussian elimination.
@@ -2063,7 +2063,7 @@ MODULE DatingData
     !
     SUBROUTINE SOL (A, B, IP)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> SOL performs solution of linear system, A*X = B .
@@ -2118,7 +2118,7 @@ MODULE DatingData
     !
     SUBROUTINE Allocate_DatingData
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> Allocate_DatingData allocates the arrays used by the Dating module based on the user input
@@ -2155,3 +2155,5 @@ MODULE DatingData
     END SUBROUTINE Allocate_DatingData
     !
 END MODULE DatingData
+
+

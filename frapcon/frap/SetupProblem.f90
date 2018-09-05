@@ -1,6 +1,6 @@
 MODULE SetupProblem
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE RunProperties
     USE FEA_Setup
     IMPLICIT NONE
@@ -16,8 +16,8 @@ MODULE SetupProblem
     !
     SUBROUTINE setup
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE DatingData, ONLY : idatingcreep, Allocate_DatingData, ncreeptab
     USE Comde
     USE Initialization, ONLY : inital
@@ -99,8 +99,8 @@ MODULE SetupProblem
     !
     SUBROUTINE axhef (qf1, x1)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : nunits, iq, qend, deltaz, WorkArray1, WorkArray2, WorkArray3, ounit, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : nunits, iq, qend, deltaz, WorkArray1, WorkArray2, WorkArray3, ounit, &
       &                   qaxnorm, naxim, jn, jpeak, avgqi, na, nt, fa, ir1, jjc
     IMPLICIT NONE
     !>@brief
@@ -372,3 +372,4 @@ MODULE SetupProblem
     END SUBROUTINE axhef
     !
 END MODULE SetupProblem
+

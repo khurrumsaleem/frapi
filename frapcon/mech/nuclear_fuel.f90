@@ -1,6 +1,6 @@
 MODULE nuclear_fuel
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -14,7 +14,7 @@ MODULE nuclear_fuel
     !
     REAL(r8k) FUNCTION fuel_mat_par (temp, keyword)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Returns UO2 fuel material property
@@ -39,7 +39,7 @@ MODULE nuclear_fuel
     !
     SUBROUTINE fuel_radial_return (temp, mu, dtime, epseff0, taueff, gamma, dplmod)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Radial return for power law yield function
@@ -50,3 +50,5 @@ MODULE nuclear_fuel
     END SUBROUTINE fuel_radial_return
     !
 END MODULE nuclear_fuel
+
+

@@ -17,7 +17,7 @@ MODULE setup
     !
     SUBROUTINE Main
     USE Kinds
-    USE Variables, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
+    USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
     USE frapc
     USE Dyna_h
@@ -228,7 +228,7 @@ MODULE setup
     SUBROUTINE frap
     USE Kinds
     USE frapc
-    USE Variables
+    USE variables_fraptran
     USE sth2x, ONLY : sth2xi
     USE Initialization, ONLY : initia
     USE Read_Input
@@ -345,9 +345,9 @@ MODULE setup
     !
     SUBROUTINE iofiles (InputFileName)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions
-    USE Variables, ONLY : iunit, ounit, scrunit
+    USE variables_fraptran, ONLY : iunit, ounit, scrunit
     USE RunProperties, ONLY : edate, clockx
     IMPLICIT NONE
     !> @brief
@@ -674,8 +674,8 @@ MODULE setup
     !
     SUBROUTINE Input_Echo
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : iunit, ounit
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : iunit, ounit
     IMPLICIT NONE
     !>@brief
     !> Input_Echo reads the input file and echos it to the scratch and output files
@@ -725,3 +725,5 @@ MODULE setup
     END SUBROUTINE Input_Echo
     !
 END MODULE setup
+
+

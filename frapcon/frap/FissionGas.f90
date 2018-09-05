@@ -1,8 +1,8 @@
 MODULE FissionGas
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions, ONLY : terp
-    USE Variables, ONLY : ounit, na, rc, ngasr
+    USE variables_frapcon, ONLY : ounit, na, rc, ngasr
     USE Material_Properties
     IMPLICIT NONE
     !>@brief
@@ -86,8 +86,8 @@ MODULE FissionGas
     !
     SUBROUTINE ALLOCATE_FGR_Variables
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ngasr, na
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ngasr, na
     IMPLICIT NONE
     !>@brief
     !> This subroutine allocates the variables used for fission gas release calculations
@@ -231,8 +231,8 @@ MODULE FissionGas
     !
     SUBROUTINE gaspro
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ProblemTime, imox, comp, moxtype, EOSNodeburnup, dp, na, fgmgp, hemgp, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ProblemTime, imox, comp, moxtype, EOSNodeburnup, dp, na, fgmgp, hemgp, &
       &                   deltaz, qc, rc, it, j, frden, sgapf, dcoBOL
     USE Comde
     IMPLICIT NONE
@@ -289,8 +289,8 @@ MODULE FissionGas
     !
     SUBROUTINE fgasre
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ProblemTime, jst, qmpy, den, ngasmod, Power, dci, ifbarel, tfuelr, rapow, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, den, ngasmod, Power, dci, ifbarel, tfuelr, rapow, &
       &                   nr, im, ngasr, crad, deltaz, dp, rc, ProblemTime, na, angr, fmgr, hmgr, &
       &                   hemgp, fgmgp, HeProd, he, heold, Boron10, ang, ounit, nplot, releas, &
       &                   rdotwrt, it, j, totl, grnsize, ifba, b10, zrb2thick, zrb2den, &
@@ -531,8 +531,8 @@ MODULE FissionGas
     !
     SUBROUTINE ans54 (brnup, rv, dv)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
                           qaxnorm, ngasr, na, rc, tfuelr, dp, releas, it, j, ir1, dcoBOL, rdot
     IMPLICIT NONE
     !> @brief
@@ -821,8 +821,8 @@ MODULE FissionGas
     !
     SUBROUTINE massih (rv, dv)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : imox, den, sigfgr, igas, Power, crad, nr, ngasr, tfuelr, dp, rc, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : imox, den, sigfgr, igas, Power, crad, nr, ngasr, tfuelr, dp, rc, &
       &                   na, ounit, nplot, j, it, gasflg, delbp, press, grnsize, delh, rdot, &
       &                   EOSNodeburnup
     USE Refabrication, ONLY : irefab
@@ -1122,8 +1122,8 @@ MODULE FissionGas
     !
     SUBROUTINE frapfgr (rv, dv)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : den, sigfgr, Power, gasavail1, gasavail2, crad, nr, ngasr, tfuelr, rc, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : den, sigfgr, Power, gasavail1, gasavail2, crad, nr, ngasr, tfuelr, rc, &
       &                   dp, na, nplot, j, it, gasflg, delbp, delh, press, grnsize, rdot, EOSNodeburnup
     USE Refabrication, ONLY : irefab
     IMPLICIT NONE
@@ -1504,7 +1504,7 @@ MODULE FissionGas
     !
     REAL(r8k) FUNCTION graingro (pow, delh, grnin, tempK, dfs, rc, den)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     ! Input
@@ -1551,8 +1551,8 @@ MODULE FissionGas
     !
     SUBROUTINE totgas
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : acmfg, acmn2, acmhe, acmh2, acmh2o, amgpt, hmgpt, he_ifba, imox, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : acmfg, acmn2, acmhe, acmh2, acmh2o, amgpt, hmgpt, he_ifba, imox, &
       &                   den, EOSNodeburnup, dp, deltaz, amfhe, amfh2, amfn2, amfarg, amfkry, &
       &                   amfxe, amfh2o, ifbarel, addgmles, ngasr, angr, fmgr, hmgr, tn2fr, &
       &                   fgmgp, hemgp, ang, gasmo, nread, gases, it, kryin, ir1, h2in, th2ofr, &
@@ -1755,8 +1755,8 @@ MODULE FissionGas
     !
     SUBROUTINE scangas (gp, gg, gb, grs, rls, ansr)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : j
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : j
     IMPLICIT NONE
     !>@brief
     !>
@@ -1800,8 +1800,8 @@ MODULE FissionGas
     !
     SUBROUTINE ans54_2011 (brnup, rv, dv)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
                           qaxnorm, ngasr, na, rc, tfuelr, dp, releas, it, j, ir1, dcoBOL, &
                           prdct, totl, deltaz, na, RB_axial, RB_rod, Power
     IMPLICIT NONE
@@ -1966,8 +1966,8 @@ MODULE FissionGas
     !
     SUBROUTINE gasplt
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ProblemTime, ounit, releas, it
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ProblemTime, ounit, releas, it
     IMPLICIT NONE
     !>@brief
     !> gasplt should be used to output the fraction of shortlived radioactive gases released as predicted
@@ -2053,3 +2053,4 @@ MODULE FissionGas
     END SUBROUTINE gasplt
     !
 END MODULE FissionGas
+

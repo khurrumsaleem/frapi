@@ -8,9 +8,9 @@ MODULE HeatSolution
     !
     SUBROUTINE heat (Gscale)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE GammaHeating
-    USE Variables
+    USE variables_fraptran
     USE Uncertainty_Vals
     USE Material_Properties, ONLY : MatProperty
     USE HeatCond
@@ -981,11 +981,11 @@ MODULE HeatSolution
       &                modkf, k, cnfsol, tmeltf, fotmtl, NodeSinterTemp, nmesh, rhof, gadolin, burad, &
       &                radsrc, coldw, rhoc)
     USE Kinds
-    USE Variables, ONLY : ounit, IndexThermcon, iflago, iflagn, noiter, indexfintemp, indexbc, maxit, &
+    USE variables_fraptran, ONLY : ounit, IndexThermcon, iflago, iflagn, noiter, indexfintemp, indexbc, maxit, &
       &                   ndebug, Time, FinalTemp, PrevIterateTemp, ArrayE, ArrayF, BoundaryCondition, &
       &                   ThermalConductivity, AreaWeight, areao, VolumeWeightR, VolumeWeightL, arean, epsht1
     USE NCGases, ONLY : ngases
-    USE Conversions, ONLY : pi
+    USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !> @brief
     !> Subroutine ht1sst solves the 1-d steady-state heat problem
@@ -1293,8 +1293,8 @@ MODULE HeatSolution
       &                vrelc, frden, tsntrk, cnfsol, cnfliq, fotmtl, NodeSinterTemp, nmesh, rhof, &
       &                gadolin, burad, k, radsrc, deltox_k, coldw, IndexInitTemp, BOSTemp)
     USE Kinds
-    USE Conversions, ONLY : pi, tfk
-    USE Variables, ONLY : ounit, imaterials, ihData, naxn, nqchn, igpnod, nchfmd, lhtc, IndexThermCon, IndexThermConAdv, &
+    USE conversions_fraptran, ONLY : pi, tfk
+    USE variables_fraptran, ONLY : ounit, imaterials, ihData, naxn, nqchn, igpnod, nchfmd, lhtc, IndexThermCon, IndexThermConAdv, &
       &                   iflago, iflagn, IndexBC, noiter, Indexfintemp, ndebug, epsht1, areao, BoundaryCondition, &
       &                   ThermalConductivity, FinalTemp, rhocp, ArrayE, ArrayF, PrevTemp, AreaWeight, arean, acond, &
       &                   nchan, VolumeWeightR, VolumeWeightL, PrevIterateTemp, rhocp0, ThermalConductAdv
@@ -1843,8 +1843,8 @@ MODULE HeatSolution
       &                ssflag, errsw, frden, fotmtl, rhof, gadolin, burad, coldw, cflux, cldtime, k, &
       &                rhoc, IndexAdv)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit, nomat, imaterials, naxn, ndebug
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit, nomat, imaterials, naxn, ndebug
     USE phypro_h
     USE heatconduction_h
     USE Material_Properties, ONLY : MatProperty
@@ -2116,7 +2116,7 @@ MODULE HeatSolution
     !
     SUBROUTINE ftbmov (a, b, n)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This Subroutine moves n words from a to b in memory. If n is positive, the move is forward,
@@ -2166,7 +2166,7 @@ MODULE HeatSolution
     !
     SUBROUTINE error1 (nerr, nstop)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     USE ErrorMsg, ONLY : fabend
     IMPLICIT NONE
     !>@brief
@@ -2226,8 +2226,8 @@ MODULE HeatSolution
     SUBROUTINE kmod (ThermalConductivity, RadialBound, igpnod, GasPress, bu, GasFraction, vrelc, &
       &              modfd, FinalTemp, frden, tsntrk, ncladi, modkf, NodeSinterTemp)
     USE Kinds
-    USE Conversions, ONLY : pi, ftmetr, psinm2, tfk
-    USE Variables, ONLY : ounit, Time, ndebug
+    USE conversions_fraptran, ONLY : pi, ftmetr, psinm2, tfk
+    USE variables_fraptran, ONLY : ounit, Time, ndebug
     USE Material_Properties, ONLY : MatProperty
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
@@ -2331,3 +2331,4 @@ MODULE HeatSolution
     END SUBROUTINE kmod
     !
 END MODULE HeatSolution
+

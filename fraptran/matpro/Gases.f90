@@ -1,8 +1,8 @@
 MODULE NCGases
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions
-    USE Variables, ONLY : GasFraction, ounit, GasPress, gsmol0
+    USE variables_fraptran, ONLY : GasFraction, ounit, GasPress, gsmol0
     USE FissionGasRelease_h, ONLY : gsmol0
     IMPLICIT NONE
     !>@brief
@@ -182,7 +182,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION MatProp (Gas, property) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calls all of the Rod Gas Material Properties
@@ -217,7 +217,7 @@ MODULE NCGases
     !
     SUBROUTINE LoadGases ()
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine loads the properties needed for the non-condensible fill gases
@@ -345,7 +345,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION gthcon (Gas)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> gthcon calculates gas thermal conductivity as a function of temperature and gas fraction
@@ -446,7 +446,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION gconr2 (Gas)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> gconr2 calculates the conduction part of gas gap heat conductance as a function of temperature, gas
@@ -562,8 +562,8 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION gvisco (Gas)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, GasFraction
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : ounit, GasFraction
     IMPLICIT NONE
     !>@brief
     !> gvisco calculates the gas viscosity as a function of temperature and gas mole fractions.
@@ -658,7 +658,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION CP (Gas)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function calculates the specific heat of the fill gas
@@ -767,7 +767,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION Rho (Gas)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function calculates the gas density
@@ -837,7 +837,7 @@ MODULE NCGases
     !
     REAL(r8k) FUNCTION MWt (Gas)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function calculates the gas molecular weight
@@ -882,7 +882,7 @@ MODULE NCGases
     !
     SUBROUTINE Allocate_Gas
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine allocates the gas array
@@ -908,3 +908,4 @@ MODULE NCGases
     END SUBROUTINE Allocate_Gas
     !
 END MODULE NCGases
+

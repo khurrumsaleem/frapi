@@ -1,7 +1,7 @@
 MODULE Output_Data
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE Gas, ONLY : ngases
     USE RunProperties
     USE Material_Properties, ONLY : MatProp
@@ -24,7 +24,7 @@ MODULE Output_Data
     ! ******************
     SUBROUTINE print1
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> print1 is called for the initial prints to the output file describing the input options for the case that is being analyzed.
@@ -379,7 +379,7 @@ MODULE Output_Data
     !
     SUBROUTINE print2
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -1140,8 +1140,8 @@ MODULE Output_Data
     !
     SUBROUTINE fraptotrace
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : j, it, rp, press
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : j, it, rp, press
     USE Material_Properties
     IMPLICIT NONE
     !> @brief
@@ -1230,3 +1230,5 @@ MODULE Output_Data
     END SUBROUTINE fraptotrace
     !
 END MODULE Output_Data
+
+

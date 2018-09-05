@@ -6,9 +6,9 @@ MODULE Coolant
     !
     SUBROUTINE cool (k, theta, RodLength, qcool, delz, dthr, tpo)
     USE Kinds
-    USE Conversions, ONLY : sechr, psift2, tkf, tfr
+    USE conversions_fraptran, ONLY : sechr, psift2, tkf, tfr
     USE Functions, ONLY : polate
-    USE Variables, ONLY : ounit, unit, ndebug, Time
+    USE variables_fraptran, ONLY : ounit, unit, ndebug, Time
     USE collct_h
     USE CoolantProperties
     USE resti_h
@@ -960,8 +960,8 @@ MODULE Coolant
     !
     SUBROUTINE prntc (acond, z, Time, nchn, k, unit)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine prints out coolant conditions used as boundary conditions by FrapTran.
@@ -1048,8 +1048,8 @@ MODULE Coolant
     !
     SUBROUTINE prntmp (tbulk, CoolPress, Time, z, unit, k)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine prints out bulk temperatures when heat transfer coefficients for cladding surface prescribed (nqchn = 3)
@@ -1099,3 +1099,4 @@ MODULE Coolant
     !
     !
 END MODULE Coolant
+

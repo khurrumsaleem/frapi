@@ -1,6 +1,6 @@
 MODULE UntinpData
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This module contains subroutines that perform unit conversions. It contains the subroutine Convert_Input_Units.
@@ -21,12 +21,14 @@ MODULE UntinpData
     
     SUBROUTINE Convert_Input_Units
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : zelev, fmesh, nfmesh, cmesh, ncmesh, RodAvePower, NumAxProfiles, AxPowProfile, nprad, RadPowProfile, &
-      &                   nunopt, ibnopt, gasphs, gasths, nradsh, rshrd, nepp0, eppinp, radpel, cladid, cladod, fuelpeldiam, rf
-    USE CoolantProperties, ONLY : nbrtmp, temptm, nbrfdr, fldrat, nbrpst, prestm, nbrliq, flxsec, hrad, hydiam, tshrda, nsrad3, &
-      &                           elvrad, nelrad, trad1, trad2, trad3, hinta, hupta, pbh, gbh, hbh, htclev, ntprs, tblka, &
-      &                           nhprs, htca, npprs
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : zelev, fmesh, nfmesh, cmesh, ncmesh, RodAvePower, &
+      & NumAxProfiles, AxPowProfile, nprad, RadPowProfile, &
+      & nunopt, ibnopt, gasphs, gasths, nradsh, rshrd, nepp0, eppinp, radpel, cladid, cladod, fuelpeldiam, rf
+    USE CoolantProperties, ONLY : nbrtmp, temptm, nbrfdr, fldrat, nbrpst, &
+      & prestm, nbrliq, flxsec, hrad, hydiam, tshrda, nsrad3, &
+      & elvrad, nelrad, trad1, trad2, trad3, hinta, hupta, pbh, gbh, hbh, htclev, ntprs, tblka, &
+      & nhprs, htca, npprs
     USE bcdcom_h, ONLY : ncooli, nhtc, hlqcl1, achn, dhe, dhy
     USE resti_h
     USE excb_h, ONLY : nrefld, coldbp, pitch, rsntr, spdbp, splbp, volbp, dofset
@@ -241,7 +243,7 @@ MODULE UntinpData
     !
     SUBROUTINE Array_SuppliedConversion (a, n, ns, b)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Performs unit conversion on an array based on the value supplied for b
@@ -284,7 +286,7 @@ MODULE UntinpData
     !
     SUBROUTINE Array_KelvintoFahrenheit (a, n, ns)
     USE Kinds
-    USE Conversions, ONLY : tkf
+    USE conversions_fraptran, ONLY : tkf
     IMPLICIT NONE
     !>@brief
     !> Converts kelvin to fahrenheit over an array of values
@@ -318,3 +320,4 @@ MODULE UntinpData
     END SUBROUTINE Array_KelvintoFahrenheit
     !
 END MODULE UntinpData
+

@@ -1,6 +1,6 @@
 module frapi
 
-    use conversions
+    use conversions_frapcon
     use frapcon4,  only : frapcon_driver
     use fraptran2, only : fraptran_driver
 
@@ -19,13 +19,13 @@ module frapi
         procedure :: set_array => frod_set_array    ! Set variable array
         procedure :: get_value => frod_get_value    ! Get variable value
         procedure :: get_array => frod_get_array    ! Get variable array
-		procedure :: get_array_dim_2 => frod_get_array_dim_2 
+        procedure :: get_array_dim_2 => frod_get_array_dim_2 
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
 !        procedure :: transient => p_transient       ! Transient time step
 !        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
-        procedure :: chk_cvg=> frod_chk_converge
+!        procedure :: chk_cvg=> frod_chk_converge
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -615,20 +615,20 @@ contains
 
     end subroutine frod_get_array_dim_2
     
-    subroutine frod_chk_converge(this, flag)
-    use Variables 
-    implicit none
-    class (frod_type), intent(inout) :: this
-    logical(4),intent(out)   :: flag
-    ! 
-    if(this % dfcon % iquit == 0) then 
-       flag = .true.
-	else 
-	   flag = .false.
-    end if
-    ! 
-    return
-    end subroutine frod_chk_converge
+!    subroutine frod_chk_converge(this, flag)
+!    use Variables 
+!    implicit none
+!    class (frod_type), intent(inout) :: this
+!    logical(4),intent(out)   :: flag
+!    ! 
+!    if(this % dfcon % iquit == 0) then 
+!       flag = .true.
+!	else 
+!	   flag = .false.
+!    end if
+!    ! 
+!    return
+!    end subroutine frod_chk_converge
 	
 
     subroutine frod_destroy(this)

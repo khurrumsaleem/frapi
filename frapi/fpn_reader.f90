@@ -1,6 +1,6 @@
 module fpn_reader
 
-    use conversions
+    use conversions_frapcon
 
     implicit none
 

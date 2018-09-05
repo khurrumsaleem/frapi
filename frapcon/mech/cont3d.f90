@@ -1,6 +1,6 @@
 MODULE cont3d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE geometry_fpn
@@ -51,7 +51,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize CONT3D database
@@ -74,7 +74,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_create_surf (label, mat, surf)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create 3D contact surface pair
@@ -145,7 +145,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_delete_surf (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete contact surface
@@ -233,7 +233,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_activate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Activate elements in 3D contact surface
@@ -296,7 +296,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_create (label, mat, surf, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create 3D contact element
@@ -378,7 +378,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_delete (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete element from the database
@@ -434,7 +434,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for cont3d elements
@@ -459,7 +459,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_gap (x_node, gap, nv, tv, xi, shapef)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculation of gap and normal vector for CONT3D.
@@ -581,7 +581,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Nodal contact forces
@@ -639,7 +639,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> 3D contact stiffness matrix
@@ -1235,7 +1235,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> 3D contact stiffness matrix
@@ -1246,7 +1246,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -1276,7 +1276,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -1346,7 +1346,7 @@ MODULE cont3d
     !
     SUBROUTINE cont3d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate CONT3D database
@@ -1377,3 +1377,4 @@ MODULE cont3d
     END SUBROUTINE cont3d_deallocate
     !
 END MODULE cont3d
+

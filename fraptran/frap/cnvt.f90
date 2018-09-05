@@ -1,6 +1,6 @@
 MODULE cnvt
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE frapc
     IMPLICIT NONE
     !>@brief
@@ -70,3 +70,4 @@ MODULE cnvt
     END SUBROUTINE cnvt21
     !
 END MODULE cnvt
+

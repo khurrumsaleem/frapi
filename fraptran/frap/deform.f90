@@ -1,6 +1,6 @@
 MODULE Deformation
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE ZrModels, ONLY : cmlimt, cstrni
     !
     CONTAINS
@@ -11,7 +11,7 @@ MODULE Deformation
       &                 edot2, edot3, tcmax, FastFlux, coldw, TimeIncrement, NSteadyTrans, nedtsw, &
       &                 nconv, rmp0, CladThickness0, pitch, t0)
     USE Kinds
-    USE Variables, ONLY : ounit, naxn, ndebug
+    USE variables_fraptran, ONLY : ounit, naxn, ndebug
     IMPLICIT NONE
     !>@brief
     !> Subroutine closure looks for gap closure
@@ -144,8 +144,8 @@ MODULE Deformation
     !
     SUBROUTINE deform
     USE Kinds
-    USE Conversions, ONLY : pi, ftin, tfk
-    USE Variables
+    USE conversions_fraptran, ONLY : pi, ftin, tfk
+    USE variables_fraptran
     USE Uncertainty_Vals
     USE Material_Properties, ONLY : MatProperty
     USE FEModel
@@ -1104,8 +1104,8 @@ MODULE Deformation
       &              WorkSpaceRCO, NSteadyTrans, TimeIncrement, nedtsw, nconvg, pitch, FuelSrfStrRat, &
       &              FuelSrfStrRat0, EDotFZ, EDotFZ0, PelRadDeviat, CldElStrn, nmesh, ncladi)
     USE Kinds
-    USE Conversions, ONLY : ftin
-    USE Variables, ONLY : ounit, e, pois, CladType, Time, ndebug
+    USE conversions_fraptran, ONLY : ftin
+    USE variables_fraptran, ONLY : ounit, e, pois, CladType, Time, ndebug
     IMPLICIT NONE
     !>@brief
     !> This package of subroutines performs an elasto-plastic analysis of a typical LWR fuel rod. 
@@ -1337,7 +1337,7 @@ MODULE Deformation
       &           t0, n2, ldir, k, edot1, edot2, edot3, tcmax, FastFlux, coldw, TimeIncrement, &
       &           nedtsw, nconv, rmp0, CladThickness0, pitch)
     USE Kinds
-    USE Variables, ONLY : ounit, naxn, Time, ndebug
+    USE variables_fraptran, ONLY : ounit, naxn, Time, ndebug
     IMPLICIT NONE
     !>@brief
     !> Function computes the gap thickness
@@ -1402,11 +1402,11 @@ MODULE Deformation
     SUBROUTINE cladf (pg, pc, tc, rci, rco, csig, ceps, cepp, cep, fs, tempcs, edot1, edot2, edot3, tcmax, &
       &               tflux, coldw, TimeIncrement, nedtsw2, nconv, rmp0, CladThickness0, pitch, k, e, v)
     USE Kinds
-    USE Variables, ONLY : ndebug
+    USE variables_fraptran, ONLY : ndebug
     USE Dyna_h, ONLY : cladeffstress, efffastflustrencoef, effcoldwkstrencoef, oxygenconcenave
     USE resti_h, ONLY : knonue
     USE bloon_h, ONLY : nbncal, tcebal, chstrs, taxbal, trabal
-    USE Conversions, ONLY : pi, tfk
+    USE conversions_fraptran, ONLY : pi, tfk
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
     !
@@ -1594,8 +1594,8 @@ MODULE Deformation
       &                edot2, edot3, tcmax, tflux, coldw, TimeIncrement, k, edot01, edot02, edot03, &
       &                CladThickness0, e, v)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit, CladType, ndebug, Time
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit, CladType, ndebug, Time
     USE Dyna_h
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
@@ -1968,8 +1968,8 @@ MODULE Deformation
     SUBROUTINE strain (sig, eps, epplas, temp, edot1, edot2, edot3, tcmax, coldw, tflux, &
       &                TimeIncrement, k, kload)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit, CladType, Time, ndebug
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit, CladType, Time, ndebug
     USE Dyna_h
     USE Material_Properties, ONLY : MatProperty
     USE ZrModels, ONLY : cstres, cstran
@@ -2100,8 +2100,8 @@ MODULE Deformation
     !
     SUBROUTINE stress (sig, eplase, dep, temp, edot1, edot2, edot3, tcmax, coldw, k)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit
     USE Dyna_h, ONLY : EffFastFluStrenCoef, EffColdWkStrenCoef, OxygenConcenAve, EffFastFluStrnHardExp, EffColdWKStrnHardExp
     USE Material_Properties, ONLY : MatProperty
     USE ZrModels, ONLY : cstres
@@ -2170,3 +2170,4 @@ MODULE Deformation
     END SUBROUTINE stress
 !
 END MODULE Deformation
+

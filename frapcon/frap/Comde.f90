@@ -1,7 +1,7 @@
 MODULE Comde
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : na, nr, im
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : na, nr, im
     IMPLICIT NONE
     !>@brief
     !> This module replaces the comde.h file. This is the common file used from the transuranis code.
@@ -51,7 +51,7 @@ MODULE Comde
     !
     SUBROUTINE Allocate_Comde
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutines allocates the comde variables
@@ -115,3 +115,4 @@ MODULE Comde
     END SUBROUTINE Allocate_Comde
     !
 END MODULE comde
+

@@ -1,4 +1,4 @@
-MODULE Conversions
+MODULE conversions_frapcon
     USE Kinds
     IMPLICIT NONE
     !>@brief
@@ -374,4 +374,5 @@ MODULE Conversions
     !
     END FUNCTION tck
     !
-END MODULE Conversions
+END MODULE conversions_frapcon
+

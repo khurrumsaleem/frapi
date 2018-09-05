@@ -1,6 +1,6 @@
 MODULE math
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -10,7 +10,7 @@ MODULE math
     !
     REAL(r8k) FUNCTION vnorm (n, vect)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Vector norm for vect(1:n)
@@ -32,7 +32,7 @@ MODULE math
     !
     SUBROUTINE inverse3 (A, Ainv, detA)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate inverse and determinant of matrix A(3,3)
@@ -67,7 +67,7 @@ MODULE math
     !
     FUNCTION matmul_AAt (A) RESULT (C)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Matric multiplication C = A A^T for 3x3 matrices
@@ -102,7 +102,7 @@ MODULE math
 
     FUNCTION matmul_ABAt (A, B) RESULT(C)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Matrix multiplication C = A B A^T where A is general 3x3 matrix and
@@ -137,7 +137,7 @@ MODULE math
     !
     FUNCTION matmul_AiBAit (A, B) RESULT(C)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solve C = inv(A) B inv(A^T), where A is general 3x3 matrix B is symmetric
@@ -193,7 +193,7 @@ MODULE math
     !
     SUBROUTINE prin2cart (L, V, C)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Output condenced 3x3 symmetric tensor C from its eigenvalues L and eigen vectors V
@@ -214,7 +214,7 @@ MODULE math
     !
     SUBROUTINE jacobi2 (be, dl2, nvect)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solve eigen values and vectors for two dimensional case
@@ -258,7 +258,7 @@ MODULE math
     !
     SUBROUTINE jacobi3 (be, dl2, nvect)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Solve eigen values and vectors for three dimensional case
@@ -387,3 +387,4 @@ MODULE math
     END SUBROUTINE jacobi3
     !
 END MODULE math
+

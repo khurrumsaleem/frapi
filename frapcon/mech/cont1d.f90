@@ -1,6 +1,6 @@
 MODULE cont1d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE sparse_matrix
@@ -60,7 +60,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_create (label, mat, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new element
@@ -134,7 +134,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for cont1d elements
@@ -158,7 +158,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Contact forces
@@ -231,7 +231,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the CONT1D elements
@@ -290,7 +290,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update contact condition
@@ -319,7 +319,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -348,7 +348,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -409,7 +409,7 @@ MODULE cont1d
     !
     SUBROUTINE cont1d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate cont1d database
@@ -426,3 +426,4 @@ MODULE cont1d
     END SUBROUTINE cont1d_deallocate
     !
 END MODULE cont1d
+

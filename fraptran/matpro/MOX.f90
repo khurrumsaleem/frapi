@@ -1,6 +1,6 @@
 MODULE MOX
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions
     USE Uncertainty_Vals
     IMPLICIT NONE
@@ -58,7 +58,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION MatProp (UPuO2, property) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function calls all of the UO2 Material Properties
@@ -121,7 +121,7 @@ MODULE MOX
     FUNCTION fthcon (UPuO2) RESULT (con)
     USE Kinds
     USE Uncertainty_Vals
-    USE Variables, ONLY : idx
+    USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> FTHCON calculates the UO2 fuel thermal conductivity as a function of temperature, density, composition and burnup.
@@ -186,7 +186,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION UPuO2Density (UPuO2)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Fuction calculates the as-fabricated density of U/PuO2 in (g/in^3)
@@ -225,12 +225,12 @@ MODULE MOX
     !
     SUBROUTINE UO2PhysProp (UPuO2)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE phypro_h
     IMPLICIT NONE
     !>@brief
     !> Physical Properties of UO2. (Tmelt, Uranium content, TD, density)
-    !> Note that this subroutine does not return any parameters directly but rather stores into the Module Variables
+    !> Note that this subroutine does not return any parameters directly but rather stores into the Module variables_fraptran
     !>@author
     !> Ian Porter, NRC, April 2014
     !
@@ -265,7 +265,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION sldus (PuConc)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         IMPLICIT NONE
         !
         ! Input
@@ -282,7 +282,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION liqdus (PuConc)
         USE Kinds
-        USE Conversions
+        USE conversions_fraptran
         IMPLICIT NONE
         !
         ! Input
@@ -303,7 +303,7 @@ MODULE MOX
     USE phypro_h
     USE Kinds
     USE Uncertainty_Vals
-    USE Variables, ONLY : idx
+    USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> The function fcp is used to calculate the specific heat capacity of uo2, puo2, and (U/Pu)O2 fuels
@@ -388,7 +388,7 @@ MODULE MOX
     USE Kinds
     USE phypro_h
     USE Uncertainty_Vals
-    USE Variables, ONLY : idx
+    USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> Calculate the strain of the fuel caused by thermal expansion for UO2, PuO2, or (U,Pu)O2 as a function of
@@ -516,7 +516,7 @@ MODULE MOX
     REAL(r8k) FUNCTION fenthl (UPuO2)
     USE Kinds
     USE Uncertainty_Vals
-    USE Variables, ONLY : idx
+    USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> This function is called by Subroutine energy and computes the enthalpy of fuel at a point relative to 0 Kelvin
@@ -587,3 +587,4 @@ MODULE MOX
     !
     !
 END MODULE MOX
+

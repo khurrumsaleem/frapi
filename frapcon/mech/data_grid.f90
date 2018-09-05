@@ -1,6 +1,6 @@
 MODULE data_grid
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE quad4
@@ -24,7 +24,7 @@ MODULE data_grid
     !
     SUBROUTINE grid_1d_create (label, naxn, nradn, elev, rad)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create 1D input grid
@@ -75,7 +75,7 @@ MODULE data_grid
     !
     FUNCTION grid_1d_interp(label,x) RESULT (valuei)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Find interpolated value "valuei" at coordinate position "x" using input data grid "label"
@@ -151,7 +151,7 @@ MODULE data_grid
     !
     SUBROUTINE grid_1d_temp (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Interpolate temperaturesa from the data grid to the nodes
@@ -171,7 +171,7 @@ MODULE data_grid
     !
     SUBROUTINE grid_1d_volstr (label, mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read volumetric strain data
@@ -210,7 +210,7 @@ MODULE data_grid
     !
     SUBROUTINE grid_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate all data grid variables
@@ -230,3 +230,4 @@ MODULE data_grid
     END SUBROUTINE grid_deallocate
     !
 END MODULE data_grid
+

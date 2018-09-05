@@ -1,6 +1,6 @@
 MODULE common_parameters
     USE Kinds
-    USE Conversions, ONLY : pi
+    USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !>@brief
     !> All common parameters and variables
@@ -310,3 +310,5 @@ MODULE common_parameters
     END SUBROUTINE gascav_failure
     !
 END MODULE common_parameters
+
+

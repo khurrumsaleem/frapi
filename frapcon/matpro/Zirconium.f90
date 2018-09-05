@@ -1,8 +1,8 @@
 MODULE Zirconium
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : siggro, RinterfacPress, ProblemTime, icm, cladelmod, ctmelt, &
+    USE variables_frapcon, ONLY : siggro, RinterfacPress, ProblemTime, icm, cladelmod, ctmelt, &
       &                   chefus, ctranb, ctrane, ctranz, deloxy, j, it, coldwk, zro2o, cwkf, &
       &                   fnck, FastFlux, FastFluence, delhs, ounit
     IMPLICIT NONE
@@ -20,7 +20,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION MatPropZirc (property, temp) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calls all of the Zirconium Material Properties
@@ -101,7 +101,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION cthcon (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> cthcon calculates cladding thermal conductivity as a function of temperature, time, flux and cold work.
@@ -141,11 +141,11 @@ MODULE Zirconium
     !
     SUBROUTINE ZircPhysProp
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Physical Properties of Zirconium based alloys. (Tmelt, TD, density)
-    !> Note that this subroutine does not return any parameters directly but rather stores into the Module Variables
+    !> Note that this subroutine does not return any parameters directly but rather stores into the Module variables_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -192,7 +192,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION ccp (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions, ONLY : polate
     IMPLICIT NONE
     !>@brief
@@ -249,7 +249,7 @@ MODULE Zirconium
     !
     SUBROUTINE cthexp (ctemp, cathex, cdthex)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> cthexp calculates axial and diametral thermal expansion of zircaloy lwr cladding.
@@ -318,7 +318,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION zoemis (ctmax, zroxid) RESULT (emissv)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> zoemis calculates the emissivity of the cladding surface as a function of maximum cladding temperature and
@@ -377,7 +377,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION celmod (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> celmod calculates cladding young's modulus as a function of temperature, fast neutron fluence, cold work,
@@ -471,7 +471,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION cagrow ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> cagrow calculates axial cladding growth strain increment as a function of fluence
@@ -546,7 +546,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION cshear (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> cshear calculates the shear modulus of zircaloy-2 and -4 as a function of temperature, fast neutron fluence,
@@ -619,7 +619,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION cmhard (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     ! the routine cmhard calculates meyer hardness as a function of cladding temperature.
@@ -648,3 +648,4 @@ MODULE Zirconium
     END FUNCTION cmhard
     !
 END MODULE Zirconium
+

@@ -29,7 +29,7 @@ MODULE ErrorMsg
     !
     SUBROUTINE errori (nerr, nstop)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine prints out specified input error messages
@@ -80,7 +80,7 @@ MODULE ErrorMsg
     !
     SUBROUTINE Namelist_Read_Error (FileUnit, NameListBlock)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This subroutine reads the input line that had an error and writes it to the screen and output file
@@ -111,3 +111,5 @@ MODULE ErrorMsg
     END SUBROUTINE Namelist_Read_Error
     !
 END MODULE ErrorMsg
+
+

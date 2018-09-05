@@ -3,9 +3,9 @@
     
 MODULE Crud
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This Module contains crud properties
@@ -21,7 +21,7 @@ MODULE Crud
     !
     REAL(r8k) FUNCTION MatPropCrud (property, temp) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calls of the crud material properties
@@ -60,9 +60,9 @@ END MODULE Crud
 !
 MODULE PlenumSpring
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This Module contains all plenum spring properties
@@ -83,7 +83,7 @@ MODULE PlenumSpring
     !
     REAL(r8k) FUNCTION MatPropSpring (property, temp) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calls plenum spring material properties
@@ -120,7 +120,7 @@ MODULE PlenumSpring
     !
     REAL(r8k) FUNCTION Springthexp (TempK)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculates radial thermal expansion of the spring (assumed behaves isotropically)
@@ -144,3 +144,4 @@ MODULE PlenumSpring
     END FUNCTION Springthexp
     !
 END MODULE PlenumSpring
+

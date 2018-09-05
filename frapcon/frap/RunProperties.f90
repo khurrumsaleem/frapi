@@ -1,6 +1,6 @@
 MODULE RunProperties
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to determine run time 
@@ -15,7 +15,7 @@ MODULE RunProperties
     !
     SUBROUTINE clockx(word)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine clockx returns local time in word in Character type in form hh:mm:ss.
@@ -31,7 +31,7 @@ MODULE RunProperties
     !
     SUBROUTINE edate (chdate)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> edate returns date in 9-Character string as dd-mmm-yy, where mmm is an abbreviation for the month.
@@ -55,7 +55,7 @@ MODULE RunProperties
     !
     FUNCTION TimeStamp (ReqInfo) RESULT (ReqData)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine returns the time or date
@@ -96,8 +96,8 @@ MODULE RunProperties
     !
     SUBROUTINE pghead
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : codeid, buildid, title, ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : codeid, buildid, title, ounit
     IMPLICIT NONE
     !>@brief
     !> This Subroutine prints out the program version identification at the top of each output page
@@ -124,3 +124,5 @@ MODULE RunProperties
     END SUBROUTINE pghead
     !
 END MODULE RunProperties
+
+

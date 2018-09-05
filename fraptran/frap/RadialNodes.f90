@@ -15,7 +15,7 @@ MODULE RadialNodes
     SUBROUTINE Radheatsource (Nmesh, Nfmesh, Ivoid, Kaxs, CladdingPower, AxNodElevat, Zvoid1, Zvoid2, &
       &                       Fdratio, Radii, VolumeWeightL, VolumeWeightR, Radsrco, Radsrc)
     USE Kinds
-    USE Variables, ONLY : nradialnodes, naxialnodes
+    USE variables_fraptran, ONLY : nradialnodes, naxialnodes
     IMPLICIT NONE
     !>@brief
     !> Subroutine for calculating radial distribution of heat source in pellet and cladding
@@ -129,8 +129,8 @@ MODULE RadialNodes
     !
     SUBROUTINE Weights (Nmesh, Gapmin, Radii, VolumeWeightL,  VolumeWeightR, AreaWeight)
     USE Kinds
-    USE Variables, ONLY : nradialnodes
-    USE Conversions, ONLY : pi
+    USE variables_fraptran, ONLY : nradialnodes
+    USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !>@brief
     !> Subroutine for calculating volume and area weights used in thermal analyses.
@@ -189,3 +189,4 @@ MODULE RadialNodes
     END SUBROUTINE Weights
     !
 END MODULE RadialNodes
+

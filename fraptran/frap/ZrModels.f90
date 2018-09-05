@@ -17,7 +17,7 @@ MODULE ZrModels
     !
     SUBROUTINE caneal (FastFlux, delh, ctemp, rtemp, fnck, fncn, cwkf, cwnf)
     USE Kinds
-    USE Variables, ONLY : Time
+    USE variables_fraptran, ONLY : Time
     IMPLICIT NONE
     !>@brief
     !> caneal calculates the change in effective fluence and effective cold work during a time step
@@ -256,7 +256,7 @@ MODULE ZrModels
     !
     SUBROUTINE ckmn (ctemp, deloxy, fnck, fncn, cwkf, cwnf, rstran, ak, an, am)
     USE Kinds
-    USE Variables, ONLY : CladType, cexh2l, ounit
+    USE variables_fraptran, ONLY : CladType, cexh2l, ounit
     IMPLICIT NONE
     !>@brief
     !> ckmn calculates parameters for the cladding equation of state as a function of temperature, 
@@ -468,7 +468,7 @@ MODULE ZrModels
       &                rstran, deltmp, strnyt, strnye, strnue, strnie, stsrpt, strrpe, cyldst, cyldse, &
       &                cultse, cbrste, cbrsst, ctstrt, ak, an, am, elmod)
     USE Kinds
-    USE Variables, ONLY : CladType, cexh2l, ounit, ndebug
+    USE variables_fraptran, ONLY : CladType, cexh2l, ounit, ndebug
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
@@ -803,7 +803,7 @@ MODULE ZrModels
     !
     SUBROUTINE cstrni (delh, ctemp, deloxy, fnck, fncn, cwkf, cwnf, strest, strant)
     USE Kinds
-    USE Variables, ONLY : ounit, CladType, ndebug
+    USE variables_fraptran, ONLY : ounit, CladType, ndebug
     IMPLICIT NONE
     !>@brief
     !> cstrni calculates cladding strain as a function of true cladding stress, initial true cladding strain,
@@ -878,3 +878,4 @@ MODULE ZrModels
     END SUBROUTINE cstrni
 !
 END MODULE ZrModels
+

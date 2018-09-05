@@ -16,9 +16,9 @@ MODULE HeatTransferCoefficient
     !
     SUBROUTINE htrc (dr, hcoef, hflux, qcrit, tsurf, iht, k, rl, nchfsw, tempcm, zroxid, tmeltc)
     USE Kinds
-    USE Conversions, ONLY : sechr, ftin, tfk, tfr
+    USE conversions_fraptran, ONLY : sechr, ftin, tfk, tfr
     USE Functions, ONLY : polate
-    USE Variables, ONLY : ounit, Time, ndebug, fdial
+    USE variables_fraptran, ONLY : ounit, Time, ndebug, fdial
     USE Dyna_h
     USE CoolantProperties, ONLY : Prop, aasth, elvrad, nelrad, vfrad1, vfrad2, vfrad3, trad1, trad2, trad3, tshrda, nsrad3
     USE resti_h
@@ -711,9 +711,9 @@ MODULE HeatTransferCoefficient
     SUBROUTINE qdot (a, b, cpf, cpg, cp, rf, rg, r, MassFlowRate, Quality, hd, hf, hg, CoolPress, qcrit, qq, tbulk, &
       &              h, ts, tsat, tsur, tchf, ih, j, l, tempcm, zroxid, dh, aflow, dr, beta, fluxk, hcsave)
     USE Kinds
-    USE Conversions, ONLY : pi, sechr, tfk, tfr
+    USE conversions_fraptran, ONLY : pi, sechr, tfk, tfr
     USE Functions, ONLY : polate
-    USE Variables, ONLY : ounit, Time, ndebug, Radiation
+    USE variables_fraptran, ONLY : ounit, Time, ndebug, Radiation
     USE CoolantProperties, ONLY : Prop, aasth
     USE bcdcom_h
     USE emssf, ONLY : emssf1
@@ -1911,7 +1911,7 @@ MODULE HeatTransferCoefficient
     !
     SUBROUTINE root1 (c1, c2, x1, x2)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes real root of function f(x)=x**4+c1*x+c2. Newton's second order method used.
@@ -1956,8 +1956,8 @@ MODULE HeatTransferCoefficient
     SUBROUTINE gaphtc (gpthki, rf, pfc, tg, tf, tc, pg, GasFraction, flux, tflux, rufc, ruff, frden, &
       &                coldw, zro, fotmtl, tempcm, modfd, hgapt, gadolin, bulocal, gapmin, node)
     USE Kinds
-    USE Conversions, ONLY : sechr, tfk, tfr
-    USE Variables, ONLY : ounit, Time, ndebug
+    USE conversions_fraptran, ONLY : sechr, tfk, tfr
+    USE variables_fraptran, ONLY : ounit, Time, ndebug
     USE phypro_h
     USE emssf, ONLY : emssf2
     USE Material_Properties, ONLY : MatProperty
@@ -2164,3 +2164,4 @@ MODULE HeatTransferCoefficient
     END SUBROUTINE gaphtc
 !
 END MODULE HeatTransferCoefficient
+

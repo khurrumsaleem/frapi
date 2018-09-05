@@ -1,6 +1,6 @@
 MODULE FEA_deallocate
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to deallocate all FEA variables.
@@ -14,7 +14,7 @@ MODULE FEA_deallocate
     !
     SUBROUTINE nlfemp_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     USE materials
@@ -96,3 +96,4 @@ MODULE FEA_deallocate
     END SUBROUTINE nlfemp_deallocate
     !
 END MODULE FEA_deallocate
+

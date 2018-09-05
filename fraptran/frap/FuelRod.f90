@@ -1,6 +1,6 @@
 MODULE FuelRod_Data
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE OutputFile
     USE Uncertainty_Vals
     USE Uncertainties, ONLY : Uncert_fuelref
@@ -3105,3 +3105,4 @@ MODULE FuelRod_Data
         END SUBROUTINE Remember_Uncertainty
     
 END MODULE FuelRod_Data
+

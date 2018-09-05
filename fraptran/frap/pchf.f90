@@ -9,8 +9,8 @@ MODULE HeatFluxCorrelations
       &             HtFlxFac, SurfHtFlux, AxNodElevat, k, acond, j1, tsat, rf, rg, alpha, cpg, &
       &             twall, cpf, tbulk, naxn, Nchan, r, cp)
     USE Kinds
-    USE Variables, ONLY : ounit
-    USE Conversions, ONLY : sechr
+    USE variables_fraptran, ONLY : ounit
+    USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !
     ! Input
@@ -714,3 +714,4 @@ MODULE HeatFluxCorrelations
     END SUBROUTINE pchf
 
 END MODULE HeatFluxCorrelations
+

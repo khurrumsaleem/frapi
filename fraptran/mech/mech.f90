@@ -31,7 +31,7 @@ MODULE FEModel
      coefn,coefm,Emodulus,CladYieldStress,NFrapconInitialization,ntstep, &
      EffStrain)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     USE common_parameters
     USE fraptran_variables
     USE geometry
@@ -43,7 +43,7 @@ MODULE FEModel
     USE quad4
     USE solid1d
     USE cont1d
-    Use Variables, ONLY : CladType
+    Use variables_fraptran, ONLY : CladType
     USE Uncertainty_Vals
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
@@ -1360,3 +1360,4 @@ END SUBROUTINE temp_storage
     
     END MODULE FEModel
     
+

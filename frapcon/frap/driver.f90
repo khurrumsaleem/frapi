@@ -1,12 +1,12 @@
 module frapcon4
 
     use Kinds
-    use Variables
+    use variables_frapcon
     use Decay
     use Refabrication
     use DatingData
     use SetupProblem, only : setup, axhef
-    use Conversions
+    use conversions_frapcon
     use RunProperties
     use FEA_Setup
     use Comde
@@ -1543,8 +1543,8 @@ contains
 
     subroutine FRAPCON_4_0_Patch_1
         USE Kinds
-        USE Conversions
-        USE Variables, ONLY : ProblemTime, ounit, it
+        USE conversions_frapcon
+        USE variables_frapcon, ONLY : ProblemTime, ounit, it
         USE FileIO, ONLY : iofiles, IOEcho
         USE TimeStep
         USE, INTRINSIC :: ISO_FORTRAN_ENV
@@ -1568,3 +1568,5 @@ contains
     end subroutine FRAPCON_4_0_Patch_1
 
 end module frapcon4
+
+

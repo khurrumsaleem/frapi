@@ -1,4 +1,4 @@
-MODULE Variables
+MODULE variables_fraptran
     USE Kinds
     USE bcdcom_h
     USE bloon_h
@@ -2455,4 +2455,5 @@ MODULE Variables
     
     END SUBROUTINE Allocate_frapc_var
     !
-END MODULE Variables
+END MODULE variables_fraptran
+

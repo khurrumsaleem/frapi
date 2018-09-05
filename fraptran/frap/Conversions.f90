@@ -1,4 +1,4 @@
-MODULE Conversions
+MODULE conversions_fraptran
     USE Kinds
     IMPLICIT NONE
     !>@brief
@@ -274,7 +274,7 @@ MODULE Conversions
     !
     SUBROUTINE coneu (xin, xout, itype)
     USE Kinds, ONLY : ipk, r8k
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> coneu - convert engineering units.
@@ -354,4 +354,5 @@ MODULE Conversions
     !
     END SUBROUTINE coneu
     !
-END MODULE CONVERSIONS
+END MODULE conversions_fraptran
+

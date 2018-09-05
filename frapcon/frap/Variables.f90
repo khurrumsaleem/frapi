@@ -1,4 +1,4 @@
-MODULE Variables
+MODULE variables_frapcon
     USE Kinds
     IMPLICIT NONE
     !>@brief
@@ -74,7 +74,7 @@ MODULE Variables
     INTEGER(ipk), TARGET :: ntape
     ! File unit #'s
     ! Output File
-    INTEGER(ipk), TARGET :: ounit = 1006 ! old: 6 YU JIANKAI
+    INTEGER(ipk), TARGET :: ounit = 6 ! old: 6 YU JIANKAI
     ! Input File
     INTEGER(ipk), TARGET :: iunit = 55
     ! Scratch file
@@ -1859,4 +1859,5 @@ MODULE Variables
     !
     END SUBROUTINE Allocate_3D_Arrays
     !
-END MODULE Variables
+END MODULE variables_frapcon
+

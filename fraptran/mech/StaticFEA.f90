@@ -626,7 +626,7 @@ MODULE StaticFEA
 
 Subroutine time_step(lsubstp)
   USE Kinds
-  USE Variables, ONLY : ounit
+  USE variables_fraptran, ONLY : ounit
   USE common_parameters
   USE quad4
   USE hex8
@@ -1181,3 +1181,4 @@ END SUBROUTINE update_displ
     !
 !    
 END MODULE StaticFEA
+

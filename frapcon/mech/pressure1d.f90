@@ -1,6 +1,6 @@
 MODULE pressure1d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -38,7 +38,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pressure1d database
@@ -57,7 +57,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_setpress (label, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set pressures for the set label
@@ -78,7 +78,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_updval (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update pressure values
@@ -105,7 +105,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_create (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new PRESSURE1D element
@@ -166,7 +166,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_fext()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 2D pressure load contribution to the external force vector
@@ -200,7 +200,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the pressure loads
@@ -253,7 +253,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -272,7 +272,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_write_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write pressure data
@@ -297,7 +297,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_read_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk), INTENT(IN) :: nunit
@@ -353,7 +353,7 @@ MODULE pressure1d
     !
     SUBROUTINE pressure1d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate pressure1d database
@@ -370,3 +370,4 @@ MODULE pressure1d
     END SUBROUTINE pressure1d_deallocate
     !
 END MODULE pressure1d
+

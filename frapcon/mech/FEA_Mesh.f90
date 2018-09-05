@@ -1,6 +1,6 @@
 MODULE FEA_Mesh
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE FEA_Node
     IMPLICIT NONE
     !>@brief
@@ -16,12 +16,12 @@ MODULE FEA_Mesh
     !
     SUBROUTINE mesh_fuel_rod
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE geometry_fpn
     USE pressure1d
     USE cont1d
-    USE Variables, ONLY : na, nce, rc, dci, dco, ounit, cpl, icm, dp, deltaz
+    USE variables_frapcon, ONLY : na, nce, rc, dci, dco, ounit, cpl, icm, dp, deltaz
     IMPLICIT NONE
     !>@brief
     !> Create element mesh for a fuel rod and mark nodes and elements to correct groups
@@ -215,7 +215,7 @@ MODULE FEA_Mesh
     !
     SUBROUTINE create_displ (label, u_forced)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -244,3 +244,4 @@ MODULE FEA_Mesh
     END SUBROUTINE create_displ
     !
 END MODULE FEA_Mesh
+

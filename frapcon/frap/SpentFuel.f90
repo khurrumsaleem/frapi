@@ -1,6 +1,6 @@
 MODULE SpentFuel
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines needed for reading the $spentfuel block 
@@ -13,8 +13,8 @@ MODULE SpentFuel
     !
     SUBROUTINE SpentFuelRead ()
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : iunit, ounit, addgmles, addswell, stopox, IsModelingSpentFuel
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : iunit, ounit, addgmles, addswell, stopox, IsModelingSpentFuel
     USE DatingData, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
       &                    creeptabtime, creeptabtemp, creeptabstress, idatingcreep, ncreeptab, &
       &                    Allocate_DatingData
@@ -156,8 +156,8 @@ MODULE SpentFuel
     !
     SUBROUTINE SpentFuelErrorCheck
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, iquit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit, iquit
     USE DatingData, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
       &                    creeptabtime, creeptabtemp, creeptabstress, idatingcreep, ncreeptab, &
       &                    Allocate_DatingData
@@ -210,3 +210,4 @@ MODULE SpentFuel
     END SUBROUTINE SpentFuelErrorCheck
     !
 END MODULE SpentFuel
+

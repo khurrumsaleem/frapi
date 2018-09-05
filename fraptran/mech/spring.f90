@@ -4,7 +4,7 @@ MODULE spring
     USE math
     USE materials_frap
     USE sparse_matrix
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     !>@brief
     !> Spring: 2-noded two or three Dimensional linear spring element
     !> (takes into account geometric nonlinearities)
@@ -340,3 +340,5 @@ MODULE spring
 
   END SUBROUTINE spring_deallocate
 END MODULE spring
+
+

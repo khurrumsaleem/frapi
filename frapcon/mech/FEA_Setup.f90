@@ -1,6 +1,6 @@
 MODULE FEA_Setup
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to initialized the Cladding FEA calculation.
@@ -14,7 +14,7 @@ MODULE FEA_Setup
     !
     SUBROUTINE default_values()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -81,7 +81,7 @@ MODULE FEA_Setup
     !
     SUBROUTINE init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE spring
@@ -152,3 +152,4 @@ MODULE FEA_Setup
     END SUBROUTINE init
     !
 END MODULE FEA_Setup
+

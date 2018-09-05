@@ -1,7 +1,7 @@
 MODULE common_parameters
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> All common parameters and variables for FE Model
@@ -179,7 +179,7 @@ MODULE common_parameters
     !
     FUNCTION node_coords(i,csys) RESULT(x_node)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Find node coordinates x for node i
@@ -212,7 +212,7 @@ MODULE common_parameters
     !
     SUBROUTINE set_node_status(label,idim,status)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set node DOF status
@@ -234,7 +234,7 @@ MODULE common_parameters
     !
     FUNCTION get_node_status (label, idim)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Get node DOF status
@@ -255,3 +255,4 @@ MODULE common_parameters
     END FUNCTION get_node_status
     !
 END MODULE common_parameters
+

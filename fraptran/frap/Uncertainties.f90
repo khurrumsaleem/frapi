@@ -1,9 +1,9 @@
 MODULE Uncertainties
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE Dyna_h
     USE resti_h
-    USE Conversions
+    USE conversions_fraptran
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -246,8 +246,8 @@ MODULE Uncertainties
     !
     SUBROUTINE dktout (node)
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_fraptran
+    USE variables_fraptran
     USE Temperature
     IMPLICIT NONE
     !>@brief
@@ -818,3 +818,4 @@ MODULE Uncertainties
     !
     !
 END MODULE Uncertainties
+

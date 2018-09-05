@@ -32,7 +32,7 @@ MODULE FEA_IO
 !
     SUBROUTINE input_read_error()
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -303,3 +303,4 @@ END SUBROUTINE Write_output
     !
     END MODULE FEA_IO
     
+

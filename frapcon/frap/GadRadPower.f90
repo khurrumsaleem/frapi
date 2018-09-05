@@ -1,8 +1,8 @@
 MODULE GadRadPower
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Module GadRadPower contains the Gadolinia radial power profiles for LWR and HWR
@@ -345,7 +345,7 @@ MODULE GadRadPower
     !
     SUBROUTINE LoadGadProperties ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine loads the Gad radial burnup power profiles
@@ -390,7 +390,7 @@ MODULE GadRadPower
     !
     SUBROUTINE Gdradpow (rprm1, rpow, gadolin, rnorm, buave)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calculates the radial power profile for urania-gadolinia fuel as a function
@@ -496,3 +496,5 @@ MODULE GadRadPower
     END SUBROUTINE GdRadPow
     !
 END MODULE GadRadPower
+
+

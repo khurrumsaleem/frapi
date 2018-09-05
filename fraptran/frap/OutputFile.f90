@@ -1,6 +1,6 @@
 MODULE OutputFile
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutines for printing to the output file
@@ -54,8 +54,8 @@ MODULE OutputFile
     !
     SUBROUTINE prntot
     USE Kinds
-    USE Conversions, ONLY : pi, sechr, ftom, ftin, tfk
-    USE Variables
+    USE conversions_fraptran, ONLY : pi, sechr, ftom, ftin, tfk
+    USE variables_fraptran
     USE Temperature
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
@@ -1006,3 +1006,4 @@ MODULE OutputFile
     END SUBROUTINE prntot
     !
     END MODULE OutputFile
+

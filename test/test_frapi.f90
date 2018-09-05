@@ -1,7 +1,7 @@
-program frapcon_input_file
+program frapi_input_file
 
     use h5file
-    use conversions
+    use conversions_frapcon
     use fpn_reader
     use frapi, only : frod_type
 
@@ -277,4 +277,4 @@ program frapcon_input_file
 
     write(*,*) 'Successfully done!'
 
-end program frapcon_input_file
+end program frapi_input_file

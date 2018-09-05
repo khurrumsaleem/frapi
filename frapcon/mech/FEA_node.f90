@@ -1,6 +1,6 @@
 MODULE FEA_Node
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutine used to create a node.
@@ -14,9 +14,9 @@ MODULE FEA_Node
     !
     SUBROUTINE create_node (label, node_x0)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Create node
@@ -114,3 +114,4 @@ MODULE FEA_Node
     END SUBROUTINE create_node
     !
 END MODULE FEA_Node
+

@@ -1,11 +1,11 @@
 MODULE quad4
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE sparse_matrix
     USE materials
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Axisymmetric mean dilation Q4 element
@@ -102,7 +102,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers and tables for Q4 element calculation
@@ -150,7 +150,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_create (label, mat, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new QUAD4 element and attach it to the element database
@@ -265,7 +265,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_delete (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete element from the database
@@ -326,7 +326,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for quad4 elements
@@ -350,7 +350,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize temperature dependent properties
@@ -402,7 +402,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_grav()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Gravity load
@@ -432,7 +432,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_deriv(x1, x2, x3, x4, V, dV, dNdx, dNdxm, x)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Evaluate cartesian derivatives of the shape functions
@@ -513,7 +513,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_stress()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Element stress calculation
@@ -735,7 +735,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Element stress calculation
@@ -786,7 +786,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Element stiffness matrices
@@ -897,7 +897,7 @@ MODULE quad4
     !
     FUNCTION quad4_tmod_matmul (Bi, tmod) RESULT (BiC)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Multiply kinematic matrix with tangent modulus
@@ -925,7 +925,7 @@ MODULE quad4
     !
     FUNCTION quad4_tmod(J, Jm, mu, lambda, kappa, sigdev, phyd, nv, dl2, gamma, av, taueff, dplmod, deds) RESULT(tmod)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deviatoric material tangent modulus
@@ -1065,7 +1065,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -1093,7 +1093,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_strains()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate logarithmic strain values
@@ -1145,7 +1145,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -1178,7 +1178,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -1244,7 +1244,7 @@ MODULE quad4
     !
     SUBROUTINE quad4_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate QUAD4 database
@@ -1261,3 +1261,4 @@ MODULE quad4
     END SUBROUTINE quad4_deallocate
     !
 END MODULE quad4
+

@@ -1,7 +1,7 @@
 MODULE Material_Properties
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladType, imox, ounit, GasFraction
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : CladType, imox, ounit, GasFraction
     USE UraniumDioxide
     USE MOX
     USE Zirconium
@@ -40,7 +40,7 @@ MODULE Material_Properties
       &                             Tmelt, HeatofFusion, Flux, Fluence, ColdWork, OxygenConcen, Oxide, Pressure, &
       &                             Width, GasComposition) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calls all material properties based on the material being
@@ -240,3 +240,4 @@ MODULE Material_Properties
     END FUNCTION MatProperty
     !
 END MODULE Material_Properties
+

@@ -1,6 +1,6 @@
 MODULE Temperature
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to calculate fuel and cladding 
@@ -17,7 +17,7 @@ MODULE Temperature
     !
     REAL(r8k) FUNCTION formfa (fi, fo, ri, ro)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function computes the fuel ring averaged form factor or burnup based upon 
@@ -56,8 +56,8 @@ MODULE Temperature
     !
     SUBROUTINE cladrp
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladAveTemp, qc, dco, dci, j, tci, tco, SurfTempOxide, EOSZrO2Thk, zoxk
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladAveTemp, qc, dco, dci, j, tci, tco, SurfTempOxide, EOSZrO2Thk, zoxk
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -110,8 +110,8 @@ MODULE Temperature
     !
     SUBROUTINE conduc
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : GapAveTemp, dco, gpthe, qc, ounit, dltgc, hgapt, hgap, hsolid, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : GapAveTemp, dco, gpthe, qc, ounit, dltgc, hgapt, hgap, hsolid, &
       &                   hgapr, tci, k, dphf, dphfrl, j
     IMPLICIT NONE
     !>@brief
@@ -159,8 +159,8 @@ MODULE Temperature
     !
     SUBROUTINE energy
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : PelAveTemp, StoredEnergy, nr, tfring, hrad, j, tref
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : PelAveTemp, StoredEnergy, nr, tfring, hrad, j, tref
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -210,9 +210,9 @@ MODULE Temperature
     !
     SUBROUTINE fueltp (tfs, q, fden)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties, ONLY : MatProp
-    USE Variables, ONLY : brnup3, nr, rrev, rrapow, FuelCondFactor, tfuelr2, rtran, j
+    USE variables_frapcon, ONLY : brnup3, nr, rrev, rrapow, FuelCondFactor, tfuelr2, rtran, j
     USE Comde
     IMPLICIT NONE
     !>@brief
@@ -374,8 +374,8 @@ MODULE Temperature
     !
     SUBROUTINE tmpsub
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : modheat, FuelTempRestruRad, HealedCrackRadius, OldHealedCrackRadius, porosnew, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : modheat, FuelTempRestruRad, HealedCrackRadius, OldHealedCrackRadius, porosnew, &
       &                   tfuelr, rapow, nr, na, crad, Power, rc, PelSurfTemp, rrev, rrapow, tfuelr2, dltgc, &
       &                   PelSurfTemp, PelCentTemp, it, j, iquit, rp, transt, rtran, k, tci, fden
     IMPLICIT NONE
@@ -499,7 +499,7 @@ MODULE Temperature
     !
     SUBROUTINE emssf2 (tf, tc, rf, gpthk, fe)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
     IMPLICIT NONE
     !>@brief
@@ -543,9 +543,9 @@ MODULE Temperature
     !
     SUBROUTINE gaprs (gapd, tpel)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables, ONLY : brnup3, gaphtcmult, nr, RinterfacPress, GapAveTemp, &
+    USE variables_frapcon, ONLY : brnup3, gaphtcmult, nr, RinterfacPress, GapAveTemp, &
       &                   gases, j, gapmin, hgap, hgapr, hsolid, frden, hgapt, coldwk, &
       &                   roughc, roughf, dphfrl, j, press, tci, it, fden, & 
                           TotalHGap, hgapt_flag     ! YU JIANKAI ! TotalHGap, hgapt_flag
@@ -703,3 +703,4 @@ MODULE Temperature
     END SUBROUTINE gaprs
     !
 END MODULE Temperature
+

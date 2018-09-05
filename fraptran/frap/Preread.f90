@@ -17,7 +17,7 @@ MODULE Initial_Read
     SUBROUTINE preread (iofile)
     USE Kinds
     USE frapc, ONLY : coupled, FrapTranFN
-    USE variables, ONLY : pre_na, pre_nr, pre_nt, iunit, ounit
+    USE variables_fraptran, ONLY : pre_na, pre_nr, pre_nt, iunit, ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine preread does an initial opening of the input file in order to determine array sizes
@@ -198,3 +198,5 @@ MODULE Initial_Read
     END FUNCTION countarray
     
 END MODULE Initial_Read
+
+

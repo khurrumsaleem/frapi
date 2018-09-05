@@ -5,7 +5,7 @@ MODULE Volume
     CONTAINS
     !
     SUBROUTINE vswell (PelletRad, GapThick, AxialNodLen, naxn, Kswell, GapTemp, VolAveGasTemp, RodLength)
-    USE Conversions, ONLY : pi
+    USE conversions_fraptran, ONLY : pi
     USE Kinds
     IMPLICIT NONE
     !>@brief
@@ -71,3 +71,4 @@ MODULE Volume
     END SUBROUTINE vswell
     !
 END MODULE Volume
+

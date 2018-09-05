@@ -1,6 +1,6 @@
 MODULE TimeStep
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to advance the problem in time.
@@ -14,13 +14,13 @@ MODULE TimeStep
     !
     SUBROUTINE frpcon
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE CoolantData
     USE CorrosionData
     USE Output_Data
     USE PlotFile
     USE Material_Properties
-    USE Variables
+    USE variables_frapcon
     USE Refabrication
     USE DatingData
     USE FissionGas
@@ -499,8 +499,8 @@ MODULE TimeStep
     !
     SUBROUTINE newgap
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : gpthe, gpth, dltgc, j, k, nconvg, ncont, gapmin, convc
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : gpthe, gpth, dltgc, j, k, nconvg, ncont, gapmin, convc
     IMPLICIT NONE
     !>@brief
     !> newgap is called from frpcon and computes the new estimate of gap and interfacial pressure.
@@ -558,8 +558,8 @@ MODULE TimeStep
     !
     SUBROUTINE store
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : BOSNodeburnup, EOSNodeburnup, BOSZrO2Thk, StartofStepPickupH2Con, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : BOSNodeburnup, EOSNodeburnup, BOSZrO2Thk, StartofStepPickupH2Con, &
       &                   EndofStepPickupH2Con, EOSZrO2Thk, deltaz, CladH2Concen, &
       &                   OldHealedCrackRadius, HealedCrackRadius, dco, porosold, porosnew, &
       &                   dpw, dpwpp, dpw2, dpwpp2, densf, na, nr, densp, tmpfuel, &
@@ -641,8 +641,8 @@ MODULE TimeStep
     !
     SUBROUTINE SetPeakPowerValues (SaveLoop)
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine sets the values for the peak power node
@@ -698,3 +698,4 @@ MODULE TimeStep
     END SUBROUTINE SetPeakPowerValues
     !
 END MODULE TimeStep
+

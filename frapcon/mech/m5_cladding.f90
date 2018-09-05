@@ -1,6 +1,6 @@
 MODULE m5_cladding
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -13,7 +13,7 @@ MODULE m5_cladding
     !
     REAL(r8k) FUNCTION m5_clad_mat_par (temp, keyword)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Returns cladding material property
@@ -33,7 +33,7 @@ MODULE m5_cladding
     !
     SUBROUTINE m5_clad_radial_return (temp, mu, dtime, epseff0, taueff,gamma, dplmod, deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Radial return for power law yield function
@@ -47,7 +47,7 @@ MODULE m5_cladding
     !
     SUBROUTINE m5_clad_creep_calc (temp, mu, dtime, epseff0, taueff, gamma, deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Cladding creep calculation
@@ -57,3 +57,4 @@ MODULE m5_cladding
     END SUBROUTINE m5_clad_creep_calc
     !
 END MODULE m5_cladding
+

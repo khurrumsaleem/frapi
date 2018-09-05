@@ -1,8 +1,8 @@
 MODULE Decay
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This module contains decay heat data and calculations
@@ -24,8 +24,8 @@ MODULE Decay
     !
     SUBROUTINE DecayHeatSetup
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : im, qmpy, ProblemTime, it, na, jst
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : im, qmpy, ProblemTime, it, na, jst
     IMPLICIT NONE
     !>@brief
     !> This subroutine is called during the initial read and allocates the arrays used for decay heat calculations,
@@ -81,8 +81,8 @@ MODULE Decay
     !
     SUBROUTINE DecayHeat
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : im, qmpy, ProblemTime, it, na, qaxnorm, dco, jst, jpeak
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : im, qmpy, ProblemTime, it, na, qaxnorm, dco, jst, jpeak
     IMPLICIT NONE
     !>@brief
     !> Subroutine DecayHeat calculates the average decay heat fraction after shutdown over a timestep (it)
@@ -181,8 +181,8 @@ MODULE Decay
     !
     REAL(r8k) FUNCTION fans51 (t0, ts, AxNode) RESULT (Pd)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : jst, it, qmpy, qaxnorm, ProblemTime
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : jst, it, qmpy, qaxnorm, ProblemTime
     USE Comde
     IMPLICIT NONE
     !>@brief
@@ -334,7 +334,7 @@ MODULE Decay
         !
         REAL(r8k) FUNCTION F (ShutDownTime, OperationTime, Nuclide)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> This function calculates the decay heat power of nuclide i in the absense of neutron capture in fission products
@@ -370,7 +370,7 @@ MODULE Decay
         !
         REAL(r8k) FUNCTION G (ShutDownTime, OperationTime, FIFA)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         USE Functions
         IMPLICIT NONE
         !>@brief
@@ -429,7 +429,7 @@ MODULE Decay
         !
         REAL(r8k) FUNCTION PdHE (MaxPower, ShutDownTime, OperationTime, R)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> This function calculates the fission product power from the decay of heavy elements U-239 and Np-239
@@ -466,7 +466,7 @@ MODULE Decay
         !
         REAL(r8k) FUNCTION FU239 (ShutDownTime, OperationTime, R)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> This function calculates the contribution to decay power for U-239
@@ -503,7 +503,7 @@ MODULE Decay
         !
         REAL(r8k) FUNCTION FNp239 (ShutDownTime, OperationTime, R)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> This function calculates the contribution to decay power for Np-239
@@ -546,8 +546,8 @@ MODULE Decay
     !
     SUBROUTINE AllocateDecayHeat
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : im
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : im
     IMPLICIT NONE
     !>@brief
     !> This subroutine allocates the arrays used for decay heat calculations and sets a default value
@@ -569,7 +569,7 @@ MODULE Decay
     !
     SUBROUTINE DeAllocateDecayHeat
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine deallocates the arrays used for the decay heating calculations
@@ -584,3 +584,5 @@ MODULE Decay
     END SUBROUTINE DeAllocateDecayHeat
     !
 END MODULE Decay
+
+

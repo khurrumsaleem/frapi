@@ -23,7 +23,7 @@ MODULE Read_Input
     !
     SUBROUTINE cardin
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE frapc, ONLY : coupled
     USE UntinpData, ONLY : Convert_Input_Units
     USE Uncertainties, ONLY : ReadUncertainty
@@ -178,8 +178,8 @@ MODULE Read_Input
     !
     SUBROUTINE bcdinp
     USE Kinds
-    USE Conversions, ONLY : TO_UPPERCASE
-    USE Variables, ONLY : ounit, htco, tem, pbh1, pbh2, hlqcl, ts, unit, iunit, reflpr
+    USE conversions_fraptran, ONLY : TO_UPPERCASE
+    USE variables_fraptran, ONLY : ounit, htco, tem, pbh1, pbh2, hlqcl, ts, unit, iunit, reflpr
     USE collct_h
     USE resti_h
     USE htcb_h
@@ -694,7 +694,7 @@ MODULE Read_Input
     !
     SUBROUTINE cininp
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE NCGases, ONLY : ngases, HeIndex
     IMPLICIT NONE
     !> @brief
@@ -845,7 +845,7 @@ MODULE Read_Input
     !
     SUBROUTINE definp
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     IMPLICIT NONE
     !> @brief
     !> This subroutine calculates all defaults when particular subroutines are not input
@@ -1172,11 +1172,12 @@ MODULE Read_Input
     !
     SUBROUTINE intinp
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit, gadoln, unit, naxn, iunit, fluxz, ncs, GasFraction, npelraddeviat, nfastf, pdrato, rnbnt, &
-      &                   totnb, roughf, roughc, bumtp, compmt, deloxy, imox, CladType, GasMoles0, nepp0, eppinp, radpel, &
-      &                   cladid, cladod, fuelpeldiam, rf, cladtk, pitch, fotmtl, tsntrk, fgrns, cldwdc, splbp, coldbp, &
-      &                   spdbp, volbp, ncolbp, nbotpl, rsntr
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit, gadoln, unit, naxn, iunit, &
+      & fluxz, ncs, GasFraction, npelraddeviat, nfastf, pdrato, rnbnt, &
+      & totnb, roughf, roughc, bumtp, compmt, deloxy, imox, CladType, GasMoles0, nepp0, eppinp, radpel, &
+      & cladid, cladod, fuelpeldiam, rf, cladtk, pitch, fotmtl, tsntrk, fgrns, cldwdc, splbp, coldbp, &
+      & spdbp, volbp, ncolbp, nbotpl, rsntr
     USE scalr_h
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
@@ -1552,7 +1553,7 @@ MODULE Read_Input
     !
     SUBROUTINE ioinp
     USE Kinds
-    USE Variables, ONLY : ounit, iunit, unit, dtplta, npltn
+    USE variables_fraptran, ONLY : ounit, iunit, unit, dtplta, npltn
     USE collct_h
     USE resti_h
     USE excb_h
@@ -1752,8 +1753,8 @@ MODULE Read_Input
     !
     SUBROUTINE modinp
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, iunit, tref, nthermex, unit, swllfr, gasphs, gasths, prestmp, cexh2a, protectiveoxide, &
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : ounit, iunit, tref, nthermex, unit, swllfr, gasphs, gasths, prestmp, cexh2a, protectiveoxide, &
       &                   nidoxide, explenumv, explenumt, npair, CladType
     USE resti_h
     USE excb_h
@@ -2244,7 +2245,7 @@ MODULE Read_Input
     !
     SUBROUTINE numinp
     USE Kinds
-    USE Variables, ONLY : ounit, iunit, unit, zelev, nfmesh, ncmesh, fmesh, cmesh, idebug, maxit, noiter, nunopt
+    USE variables_fraptran, ONLY : ounit, iunit, unit, zelev, nfmesh, ncmesh, fmesh, cmesh, idebug, maxit, noiter, nunopt
     USE Dyna_h
     USE collct_h
     USE resti_h
@@ -2532,7 +2533,7 @@ MODULE Read_Input
     !
     SUBROUTINE powinp
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE collct_h
     USE resti_h
     USE scalr_h
@@ -2833,3 +2834,4 @@ MODULE Read_Input
     END SUBROUTINE powinp
     !
 END MODULE Read_Input
+

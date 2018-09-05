@@ -1,7 +1,7 @@
 MODULE Material_Properties
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : icm, imox, ounit, idxgas
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : icm, imox, ounit, idxgas
     USE UraniumDioxide
     USE MOX
     USE Zirconium
@@ -27,7 +27,7 @@ MODULE Material_Properties
     !
     REAL(r8k) FUNCTION MatProp (Material, Property, Temperature, Burnup, Burnup_prev, Power) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calls all material properties based on the material being
@@ -168,3 +168,4 @@ MODULE Material_Properties
     END FUNCTION MatProp
     !
 END MODULE Material_Properties
+

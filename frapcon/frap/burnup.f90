@@ -1,6 +1,6 @@
 MODULE Burn
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE GadRadPower
     USE Material_Properties
     USE Comde
@@ -17,8 +17,8 @@ MODULE Burn
     !
     SUBROUTINE burnup
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : modheat, ProblemTime, qmpy, HeatFlux, BOSNodeburnup, EOSNodeburnup, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : modheat, ProblemTime, qmpy, HeatFlux, BOSNodeburnup, EOSNodeburnup, &
       &                   ounit, qaxnorm, na, im, buin, bup, it, j, totl, itt, cfv, fa, m, rhofuel, bu, &
       &                   buold, dcoBOL, delbu, delh, delbp, jmin
     IMPLICIT NONE
@@ -105,8 +105,8 @@ MODULE Burn
     !
     SUBROUTINE turbin
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : comp, enrpu39, enrpu40, enrpu41, enrpu42, buin, nr, na, brnup3, formf, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : comp, enrpu39, enrpu40, enrpu41, enrpu42, buin, nr, na, brnup3, formf, &
       &                   enrch, rrev, fotmtl, prty
     IMPLICIT NONE
     !>@brief
@@ -208,8 +208,8 @@ MODULE Burn
     !
     SUBROUTINE turbo
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : modheat, BOSNodeburnup, EOSNodeburnup, brnup3, formf, ounit, nr, na, rapow, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : modheat, BOSNodeburnup, EOSNodeburnup, brnup3, formf, ounit, nr, na, rapow, &
       &                   gadoln, qnode, rrev, wimsburnup, oldwimsburnup, j, rprm1
     IMPLICIT NONE
     !>@brief
@@ -315,9 +315,9 @@ MODULE Burn
     !
     SUBROUTINE tubrnp (itime)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables, ONLY : brnup3, formf, ounit, rrev, nr, j, rprm1
+    USE variables_frapcon, ONLY : brnup3, formf, ounit, rrev, nr, j, rprm1
     USE Functions, ONLY : bes2
     IMPLICIT NONE
     !>@brief
@@ -687,3 +687,4 @@ MODULE Burn
     END SUBROUTINE tubrnp
     !
 END MODULE Burn
+

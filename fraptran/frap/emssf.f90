@@ -7,7 +7,7 @@ MODULE emssf
     !
     SUBROUTINE emssf1(tclad, alpha, zroxid, fe)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
     !> Subroutine emssf2 computes emissivity factor for clad to coolant radiation heat transfer calculations
@@ -45,7 +45,7 @@ MODULE emssf
     !
     SUBROUTINE emssf2 (Tfuel, Tclad, rf, gpthk, zroxid, fe)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
     !> Subroutine emssf2 computes emissivity factor for fuel-cladding gap radiation heat transfer calculations
@@ -84,3 +84,4 @@ MODULE emssf
     END SUBROUTINE emssf2
     !
 END MODULE emssf
+

@@ -1,6 +1,6 @@
 MODULE CladCreep
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutine that calls the creep and 
@@ -15,8 +15,8 @@ MODULE CladCreep
     !
     SUBROUTINE ccreep
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE FEModel
     USE Deformation
     IMPLICIT NONE
@@ -128,3 +128,4 @@ MODULE CladCreep
     END SUBROUTINE ccreep
     !
 END MODULE CladCreep
+

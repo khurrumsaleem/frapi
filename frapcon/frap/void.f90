@@ -1,6 +1,6 @@
 MODULE void
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to calculate void volume and gas pressure.
@@ -14,8 +14,8 @@ MODULE void
     !
     SUBROUTINE gspres
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     USE Refabrication, ONLY : irefab, fgpavrefab
     IMPLICIT NONE
     !>@brief
@@ -159,8 +159,8 @@ MODULE void
     !
     SUBROUTINE volume
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : den, AnnulusVolume, PorosityVolume, GapVolume, FuelVolume, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : den, AnnulusVolume, PorosityVolume, GapVolume, FuelVolume, &
       &                   RinterfacVolume, CrackVolume, CladVolume, RinternalVolume, &
       &                   HotNodLength, FuelCladGap, HotThermalGap, ringvol, &
       &                   coldringl, tfuelr, hrad, uo2exp, dpw, densf, hotringl, &
@@ -291,3 +291,4 @@ MODULE void
    END SUBROUTINE volume
     !
 END MODULE void
+

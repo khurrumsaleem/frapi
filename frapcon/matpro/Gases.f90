@@ -1,8 +1,8 @@
 MODULE Gas
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : gases, ounit, amfhe, amfair, amfarg, amfh2, amfkry, amfn2, amfh2o, amfxe, &
+    USE variables_frapcon, ONLY : gases, ounit, amfhe, amfair, amfarg, amfh2, amfkry, amfn2, amfh2o, amfxe, &
       &                   xein, kryin, press, amffg
     IMPLICIT NONE
     !>@brief
@@ -154,7 +154,7 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION MatPropGas (property, temp) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calls all of the Rod Gas Material Properties
@@ -187,7 +187,7 @@ MODULE Gas
     !
     SUBROUTINE LoadGases
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine loads the properties needed for the non-condensible fill gases
@@ -315,8 +315,8 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION gthcon (gtempK)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : press
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : press
     IMPLICIT NONE
     !>@brief
     !> gthcon calculates gas thermal conductivity as a function of temperature and gas fraction
@@ -417,8 +417,8 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION gvisco (gtempK)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, gases
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit, gases
     IMPLICIT NONE
     !>@brief
     !> gvisco calculates the gas viscosity as a function of temperature and gas mole fractions.
@@ -514,7 +514,7 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION GasCP (gtempK)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calculates the specific heat of the fill gas
@@ -623,7 +623,7 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION GasRho (gtempK)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calculates the gas density
@@ -693,7 +693,7 @@ MODULE Gas
     !
     REAL(r8k) FUNCTION GasMWt ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calculates the gas molecular weight
@@ -737,7 +737,7 @@ MODULE Gas
     !
     SUBROUTINE Allocate_Gas ()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine allocates the gas array
@@ -759,3 +759,4 @@ MODULE Gas
     END SUBROUTINE Allocate_Gas
     !
 END MODULE Gas
+

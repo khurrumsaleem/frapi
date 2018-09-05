@@ -19,9 +19,9 @@ MODULE Ballooning
       &                aas, ars, ace, aae, are, dbyz, stresf, tstres, disp, deh, dea, rstran, rave, &
       &                stresr, stresa, radc, dz0, gadolinia)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions, ONLY : polate, simq
-    USE Variables
+    USE variables_fraptran
     USE Material_Properties, ONLY : MatProperty
     USE NCGases, ONLY : ngases
     IMPLICIT NONE 
@@ -828,9 +828,9 @@ MODULE Ballooning
     !
         SUBROUTINE far1 (GasFraction, Baln2Twall, gadolin)
     USE Kinds
-    USE Conversions, ONLY : pi
+    USE conversions_fraptran, ONLY : pi
     USE NCGases, ONLY : ngases
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     USE bloon_h
     USE phypro_h, ONLY : compmt
     USE Material_Properties, ONLY : MatProperty
@@ -1122,3 +1122,4 @@ MODULE Ballooning
     !
     !
     END MODULE Ballooning
+

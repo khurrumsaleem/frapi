@@ -1,8 +1,8 @@
 MODULE Zirconium
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -62,7 +62,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION MatProp (Zirc, property) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function calls all of the Zirconium Material Properties
@@ -142,7 +142,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION ccp (Zirc)
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     USE Kinds
     IMPLICIT NONE
     !>@brief 
@@ -239,8 +239,8 @@ MODULE Zirconium
     !
     REAL(r8k) PURE FUNCTION celmod (Zirc)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladType
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> celmod calculates cladding young's modulus as a function of temperature, fast neutron fluence, cold work,
@@ -336,7 +336,7 @@ MODULE Zirconium
     !
     REAL(r8k) PURE FUNCTION cmhard (Zirc)
     USE Kinds
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> The routine cmhard calculates meyer hardness as a function of cladding temperature.
@@ -384,7 +384,7 @@ MODULE Zirconium
     !
     REAL(r8k) PURE FUNCTION cshear (Zirc)
     USE Kinds
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> cshear calculates the shear modulus of zircaloy-2 and -4 as a function of temperature, fast neutron fluence,
@@ -472,7 +472,7 @@ MODULE Zirconium
     !
     REAL(r8k) FUNCTION cthcon (Zirc)
     USE Kinds
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -534,7 +534,7 @@ MODULE Zirconium
     !
     SUBROUTINE cthexp (Zirc)
     USE Kinds
-    USE Variables, ONLY : CladType
+    USE variables_fraptran, ONLY : CladType
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -632,12 +632,12 @@ MODULE Zirconium
     !
     SUBROUTINE PhysProp (Zirc)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladType
+    USE conversions_fraptran
+    USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> Physical Properties of Zirconium based alloys. (Tmelt, TD, density)
-    !> Note that this subroutine does not return any parameters directly but rather stores into the Module Variables
+    !> Note that this subroutine does not return any parameters directly but rather stores into the Module variables_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -693,7 +693,7 @@ MODULE Zirconium
     !
     REAL(r8k) PURE FUNCTION zoemis (Zirc) RESULT (emissv)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> zoemis calculates the emissivity of the cladding surface as a function of maximum cladding temperature and
@@ -751,3 +751,4 @@ MODULE Zirconium
     END FUNCTION zoemis
     !
 END MODULE Zirconium
+

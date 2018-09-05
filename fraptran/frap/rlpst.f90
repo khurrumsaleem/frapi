@@ -2,7 +2,7 @@ MODULE rlpst
     USE Kinds
     USE frapc
     USE scalr_h, ONLY : burad
-    USE Conversions, ONLY : sechr, ftin
+    USE conversions_fraptran, ONLY : sechr, ftin
     USE HeatTransferCoefficient, ONLY : gaphtc
     IMPLICIT NONE
     !>@brief
@@ -16,7 +16,7 @@ MODULE rlpst
     !
     SUBROUTINE rlpst1 (igpnod, ncladi, nmesh, RadialBound)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine rlpst1 defines parameters normally defined in input for temperature calculation.
@@ -109,7 +109,7 @@ MODULE rlpst
       &                BOSTemp, WatrMetlEnrgy, EOSOxideThick, AlphaThk2, OxiThk2, AlphaThk22, CritHtFlux, &
       &                HGapAv, AxialPowr, powave)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine defines quantities that are normally defined in subroutine heat. 
@@ -305,7 +305,7 @@ MODULE rlpst
       &                frden, tflxc, FastFlux, coldw, AxBurnup, frpo2, CladMaxT, n1, TotalGasMoles, &
       &                HGapAv, fotmtl)
     USE Kinds
-    USE Variables, ONLY : nmesh
+    USE variables_fraptran, ONLY : nmesh
     IMPLICIT NONE
     !>@brief
     !> Subroutine defines frap computed quantities in relap/frap Data link (/frapc / common block )
@@ -439,3 +439,4 @@ MODULE rlpst
     END SUBROUTINE rlpst3
     !
 END MODULE rlpst
+

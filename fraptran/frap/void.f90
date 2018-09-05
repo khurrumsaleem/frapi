@@ -1,6 +1,6 @@
 MODULE Void
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions
     IMPLICIT NONE
     !>@brief
@@ -9,9 +9,9 @@ MODULE Void
     !
     SUBROUTINE gsflow
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions, ONLY : polate
-    USE Variables
+    USE variables_fraptran
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
     !> @brief
@@ -301,8 +301,8 @@ MODULE Void
       &                vplenb, tplenb, BottomPlenumGasMoles, CentVoidVol, roughc, roughf, &
       &                AveDishTemp, TimeofGBSep)
     USE Kinds
-    USE Conversions, ONLY : pi, tfk, tkf
-    USE Variables, ONLY : ounit, explenumv, explenumt, npair, Time, ndebug, n_void_volumes
+    USE conversions_fraptran, ONLY : pi, tfk, tkf
+    USE variables_fraptran, ONLY : ounit, explenumv, explenumt, npair, Time, ndebug, n_void_volumes
     USE collct_h
     IMPLICIT NONE
     !>@brief
@@ -615,7 +615,7 @@ MODULE Void
     !
     SUBROUTINE swlchk (vplenc, GasPress, TotalGasMoles, GasAx, tplen, naxn, Kswell, k)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
     !> Subroutine checks to see if local fuel rod swelling has occurred. If swelling has occurred, 
@@ -658,3 +658,4 @@ MODULE Void
     END SUBROUTINE swlchk
     !
 END MODULE Void
+

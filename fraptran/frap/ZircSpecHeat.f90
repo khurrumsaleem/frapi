@@ -1,6 +1,6 @@
 MODULE ZircSpecHeat
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     USE Functions, ONLY : polate
     IMPLICIT NONE
     !
@@ -8,8 +8,8 @@ MODULE ZircSpecHeat
     !
     SUBROUTINE ccpmod (RhoCp, BOSTemp, FinalTemp, k, rhoc, RhoCp0)
     USE Kinds
-    USE Conversions, ONLY : tfk
-    USE Variables, ONLY : ounit, nmesh, ncladi, Time, ndebug
+    USE conversions_fraptran, ONLY : tfk
+    USE variables_fraptran, ONLY : ounit, nmesh, ncladi, Time, ndebug
     IMPLICIT NONE
     !>@brief
     !> This Subroutine modifies cladding specific heat to assure that all energy required to complete alpha to beta phase
@@ -87,7 +87,7 @@ MODULE ZircSpecHeat
     REAL(r8k) FUNCTION ccpint (t1, t2)
     USE Kinds
     USE Functions, ONLY : polate
-    USE Variables, ONLY : CladType, ounit
+    USE variables_fraptran, ONLY : CladType, ounit
     IMPLICIT NONE
     !>@brief
     !> ccpint integrates the function ccp between the temperature limits of t1 and t2
@@ -167,3 +167,4 @@ MODULE ZircSpecHeat
     END FUNCTION ccpint
     !
 END MODULE ZircSpecHeat
+

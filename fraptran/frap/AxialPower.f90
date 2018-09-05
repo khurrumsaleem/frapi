@@ -15,9 +15,9 @@ MODULE AxialPower
       &               fpdcay, mpdcay, NSteadyTrans, powict, powimx, ntstep, ExtentOfBow, nqbow, pkw0, Gscale, &
       &               powavend, pkwnd, rvoid)
     USE Kinds
-    USE Conversions, ONLY : pi, powcnv, sechr, ftin
+    USE conversions_fraptran, ONLY : pi, powcnv, sechr, ftin
     USE Functions, ONLY : polate
-    USE Variables, ONLY : RodAvePower, AxPowProfile, zvoid1, zvoid2, naxn, nprofile
+    USE variables_fraptran, ONLY : RodAvePower, AxPowProfile, zvoid1, zvoid2, naxn, nprofile
     IMPLICIT NONE
     !>@brief
     !> Subroutine specifies fuel rod power as function of time and axial elevation
@@ -184,3 +184,4 @@ MODULE AxialPower
     END FUNCTION fans  
     !
 END MODULE AxialPower
+

@@ -1,7 +1,7 @@
 MODULE Developer
     USE Kinds
-    USE Conversions
-    USE Variables
+    USE conversions_frapcon
+    USE variables_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the information for reading and applying developer options
@@ -20,8 +20,8 @@ MODULE Developer
     !
     SUBROUTINE DeveloperOptions
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
       &                   iunit, ounit, TimeIntegration, newtimestep, RestartTime, updated_restart, &
       &                   fuelreloc, nread, nrestr
     USE, INTRINSIC :: ISO_FORTRAN_ENV
@@ -97,8 +97,8 @@ MODULE Developer
     !
     SUBROUTINE DeveloperErrorCheck
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
       &                   ounit, TimeIntegration, newtimestep, RestartTime, updated_restart, &
       &                   fuelreloc, ProblemTime, im, iplant
     IMPLICIT NONE
@@ -250,3 +250,4 @@ MODULE Developer
     END SUBROUTINE DeveloperErrorCheck
     !
 END MODULE Developer
+

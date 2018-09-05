@@ -4,6 +4,12 @@ project(frapi)
 
 enable_language (Fortran)
 
+#set(CMAKE_BUILD_TYPE "Debug")
+
+set(CMAKE_Fortran_FLAGS "-std=f2008 -D -cpp")
+set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=invalid,overflow,underflo -fbacktrace")
+set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
+
 file(GLOB frapcon_src "frapcon/Dating/*.f90"
                       "frapcon/frap/*.f90"
                       "frapcon/matpro/*.f90"
@@ -17,20 +23,11 @@ file(GLOB fraptran_src "fraptran/envrl/*.f90"
 
 file(GLOB frapi_src  "frapi/*.f90")
 
-file(GLOB test_src "src_test/frapcon_input_file.f90"
-              "src_test/rastk_input_file.f90"
-              "src_test/frapcon_original.f90"
-              "src_test/fraptran_original.f90")
-
-#include_directories(/usr/local/include/frapcon /usr/local/include/fraptran /usr/local/hdf5/include)
+include_directories(/usr/local/include/frapcon /usr/local/include/fraptran /usr/local/hdf5/include)
 
 include_directories(./frapcon/Include)
 
-#link_directories(/usr/local/lib /usr/local/hdf5/lib)
-
-set(CMAKE_Fortran_FLAGS "-std=f2008 -D -cpp")
-set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=invalid,overflow,underflo -fbacktrace")
-set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
+link_directories(/usr/local/lib /usr/local/hdf5/lib)
 
 #file(GLOB src ${frapcon_src})
 
@@ -42,7 +39,21 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 #file(GLOB test_src2 ${frapi_src2})
 #file(GLOB test_src3 ${frapi_src3})
 
-add_library(frapi SHARED ${frapcon_src} ${fraptran_src} ${frapi_src})
+add_library(frapcon SHARED ${frapcon_src})
+add_library(fraptran SHARED ${fraptran_src})
+add_library(frapi SHARED ${frapi_src})
+
+target_link_libraries(frapi frapcon fraptran hdf5_fortran)
+
+add_executable(test_frapi "test/test_frapi.f90")
+add_executable(test_rastk "test/test_rastk.f90")
+add_executable(main_frapcon "test/main_frapcon.f90")
+add_executable(main_fraptran "test/main_fraptran.f90")
+
+target_link_libraries(test_frapi frapi)
+target_link_libraries(test_rastk frapi)
+target_link_libraries(main_frapcon frapi)
+target_link_libraries(main_fraptran frapi)
 
 #add_library(fraptran SHARED ${fraptran_src})
 #add_library(frapi SHARED ${frapi_src})

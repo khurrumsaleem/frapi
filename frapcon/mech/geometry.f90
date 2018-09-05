@@ -1,6 +1,6 @@
 MODULE geometry_fpn
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE quad4
@@ -10,7 +10,7 @@ MODULE geometry_fpn
     USE gascav1d
     USE gascav2d
     USE cont2d
-    USE Variables, ONLY :ounit
+    USE variables_frapcon, ONLY :ounit
     USE FEA_Node
     IMPLICIT NONE
     !>@brief
@@ -43,7 +43,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE init_geometry()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers for geometric objects
@@ -68,7 +68,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_line (lnumber, nodes, ne)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new line
@@ -149,7 +149,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_arc (lnumber, nodes, r, ne)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new arc
@@ -253,7 +253,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE deallocate_lines()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     TYPE(line_type), POINTER :: nextl, currl
@@ -272,7 +272,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_lpress (label, nl)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create pressure boundary condition on a line
@@ -343,7 +343,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_lcont (label, mat, nl)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create contact boundary condition on a line
@@ -413,7 +413,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_lcont2 (label, mat, nl1, nl2)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create contact boundary condition on a line
@@ -495,7 +495,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_lfixed (dim, nl, iend)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create pressure boundary condition on a line
@@ -531,7 +531,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_lcoupled (dim, nl, label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create coupled DOFs on a line
@@ -562,7 +562,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_surf4(label, l1, l2, l3, l4)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create an element mesh by six bounding lines
@@ -706,7 +706,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE deallocate_surf()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     TYPE(surf_type), POINTER :: nexts,currs
@@ -725,7 +725,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE meshh8(s1, s2, s3, s4, s5, s6, mat)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read hexahedral mesh bounded by six surfaces
@@ -944,7 +944,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE meshq4 (l1, l2, l3, l4, mat, etype)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create an element mesh by four bounding lines
@@ -1101,7 +1101,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE meshs1d(n1, n2, n3, n4, ne, mat, etype, flag)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create SOLID1D mesh by using four nodes
@@ -1162,7 +1162,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE write_geometry (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Output geometry
@@ -1198,7 +1198,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE read_geometry (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Output geometry
@@ -1295,7 +1295,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE deallocate_geometry()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate all geometric entities
@@ -1309,7 +1309,7 @@ MODULE geometry_fpn
     !
     SUBROUTINE create_coupled (label, node, idim)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -1366,3 +1366,4 @@ MODULE geometry_fpn
     END SUBROUTINE create_coupled
     !
 END MODULE geometry_fpn
+

@@ -1,6 +1,6 @@
 MODULE CladDeformation
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to calculate cladding deformation due to thermal expansion
@@ -14,8 +14,8 @@ MODULE CladDeformation
     !
     SUBROUTINE cexpan
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladAveTemp, txa, txal, txc, j
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladAveTemp, txa, txal, txc, j
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -55,8 +55,8 @@ MODULE CladDeformation
     !
     SUBROUTINE cldgro
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : CladIrradGrowStrn, j
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : CladIrradGrowStrn, j
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -79,3 +79,4 @@ MODULE CladDeformation
     END SUBROUTINE cldgro
     !
 END MODULE CladDeformation
+

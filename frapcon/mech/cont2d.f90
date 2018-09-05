@@ -1,6 +1,6 @@
 MODULE cont2d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE sparse_matrix
@@ -69,7 +69,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize cont2d database
@@ -92,7 +92,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_create_surf (label, mat, numt, numc, tnodes, cnodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create 2D contact surface
@@ -153,7 +153,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_delete_surf (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete contact surface
@@ -241,7 +241,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_activate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Activate elements on 2D contact surfaces
@@ -298,7 +298,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_create (label, mat, surf, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new CONT2D element
@@ -391,7 +391,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_delete (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete element from the database
@@ -447,7 +447,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for cont2d elements
@@ -470,7 +470,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate contact penalty forces
@@ -571,7 +571,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix due to 2D contact forces
@@ -623,7 +623,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_stiff_n (x1, x2, x3, pfact, alpha0, Ke)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> CONT2D element matrix for normal penalty part
@@ -740,7 +740,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_stiff_t (x1, x2, x3, pfact, alpha0, l0, Ke)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> CONT2D element matrix when there is tangential slipping
@@ -863,7 +863,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_stiff_fr (x1, x2, x3, pfact, frcoef, dir, alpha0, Ke)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     !>@brief
     !> CONT2D element matrix when there is tangential slipping
     !
@@ -984,7 +984,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update contact condition
@@ -1013,7 +1013,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -1058,7 +1058,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -1167,7 +1167,7 @@ MODULE cont2d
     !
     SUBROUTINE cont2d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate cont2d database
@@ -1193,3 +1193,4 @@ MODULE cont2d
     END SUBROUTINE cont2d_deallocate
     !
 END MODULE cont2d
+

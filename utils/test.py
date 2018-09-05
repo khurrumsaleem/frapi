@@ -33,13 +33,17 @@ names = [
 
 
 def make(filename):
-    call(["../../build/debug/frapcon_input_file", "%s.inp"%filename])
-    call(["../../build/debug/frapcon_original", "%s.inp"%filename])
+    call(["../../build/debug/test_frapi", "%s.inp"%filename])
+    call(["../../build/debug/main_frapcon", "%s.inp"%filename])
     call(["../../utils/frap2h5.py", "%s.plot"%filename, "%s-plot.h5"%filename])
 
 def draw(filename):
     f0 = File('%s.h5'%filename)
     f1 = File('%s-plot.h5'%filename)
+
+    dirname = '../../doc/graphics'
+    if not os.path.isdir(dirname): 
+        os.mkdir(dirname)
 
     dirname = '../../doc/graphics/%s'%filename
     if not os.path.isdir(dirname): 

@@ -1,6 +1,6 @@
 MODULE FuelDeformation
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to calculate fuel deformation 
@@ -15,9 +15,9 @@ MODULE FuelDeformation
     !
     SUBROUTINE gtrloc
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables, ONLY : RelocModel, fuelreloc, j, rlcstrn, gasflg, rlcstrnold, &
+    USE variables_frapcon, ONLY : RelocModel, fuelreloc, j, rlcstrn, gasflg, rlcstrnold, &
       &                   hsolid, Relocation, dp, Power, EOSNodeBurnup, cdg
     IMPLICIT NONE
     !>@brief
@@ -68,9 +68,9 @@ MODULE FuelDeformation
     !
     SUBROUTINE fexpan
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables, ONLY : facmot, tfuelr, tfring, na, nr, uo2exp, crad, ftmelt, j, afal, sumexp
+    USE variables_frapcon, ONLY : facmot, tfuelr, tfring, na, nr, uo2exp, crad, ftmelt, j, afal, sumexp
     IMPLICIT NONE
     !>@brief
     !> fexpan is called from frpcon and computes the thermal expansion of the fuel.
@@ -117,9 +117,9 @@ MODULE FuelDeformation
     !
     SUBROUTINE swell
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Material_Properties
-    USE Variables, ONLY : comp, nr, ProblemTime, porosold, porosnew, addswell, slim, gaprecov, tfuelr, &
+    USE variables_frapcon, ONLY : comp, nr, ProblemTime, porosold, porosnew, addswell, slim, gaprecov, tfuelr, &
       &                   hrad, uo2exp, dpw, dpwpp, dpw2, dpwpp2, densf, densp, crad, rlcstrn, rc, j, &
       &                   it, tsint, rsntr, dphf, afdn, prvden, BOSNodeBurnup, EOSNodeBurnup
     IMPLICIT NONE
@@ -205,3 +205,4 @@ MODULE FuelDeformation
     END SUBROUTINE swell
     !
 END MODULE FuelDeformation
+

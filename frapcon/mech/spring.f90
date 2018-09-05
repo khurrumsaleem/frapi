@@ -1,11 +1,11 @@
 MODULE spring
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE materials
     USE sparse_matrix
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Spring: 2-noded two or three dimensional linear spring element 
@@ -35,7 +35,7 @@ MODULE spring
     !
     SUBROUTINE spring_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers
@@ -52,7 +52,7 @@ MODULE spring
     !
     SUBROUTINE spring_create(label,mat,nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new SPRING element
@@ -110,7 +110,7 @@ MODULE spring
     !
     SUBROUTINE spring_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for spring elements
@@ -132,7 +132,7 @@ MODULE spring
     !
     SUBROUTINE spring_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate temperature dependent properties of the element
@@ -156,7 +156,7 @@ MODULE spring
     !
     SUBROUTINE spring_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Internal force vector
@@ -202,7 +202,7 @@ MODULE spring
     !
     SUBROUTINE spring_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the spring element
@@ -254,7 +254,7 @@ MODULE spring
     !
     SUBROUTINE spring_write_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -279,7 +279,7 @@ MODULE spring
     !
     SUBROUTINE spring_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -337,7 +337,7 @@ MODULE spring
     !
     SUBROUTINE spring_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate element database
@@ -354,3 +354,4 @@ MODULE spring
     END SUBROUTINE spring_deallocate
     !
 END MODULE spring
+

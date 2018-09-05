@@ -1,8 +1,8 @@
 MODULE MOX
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : den, deng, comp, ounit, imox, gadoln, facmot, prvden, tsint, rsntr, &
+    USE variables_frapcon, ONLY : den, deng, comp, ounit, imox, gadoln, facmot, prvden, tsint, rsntr, &
       &                   RelocModel, RinterfacPress, bup, afdn, j, fden, ftmelt, fhefus, fdelta, &
       &                   sigftc, sigftex, sigswell, fotmtl
     IMPLICIT NONE
@@ -26,7 +26,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION MatPropMOX (property, temp, burnup, burnup_prev, power) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function calls all of the MOX Material Properties
@@ -107,7 +107,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fthcon (ftemp, burnup) RESULT (con)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> fthcon calculates the fuel thermal conductivity and its derivative with respect to temperature as a function of
@@ -191,8 +191,8 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION UPuO2Density ()
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : den, deng, comp, j
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : den, deng, comp, j
     IMPLICIT NONE
     !>@brief
     !> Fuction calculates the as-fabricated density of U/PuO2 in (g/in^3)
@@ -229,11 +229,11 @@ MODULE MOX
     !
     SUBROUTINE MOXPhysProp
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Physical Properties of MOX. (Tmelt, Uranium content, TD, density)
-    !> Note that this subroutine does not return any parameters directly but rather stores into the Module Variables
+    !> Note that this subroutine does not return any parameters directly but rather stores into the Module variables_frapcon
     !>@author
     !> Ian Porter, NRC, April 2014
     !
@@ -266,7 +266,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION sldus (PuConc)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !
         ! Input
@@ -283,7 +283,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION liqdus (PuConc)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !
         ! Input
@@ -302,7 +302,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fcp (ftemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> The function fcp is used to calculate the specific heat capacity of uo2, puo2, and (u,pu)o2 fuels as a function
@@ -373,7 +373,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION cp (c1, c2, c3, th, ed, t, fotmtl)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> Specific heat formula used for calculating specific heat of UO2
@@ -391,7 +391,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fswell (bu, bul, ftemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine fswell calculates the fuel swelling as a function of burnup
@@ -455,7 +455,7 @@ MODULE MOX
     !
     REAL(r8K) FUNCTION fthexp (ftemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function fthexp is used to calculate the strain of the fuel caused by thermal expansion.
@@ -542,7 +542,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION ftx (c1, c2, c3, ed, t)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@author
         !> Ian Porter, NRC
@@ -558,7 +558,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION femiss (ftemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function femiss calculates fuel emissivity as a function of temperature.
@@ -594,7 +594,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fudens (ftemp, bu)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> fudens calculates irradiation-induced densification.
@@ -707,7 +707,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION dlen2 (alen, bu, abu)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@author
         !> Ian Porter, NRC
@@ -723,7 +723,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION dlen3 (bu)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@author
         !> Ian Porter, NRC
@@ -741,7 +741,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fenthl (temp)
     USE kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This function is called by subroutine energy and computes the enthalpy of fuel
@@ -801,7 +801,7 @@ MODULE MOX
         !
         REAL(r8k) FUNCTION cpdt (c1, th, c2, otm, ed, t, c3)
         USE Kinds
-        USE Conversions
+        USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
         !> The following equation is the integral of the fuel specific heat with respect to temperature
@@ -823,8 +823,8 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION UO2gtrloc (burnup, p)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : dp, cdg
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : dp, cdg
     IMPLICIT NONE
     !>@brief
     !> UO2gtrloc computes the radial outward relocation of the fuel pellet.
@@ -896,7 +896,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION UO2YoungMod (temp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Function calculates the Youngs Modulus of UO2
@@ -921,7 +921,7 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION fpoir (ftemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> fpoir returns poisson's ratio for uo2 and mixed oxides.
@@ -955,8 +955,8 @@ MODULE MOX
     !
     REAL(r8k) FUNCTION felmod (ftemp, fraden, fotmtl)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : comp
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : comp
     IMPLICIT NONE
     !>@brief
     !> felmod calculates fuel elastic modulus as a function of temperature, fractional density, 
@@ -1016,3 +1016,4 @@ MODULE MOX
     END FUNCTION felmod
     !
 END MODULE MOX
+

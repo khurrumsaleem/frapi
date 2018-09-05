@@ -1,6 +1,6 @@
 MODULE Plenum
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Gas
     USE Material_Properties
     USE CladDeformation
@@ -26,8 +26,8 @@ MODULE Plenum
     !
     SUBROUTINE plnt
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : qmpy, deltaz, CladIrradGrowStrn, BulkCoolantTemp, na, eps, crdtt, dci, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : qmpy, deltaz, CladIrradGrowStrn, BulkCoolantTemp, na, eps, crdtt, dci, &
       &                   dco, PelAveTemp, CladAveTemp, p2, qend, qaxnorm, de, HotNodLength, &
       &                   tpa, visc, hpv, go, it, totl, tplen, amfair, amffg, coldwk, cpl, &
       &                   fa, hpl, hfll, hflmdb, hflmp, Nu, press, j, nt, m, jmin, jmax, Spring
@@ -277,7 +277,7 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Grashof (Length, Tplen, Tfuel)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Grashof Number
@@ -344,7 +344,7 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Prandtl (Tplen)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Prandtl Number
@@ -400,7 +400,7 @@ MODULE Plenum
     !
     REAL(r8k) FUNCTION Nusselt (Gr, Pr, Orientation, Geometry, HeatType)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function calculates the Nusselt Number based on the following:
@@ -549,3 +549,4 @@ MODULE Plenum
     END FUNCTION Nusselt
     !
 END MODULE Plenum
+

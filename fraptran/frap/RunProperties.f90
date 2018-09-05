@@ -1,6 +1,6 @@
 MODULE RunProperties
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to determine run time 
@@ -17,7 +17,7 @@ MODULE RunProperties
     !
     SUBROUTINE clockx(word)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine clockx returns local time in word in Character type in form hh:mm:ss.
@@ -33,7 +33,7 @@ MODULE RunProperties
     !
     SUBROUTINE edate (chdate)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> edate returns date in 9-Character string as dd-mmm-yy, where mmm is an abbreviation for the month.
@@ -57,7 +57,7 @@ MODULE RunProperties
     !
     FUNCTION TimeStamp (ReqInfo) RESULT (ReqData)
     USE Kinds
-    USE Conversions
+    USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine returns the time or date
@@ -95,3 +95,5 @@ MODULE RunProperties
     END FUNCTION TimeStamp
     !
 END MODULE RunProperties
+
+

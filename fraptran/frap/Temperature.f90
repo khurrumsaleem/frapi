@@ -7,9 +7,9 @@ MODULE Temperature
     SUBROUTINE energy (EOSTemp, RadialBound, fotmtl, tempcs, EnrgyMeltZ, EnrgyMeltZp1, qmaxmelt, &
       &               qmaxmeltp1, enthp, tbar, k, nvoid, igpnod)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     USE phypro_h
-    USE Variables, ONLY : naxn, nmesh
+    USE variables_fraptran, ONLY : naxn, nmesh
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
@@ -76,3 +76,4 @@ MODULE Temperature
     END SUBROUTINE energy
     !
 END MODULE Temperature
+

@@ -7,9 +7,9 @@ MODULE Initialization
     !
     SUBROUTINE cominp
     USE Kinds
-    USE Conversions, ONLY : pi, ftmetr
+    USE conversions_fraptran, ONLY : pi, ftmetr
     USE Functions, ONLY : polate
-    USE Variables
+    USE variables_fraptran
     USE PlotFile
     USE rlpst, ONLY : rlpst1
     USE sth2x, ONLY : sth2xi
@@ -725,9 +725,9 @@ MODULE Initialization
     !
     SUBROUTINE initia
     USE Kinds
-    USE Conversions, ONLY : pi, tfk
+    USE conversions_fraptran, ONLY : pi, tfk
     USE Functions, ONLY : polate
-    USE Variables
+    USE variables_fraptran
     USE Restart, ONLY : restfs
     USE Material_Properties, ONLY : MatProperty
     USE Void, ONLY : gapprs
@@ -1410,8 +1410,8 @@ MODULE Initialization
     !
     SUBROUTINE thmprp (a, k2, k3, isc, isf)
     USE Kinds
-    USE Conversions, ONLY : tfk, tkf
-    USE Variables, ONLY : ounit, nomat, imatflag, imatflag1, idatapairs, iheattablen, idebug, nsf, nsc, nkf, nkc, &
+    USE conversions_fraptran, ONLY : tfk, tkf
+    USE variables_fraptran, ONLY : ounit, nomat, imatflag, imatflag1, idatapairs, iheattablen, idebug, nsf, nsc, nkf, nkc, &
       &                   fotmtl, ftmelt, fhefus, compmt
     USE scalr_h
     USE Material_Properties, ONLY : MatProperty
@@ -1674,7 +1674,7 @@ MODULE Initialization
     SUBROUTINE phyprp
     USE Kinds
     USE phypro_h
-    USE Variables, ONLY : CladType, ounit
+    USE variables_fraptran, ONLY : CladType, ounit
     IMPLICIT NONE
     !>@brief
     !> phyprp returns uo2, (u,pu)o2, and zircaloy melting points and heats of fusion, and zirconium
@@ -1820,3 +1820,4 @@ MODULE Initialization
     END SUBROUTINE porcor
     !
 END MODULE Initialization
+

@@ -1,7 +1,7 @@
 MODULE CoolantData
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : BulkCoolantTemp, rhof, modheat, p2, tw, deltaz, qc, ounit, coolanttemp, ifixedcoolt, &
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : BulkCoolantTemp, rhof, modheat, p2, tw, deltaz, qc, ounit, coolanttemp, ifixedcoolt, &
       &                   cladtarray, ifixedtsurf, jstsurftemp, cooltype, de, go, na, dco, crdtt, ProblemTime, &
       &                   FilmCoefficient, im, crudmult, it, j, pitch, tsat, wt, crdtr, icor, &
       &                   deltcr, deltdb, deltfc, deltjl, totl, jmin, SurfTempOxide
@@ -57,9 +57,9 @@ MODULE CoolantData
     ! *********************************************************************************
     !
     SUBROUTINE coolt (deh, g)
-	USE Variables, only: flag_iapws
+	USE variables_frapcon, only: flag_iapws
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
     !> Subroutine coolt computes the bulk coolant temperature and saturation temperature for water.
@@ -176,7 +176,7 @@ MODULE CoolantData
     !
     SUBROUTINE flmdrp (deh, g)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine is called from frpcon and calculates temperature drop across the film and crud
@@ -268,7 +268,7 @@ MODULE CoolantData
     !
     REAL(r8k) FUNCTION DittusBoelterHTC (Twater, Flux, Pressure, HydroDiam) RESULT (HTC)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Function calculates the dittus boelter film drop heat transfer coefficient
@@ -341,3 +341,4 @@ MODULE CoolantData
     end function calc_cool_density_asme68
     !
 END MODULE CoolantData
+

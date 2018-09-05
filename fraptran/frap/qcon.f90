@@ -8,8 +8,8 @@ MODULE HeatCond
       &              kz, ndim, nsymm, IterationCount, nnaz, kthta, k, j, HeatFlow, ntstep, tfmelt, &
       &              rhof, TimeIncrement, nvoids, voidcp, fotmtl, frden, qcold, qctot, gadolin, burad)
     USE Kinds
-    USE Conversions, ONLY : pi, tfk, tkf
-    USE Variables, ONLY : ounit, Time, ndebug
+    USE conversions_fraptran, ONLY : pi, tfk, tkf
+    USE variables_fraptran, ONLY : ounit, Time, ndebug
     USE phypro_h
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
@@ -391,3 +391,4 @@ MODULE HeatCond
     END SUBROUTINE idxgn1
 !
 END MODULE HeatCond
+

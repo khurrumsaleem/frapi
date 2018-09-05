@@ -1,6 +1,6 @@
 MODULE ZrModels
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the Zircaloy caldding models for annealing,  
@@ -15,8 +15,8 @@ MODULE ZrModels
     !
     SUBROUTINE caneal
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : ounit, cwkf, cwnf, fncn, fnck, delhs, avflux, ctemp, rtemp
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : ounit, cwkf, cwnf, fncn, fnck, delhs, avflux, ctemp, rtemp
     IMPLICIT NONE
     !>@brief
     !> Caneal calculates the change in effective fluence and effective cold work during a time step
@@ -122,8 +122,8 @@ MODULE ZrModels
     !
     SUBROUTINE ckmn (ctemp, cexh2, ak, an, am)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : icm, cwkf, fnck, rstran
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : icm, cwkf, fnck, rstran
     IMPLICIT NONE
     !>@brief
     !> ckmn calculates parameters for the cladding equation of state as a function of temperature, 
@@ -250,8 +250,8 @@ MODULE ZrModels
     SUBROUTINE cmlimt (cinwid, cinrad, cdpres, caxrad, caxstr, deltmp, strnyt, strnye, strnue, strnie, &
       &                stsrpt, strrpe, cyldst, cyldse, cultse, cbrste, cbrsst, ctstrt)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : icm, fastfluence, excesh2, cladavgtemp, fnck, rstran, cwkf
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : icm, fastfluence, excesh2, cladavgtemp, fnck, rstran, cwkf
     USE Material_Properties, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
@@ -422,8 +422,8 @@ MODULE ZrModels
     !
     SUBROUTINE cstran (ctemp, strest, cexh2, strant)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : rstran
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : rstran
     IMPLICIT NONE
     !>@brief
     !> cstran calculates cladding strain as a function of true cladding stress, true cladding strain rate,
@@ -475,8 +475,8 @@ MODULE ZrModels
     !
     SUBROUTINE cstres (ctemp, strant, cexh2, strest)
     USE Kinds
-    USE Conversions
-    USE Variables, ONLY : rstran
+    USE conversions_frapcon
+    USE variables_frapcon, ONLY : rstran
     IMPLICIT NONE
     !>@brief
     !> cstres calculates cladding effective stress as a function of true cladding strain, true cladding strain rate,
@@ -519,3 +519,4 @@ MODULE ZrModels
     END SUBROUTINE cstres
     !
 END MODULE ZrModels
+

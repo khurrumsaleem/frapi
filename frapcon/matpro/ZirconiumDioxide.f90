@@ -1,8 +1,8 @@
 MODULE ZirconiumDioxide
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE Functions
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> This Module contains all Zirconium Properties
@@ -20,7 +20,7 @@ MODULE ZirconiumDioxide
     !
     REAL(r8k) FUNCTION MatPropZrO2 (property, temp) RESULT (mat_prop)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calls all of the Zirconium dioxide Material Properties
@@ -90,7 +90,7 @@ MODULE ZirconiumDioxide
     !
     REAL(r8k) FUNCTION zotcon (ctemp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> zotcon calculates zirconium dioxide thermal conductivity as a function of temperature.
@@ -121,3 +121,4 @@ MODULE ZirconiumDioxide
     END FUNCTION zotcon
     !
 END MODULE ZirconiumDioxide
+

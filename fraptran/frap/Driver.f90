@@ -1,11 +1,11 @@
 module fraptran2
 
     USE Kinds
-    USE Variables
+    USE variables_fraptran
     USE setup, ONLY : Main, Input_Echo
     USE TH_Link
     USE FuelRod_Data, ONLY : Allocate_Rods, FRAPTRAN_Rod
-    USE Variables, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
+    USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
     USE frapc
     USE Dyna_h
@@ -224,7 +224,7 @@ module fraptran2
 
     subroutine FRAPTRAN_1_5a
         USE Kinds
-        USE Variables, ONLY : Time
+        USE variables_fraptran, ONLY : Time
         USE setup, ONLY : Main
         USE TH_Link
         USE FuelRod_Data, ONLY : Allocate_Rods, FRAPTRAN_Rod
@@ -267,3 +267,4 @@ module fraptran2
         end subroutine FRAPTRAN_1_5a
 
 end module fraptran2
+

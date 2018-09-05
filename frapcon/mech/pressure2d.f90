@@ -1,6 +1,6 @@
 MODULE pressure2d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -38,7 +38,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pressure2d database
@@ -71,7 +71,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_setpress (label, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set pressures for the set label
@@ -92,7 +92,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_updval (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update pressure values
@@ -122,7 +122,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_create (label, nodes, p)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new PRESSURE2D element
@@ -178,7 +178,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_delete(label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete element from the database
@@ -232,7 +232,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_fext()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 2D pressure load contribution to the external force vector
@@ -271,7 +271,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the pressure loads
@@ -329,7 +329,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -348,7 +348,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_write_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write pressure data
@@ -372,7 +372,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_read_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk), INTENT(IN) :: nunit
@@ -428,7 +428,7 @@ MODULE pressure2d
     !
     SUBROUTINE pressure2d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate pressure2d database
@@ -445,3 +445,4 @@ MODULE pressure2d
     END SUBROUTINE pressure2d_deallocate
     !
 END MODULE pressure2d
+

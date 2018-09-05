@@ -1,6 +1,6 @@
 MODULE gascav2d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -49,7 +49,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers and tables for Q4 element calculation
@@ -107,7 +107,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_create (label, gascav, nodes, flag)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new GASCAV2D element
@@ -197,7 +197,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for gascav2d elements
@@ -237,7 +237,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize temperatures
@@ -265,7 +265,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_deriv()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Evaluate cartesian derivatives of the shape functions
@@ -329,7 +329,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_vpt()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 2D pressure load contribution to the external force vector
@@ -361,7 +361,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_fext()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 2D pressure load contribution to the external force vector
@@ -434,7 +434,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix due to GASCAV2D elements
@@ -552,7 +552,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write pressure data
@@ -576,7 +576,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -651,7 +651,7 @@ MODULE gascav2d
     !
     SUBROUTINE gascav2d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate gascav2d database
@@ -668,3 +668,4 @@ MODULE gascav2d
     END SUBROUTINE gascav2d_deallocate
     !
 END MODULE gascav2d
+

@@ -14,8 +14,8 @@ MODULE TH_link
     SUBROUTINE Update_Coolant ()
     USE Kinds
     USE frapc
-    USE Variables
-    USE Conversions, ONLY : ftom
+    USE variables_fraptran
+    USE conversions_fraptran, ONLY : ftom
     USE FuelRod_Data, ONLY : FRAPTRAN_Vars
     IMPLICIT NONE
     !>@brief
@@ -30,3 +30,4 @@ MODULE TH_link
     END SUBROUTINE Update_Coolant
     
 END MODULE TH_link
+

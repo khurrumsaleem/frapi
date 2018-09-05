@@ -1,6 +1,6 @@
 MODULE FEA_IO
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines to create the input and output for the cladding FEA model.
@@ -14,7 +14,7 @@ MODULE FEA_IO
     !
     SUBROUTINE fileo()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -35,7 +35,7 @@ MODULE FEA_IO
     !
     SUBROUTINE input_read_error()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -51,7 +51,7 @@ MODULE FEA_IO
     !
     SUBROUTINE line_search (dl_max, ln_iter, dl, dl_a, dl_b, dl_c, r, r_a, r_b, r_c, conv_ln)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -163,7 +163,7 @@ MODULE FEA_IO
     !
     SUBROUTINE read_input_line()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     IMPLICIT NONE
     !>@brief
@@ -186,7 +186,7 @@ MODULE FEA_IO
     !
     SUBROUTINE write_output()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE geometry_fpn
@@ -309,3 +309,4 @@ MODULE FEA_IO
     END SUBROUTINE write_output
     !
 END MODULE FEA_IO
+

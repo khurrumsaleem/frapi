@@ -1,10 +1,10 @@
 MODULE cladding
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
-    USE Variables, ONLY : comp, FastFlux, rstran, nt, frcoef, ExcessH2Concen
+    USE variables_frapcon, ONLY : comp, FastFlux, rstran, nt, frcoef, ExcessH2Concen
     USE Material_Properties, ONLY : MatProp
-    USE Conversions
+    USE conversions_frapcon
     USE ZrModels
     IMPLICIT NONE
     !>@brief
@@ -18,7 +18,7 @@ MODULE cladding
     !
     REAL(r8k) FUNCTION clad_mat_par(temp,keyword)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Returns cladding material property
@@ -58,7 +58,7 @@ MODULE cladding
     !
     SUBROUTINE clad_radial_return(temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Radial return for power law yield Function
@@ -124,7 +124,7 @@ MODULE cladding
     !
     SUBROUTINE clad_creep_calc(temp,mu,dtime,epseff0,taueff,gamma,deds)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Cladding creep calculation
@@ -182,7 +182,7 @@ MODULE cladding
     !
     SUBROUTINE crepr2(sig, edot, deds, ProblemTime, CladAveTemp, phi, CreepStrain)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> crepr is called from cladf.
@@ -240,3 +240,4 @@ MODULE cladding
     END SUBROUTINE crepr2
     !
 END MODULE cladding
+

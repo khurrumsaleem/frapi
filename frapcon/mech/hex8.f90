@@ -1,11 +1,11 @@
 MODULE hex8
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE math
     USE sparse_matrix
     USE materials
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@ brief
     !> Hexahedral 8-node brick element with mean dilation procedure
@@ -91,7 +91,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Initialize pointers and tables for HEX8 element calculation
@@ -163,7 +163,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_create (label, mat, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Create new HEX8 element
@@ -274,7 +274,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Initialize sparse matrix storage for hex8 elements
@@ -302,7 +302,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Initialize temperature dependent properties
@@ -349,7 +349,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_grav()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Gravity load
@@ -380,7 +380,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_deriv(x1, x2, x3, x4, x5, x6, x7, x8, V, dV, dNdx, dNdxm, x)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Evaluate cartesian derivatives of the shape functions
@@ -461,7 +461,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_stress()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Element stress calculation
@@ -655,7 +655,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Element stress calculation
@@ -716,7 +716,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Element stiffness matrices
@@ -846,7 +846,7 @@ MODULE hex8
     !
     FUNCTION hex8_tmod_matmul (Bi, tmod) RESULT (BiC)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Multiply kinematic matrix with tangent modulus
@@ -876,7 +876,7 @@ MODULE hex8
     !
     FUNCTION hex8_tmod (J, Jm, mu, lambda, kappa, sigdev, phyd, nv, dl2, gamma, av, taueff, dplmod, deds) RESULT(tmod)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Deviatoric material tangent modulus
@@ -1037,7 +1037,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Update explicit values
@@ -1063,7 +1063,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_strains()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Calculate logarithmic strain values
@@ -1118,7 +1118,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Write output to a file in unit 'nunit'
@@ -1152,7 +1152,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Read output from unit 'nunit'
@@ -1218,7 +1218,7 @@ MODULE hex8
     !
     SUBROUTINE hex8_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
     !> Deallocate HEX8 database
@@ -1235,3 +1235,4 @@ MODULE hex8
     END SUBROUTINE hex8_deallocate
     !
 END MODULE hex8
+

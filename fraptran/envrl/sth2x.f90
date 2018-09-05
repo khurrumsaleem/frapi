@@ -1,6 +1,6 @@
 MODULE sth2x
     USE Kinds
-    USE Variables, ONLY : h2ounit, ounit, nt, np, ns, ns2, klp, klp2, llp, nt5, jpl
+    USE variables_fraptran, ONLY : h2ounit, ounit, nt, np, ns, ns2, klp, klp2, llp, nt5, jpl
     USE WaterPropertyArray
     !>@brief
     !> This module contains all of the water properties
@@ -1220,7 +1220,7 @@ MODULE sth2x
     !
     SUBROUTINE surten (tin, sigma)
     USE Kinds
-    USE Conversions, ONLY : tfk
+    USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
     !> This Subroutine Returns surface tension (lbf/ft) when given steam temperature (F)
@@ -1265,7 +1265,7 @@ MODULE sth2x
 !
     FUNCTION thcon (n, t1, rho1)
     USE Kinds
-    USE Conversions, ONLY : sechr
+    USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !>@brief
     !> Function thcon computes the thermal conductivity of saturated liquid and saturated and superheated vapor
@@ -1331,8 +1331,8 @@ MODULE sth2x
 !
     FUNCTION visc (n, t1, rho1)
     USE Kinds
-    USE Variables, ONLY : ounit
-    USE Conversions, ONLY : sechr
+    USE variables_fraptran, ONLY : ounit
+    USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !>@brief
     !> Function visc computes viscosity of saturated liquid and saturated and superheated vapor - 1967 steam tables
@@ -1449,7 +1449,7 @@ MODULE sth2x
 !
     SUBROUTINE voidratio (Quality, rf, rg, de, sr, alpha)
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes void ratio and vapor-liquid velocity ratio
@@ -1516,3 +1516,4 @@ MODULE sth2x
     !
     !
 END MODULE sth2x
+

@@ -1,6 +1,6 @@
 MODULE FEModel
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE FEA_IO, ONLY : fileo, write_output
     USE StaticFEA
@@ -24,7 +24,7 @@ MODULE FEModel
       &              OldCladAvTemp, IgapIndexOld, sig, sigeff, reps, rfeps, eppsav, &
       &              repsav, rfpsav)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE pressure1d
     USE data_grid
     USE cladding
@@ -34,7 +34,7 @@ MODULE FEModel
     USE quad4
     USE hex8
     USE cont1d
-    USE Variables, ONLY : icm, ThermalStrain, epsav, tmpfuel, na, nr, crad, dci, dco, im, &
+    USE variables_frapcon, ONLY : icm, ThermalStrain, epsav, tmpfuel, na, nr, crad, dci, dco, im, &
       &                   ProblemTime, nce, ounit, it, cpl, nt, deltaz, CoolantPress, &
       &                   IgapGapIndex, crephr, FastFluence, tplen, BulkCoolantTemp, &
       &                   CladIrradGrowStrn, CladOutSurfTemp, CladInSurfTemp, GapPress, &
@@ -333,7 +333,7 @@ MODULE FEModel
     !
     SUBROUTINE temp_storage (ic)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE solid1d
     USE cont1d
     USE pressure1d
@@ -428,3 +428,4 @@ MODULE FEModel
     END SUBROUTINE temp_storage
     !
 END MODULE FEModel
+

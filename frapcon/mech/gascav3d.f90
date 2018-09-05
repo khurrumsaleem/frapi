@@ -1,6 +1,6 @@
 MODULE gascav3d
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE sparse_matrix
     IMPLICIT NONE
@@ -50,7 +50,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize pointers and tables for Q4 element calculation
@@ -143,7 +143,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_create (label, gascav, nodes)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new GASCAV3D element
@@ -226,7 +226,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for gascav3d elements
@@ -270,7 +270,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize temperatures
@@ -302,7 +302,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_vpt()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 3D pressure load contribution to the external force vector
@@ -313,7 +313,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_fext()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate 3D pressure load contribution to the external force vector
@@ -324,7 +324,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix due to GASCAV3D elements
@@ -337,7 +337,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_write_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write pressure data
@@ -352,7 +352,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -373,7 +373,7 @@ MODULE gascav3d
     !
     SUBROUTINE gascav3d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate gascav3d database
@@ -390,3 +390,4 @@ MODULE gascav3d
     END SUBROUTINE gascav3d_deallocate
     !
 END MODULE gascav3d
+

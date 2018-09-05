@@ -9,9 +9,9 @@ MODULE Reflood_Conditions
     SUBROUTINE reflood (AxNodElevat, a, b, drod, AxialNodLen, time, deltat, AxialPowr, naxn, rl, RuptFailIndex, &
      &                 acond, tsurf, qq, htc, qcrit, ihtreg, k,Nchan)
     USE Kinds
-    USE Conversions, ONLY : pi, sechr, tfk, tkf
+    USE conversions_fraptran, ONLY : pi, sechr, tfk, tkf
     USE Functions, ONLY : polate
-    USE Variables, ONLY : ounit,emflag
+    USE variables_fraptran, ONLY : ounit,emflag
     USE CoolantProperties
     USE sth2x, ONLY : sth2x2, sth2x3
     IMPLICIT NONE
@@ -630,7 +630,7 @@ MODULE Reflood_Conditions
 !
     FUNCTION dbinvs (temp, rhostm, hydiam, htcflc, cpstem, MassFlowRate)
     USE Kinds
-    USE Variables, ONLY : ounit, Time, ndebug
+    USE variables_fraptran, ONLY : ounit, Time, ndebug
     IMPLICIT NONE
     !>@brief
     !> function dbinvs calculates the heat capacity multiplier which provides a smooth transition from flecht to steam.
@@ -684,8 +684,8 @@ MODULE Reflood_Conditions
       &                cpstem, rhostm, hydiam, fldrte, AxNodElevat, rupflg, flowbk, ruplev, tcc, &
       &                tsurf, qq, qcrit, htc, ihtreg, agflow, k)
     USE Kinds
-    USE Conversions, ONLY : sechr
-    USE Variables, ONLY : ounit, Time, ndebug
+    USE conversions_fraptran, ONLY : sechr
+    USE variables_fraptran, ONLY : ounit, Time, ndebug
     IMPLICIT NONE
     !>@brief
     !> Subroutine enrise calculates the the enthalpy rise of the reflood vapor coolant and solves
@@ -874,8 +874,8 @@ MODULE Reflood_Conditions
 !
     FUNCTION fiddle (fldrte, AxNodElevat, rupflg, MassFlowRate, blkagp, ruplev)
     USE Kinds
-    USE Variables, ONLY : ounit
-    USE Conversions, ONLY : pi
+    USE variables_fraptran, ONLY : ounit
+    USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !>@brief
     !> this Subroutine adjusts the mass flow of the reflood steam as per the licencing specifications of october 1977.
@@ -933,7 +933,7 @@ MODULE Reflood_Conditions
 !
     SUBROUTINE hcalf (tinit, qlocal, z, h, acond, pdecay, deltat, mode, RodLength, Nchan)
     USE Kinds
-    USE Conversions, ONLY : sechr
+    USE conversions_fraptran, ONLY : sechr
     USE Functions, ONLY : polate
     USE CoolantProperties
     IMPLICIT NONE
@@ -1287,7 +1287,7 @@ MODULE Reflood_Conditions
 !
     SUBROUTINE tailnd (a, b, htc, temp, tsurf, qq, qcrit)
     USE Kinds
-    USE Conversions, ONLY : sechr
+    USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !>@brief
     !> Subroutine tailnd calculates the tail end of the heat conduction calculation. It is part of the reflood package.
@@ -1501,3 +1501,4 @@ MODULE Reflood_Conditions
 !
 !
 END MODULE Reflood_Conditions
+

@@ -1,11 +1,11 @@
 MODULE solid1D
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     USE common_parameters
     USE materials
     USE sparse_matrix
     USE Kinds
-    USE Variables, ONLY : ounit
+    USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
     !> 1 1/2-dimensional axisymmetric SOLID1D element
@@ -74,7 +74,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_init()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize element database
@@ -89,7 +89,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_create (label, mat, nodes, flag)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create new element
@@ -192,7 +192,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_delete (label)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Delete element from the database
@@ -253,7 +253,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_sparse_matrix()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for solid1d elements
@@ -283,7 +283,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_temp()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate temperature dependent properties of the element
@@ -326,7 +326,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_deriv (x1, x2, x3, x4, dV, dNdx, x_gp)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Internal forces calculation
@@ -355,7 +355,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_stress()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Element stress calculation
@@ -510,7 +510,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_fint()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Internal forces calculation
@@ -541,7 +541,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_stiff()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> SOLID1D stiffness matrix
@@ -614,7 +614,7 @@ MODULE solid1D
     !
     FUNCTION tmodulus (Je, mu, lambda, kappa, sigdev, phyd, gamma, av, taueff, dplmod, deds) RESULT(tmod)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate elastic-plastic tangent modulus
@@ -716,7 +716,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_update()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -744,7 +744,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_strains()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate converged strain values
@@ -766,7 +766,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_write_output(nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write element output
@@ -802,7 +802,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_read_output (nunit)
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read element output
@@ -880,7 +880,7 @@ MODULE solid1D
     !
     SUBROUTINE solid1d_deallocate()
     USE Kinds
-    USE Conversions
+    USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
     !> Deallocate element database
@@ -897,3 +897,4 @@ MODULE solid1D
     END SUBROUTINE solid1d_deallocate
     !
 END MODULE solid1D
+
