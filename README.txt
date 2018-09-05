@@ -1,25 +1,25 @@
-#########################################################################
-##########                                                 ##############
-##########   Fuel Rod Analysis Program Interface (FRAPI)   ##############
-##########                                                 ##############
-#########################################################################
+=========================================================================
+==========                                                 ==============
+==========   Fuel Rod Analysis Program Interface (FRAPI)   ==============
+==========                                                 ==============
+=========================================================================
 
     Dependencies:
-        frapcon
-        fraptran
         hdf5 (requares in order to run tests)
 
-    1. 'cd build/debug' or 'cd build/release'
+    1. Make directories 'cd build/debug' or 'cd build/release'
 
-    2. 'cmake ../..'
+    2. Run 'cmake ../..'
 
-    3. Compile 'make'                (debug)
-               'make -Drelease=true' (release)
+    3. Compile 'make -DCMAKE_BUILD_TYPE=Debug'   for debug version (default)
+               'make -DCMAKE_BUILD_TYPE=Release' for release version
 
-    4. Run tests:
-        test/IFA-432/test.py
-        test/IFA-512/test.py
-        The results are graphics in doc/manual/figs
+    4. Run benchmarks:
+
+        benchmark/IFA-432/test.py
+        benchmark/IFA-515/test.py
+
+        The results are the graphics in 'doc/graphics'
 
     5. Run test for RAST-K:
 

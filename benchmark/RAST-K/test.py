@@ -3,6 +3,6 @@
 
 from subprocess import call
 
-call(['../../build/debug/rastk_input_file', 'data.inp', 'data.out'])
+call(['../../build/release/test_rastk', 'data.inp', 'data.out'])
 
 import plot

@@ -23,7 +23,7 @@ for i, name in enumerate(names):
         ax.plot(mesh, ref[i], '-o', ms=10, lw=2, alpha=0.7, mfc='red')
         ax.set_xlabel('Axial elevation, cm')
         ax.set_ylabel(name)
-        ax.legend(['NEW FRAPCON', 'OLD FRAPCON'])
+        ax.legend(['FRAPI', 'FRAPCON'])
         ax.grid()
         #plt.savefig('../doc/UserGuide/figs/%s.png'%name.split(',')[0].replace(' ','_'))
 
