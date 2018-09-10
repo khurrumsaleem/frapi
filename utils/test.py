@@ -33,7 +33,6 @@ names = [
 
 
 def make(filename):
-    call(["../../build/debug/test_frapi", "%s.inp"%filename])
     call(["../../build/debug/main_frapcon", "%s.inp"%filename])
     call(["../../utils/frap2h5.py", "%s.plot"%filename, "%s-plot.h5"%filename])
 

@@ -9,10 +9,10 @@
 
     1. Make directories 'cd build/debug' or 'cd build/release'
 
-    2. Run 'cmake ../..'
+    2. Compile 'cmake ../.. -DCMAKE_BUILD_TYPE=Debug'   for debug version (default)
+               'cmake ../.. -DCMAKE_BUILD_TYPE=Release' for release version
 
-    3. Compile 'make -DCMAKE_BUILD_TYPE=Debug'   for debug version (default)
-               'make -DCMAKE_BUILD_TYPE=Release' for release version
+    3. Compile 'make'
 
     4. Run benchmarks:
 
