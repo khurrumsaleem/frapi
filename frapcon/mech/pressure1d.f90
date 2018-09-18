@@ -1,8 +1,8 @@
-MODULE pressure1d
-    USE Kinds
+MODULE pressure1d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> Axisymmetric pressure boundary element for SOLID1D element
@@ -37,7 +37,7 @@ MODULE pressure1d
     CONTAINS
     !
     SUBROUTINE pressure1d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -56,7 +56,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_setpress (label, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -77,7 +77,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_updval (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -104,7 +104,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_create (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -165,7 +165,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_fext()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -199,7 +199,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -252,7 +252,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -271,7 +271,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_write_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -296,7 +296,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_read_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !
@@ -352,7 +352,7 @@ MODULE pressure1d
     !
     !
     SUBROUTINE pressure1d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -369,5 +369,7 @@ MODULE pressure1d
     !
     END SUBROUTINE pressure1d_deallocate
     !
-END MODULE pressure1d
+END MODULE pressure1d_frapcon
+
+
 

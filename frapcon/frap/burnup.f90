@@ -1,12 +1,12 @@
-MODULE Burn
-    USE Kinds
+MODULE Burn_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE GadRadPower
-    USE Material_Properties
-    USE Comde
+    USE GadRadPower_frapcon
+    USE Material_Properties_frapcon
+    USE Comde_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used for burnup calculations.
+    !> This module contains the subroutines used for burnup calculations_frapcon.
     !> Subroutines include burnup, tubrnp, turbin and turbo
     !>@author
     !> Ian Porter, NRC
@@ -16,7 +16,7 @@ MODULE Burn
     CONTAINS
     !
     SUBROUTINE burnup
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : modheat, ProblemTime, qmpy, HeatFlux, BOSNodeburnup, EOSNodeburnup, &
       &                   ounit, qaxnorm, na, im, buin, bup, it, j, totl, itt, cfv, fa, m, rhofuel, bu, &
@@ -69,7 +69,7 @@ MODULE Burn
     IF (itt <= 1) THEN
         itt = 2
         HeatFlux(1) = qmpy(1)
-        ! Note: (IP) This was not divided by (1-modheat) because this is for the initial timestep, ProblemTime(1) = 0.001
+        ! Note: (IP) This was not divided by (1-modheat) because this is for the initial timestep_frapcon, ProblemTime(1) = 0.001
         ! with a value for qmpy(1) set at 3000 in initial.f
         qbar = (HeatFlux(1) * ProblemTime(1)) / (ProblemTime(im) * fa)
         IF (im > 1) THEN
@@ -104,7 +104,7 @@ MODULE Burn
     !
     !
     SUBROUTINE turbin
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : comp, enrpu39, enrpu40, enrpu41, enrpu42, buin, nr, na, brnup3, formf, &
       &                   enrch, rrev, fotmtl, prty
@@ -207,7 +207,7 @@ MODULE Burn
     !
     !
     SUBROUTINE turbo
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : modheat, BOSNodeburnup, EOSNodeburnup, brnup3, formf, ounit, nr, na, rapow, &
       &                   gadoln, qnode, rrev, wimsburnup, oldwimsburnup, j, rprm1
@@ -314,11 +314,11 @@ MODULE Burn
     !
     !
     SUBROUTINE tubrnp (itime)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon, ONLY : brnup3, formf, ounit, rrev, nr, j, rprm1
-    USE Functions, ONLY : bes2
+    USE Functions_frapcon, ONLY : bes2
     IMPLICIT NONE
     !>@brief
     !> Subroutine tubrnp (transuranus burn-up equations) calculates the Pu build-up and the radial power 
@@ -686,5 +686,7 @@ MODULE Burn
     !
     END SUBROUTINE tubrnp
     !
-END MODULE Burn
+END MODULE Burn_frapcon
+
+
 

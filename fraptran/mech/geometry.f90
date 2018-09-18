@@ -1,15 +1,15 @@
-MODULE geometry
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure2d
-    USE gascav1d
-    USE gascav2d
-    USE cont2d
-    USE FEA_Node
+MODULE geometry_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE pressure2d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE cont2d_fraptran
+    USE FEA_Node_fraptran
     IMPLICIT NONE
     !>@brief
     !> Geometric and meshing entities
@@ -1329,8 +1329,8 @@ CONTAINS
 
     END SUBROUTINE deallocate_geometry
     SUBROUTINE create_coupled (label, node, idim)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Add DOF to the coupled set or create a new coupled set If it doesn't exist yet
@@ -1384,7 +1384,8 @@ CONTAINS
     dof_numbering = .TRUE.
 
     END SUBROUTINE create_coupled
-END MODULE geometry
+END MODULE geometry_fraptran
+
 
 
 

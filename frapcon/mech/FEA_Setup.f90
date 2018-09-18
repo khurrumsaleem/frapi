@@ -1,9 +1,9 @@
-MODULE FEA_Setup
-    USE Kinds
+MODULE FEA_Setup_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to initialized the Cladding FEA calculation.
+    !> This module contains the subroutines used to initialized the Cladding FEA calculation_frapcon.
     !> Subroutines include default_values, init
     !>@author
     !> Ken Geelhood, PNNL
@@ -13,9 +13,9 @@ MODULE FEA_Setup
     CONTAINS
     !
     SUBROUTINE default_values()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set FEA variables to their default values
@@ -37,7 +37,7 @@ MODULE FEA_Setup
     dimens = '3D'
     analys = 'STATIC'
 
-    ! Use trapezoidal rule by default (no artificial damping)
+    ! Use trapezoidal rule by default _frapcon(no artificial damping)
     newmark_beta = 0.25_r8k
     newmark_gamma = 0.5_r8k
 
@@ -80,25 +80,25 @@ MODULE FEA_Setup
     !
     !
     SUBROUTINE init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE geometry_fpn
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
-    USE FEA_deallocate
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE spring_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE geometry_fpn_frapcon
+    USE pressure1d_frapcon
+    USE pressure2d_frapcon
+    USE pressure3d_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
+    USE FEA_deallocate_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize parameters and variables with default values
@@ -151,5 +151,7 @@ MODULE FEA_Setup
 
     END SUBROUTINE init
     !
-END MODULE FEA_Setup
+END MODULE FEA_Setup_frapcon
+
+
 

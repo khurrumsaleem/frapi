@@ -1,14 +1,14 @@
 ! This file contains the following miscellaneous material properties:
 ! Crud, Plenum spring
     
-MODULE Crud_Data
-    USE Kinds
+MODULE Crud_Data_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains crud properties
+    !> This Module contains crud properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -29,7 +29,7 @@ MODULE Crud_Data
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (Crud, property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -57,24 +57,24 @@ MODULE Crud_Data
     CASE DEFAULT ! Wrong property called
         WRITE (0, 100) property
         WRITE (ounit, 100) property
-100     FORMAT ('Error in Module Crud. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module Crud. Invalid material property called'
+100     FORMAT ('Error in Module Crud_fraptran. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module Crud_fraptran. Invalid material property called'
     END SELECT
     !
     END FUNCTION MatProp
     !
-END MODULE Crud_Data
+END MODULE Crud_Data_fraptran
 !
 !
 !
 MODULE plenumspring_fraptran
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all plenum spring properties
+    !> This Module contains all plenum spring properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -99,7 +99,7 @@ MODULE plenumspring_fraptran
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (Spring, property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -136,7 +136,7 @@ MODULE plenumspring_fraptran
     !
     !
     REAL(r8k) FUNCTION thexp (Spring)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -161,6 +161,7 @@ MODULE plenumspring_fraptran
     END FUNCTION thexp
     !
 END MODULE plenumspring_fraptran
+
 
 
 

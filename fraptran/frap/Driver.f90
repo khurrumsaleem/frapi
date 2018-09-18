@@ -1,31 +1,31 @@
 module fraptran2
 
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE setup, ONLY : Main, Input_Echo
-    USE TH_Link
-    USE FuelRod_Data, ONLY : Allocate_Rods, FRAPTRAN_Rod
+    USE setup_fraptran, ONLY : Main, Input_Echo
+    USE TH_Link_fraptran
+    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Rod
     USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
-    USE frapc
-    USE Dyna_h
-    USE collct_h
-    USE resti_h
-    USE excb_h
-    USE scalr_h
-    USE FissionGasRelease_h
-    USE NCGases
-    USE FEA_Setup
-    USE ErrorMsg, ONLY : namelist_read_error
-    USE frapc
-    USE sth2x, ONLY : sth2xi
-    USE Initialization, ONLY : initia
-    USE Read_Input
+    USE frapc_fraptran
+    USE Dyna_h_fraptran
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE FissionGasRelease_h_fraptran
+    USE NCGases_fraptran
+    USE FEA_Setup_fraptran
+    USE ErrorMsg_fraptran, ONLY : namelist_read_error
+    USE frapc_fraptran
+    USE sth2x_fraptran, ONLY : sth2xi
+    USE Initialization_fraptran, ONLY : initia
+    USE Read_Input_fraptran
     USE timestep_fraptran, ONLY : crank6, setup6, comput, store6
-    USE ErrorMsg, ONLY :errori
-    USE CoolantProperties, ONLY : tc1, tc2
-    USE htcb_h
-    USE cnvt
+    USE ErrorMsg_fraptran, ONLY :errori
+    USE CoolantProperties_fraptran, ONLY : tc1, tc2
+    USE htcb_h_fraptran
+    USE cnvt_fraptran
 
     implicit none
 
@@ -223,11 +223,11 @@ module fraptran2
 
 
     subroutine FRAPTRAN_1_5a
-        USE Kinds
+        USE Kinds_fraptran
         USE variables_fraptran, ONLY : Time
-        USE setup, ONLY : Main
-        USE TH_Link
-        USE FuelRod_Data, ONLY : Allocate_Rods, FRAPTRAN_Rod
+        USE setup_fraptran, ONLY : Main
+        USE TH_Link_fraptran
+        USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Rod
         IMPLICIT NONE
         !>@brief
         !> This is the driver for the FRAPTRAN Code.
@@ -267,15 +267,3 @@ module fraptran2
         end subroutine FRAPTRAN_1_5a
 
 end module fraptran2
-
-
-
-
-
-
-
-
-
-
-
-

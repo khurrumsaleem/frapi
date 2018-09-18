@@ -1,7 +1,7 @@
-MODULE gascav1d
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
+MODULE gascav1d_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> 1 1/2-Dimensional axisymmetric gas cavity
@@ -511,7 +511,8 @@ CONTAINS
     RETURN
 
   END SUBROUTINE gascav1d_deallocate
-END MODULE gascav1d
+END MODULE gascav1d_fraptran
+
 
 
 

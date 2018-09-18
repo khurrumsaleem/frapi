@@ -1,9 +1,9 @@
-MODULE UntinpData
-    USE Kinds
+MODULE UntinpData_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains subroutines that perform unit conversions. It contains the subroutine Convert_Input_Units.
+    !> This module contains subroutines that perform unit conversions_fraptran. It contains the subroutine Convert_Input_Units.
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -20,19 +20,19 @@ MODULE UntinpData
     CONTAINS
     
     SUBROUTINE Convert_Input_Units
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : zelev, fmesh, nfmesh, cmesh, ncmesh, RodAvePower, &
       & NumAxProfiles, AxPowProfile, nprad, RadPowProfile, &
       & nunopt, ibnopt, gasphs, gasths, nradsh, rshrd, nepp0, eppinp, radpel, cladid, cladod, fuelpeldiam, rf
-    USE CoolantProperties, ONLY : nbrtmp, temptm, nbrfdr, fldrat, nbrpst, &
+    USE CoolantProperties_fraptran, ONLY : nbrtmp, temptm, nbrfdr, fldrat, nbrpst, &
       & prestm, nbrliq, flxsec, hrad, hydiam, tshrda, nsrad3, &
       & elvrad, nelrad, trad1, trad2, trad3, hinta, hupta, pbh, gbh, hbh, htclev, ntprs, tblka, &
       & nhprs, htca, npprs
-    USE bcdcom_h, ONLY : ncooli, nhtc, hlqcl1, achn, dhe, dhy
-    USE resti_h
-    USE excb_h, ONLY : nrefld, coldbp, pitch, rsntr, spdbp, splbp, volbp, dofset
-    USE scalr_h
+    USE bcdcom_h_fraptran, ONLY : ncooli, nhtc, hlqcl1, achn, dhe, dhy
+    USE resti_h_fraptran
+    USE excb_h_fraptran, ONLY : nrefld, coldbp, pitch, rsntr, spdbp, splbp, volbp, dofset
+    USE scalr_h_fraptran
     IMPLICIT NONE
     !> @brief
     !> Subroutine performs unit conversions for all input units when necessary.
@@ -156,7 +156,7 @@ MODULE UntinpData
     END DO
     
     ! Radial power profile, convert radii from meters to ft
-    ! Commented out because input manual states that shall always be input in meters.
+    ! Commented out because input manual states that shall always be input in meters_fraptran.
     ! Don't convert units when input is in SI
     !CALL Convert (RadPowProfile(2:), nprad, 2, ftmetr)
     !
@@ -242,7 +242,7 @@ MODULE UntinpData
     !
     !
     SUBROUTINE Array_SuppliedConversion (a, n, ns, b)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -285,7 +285,7 @@ MODULE UntinpData
     !
     !
     SUBROUTINE Array_KelvintoFahrenheit (a, n, ns)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tkf
     IMPLICIT NONE
     !>@brief
@@ -319,7 +319,8 @@ MODULE UntinpData
     
     END SUBROUTINE Array_KelvintoFahrenheit
     !
-END MODULE UntinpData
+END MODULE UntinpData_fraptran
+
 
 
 

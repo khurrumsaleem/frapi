@@ -1,7 +1,7 @@
-MODULE m5_cladding
-    USE Kinds
+MODULE m5_cladding_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> M5 cladding material properties
@@ -12,7 +12,7 @@ MODULE m5_cladding
     CONTAINS
     !
     REAL(r8k) FUNCTION m5_clad_mat_par (temp, keyword)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -32,7 +32,7 @@ MODULE m5_cladding
     !
     !
     SUBROUTINE m5_clad_radial_return (temp, mu, dtime, epseff0, taueff,gamma, dplmod, deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -46,7 +46,7 @@ MODULE m5_cladding
     !
     !
     SUBROUTINE m5_clad_creep_calc (temp, mu, dtime, epseff0, taueff, gamma, deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -56,5 +56,7 @@ MODULE m5_cladding
     !
     END SUBROUTINE m5_clad_creep_calc
     !
-END MODULE m5_cladding
+END MODULE m5_cladding_frapcon
+
+
 

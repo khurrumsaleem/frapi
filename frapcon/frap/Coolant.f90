@@ -1,16 +1,16 @@
-MODULE CoolantData
-    USE Kinds
+MODULE CoolantData_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : BulkCoolantTemp, rhof, modheat, p2, tw, deltaz, qc, ounit, coolanttemp, ifixedcoolt, &
       &                   cladtarray, ifixedtsurf, jstsurftemp, cooltype, de, go, na, dco, crdtt, ProblemTime, &
       &                   FilmCoefficient, im, crudmult, it, j, pitch, tsat, wt, crdtr, icor, &
       &                   deltcr, deltdb, deltfc, deltjl, totl, jmin, SurfTempOxide
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !> @brief
-    !> Module CoolantData calculates bulk coolant temperatures for water & helium
+    !> Module CoolantData calculates bulk coolant temperatures for water _frapcon& helium
     !> @author
-    !> Module CoolantData was coded by Ian Porter, NRC
+    !> Module CoolantData was coded by Ian Porter_frapcon, NRC
     !> @date
     !> June, 2014
     !
@@ -58,7 +58,7 @@ MODULE CoolantData
     !
     SUBROUTINE coolt (deh, g)
 	USE variables_frapcon, only: flag_iapws
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -93,7 +93,7 @@ MODULE CoolantData
     !
     ! bchc     - Bulk coolant heat capacity (btu/lbm-F)
     ! densat   - Bulk coolant density; saturated (lbm/ft**3)
-    ! TempCalc - Specifies which calculation to use for determining coolant temperatures.
+    ! TempCalc - Specifies which calculation to use for determining coolant temperatures_frapcon.
     !
     REAL(r8k), INTENT(IN) :: deh, g
     REAL(r8k) :: densat, bchc
@@ -104,7 +104,7 @@ MODULE CoolantData
     IF (ifixedtsurf == 1 .AND. g <= 0.0_r8k) TempCalc = 'cladt'
     ! User prescribed cladding surface temperatures to be used as coolant temperature
     IF (ifixedtsurf == 1 .AND. jstsurftemp(it) /= 0) TempCalc = 'cladt'
-    ! User has prescribed no coolant flow. Will use inlet temperature as temperature at all nodes.
+    ! User has prescribed no coolant flow. Will use inlet temperature as temperature at all nodes_frapcon.
     IF (ifixedcoolt == 0 .AND. g <= 0.0_r8k) TempCalc = 'noflow'
     ! User prescribed coolant temperatures
     IF (ifixedcoolt == 1) TempCalc = 'coolt'
@@ -175,7 +175,7 @@ MODULE CoolantData
     !
     !
     SUBROUTINE flmdrp (deh, g)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -267,7 +267,7 @@ MODULE CoolantData
     !
     !
     REAL(r8k) FUNCTION DittusBoelterHTC (Twater, Flux, Pressure, HydroDiam) RESULT (HTC)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -340,5 +340,7 @@ MODULE CoolantData
        return
     end function calc_cool_density_asme68
     !
-END MODULE CoolantData
+END MODULE CoolantData_frapcon
+
+
 

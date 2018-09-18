@@ -1,8 +1,8 @@
-MODULE gascav3d
-    USE Kinds
+MODULE gascav3d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> 3D gas cavity
@@ -49,7 +49,7 @@ MODULE gascav3d
     CONTAINS
     !
     SUBROUTINE gascav3d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -142,7 +142,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_create (label, gascav, nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -225,7 +225,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -269,7 +269,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_temp()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -301,7 +301,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_vpt()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -312,7 +312,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_fext()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -323,7 +323,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -336,7 +336,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -351,7 +351,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -372,7 +372,7 @@ MODULE gascav3d
     !
     !
     SUBROUTINE gascav3d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -389,5 +389,7 @@ MODULE gascav3d
 
     END SUBROUTINE gascav3d_deallocate
     !
-END MODULE gascav3d
+END MODULE gascav3d_frapcon
+
+
 

@@ -1,9 +1,9 @@
-MODULE StaticFEA
-    USE Kinds
+MODULE StaticFEA_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to run the Cladding Static FEA calculation.
+    !> This module contains the subroutines used to run the Cladding Static FEA calculation_frapcon.
     !> Subroutines include comput_static, forced_displ, gascav_pressure,
     !> init_displ, load_step, number_dofs, rupture, time_step, update,
     !> update_database, update_displ
@@ -15,27 +15,27 @@ MODULE StaticFEA
     CONTAINS
     !
     SUBROUTINE comput_static()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE math
-    USE materials
-    USE sparse_matrix
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE common_parameters_frapcon
+    USE math_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
+    USE spring_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE pressure1d_frapcon
+    USE pressure2d_frapcon
+    USE pressure3d_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
     USE variables_frapcon, ONLY : ounit
-    USE FEA_IO, ONLY : line_search, write_output
+    USE FEA_IO_frapcon, ONLY : line_search, write_output
     IMPLICIT NONE
     !>@brief
     !> Static finite element analysis with Newton-Raphson iteration method
@@ -226,7 +226,7 @@ MODULE StaticFEA
 
         ! Solve new displacement increment If needed
         IF (.NOT. conv_NR) THEN
-            ! Use symmetric elastic-plastic tangent matrix by default
+            ! Use symmetric elastic_frapcon-plastic tangent matrix by default
             symmetric_matrix = .TRUE.
             elastic_matrix = .FALSE.
 
@@ -344,10 +344,10 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE forced_displ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> Modify force residual vector and stiffness matrix to take into account forced displacements
@@ -380,12 +380,12 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE gascav_pressure()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
+    USE common_parameters_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate pressures at gas cavities
@@ -420,9 +420,9 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE init_displ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Initialize displacements from the explicit values
@@ -459,9 +459,9 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE load_step()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Calculate load and temperature increments
@@ -484,20 +484,20 @@ MODULE StaticFEA
     !
     !
     Subroutine number_dofs()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
+    USE spring_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
     IMPLICIT NONE
     !>@brief
     !> Set status and number of all DOFs
@@ -531,7 +531,7 @@ MODULE StaticFEA
                 current_node%dof_status(id) = -2
                 WRITE (ounit,FMT='(/,A,I0,A,I0,A,/)') &
                     'WARNING marking DOF ',id,' of node ',current_node%label, &
-                    ' fixed because it is not connected to any structural element'
+                    ' fixed because it is not connected to any structural element_frapcon'
             END IF
         END DO
         current_node => current_node%next
@@ -586,12 +586,12 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE rupture()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE solid1d
-    USE quad4
-    USE hex8
+    USE common_parameters_frapcon
+    USE solid1d_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
     IMPLICIT NONE
     !>@brief
     !> Check for rupture of gas cavity
@@ -656,11 +656,11 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE time_step (lsubstp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE quad4
-    USE hex8
+    USE common_parameters_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -749,21 +749,21 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE sparse_matrix
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
+    USE spring_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE pressure1d_frapcon
+    USE pressure2d_frapcon
+    USE pressure3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update explicit values
@@ -884,21 +884,21 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE update_database()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE common_parameters_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE pressure1d_frapcon
+    USE pressure2d_frapcon
+    USE pressure3d_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create element database
@@ -1153,9 +1153,9 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE update_displ (dl0, dl)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Update displacements after line search
@@ -1179,5 +1179,7 @@ MODULE StaticFEA
     !
     END SUBROUTINE update_displ
     !
-END MODULE StaticFEA
+END MODULE StaticFEA_frapcon
+
+
 

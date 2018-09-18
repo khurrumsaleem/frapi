@@ -1,8 +1,8 @@
     SUBROUTINE nlfemp_stop(wrtout)
-    USE Kinds
-    USE common_parameters
-    USE FEA_deallocate
-    USE FEA_IO
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE FEA_deallocate_fraptran
+    USE FEA_IO_fraptran
     IMPLICIT NONE
     !>@brief
     !> Stops the calculation
@@ -23,6 +23,7 @@
     STOP
 
     END SUBROUTINE nlfemp_stop
+
 
 
 

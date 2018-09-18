@@ -1,14 +1,14 @@
-MODULE FileIO
-    USE Kinds
-    USE RunProperties, ONLY : edate, clockx
+MODULE FileIO_frapcon
+    USE Kinds_frapcon
+    USE RunProperties_frapcon, ONLY : edate, clockx
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE iofiles
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : iunit, ounit, scrunit
     IMPLICIT NONE
     !> @brief
@@ -62,7 +62,7 @@ MODULE FileIO
         ! If command line argument is provided, this will be read as the input file name (only 1 argument allowed)
        CALL GET_COMMAND_ARGUMENT(1,command_line)
     ELSE
-        ! No command line argument is present. Therefore, code will use default input file name
+        ! No command line argument is present. Therefore, code will use default input file name_frapcon
         command_line = Default_input_file
     END IF
     
@@ -111,7 +111,7 @@ MODULE FileIO
         IF (Scanning_for_OutputFile) THEN
             IF (line(1:1) == '*') CYCLE ReadLoop ! Keep looking
             IF (line(1:2) == '/*') THEN
-                ! Reached end of file processing and output file information not found. Use defaults.
+                ! Reached end of file processing and output file information not found. Use defaults_frapcon.
                 WRITE (0,203) ounit
                 WRITE (0,500) Today, ClockTime, TRIM(InputFileName), TRIM(FileName)
                 REWIND (iunit)
@@ -334,7 +334,7 @@ MODULE FileIO
     !
     !
     SUBROUTINE IOEcho
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : iunit, ounit
     IMPLICIT NONE
@@ -387,7 +387,7 @@ MODULE FileIO
     !
     !
     SUBROUTINE Namelist_Read_Error (FileUnit, NameListBlock)
-    USE Kinds
+    USE Kinds_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -418,5 +418,7 @@ MODULE FileIO
     !
     END SUBROUTINE Namelist_Read_Error
     !
-END MODULE FileIO
+END MODULE FileIO_frapcon
+
+
 

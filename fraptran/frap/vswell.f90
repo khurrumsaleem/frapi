@@ -1,12 +1,12 @@
-MODULE Volume
-    USE Kinds
+MODULE Volume_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE vswell (PelletRad, GapThick, AxialNodLen, naxn, Kswell, GapTemp, VolAveGasTemp, RodLength)
     USE conversions_fraptran, ONLY : pi
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes volume associated with node at which swelling is occurring
@@ -70,7 +70,8 @@ MODULE Volume
     !
     END SUBROUTINE vswell
     !
-END MODULE Volume
+END MODULE Volume_fraptran
+
 
 
 

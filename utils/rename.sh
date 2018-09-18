@@ -1,22 +1,13 @@
 #!/bin/bash
 
-dirs='envrl frap lib matpro mech'
-modules='zrmodels zirconium void uraniumdioxide timestep mox plenumspring functions deformation'
+dirs='frap Dating matpro mech'
 
 for name in $dirs; do
-    for module in $modules; do
-        './mod_rename.py' -d '../fraptran/'$name -o $module -n $module'_fraptran'
-    done
+#    ./mod_rename_all.py -d ../frapcon/$name -p frapcon
 done
 
-#mod_rename.py -d ../fraptran/envrl
+dirs='envrl frap lib matpro mech'
 
-#ZrModels
-#Zirconium
-#Void
-#UraniumDioxide
-#TimeStep
-#Mox
-#plenumspring
-#functions
-#deformation
+for name in $dirs; do
+#    ./mod_rename_all.py -d ../fraptran/$name -p fraptran
+done

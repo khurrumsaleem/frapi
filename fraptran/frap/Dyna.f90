@@ -1,8 +1,8 @@
-MODULE Dyna_h
-    USE Kinds
+MODULE Dyna_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the comdeck Dyna
+    !> This module replaces the comdeck Dyna_fraptran
     TYPE dyna_var
         ! Temperature convergence indicator at each axial node
         INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: IndexTempConverg
@@ -461,7 +461,8 @@ MODULE Dyna_h
     INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: NodeSinterTemp
     INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: RodFailIndex
     !
-    END MODULE Dyna_h
+    END MODULE Dyna_h_fraptran
+
 
 
 

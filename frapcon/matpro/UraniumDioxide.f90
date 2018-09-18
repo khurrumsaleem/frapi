@@ -1,13 +1,13 @@
-MODULE UraniumDioxide
-    USE Kinds
+MODULE UraniumDioxide_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : fden, den, deng, comp, facmot, fotmtl, tsint, rsntr, prvden, ounit, &
       &                   sigftc, sigftex, sigswell, j, RelocModel, RinterfacPress, gadoln, &
       &                   ftmelt, fhefus, fdelta, bup, afdn
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all UO2 Properties
+    !> This Module contains all UO2 Properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !
@@ -23,7 +23,7 @@ MODULE UraniumDioxide
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropUO2 (property, temp, burnup, burnup_prev, power) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -98,7 +98,7 @@ MODULE UraniumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module UraniumDioxide. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module UraniumDioxide_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -107,7 +107,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fthcon (ftemp, burnup) RESULT (con)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -164,7 +164,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION UPuO2Density ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : den, deng, comp, j
     IMPLICIT NONE
@@ -202,7 +202,7 @@ MODULE UraniumDioxide
     !
     !
     SUBROUTINE UO2PhysProp
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -239,7 +239,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION sldus (PuConc)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !
@@ -256,7 +256,7 @@ MODULE UraniumDioxide
         !
         !
         REAL(r8k) FUNCTION liqdus (PuConc)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !
@@ -275,7 +275,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fcp (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -345,7 +345,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION cp (c1, c2, c3, th, ed, t, fotmtl)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -363,7 +363,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fswell (bu, bul, ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -427,7 +427,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8K) FUNCTION fthexp (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -514,7 +514,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION ftx (c1, c2, c3, ed, t)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -530,7 +530,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION femiss (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -566,7 +566,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fudens (ftemp, bu)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -679,7 +679,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION dlen2 (alen, bu, abu)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -695,7 +695,7 @@ MODULE UraniumDioxide
         !
         !
         REAL(r8k) FUNCTION dlen3 (bu)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -713,7 +713,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fenthl (temp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -773,7 +773,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION cpdt (c1, th, c2, otm, ed, t, c3)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -795,7 +795,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION UO2gtrloc (burnup, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : dp, cdg
     IMPLICIT NONE
@@ -868,7 +868,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION UO2YoungMod (temp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -893,7 +893,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fpoir (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -931,7 +931,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION UO2Creep()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, RinterfacPress, it, j
     IMPLICIT NONE
@@ -965,7 +965,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION felmod (ftemp, fraden, fotmtl)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : comp
     IMPLICIT NONE
@@ -1026,5 +1026,7 @@ MODULE UraniumDioxide
     !
     END FUNCTION felmod
     !
-END MODULE UraniumDioxide
+END MODULE UraniumDioxide_frapcon
+
+
 

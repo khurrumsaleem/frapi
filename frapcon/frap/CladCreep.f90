@@ -1,9 +1,9 @@
-MODULE CladCreep
-    USE Kinds
+MODULE CladCreep_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutine that calls the creep and 
+    !> This module contains the subroutine that calls the creep and _frapcon
     !> deformation models in fcmi
     !> Subroutines include ccreep
     !>@author
@@ -14,11 +14,11 @@ MODULE CladCreep
     CONTAINS
     !
     SUBROUTINE ccreep
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE FEModel
-    USE Deformation
+    USE FEModel_frapcon
+    USE Deformation_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk) :: i, ii, ij, ik, ihere, nrelax, kflag, n1, n22, n3, n4, jjj, crep, ncrep
@@ -127,5 +127,7 @@ MODULE CladCreep
     !
     END SUBROUTINE ccreep
     !
-END MODULE CladCreep
+END MODULE CladCreep_frapcon
+
+
 

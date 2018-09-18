@@ -1,31 +1,31 @@
-MODULE Developer
-    USE Kinds
+MODULE Developer_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the information for reading and applying developer options
+    !> This module contains the information for reading and applying developer options_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
     !> 7/17/2015
     !
     ! ********************************************************************************
-    ! **  NOTE: THE USE OF THESE OPTIONS ARE NOT RECOMMENDED AND MAY INVALIDATE     **
+    ! **  NOTE: THE USE OF THESE OPTIONS ARE NOT RECOMMENDED AND MAY INVALIDATE     _frapcon**
     ! **        THE RESULTS OF THE CALCULATION. THE FRAPCON VALIDATION TEST CASES   **
-    ! **        DO NOT USE THESE OPTIONS. USE AT YOUR OWN DISCRETION.               **
+    ! **        DO NOT USE THESE OPTIONS_frapcon. USE AT YOUR OWN DISCRETION.               **
     ! ********************************************************************************
     !
     CONTAINS
     !
     SUBROUTINE DeveloperOptions
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
       &                   iunit, ounit, TimeIntegration, newtimestep, RestartTime, updated_restart, &
       &                   fuelreloc, nread, nrestr
     USE, INTRINSIC :: ISO_FORTRAN_ENV
-    USE FileIO, ONLY : Namelist_Read_Error
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
     IMPLICIT NONE
     !>@brief
     !> This subroutine performs the read for the developer input options
@@ -96,7 +96,7 @@ MODULE Developer
     !
     !
     SUBROUTINE DeveloperErrorCheck
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : nfrttr, modheat, cladelmod, relocmodel, fuelreloc, gaprecov, &
       &                   ounit, TimeIntegration, newtimestep, RestartTime, updated_restart, &
@@ -149,7 +149,7 @@ MODULE Developer
         END SELECT
         ! Moderating heating option
         IF (modheat < 0.0_r8k) THEN
-            ! User opts to use default values for direct moderator heating, set by the plant type flag.
+            ! User opts to use default values for direct moderator heating_frapcon, set by the plant type flag.
             WRITE (unit(i), 111)
             SELECT CASE (iplant)
             CASE (-2)
@@ -217,9 +217,9 @@ MODULE Developer
     !
 10  FORMAT (/,5x,'Developer Options used.', &
       &     /,5x,'********************************************************************************', &
-      &     /,5x,'**  NOTE: THE USE OF THESE OPTIONS ARE NOT RECOMMENDED AND MAY INVALIDATE     **', &
+      &     /,5x,'**  NOTE: THE USE OF THESE OPTIONS ARE NOT RECOMMENDED AND MAY INVALIDATE     _frapcon**', &
       &     /,5x,'**        THE RESULTS OF THE CALCULATION. THE FRAPCON VALIDATION TEST CASES   **', &
-      &     /,5x,'**        DO NOT USE THESE OPTIONS. USE AT YOUR OWN DISCRETION.               **', &
+      &     /,5x,'**        DO NOT USE THESE OPTIONS_frapcon. USE AT YOUR OWN DISCRETION.               **', &
       &     /,5x,'********************************************************************************', &
       &     /,5x,'The following non-default options are set:',/)
 100 FORMAT (5x,'Relocation Model = ',a12)
@@ -249,5 +249,7 @@ MODULE Developer
     !
     END SUBROUTINE DeveloperErrorCheck
     !
-END MODULE Developer
+END MODULE Developer_frapcon
+
+
 

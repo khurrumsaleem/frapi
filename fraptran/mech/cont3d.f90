@@ -1,10 +1,10 @@
-MODULE cont3d
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE geometry
-    USE materials_frap
-    USE sparse_matrix
+MODULE cont3d_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE geometry_fraptran
+    USE materials_frap_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> 3D contact element
@@ -1333,7 +1333,8 @@ CONTAINS
     RETURN
 
   END SUBROUTINE cont3d_deallocate
-END MODULE cont3d
+END MODULE cont3d_fraptran
+
 
 
 

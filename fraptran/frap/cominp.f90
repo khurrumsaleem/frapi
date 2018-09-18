@@ -1,20 +1,20 @@
-MODULE Initialization
-    USE Kinds
-    USE RadialNodes, ONLY : Radheatsource, weights
+MODULE Initialization_fraptran
+    USE Kinds_fraptran
+    USE RadialNodes_fraptran, ONLY : Radheatsource, weights
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE cominp
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, ftmetr
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran
-    USE PlotFile
-    USE rlpst, ONLY : rlpst1
-    USE sth2x, ONLY : sth2xi
-    USE NCGases, ONLY : ngases
-    USE ErrorMsg, ONLY : errori
+    USE PlotFile_fraptran
+    USE rlpst_fraptran, ONLY : rlpst1
+    USE sth2x_fraptran, ONLY : sth2xi
+    USE NCGases_fraptran, ONLY : ngases
+    USE ErrorMsg_fraptran, ONLY : errori
     IMPLICIT NONE
     !> @brief
     !> This subroutine calulates all common block variables which are directly derived from input
@@ -183,7 +183,7 @@ MODULE Initialization
             ! Set up RadialBound array for fuel and cladding
             ! Check to see If only the number of fuel nodes was specified
             IF (nunopt(12) == 1) THEN
-                ! Use nfmesh and fuel radius to calculate nodes for equal area rings
+                ! Use nfmesh and fuel radius to calculate nodes for equal area rings_fraptran
                 !
                 ! If there is no central void, nvoid and rvoid are zero
                 !
@@ -308,7 +308,7 @@ MODULE Initialization
         IF (nepp0 == 0) THEN !Initialize hoop strains to 0.0
             CldPlasStrn(1:naxn,1) = 0.0_r8k
         ELSE ! Hoop strains are input
-            ! Include cladding intial plastic strain only when the FE-Based mechanical module is used
+            ! Include cladding intial plastic strain only when the FE-Based mechanical module is used_fraptran
             IF (mechan == 1) THEN
                 DO k = 1, naxn
                     CldPlasStrn(k,1) = polate (eppinp, zelev(k), nepp0)
@@ -724,14 +724,14 @@ MODULE Initialization
     !
     !
     SUBROUTINE initia
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, tfk
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran
-    USE Restart, ONLY : restfs
-    USE Material_Properties, ONLY : MatProperty
+    USE Restart_fraptran, ONLY : restfs
+    USE Material_Properties_fraptran, ONLY : MatProperty
     USE void_fraptran, ONLY : gapprs
-    USE NCGases, ONLY : ngases
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !> @brief
     !> This Subroutine initializes all variables in transient calculations
@@ -811,7 +811,7 @@ MODULE Initialization
     NSteadyTrans = 1
     npramp = 0
     IF (ncool /= 7) THEN
-        ! If power on first time step high enough to cause fuel-cladding
+        ! If power on first time step high enough to cause fuel_fraptran-cladding
         ! contact, internally force power ramp to show gradual closure of gap
         npmax = 2 * nptha
         CALL powrmp (npmax, RodAvePower, t0, dppowi, powimx, powict, nprsw)
@@ -1374,7 +1374,7 @@ MODULE Initialization
     !
     !
     SUBROUTINE powrmp (np2, pt, t0, dppowi, powimx, powict, nprsw)
-    USE Kinds
+    USE Kinds_fraptran
     USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
     !>@brief
@@ -1409,12 +1409,12 @@ MODULE Initialization
     !
     !
     SUBROUTINE thmprp (a, k2, k3, isc, isf)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk, tkf
     USE variables_fraptran, ONLY : ounit, nomat, imatflag, imatflag1, idatapairs, iheattablen, idebug, nsf, nsc, nkf, nkc, &
       &                   fotmtl, ftmelt, fhefus, compmt
-    USE scalr_h
-    USE Material_Properties, ONLY : MatProperty
+    USE scalr_h_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     !>@brief
     !> Subroutine stores input thermal properties in array a. unit is .TRUE. if input units are same as internal units
     !> Original routine on oldpl-t6u67 was replaced with version to be compatiable with new input logic -7/9/80
@@ -1523,14 +1523,14 @@ MODULE Initialization
     ! Find thermal conductivity of solid phase at melting
     burnup = 0.01_r8k
     tktab = ftmelt - 1.0_r8k
-    ! use Lucuta model with zero values for burnup and Gd
+    ! use Lucuta model with zero values for burnup and Gd_fraptran
     ck = MatProperty (Material='FUEL', Property='THERMCOND', Temperature=tktab, Burnup=burnup, OMRatio=fotmtl, &
       &               Fraction_TD=frden, Pu=compmt, Gadolinia=0.0_r8k)
     !
     cnfsol = ck * thcond
     !
     tktab = ftmelt + 1.0_r8k
-    ! use Lucuta model with zero values for burnup and Gd
+    ! use Lucuta model with zero values for burnup and Gd_fraptran
     ck = MatProperty (Material='FUEL', Property='THERMCOND', Temperature=tktab, Burnup=burnup, OMRatio=fotmtl, &
       &               Fraction_TD=frden, Pu=compmt, Gadolinia=0.0_r8k)
     !
@@ -1556,7 +1556,7 @@ MODULE Initialization
     DO l = 1, nkf1
         tktab = tfk(t)
         ! convert temp. from F to K. Convert cond. from watts/m.K to btu/sec.ft.F
-        ! use Lucuta model with zero values for burnup and Gd
+        ! use Lucuta model with zero values for burnup and Gd_fraptran
         ! Call fthcon (tktab ,frden ,fotmtl ,ck ,dkdt, burnup, gadolin)
         ! f = ck * thcond
         a(l1+l) = t
@@ -1573,7 +1573,7 @@ MODULE Initialization
         !
         DO l = nkf1p1, nkf
             tktab = tfk(t)
-            ! use Lucuta model with zero values for burnup and Gd
+            ! use Lucuta model with zero values for burnup and Gd_fraptran
             ! Call fthcon (tktab, frden, fotmtl, ck, dkdt, burnup, gadolin)
             ! f = ck * thcond
             a(l1+l) = t
@@ -1672,14 +1672,14 @@ MODULE Initialization
     !
     !
     SUBROUTINE phyprp
-    USE Kinds
-    USE phypro_h
+    USE Kinds_fraptran
+    USE phypro_h_fraptran
     USE variables_fraptran, ONLY : CladType, ounit
     IMPLICIT NONE
     !>@brief
     !> phyprp returns uo2, (u,pu)o2, and zircaloy melting points and heats of fusion, and zirconium
     !> and zircaloy alpha to beta transition temperatures.
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> phypro was coded by v.f. baston in may 1974
     !> modified by c.s. olsen in feb. 1975
@@ -1787,7 +1787,7 @@ MODULE Initialization
     !
     !
     SUBROUTINE porcor (frden, porosf)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes fuel Open porosity by correlation
@@ -1819,7 +1819,8 @@ MODULE Initialization
     !
     END SUBROUTINE porcor
     !
-END MODULE Initialization
+END MODULE Initialization_fraptran
+
 
 
 

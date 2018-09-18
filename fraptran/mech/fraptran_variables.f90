@@ -1,6 +1,6 @@
-MODULE fraptran_variables
-    USE Kinds
-    USE common_parameters
+MODULE fraptran_variables_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> FRAPTRAN temporary storage
@@ -18,7 +18,7 @@ MODULE fraptran_variables
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: prt
     INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: flag2d
     LOGICAL :: failed_cladding
-    INTEGER(ipk) :: rupture_model ! 0 = use only effective plastic strain criterion
+    INTEGER(ipk) :: rupture_model ! 0 = use only effective plastic strain criterion_fraptran
                                 ! 1 = NUREG 0630 fast ramp correlation
                                 ! 2 = NUREG 0630 slow ramp correlation
     REAL(r8k) :: Prupt,epsrupt,h_rupt
@@ -30,7 +30,8 @@ MODULE fraptran_variables
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_EffColdWkStrnHardExp
     REAL(r8k) :: clad_frcoef
 
-END MODULE fraptran_variables
+END MODULE fraptran_variables_fraptran
+
 
 
 

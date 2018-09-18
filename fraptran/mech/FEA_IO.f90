@@ -1,12 +1,12 @@
-MODULE FEA_IO
+MODULE FEA_IO_fraptran
     !>@brief
-    !> This module contains the subroutines to create the input and output for the cladding FEA model.
+    !> This module contains the subroutines to create the input and output for the cladding FEA model_fraptran.
     !> Subroutines include fileo, input_read_error, line_search, read_input_line, write_output
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
@@ -14,8 +14,8 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE fileo()
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Opening the input and output files
@@ -31,9 +31,9 @@ MODULE FEA_IO
 !
 !
     SUBROUTINE input_read_error()
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
-    USE common_parameters
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Report line number and STOP program
@@ -46,8 +46,8 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE line_search (dl_max, ln_iter, dl, dl_a, dl_b, dl_c, r, r_a, r_b, r_c, conv_ln)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Line search
@@ -70,7 +70,7 @@ MODULE FEA_IO
 
     ! Line search If there is a zero point
     IF ( r_c < 0.0_r8k ) THEN
-        ! Use bisection to find the zero point
+        ! Use bisection to find the zero point_fraptran
         IF ( r < 0.0_r8k ) THEN
         dl_c = dl
         r_c = r
@@ -155,8 +155,8 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE read_input_line()
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Read next uncommented nonempty line from input line
@@ -177,23 +177,23 @@ MODULE FEA_IO
 !
 !
   SUBROUTINE Write_output()
-  USE Kinds
-  USE common_parameters
-  USE materials_frap
-  USE geometry
-  USE spring
-  USE quad4
-  USE hex8
-  USE solid1d
-  USE pressure1d
-  USE pressure2d
-  USE pressure3d
-  USE gascav1d
-  USE gascav2d
-  USE gascav3d
-  USE cont1d
-  USE cont2d
-  USE cont3d
+  USE Kinds_fraptran
+  USE common_parameters_fraptran
+  USE materials_frap_fraptran
+  USE geometry_fraptran
+  USE spring_fraptran
+  USE quad4_fraptran
+  USE hex8_fraptran
+  USE solid1d_fraptran
+  USE pressure1d_fraptran
+  USE pressure2d_fraptran
+  USE pressure3d_fraptran
+  USE gascav1d_fraptran
+  USE gascav2d_fraptran
+  USE gascav3d_fraptran
+  USE cont1d_fraptran
+  USE cont2d_fraptran
+  USE cont3d_fraptran
   IMPLICIT NONE
   !>@brief
   !> Write restart/output file for the FE model to unit "out_unit"
@@ -301,8 +301,9 @@ MODULE FEA_IO
 END SUBROUTINE Write_output
 !
     !
-    END MODULE FEA_IO
+    END MODULE FEA_IO_fraptran
     
+
 
 
 

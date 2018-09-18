@@ -1,8 +1,8 @@
-MODULE pressure2d
-    USE Kinds
+MODULE pressure2d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> Axisymmetric pressure boundary element
@@ -37,7 +37,7 @@ MODULE pressure2d
     CONTAINS
     !
     SUBROUTINE pressure2d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -70,7 +70,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_setpress (label, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -91,7 +91,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_updval (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -121,7 +121,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_create (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -177,7 +177,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_delete(label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -231,7 +231,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_fext()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -270,7 +270,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -328,7 +328,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -347,7 +347,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_write_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -371,7 +371,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_read_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !
@@ -427,7 +427,7 @@ MODULE pressure2d
     !
     !
     SUBROUTINE pressure2d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -444,5 +444,7 @@ MODULE pressure2d
     !
     END SUBROUTINE pressure2d_deallocate
     !
-END MODULE pressure2d
+END MODULE pressure2d_frapcon
+
+
 

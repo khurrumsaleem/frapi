@@ -1,10 +1,10 @@
-MODULE hex8
-    USE Kinds
+MODULE hex8_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE math
-    USE sparse_matrix
-    USE materials
+    USE common_parameters_frapcon
+    USE math_frapcon
+    USE sparse_matrix_frapcon
+    USE materials_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@ brief
@@ -90,7 +90,7 @@ MODULE hex8
     CONTAINS
     !
     SUBROUTINE hex8_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -162,7 +162,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_create (label, mat, nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -273,7 +273,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -301,7 +301,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_temp()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -348,7 +348,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_grav()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -379,7 +379,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_deriv(x1, x2, x3, x4, x5, x6, x7, x8, V, dV, dNdx, dNdxm, x)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -460,7 +460,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_stress()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -654,7 +654,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -715,7 +715,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -845,7 +845,7 @@ MODULE hex8
     !
     !
     FUNCTION hex8_tmod_matmul (Bi, tmod) RESULT (BiC)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -875,7 +875,7 @@ MODULE hex8
     !
     !
     FUNCTION hex8_tmod (J, Jm, mu, lambda, kappa, sigdev, phyd, nv, dl2, gamma, av, taueff, dplmod, deds) RESULT(tmod)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1036,7 +1036,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1062,7 +1062,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_strains()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1117,7 +1117,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1151,7 +1151,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1217,7 +1217,7 @@ MODULE hex8
     !
     !
     SUBROUTINE hex8_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@ brief
@@ -1234,5 +1234,7 @@ MODULE hex8
 
     END SUBROUTINE hex8_deallocate
     !
-END MODULE hex8
+END MODULE hex8_frapcon
+
+
 

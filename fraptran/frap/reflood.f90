@@ -1,19 +1,19 @@
-MODULE Reflood_Conditions
-    USE Kinds
+MODULE Reflood_Conditions_fraptran
+    USE Kinds_fraptran
     USE functions_fraptran, ONLY : polate, simq
-    USE sth2x, ONLY : surten, thcon, visc, viscol
+    USE sth2x_fraptran, ONLY : surten, thcon, visc, viscol
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE reflood (AxNodElevat, a, b, drod, AxialNodLen, time, deltat, AxialPowr, naxn, rl, RuptFailIndex, &
      &                 acond, tsurf, qq, htc, qcrit, ihtreg, k,Nchan)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, sechr, tfk, tkf
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit,emflag
-    USE CoolantProperties
-    USE sth2x, ONLY : sth2x2, sth2x3
+    USE CoolantProperties_fraptran
+    USE sth2x_fraptran, ONLY : sth2x2, sth2x3
     IMPLICIT NONE
     !>@brief
     !> Subroutine reflood manages the refill and reflood heat transfer calculations.
@@ -293,7 +293,7 @@ MODULE Reflood_Conditions
         qlocal = qmax
         !**************************************************************
         !* the integral of the power history is normalized by a power *
-        !* curve integral for use in the flt-c-set correlation        *
+        !* curve integral for use in the flt_fraptran-c-set correlation        *
         !**************************************************************
         pdecy = polate (faxzq,zpkfc,npaxpf,nqax) * pavgft / qmax
         qaxpk = polate (qaxzq,zpkfc,npaxpf,nqax) * pavgft / qmax
@@ -317,7 +317,7 @@ MODULE Reflood_Conditions
     IF (lodmrk == 'liqlev') GOTO 110
     ! Otherwise, CONTINUE with the rupture plane model.
     ! Check the rupture flags and proceed.
-    ! If no failure is indicated, use htcflc and RETURN.
+    ! If no failure is indicated, use htcflc and RETURN_fraptran.
     IF (rupflg == on) GOTO 30
     !
     CALL tailnd (a, b, htcflc, tsat, tsurf, qq, qcrit)
@@ -330,7 +330,7 @@ MODULE Reflood_Conditions
     GOTO 1000
     !
 30  CONTINUE
-    ! If the rupture flag is on but the axial node is not yet up to the rupture plane, use htcflc and RETURN
+    ! If the rupture flag is on but the axial node is not yet up to the rupture plane, use htcflc and RETURN_fraptran
     IF (k < irup) GOTO 34
     IF (emflag(15) == off .AND. fldrte >= 0.4_r8k) GOTO 34
     IF (emflag(15) == on  .AND. fldrte >= 1.0_r8k) GOTO 34
@@ -418,7 +418,7 @@ MODULE Reflood_Conditions
     !**** End of the rupture plane--l-o-d model.
     !**** Beginning of the liquid level--l-o-d model
 110 CONTINUE
-    ! Check the reflood rate.  If the reflood rate exceeds 1-inch /sec, use htcflc and exit
+    ! Check the reflood rate.  If the reflood rate exceeds 1-inch /sec, use htcflc and exit_fraptran
     IF (emflag(15) == off .AND. fldrte >= fmngen) GOTO 68
     IF (emflag(15) == on .AND. fldrte >= frthrs) GOTO 68
     GOTO 70
@@ -435,7 +435,7 @@ MODULE Reflood_Conditions
     GOTO 1000
     !
 70  CONTINUE
-    ! The reflood rate is less than one inch per second.  If the quench level is above the axial node, use htcflc.
+    ! The reflood rate is less than one inch per second.  If the quench level is above the axial node, use htcflc_fraptran.
     IF (k < liqnod) THEN
         !
         CALL tailnd (a, b, htcflc, tsat, tsurf, qq, qcrit)
@@ -560,8 +560,8 @@ MODULE Reflood_Conditions
     !
     !
     REAL(r8k) FUNCTION powing (k, AxialPowr, AxialNodLen)
-    USE Kinds
-    USE resti_h, ONLY : naxn
+    USE Kinds_fraptran
+    USE resti_h_fraptran, ONLY : naxn
     IMPLICIT NONE
     !>@brief
     !> Function powing returns the integral of the axial power from the bottom of the rod to the height dza(nodnbr)
@@ -584,7 +584,7 @@ MODULE Reflood_Conditions
     END FUNCTION powing
     !
         SUBROUTINE crfzqh (pressr, qmax, fldrte, tsub, zqch, deltat, crf)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine crfzqh calculates the carry-out rate fraction and the quench height at each timestep
@@ -629,7 +629,7 @@ MODULE Reflood_Conditions
 !
 !
     FUNCTION dbinvs (temp, rhostm, hydiam, htcflc, cpstem, MassFlowRate)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, Time, ndebug
     IMPLICIT NONE
     !>@brief
@@ -683,7 +683,7 @@ MODULE Reflood_Conditions
     SUBROUTINE enrise (MassFlowRate, cpmult, flxsec, deltaz, deltat, pincir, a, b, htcflc, templo, &
       &                cpstem, rhostm, hydiam, fldrte, AxNodElevat, rupflg, flowbk, ruplev, tcc, &
       &                tsurf, qq, qcrit, htc, ihtreg, agflow, k)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr
     USE variables_fraptran, ONLY : ounit, Time, ndebug
     IMPLICIT NONE
@@ -873,7 +873,7 @@ MODULE Reflood_Conditions
 !
 !
     FUNCTION fiddle (fldrte, AxNodElevat, rupflg, MassFlowRate, blkagp, ruplev)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
@@ -932,10 +932,10 @@ MODULE Reflood_Conditions
 !
 !
     SUBROUTINE hcalf (tinit, qlocal, z, h, acond, pdecay, deltat, mode, RodLength, Nchan)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr
     USE functions_fraptran, ONLY : polate
-    USE CoolantProperties
+    USE CoolantProperties_fraptran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calculates cladding surface heat transfer coefficient during reflooding of core
@@ -1286,7 +1286,7 @@ MODULE Reflood_Conditions
 !
 !
     SUBROUTINE tailnd (a, b, htc, temp, tsurf, qq, qcrit)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !>@brief
@@ -1324,7 +1324,7 @@ MODULE Reflood_Conditions
 !
 !
     SUBROUTINE wcorr (dtsub, p, tinit, qmax, AxNodElevat, hrad, floodr, Time, hliq, flecht)
-    USE Kinds
+    USE Kinds_fraptran
     USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
     !>@brief
@@ -1500,7 +1500,8 @@ MODULE Reflood_Conditions
     END SUBROUTINE wcorr
 !
 !
-END MODULE Reflood_Conditions
+END MODULE Reflood_Conditions_fraptran
+
 
 
 

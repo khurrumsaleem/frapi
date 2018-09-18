@@ -1,8 +1,8 @@
-MODULE bcdcom_h
-    USE Kinds
+MODULE bcdcom_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the comdeck bcdcom.h
+    !> This module replaces the comdeck bcdcom_fraptran.h
     TYPE bcdcom_var
         INTEGER(ipk) :: jchf
         INTEGER(ipk) :: mbowr
@@ -61,7 +61,8 @@ MODULE bcdcom_h
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: tschfi
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: hlqcl1
     !
-    END MODULE bcdcom_h
+    END MODULE bcdcom_h_fraptran
+
 
 
 

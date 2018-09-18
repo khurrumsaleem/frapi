@@ -1,8 +1,8 @@
-MODULE frapc
-    USE Kinds
+MODULE frapc_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !> @brief
-    !> This module replaces the frapc.h common block and allocate/deallocates the arrays needed for link with T/H Code.
+    !> This module replaces the frapc_fraptran.h common block and allocate/deallocates the arrays needed for link with T/H Code.
     !> It also fixes several parameters (unit conversion, ensuring proper ordering) that can occur with T/H Code.
     !> @author
     !> Ian Porter, NRC
@@ -121,7 +121,8 @@ MODULE frapc
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: TBulk_L                 ! Bulk coolant temperature of the liquid
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: TBulk_V                 ! Bulk coolant temperature of the vapor
     !
-END MODULE frapc
+END MODULE frapc_fraptran
+
 
 
 

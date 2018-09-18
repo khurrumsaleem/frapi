@@ -1,22 +1,22 @@
-MODULE HeatSolution
-    USE Kinds
-    USE Oxidation, ONLY : metwtb, chitox
-    USE HeatTransferCoefficient, ONLY : htrc, gaphtc
+MODULE HeatSolution_fraptran
+    USE Kinds_fraptran
+    USE Oxidation_fraptran, ONLY : metwtb, chitox
+    USE HeatTransferCoefficient_fraptran, ONLY : htrc, gaphtc
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE heat (Gscale)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE GammaHeating
+    USE GammaHeating_fraptran
     USE variables_fraptran
-    USE Uncertainty_Vals
-    USE Material_Properties, ONLY : MatProperty
-    USE HeatCond
-    USE Coolant
-    USE RadialNodes, ONLY : Radheatsource, weights
-    USE AxialPower, ONLY : power
+    USE Uncertainty_Vals_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE HeatCond_fraptran
+    USE Coolant_fraptran
+    USE RadialNodes_fraptran, ONLY : Radheatsource, weights
+    USE AxialPower_fraptran, ONLY : power
     IMPLICIT NONE
     !
     !>@brief
@@ -72,7 +72,7 @@ MODULE HeatSolution
     DO k = 1, naxn
         !
         !LOJ qt15: Modifications to cater for effects of fuel rod deformation 
-        !          on heat transfer. Use deformed geometry dimensions, 
+        !          on heat transfer. Use deformed geometry dimensions_fraptran, 
         !          and re-calculate weights and radial heat source.
         !
         ! Key deformed dimensions of the fuel rod
@@ -169,7 +169,7 @@ MODULE HeatSolution
                     delz = AxNodElevat(k) - AxNodElevat(k-1)
                 ENDIF
                 achn = acond(9,Nchan)
-                ! LOJ qt15: Use deformed rod geometry (Previously used RodOD(k) rather than DefClOD)
+                ! LOJ qt15: Use deformed rod geometry _fraptran(Previously used RodOD(k) rather than DefClOD)
                 achnl = achn / (pi * DefClOD)
                 ! Determine the moderator heating fraction. It will come from either (by rank):
                 ! (1) the user, (2) Using the built-in coolant density correlation, (3) the original default value of 0.02.
@@ -226,7 +226,7 @@ MODULE HeatSolution
                         voidcp = gapcv
                         ! To not reduce size of stable time step,set rho*cp of gas to about that of uo2
                         voidcp = 4.2e3_r8k * voidcp
-                        ! Should use this (with proper unit conversion)
+                        ! Should use this _fraptran(with proper unit conversion)
                         !voidcp = MatProperty (Material='GAS', Property='SPECHEAT', Temperature=tfk(EOSTemp(1,k)), &
                         !  &                   Pressure=(GasPress(k)/psinm2), GasComposition=GasFraction)
                         ! End of note
@@ -282,7 +282,7 @@ MODULE HeatSolution
                     tsi = EOSTemp(ncladi,k)
                     tsi0 = BOSTemp(ncladi,k)
                     dmw11 = OxiThk1(k)
-                    ! Use deformed inner diameter
+                    ! Use deformed inner diameter_fraptran
                     drodmi = DefClID
                     !
                     CALL metwtb (tsi0, tsi, dmw11, dmw22, drodmi, TimeIncrement, emeti, drmax)
@@ -304,7 +304,7 @@ MODULE HeatSolution
                     tsi0   = BOSTemp(ncladi,k)
                     dmw11  = OxiThk1(k)
                     !
-                    ! Use deformed inner diameter
+                    ! Use deformed inner diameter_fraptran
                     drodmi = DefClID
                     call metwtb (tsi0, tsi, dmw11, dmw22, drodmi, TimeIncrement, emeti, drmax)
                     !
@@ -326,7 +326,7 @@ MODULE HeatSolution
                 emeti = 0.0_r8k
                 IF (Ifaila < 1 .AND. nIDoxide == 0) GOTO 64
                 ! Check to see IF metal-water reaction occurring at inside surface of cladding
-                ! Use Cathcart-Pawel equations in CHITOX to calculate ID oxidation
+                ! Use Cathcart_fraptran-Pawel equations in CHITOX to calculate ID oxidation
                 kfail = Ifaila
                 ! Failed Cladding
                 IF (ifaila > 0) THEN
@@ -335,7 +335,7 @@ MODULE HeatSolution
                     tk2 = tfk(EOSTemp(ncladi,k))
                     dmw11 = OxiThk1(k) * 0.0254_r8k
                     w1 = OxUptakeID1(k) / 10.0_r8k
-                    ! Use deformed inner diameter
+                    ! Use deformed inner diameter_fraptran
                     drodmw = DefClID / 3.28084_r8k
                     IF (dmw11 < thkoxm) dmw11 = thkoxm
                     !
@@ -362,7 +362,7 @@ MODULE HeatSolution
                     tk2 = tfk(EOSTemp(ncladi,k))
                     dmw11 = OxiThk1(k) * 0.0254_r8k
                     w1 = OxUptakeID1(k) / 10.0_r8k
-                    ! Use deformed inner diameter
+                    ! Use deformed inner diameter_fraptran
                     drodmw = DefClID / 3.28084_r8k
                     !
                     IF (dmw11 < thkoxm) dmw11 = thkoxm
@@ -395,7 +395,7 @@ MODULE HeatSolution
                 zro = EOSOxideThick(k) * 0.0254_r8k
                 ! Set initial constants for surface boundary conditions
                 AAHT1(k) = 0.0_r8k
-                ! Use deformed cladding dimensions only. Also add power generated in cladding.
+                ! Use deformed cladding dimensions only_fraptran. Also add power generated in cladding.
                 BBHT1(k) = powr * (DefFuRd ** 2 + CladdingPower(k) * (rhof / rhofe) * &
                   &        (EOSRad(nmesh, k) ** 2 - EOSRad(ncladi,k) ** 2)) / DefClOD
                 !
@@ -435,7 +435,7 @@ MODULE HeatSolution
                     iht = Ih(k)
                     tempcm = CladMaxT(k)
                     !
-                    ! Use deformed cladding diameter
+                    ! Use deformed cladding diameter_fraptran
                     CALL htrc (DefClOD, hcoef, hflux, qcrit, tsurf, iht, k, rl, nchfsw, tempcm, zro, tmelt(2))
                     !
                     Ih(k) = iht
@@ -490,7 +490,7 @@ MODULE HeatSolution
                 frmlt = EnrgyMeltZ(igpnod,k) / qmaxmelt(igpnod)
                 IF (frmlt < 0.99_r8k .AND. ftemp < (tmelt(1) + 0.5_r8k)) GOTO 718
                 HGapAV(k) = 1.0e4_r8k
-                ! Use true (deformed) pellet-cladding gap width
+                ! Use true _fraptran(deformed) pellet-cladding gap width
                 GapConductivity = gpthkt * HGapAV(k) / sechr
                 GOTO 76
                 
@@ -499,13 +499,13 @@ MODULE HeatSolution
                 ! IF r-theta heat conduction, modify gap thickness for offset fuel pellet
                 IF (ntheta > 1) THEN
                     ! Offset pellet
-                    ! Use deformed geometry
+                    ! Use deformed geometry_fraptran
                     rci = DefFuRd + GapThick(k)
                     angle = pi * (180.0_r8k - theta + dofang) / 180.0_r8k
                     dofst = dofset
                     cosang = COS(angle)
                     IF (dofst > GapThick(k)) dofst = GapThick(k)
-                    ! Use deformed geometry
+                    ! Use deformed geometry_fraptran
                     GapThick(k) = dofst * cosang + 0.5_r8k * SQRT((2.0_r8k * dofst * cosang) ** 2 - &
                       &           4.0_r8k * (dofst ** 2 - rci ** 2)) - DefFuRd
                     IF (GapThick(k) < 0.0_r8k) GapThick(k) = gapmin
@@ -573,7 +573,7 @@ MODULE HeatSolution
 926                 FORMAT( ' ngapi = ',i5,2x,'RInterfacPrs = ',e11.4,' delpfc = ',e11.4,' pfci = ',e11.4)
                     !
                     pfci = MAX(0.0_r8k, pfci)
-                    ! Use deformed geometry
+                    ! Use deformed geometry_fraptran
                     fulori = DefFuRd - delgap(ngapi)
                     ! Compute gap conductance
                     bulocal = burad(k,igpnod)
@@ -606,7 +606,7 @@ MODULE HeatSolution
                 IF (AxialPowr(k) < 5.1_r8k) GOTO 738
                 IF (AxialPowr(k) < (AxialPowr0(k) + 0.001_r8k)) GOTO 738
                 IF (GapThick(k) > 2.0e-4_r8k) GOTO 738
-                ! Use deformed geometry
+                ! Use deformed geometry_fraptran
                 rgpmid = 0.5_r8k * (EOSRad(igpnod,k) + EOSRad(ncladi,k))
                 ! hgpmax has units of btu/hr.ft**2
                 hgpmax = powcnv * sechr * AxialPowr(k) / (2.0_r8k * pi * rgpmid * (BOSTemp(igpnod,k) - BOSTemp(ncladi,k)))
@@ -630,7 +630,7 @@ MODULE HeatSolution
                 IF (AxialPowr(k) < (AxialPowr0(k) + 0.001_r8k)) GOTO 763
                 hgap = hgpmax
 763             CONTINUE
-                !Use true pellet-cladding gap width
+                !Use true pellet_fraptran-cladding gap width
                 GapConductivity = gpthkt * hgap / sechr
                 hgapin1(k) = (GapConductivity / gpthkt) * sechr
                 IF (nphgap == 1) WRITE(ounit,945) hgapin1(k)
@@ -653,7 +653,7 @@ MODULE HeatSolution
                 IF (nphgap == 1) WRITE(ounit,949) hgap, hgpmax, SSHgap(k)
 949             FORMAT(' after stat. 768, hgap = ',e11.4,' hgpmax = ',e11.4,' SSHgap(k) = ',e11.4)
                 hgap = MIN((1.1_r8k * hgpmax), hgap)
-                ! Use true pellet-cladding gap width
+                ! Use true pellet_fraptran-cladding gap width
                 GapConductivity = gpthkt * hgap / sechr
                 hgapin2(k) = (GapConductivity / gpthkt) * sechr
                 IF (nphgap == 1) WRITE(ounit,947) hgapin2(k)
@@ -688,13 +688,13 @@ MODULE HeatSolution
 772             CONTINUE
                 IF (nphgap == 1) WRITE(ounit,943) hgapgs, hgapout1(k), hgapout2(k), IterationCount
 943             FORMAT(' hgapgs = ',e11.4,' hgapout1 = ',e11.4,' hgapout2 = ',e11.4,' IterationCount = ',i5)
-                !Use true pellet-cladding gap width
+                !Use true pellet_fraptran-cladding gap width
                 GapConductivity = hgapgs * gpthkt / sechr
                 hgapout1(k) = hgapout2(k)
                 hgapin1(k) = hgapin2(k)
                 hgapin2(k) = hgapgs
 790             CONTINUE
-                !Use true pellet-cladding gap width
+                !Use true pellet_fraptran-cladding gap width
                 HGapAV(k) = (GapConductivity / gpthkt) * sechr
                 ! This lower limit for the pellet-cladding gap heat transfer coefficient
                 ! was found to be reached when simulating integral LOCA tests in the
@@ -710,7 +710,7 @@ MODULE HeatSolution
 934                 FORMAT(/' *** convergence problems in gap conductance iteration. so gap conductance set to 568 W/K-m2 ***')
                     ! WRITE(ounit,939) k, Time, IterationCount
 939                 FORMAT(' *** convergence problems were at axial node #',i3,' time(s) = ',e13.6,' iteration #',i4)
-                    !Use true pellet-cladding gap width
+                    !Use true pellet_fraptran-cladding gap width
                     GapConductivity = hgapmn * gpthkt / sechr
                     HGapAV(k) = hgapmn
                 ENDIF
@@ -980,11 +980,11 @@ MODULE HeatSolution
       &                voidk, pres, bu, GasFraction, vrelc, modfd, igpnod, frden, tsntrk, ncladi, &
       &                modkf, k, cnfsol, tmeltf, fotmtl, NodeSinterTemp, nmesh, rhof, gadolin, burad, &
       &                radsrc, coldw, rhoc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, IndexThermcon, iflago, iflagn, noiter, indexfintemp, indexbc, maxit, &
       &                   ndebug, Time, FinalTemp, PrevIterateTemp, ArrayE, ArrayF, BoundaryCondition, &
       &                   ThermalConductivity, AreaWeight, areao, VolumeWeightR, VolumeWeightL, arean, epsht1
-    USE NCGases, ONLY : ngases
+    USE NCGases_fraptran, ONLY : ngases
     USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !> @brief
@@ -1046,7 +1046,7 @@ MODULE HeatSolution
     IndexVolHeatCapacity = IndexThermCon + nmesh + 3
     IterationCountSS = 0
     !
-    ! Use true (deformed) cladding perimeter instead of areas, which is not updated with time.
+    ! Use true _fraptran(deformed) cladding perimeter instead of areas, which is not updated with time.
     !
     arealoj = 2.0_r8k * pi * RadialBound(nmesh)
     !
@@ -1292,16 +1292,16 @@ MODULE HeatSolution
       &                RuptFailIndex, rhoc, empytm, emeti, AAHT1, BBHT1, GasPress, bu, GasFraction, &
       &                vrelc, frden, tsntrk, cnfsol, cnfliq, fotmtl, NodeSinterTemp, nmesh, rhof, &
       &                gadolin, burad, k, radsrc, deltox_k, coldw, IndexInitTemp, BOSTemp)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, tfk
     USE variables_fraptran, ONLY : ounit, imaterials, ihData, naxn, nqchn, igpnod, nchfmd, lhtc, IndexThermCon, IndexThermConAdv, &
       &                   iflago, iflagn, IndexBC, noiter, Indexfintemp, ndebug, epsht1, areao, BoundaryCondition, &
       &                   ThermalConductivity, FinalTemp, rhocp, ArrayE, ArrayF, PrevTemp, AreaWeight, arean, acond, &
       &                   nchan, VolumeWeightR, VolumeWeightL, PrevIterateTemp, rhocp0, ThermalConductAdv
-    USE Material_Properties, ONLY : MatProperty
-    USE ZircSpecHeat
-    USE Reflood_Conditions, ONLY : reflood
-    USE NCGases, ONLY : ngases
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE ZircSpecHeat_fraptran
+    USE Reflood_Conditions_fraptran, ONLY : reflood
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Subroutine ht1tdp solves the 1-d transient heat problem for a time step TimeIncrement long.
@@ -1414,7 +1414,7 @@ MODULE HeatSolution
     IterationCountTrans = 0
     ssflag = .FALSE.
     matpas = 0
-    ! Use true (deformed) cladding perimeter instead of arean, which is not updated with time
+    ! Use true _fraptran(deformed) cladding perimeter instead of arean, which is not updated with time
     arealoj = 2.0_r8k * pi * RadialBound(nmesh)
     !
     qmeltarray(1:nmesh) = 0.0_r8k
@@ -1842,12 +1842,12 @@ MODULE HeatSolution
     SUBROUTINE maData (IndexFinTemp, IndexThermCon, IndexBC, IndexVolHeatCapacity, nmesh, IndexRows, &
       &                ssflag, errsw, frden, fotmtl, rhof, gadolin, burad, coldw, cflux, cldtime, k, &
       &                rhoc, IndexAdv)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit, nomat, imaterials, naxn, ndebug
-    USE phypro_h
-    USE heatconduction_h
-    USE Material_Properties, ONLY : MatProperty
+    USE phypro_h_fraptran
+    USE heatconduction_h_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> This subcode computes the thermal conductivity and volumetric heat
@@ -2095,7 +2095,7 @@ MODULE HeatSolution
     !
     !
     PURE SUBROUTINE bdcond (BoundaryCondition, Iflago, Iflagn)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes boundary conditions required for heat-1 subcodes
@@ -2115,7 +2115,7 @@ MODULE HeatSolution
     !
     !
     SUBROUTINE ftbmov (a, b, n)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -2165,9 +2165,9 @@ MODULE HeatSolution
     !
     !
     SUBROUTINE error1 (nerr, nstop)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
-    USE ErrorMsg, ONLY : fabend
+    USE ErrorMsg_fraptran, ONLY : fabend
     IMPLICIT NONE
     !>@brief
     !> Subroutine prints out specified error messages
@@ -2225,11 +2225,11 @@ MODULE HeatSolution
     !
     SUBROUTINE kmod (ThermalConductivity, RadialBound, igpnod, GasPress, bu, GasFraction, vrelc, &
       &              modfd, FinalTemp, frden, tsntrk, ncladi, modkf, NodeSinterTemp)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, ftmetr, psinm2, tfk
     USE variables_fraptran, ONLY : ounit, Time, ndebug
-    USE Material_Properties, ONLY : MatProperty
-    USE NCGases, ONLY : ngases
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Subroutine modifies fuel thermal conductivity to account for fuel circumferential cracks and burnup
@@ -2330,7 +2330,8 @@ MODULE HeatSolution
     !
     END SUBROUTINE kmod
     !
-END MODULE HeatSolution
+END MODULE HeatSolution_fraptran
+
 
 
 

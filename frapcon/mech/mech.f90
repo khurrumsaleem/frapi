@@ -1,13 +1,13 @@
-MODULE FEModel
-    USE Kinds
+MODULE FEModel_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE FEA_IO, ONLY : fileo, write_output
-    USE StaticFEA
-    USE FEA_Mesh
+    USE common_parameters_frapcon
+    USE FEA_IO_frapcon, ONLY : fileo, write_output
+    USE StaticFEA_frapcon
+    USE FEA_Mesh_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the driver for the FE cladding deformation model and the temporary storage arrays
+    !> This module contains the driver for the FE cladding deformation model and the temporary storage arrays_frapcon
     LOGICAL, DIMENSION(:), ALLOCATABLE :: closedt
     LOGICAL, DIMENSION(:), ALLOCATABLE :: stickt
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: dz0t
@@ -23,17 +23,17 @@ MODULE FEModel
       &              OldFuelStrn, OldGapPress, OldCoolPress, OldFuelDispl, CladAveTemp, &
       &              OldCladAvTemp, IgapIndexOld, sig, sigeff, reps, rfeps, eppsav, &
       &              repsav, rfpsav)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE pressure1d
-    USE data_grid
-    USE cladding
-    USE m5_cladding
-    USE nuclear_fuel
-    USE solid1d
-    USE quad4
-    USE hex8
-    USE cont1d
+    USE pressure1d_frapcon
+    USE data_grid_frapcon
+    USE cladding_frapcon
+    USE m5_cladding_frapcon
+    USE nuclear_fuel_frapcon
+    USE solid1d_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE cont1d_frapcon
     USE variables_frapcon, ONLY : icm, ThermalStrain, epsav, tmpfuel, na, nr, crad, dci, dco, im, &
       &                   ProblemTime, nce, ounit, it, cpl, nt, deltaz, CoolantPress, &
       &                   IgapGapIndex, crephr, FastFluence, tplen, BulkCoolantTemp, &
@@ -135,7 +135,7 @@ MODULE FEModel
             ! Reference temperature
             tref = 293.15_r8k
 
-            ! Use British units
+            ! Use British units_frapcon
             units = 0
 
             ! open output files
@@ -332,11 +332,11 @@ MODULE FEModel
     !
     !
     SUBROUTINE temp_storage (ic)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE solid1d
-    USE cont1d
-    USE pressure1d
+    USE solid1d_frapcon
+    USE cont1d_frapcon
+    USE pressure1d_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine performs temporary data storage functions for the FEA model
@@ -427,5 +427,7 @@ MODULE FEModel
 
     END SUBROUTINE temp_storage
     !
-END MODULE FEModel
+END MODULE FEModel_frapcon
+
+
 

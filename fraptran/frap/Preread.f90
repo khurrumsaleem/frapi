@@ -1,8 +1,8 @@
-MODULE Initial_Read
-    USE Kinds
+MODULE Initial_Read_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> Module Initial_Read performs an initial reading of the input file to determine array sizes
+    !> Module Initial_Read performs an initial reading of the input file to determine array sizes_fraptran
     !> for # of axial nodes, radial nodes and timesteps
     !>@author
     !> Ken Geelhood, PNNL
@@ -15,8 +15,8 @@ MODULE Initial_Read
     CONTAINS
     
     SUBROUTINE preread (iofile)
-    USE Kinds
-    USE frapc, ONLY : coupled, FrapTranFN
+    USE Kinds_fraptran
+    USE frapc_fraptran, ONLY : coupled, FrapTranFN
     USE variables_fraptran, ONLY : pre_na, pre_nr, pre_nt, iunit, ounit
     IMPLICIT NONE
     !>@brief
@@ -39,7 +39,7 @@ MODULE Initial_Read
             ! If command line argument is provided, this will be read as the input file name (only 1 argument allowed)
            CALL GET_COMMAND_ARGUMENT(1,cmdline)
         ELSE
-            ! No command line argument is present. Therefore, code will use default input file name
+            ! No command line argument is present. Therefore, code will use default input file name_fraptran
             cmdline = Default_iofile
         END IF
     ENDIF
@@ -95,7 +95,7 @@ MODULE Initial_Read
     !
     !
     SUBROUTINE begin_pre (input_unit, defsize)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine begin_pre does an initial reading of the $begin block to get the user-supplied value for defsize
@@ -119,7 +119,7 @@ MODULE Initial_Read
     !
     !
     SUBROUTINE numinp_pre (iunit, naxn, nfmesh, ncmesh, defsize)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine numinp_pre does an initial reading of the $solution block to get the array sizes for zelev, fmesh and cmesh
@@ -170,7 +170,7 @@ MODULE Initial_Read
     !
     !
     INTEGER(ipk) FUNCTION countarray(array, iarray)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Function countarray counts the number of values in an array that are not equal to 0.0
@@ -197,7 +197,8 @@ MODULE Initial_Read
     
     END FUNCTION countarray
     
-END MODULE Initial_Read
+END MODULE Initial_Read_fraptran
+
 
 
 

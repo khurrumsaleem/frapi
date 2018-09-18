@@ -1,8 +1,8 @@
-MODULE pressure3d
-    USE Kinds
+MODULE pressure3d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> 3D pressure boundary element
@@ -40,7 +40,7 @@ MODULE pressure3d
     CONTAINS
     !
     SUBROUTINE pressure3d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -87,7 +87,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_setpress (label, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -108,7 +108,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_updval (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -138,7 +138,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_create (label, nodes, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -193,7 +193,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_fext()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -247,7 +247,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -282,7 +282,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -301,7 +301,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -325,7 +325,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !
@@ -381,7 +381,7 @@ MODULE pressure3d
     !
     !
     SUBROUTINE pressure3d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -398,5 +398,7 @@ MODULE pressure3d
 
     END SUBROUTINE pressure3d_deallocate
     !
-END MODULE pressure3d
+END MODULE pressure3d_frapcon
+
+
 

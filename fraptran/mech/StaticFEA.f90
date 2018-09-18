@@ -1,6 +1,6 @@
-MODULE StaticFEA
+MODULE StaticFEA_fraptran
     !>@brief
-    !> This module contains the subroutines used to run the Cladding Static FEA calculation.
+    !> This module contains the subroutines used to run the Cladding Static FEA calculation_fraptran.
     !> Subroutines include comput_static, forced_displ, gascav_pressure,
     !> init_displ, load_step, number_dofs, rupture, time_step, update,
     !> update_database, update_displ
@@ -8,8 +8,8 @@ MODULE StaticFEA
     !> Ken Geelhood, PNNL
     !>@date
     !> 05/21/2015
-    USE Kinds
-    USE FEA_IO
+    USE Kinds_fraptran
+    USE FEA_IO_fraptran
     !
     IMPLICIT NONE
     !
@@ -17,24 +17,24 @@ MODULE StaticFEA
     !
     !
     SUBROUTINE comput_static()
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE materials_frap
-    USE sparse_matrix
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE materials_frap_fraptran
+    USE sparse_matrix_fraptran
+    USE spring_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE pressure1d_fraptran
+    USE pressure2d_fraptran
+    USE pressure3d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE cont3d_fraptran
     IMPLICIT NONE
     !>@brief
     !> Static finite element analysis with Newton-Raphson iteration method
@@ -229,7 +229,7 @@ MODULE StaticFEA
 
       ! Solve new displacement increment If needed
       IF ( .NOT.conv_NR ) THEN
-         ! Use symmetric elastic-plastic tangent matrix by default
+         ! Use symmetric elastic_fraptran-plastic tangent matrix by default
          symmetric_matrix = .TRUE.
          elastic_matrix = .FALSE.
 
@@ -353,9 +353,9 @@ MODULE StaticFEA
     END SUBROUTINE comput_static
 
     SUBROUTINE forced_displ()
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> Modify force residual vector and stIffness matrix to take into account forced displacements
@@ -386,8 +386,8 @@ MODULE StaticFEA
     END SUBROUTINE forced_displ
 
     SUBROUTINE init_displ()
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize displacements from the explicit values
@@ -421,8 +421,8 @@ MODULE StaticFEA
     END SUBROUTINE init_displ
 
     SUBROUTINE load_step()
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Calculate load and temperature increments
@@ -441,19 +441,19 @@ MODULE StaticFEA
     END SUBROUTINE load_step
 
     SUBROUTINE number_dofs()
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
+    USE spring_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE cont3d_fraptran
     IMPLICIT NONE
     !>@brief
     !> Set status and number of all DOFs
@@ -487,7 +487,7 @@ MODULE StaticFEA
                 current_node%dof_status(id) = -2
                 WRITE(UNIT=6,FMT='(/,A,I0,A,I0,A,/)') &
                   &  'WARNING marking DOF ',id,' of node ',current_node%label, &
-                  &  ' fixed because it is not connected to any structural element'
+                  &  ' fixed because it is not connected to any structural element_fraptran'
             ENDIF
         ENDDO
         current_node => current_node%next
@@ -541,12 +541,12 @@ MODULE StaticFEA
     END SUBROUTINE number_dofs
 
     SUBROUTINE rupture ()
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE solid1d
-    USE quad4
-    USE fraptran_variables
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE solid1d_fraptran
+    USE quad4_fraptran
+    USE fraptran_variables_fraptran
     IMPLICIT NONE
     !>@brief
     !>Check for rupture in the cladding
@@ -625,11 +625,11 @@ MODULE StaticFEA
     END SUBROUTINE rupture
 
 Subroutine time_step(lsubstp)
-  USE Kinds
+  USE Kinds_fraptran
   USE variables_fraptran, ONLY : ounit
-  USE common_parameters
-  USE quad4
-  USE hex8
+  USE common_parameters_fraptran
+  USE quad4_fraptran
+  USE hex8_fraptran
   IMPLICIT NONE
   !>@brief
   !> Calculate load and temperature increments
@@ -714,20 +714,20 @@ Subroutine time_step(lsubstp)
 END SUBROUTINE time_step
 
 Subroutine update()
-  USE Kinds
-  USE common_parameters
-  USE materials_frap
-  USE sparse_matrix
-  USE spring
-  USE quad4
-  USE hex8
-  USE solid1d
-  USE pressure1d
-  USE pressure2d
-  USE pressure3d
-  USE cont1d
-  USE cont2d
-  USE cont3d
+  USE Kinds_fraptran
+  USE common_parameters_fraptran
+  USE materials_frap_fraptran
+  USE sparse_matrix_fraptran
+  USE spring_fraptran
+  USE quad4_fraptran
+  USE hex8_fraptran
+  USE solid1d_fraptran
+  USE pressure1d_fraptran
+  USE pressure2d_fraptran
+  USE pressure3d_fraptran
+  USE cont1d_fraptran
+  USE cont2d_fraptran
+  USE cont3d_fraptran
   IMPLICIT NONE
   !>@brief
   !> Update explicit values
@@ -848,20 +848,20 @@ Subroutine update()
 END SUBROUTINE update
 
 Subroutine update_Database()
-  USE Kinds
-  USE common_parameters
-  USE quad4
-  USE hex8
-  USE solid1d
-  USE pressure1d
-  USE pressure2d
-  USE pressure3d
-  USE gascav1d
-  USE gascav2d
-  USE gascav3d
-  USE cont1d
-  USE cont2d
-  USE cont3d
+  USE Kinds_fraptran
+  USE common_parameters_fraptran
+  USE quad4_fraptran
+  USE hex8_fraptran
+  USE solid1d_fraptran
+  USE pressure1d_fraptran
+  USE pressure2d_fraptran
+  USE pressure3d_fraptran
+  USE gascav1d_fraptran
+  USE gascav2d_fraptran
+  USE gascav3d_fraptran
+  USE cont1d_fraptran
+  USE cont2d_fraptran
+  USE cont3d_fraptran
   IMPLICIT NONE
   !>@brief
   !> Create element Database
@@ -1116,9 +1116,9 @@ Subroutine update_Database()
 END SUBROUTINE update_Database
 
 Subroutine update_displ(dl0,dl)
-    USE Kinds
+    USE Kinds_fraptran
   ! Update displacements after line search
-  USE common_parameters
+  USE common_parameters_fraptran
   IMPLICIT NONE
   REAL(r8k), INTENT(IN) :: dl,dl0
   INTEGER(ipk) :: id,ip,in
@@ -1143,11 +1143,11 @@ END SUBROUTINE update_displ
 !
 !
     SUBROUTINE gascav_pressure()
-    USE Kinds
-    USE common_parameters
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
     IMPLICIT NONE
     !>@brief
     !> Calculate pressures at gas cavities
@@ -1180,7 +1180,8 @@ END SUBROUTINE update_displ
     END SUBROUTINE gascav_pressure
     !
 !    
-END MODULE StaticFEA
+END MODULE StaticFEA_fraptran
+
 
 
 

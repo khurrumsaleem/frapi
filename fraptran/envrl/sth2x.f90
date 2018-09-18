@@ -1,9 +1,9 @@
-MODULE sth2x
-    USE Kinds
+MODULE sth2x_fraptran
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : h2ounit, ounit, nt, np, ns, ns2, klp, klp2, llp, nt5, jpl
-    USE WaterPropertyArray
+    USE WaterPropertyArray_fraptran
     !>@brief
-    !> This module contains all of the water properties
+    !> This module contains all of the water properties_fraptran
     !>@author
     !> Coded by Ian Porter, NRC April, 2014
     !
@@ -13,7 +13,7 @@ MODULE sth2x
     CONTAINS
     !
     SUBROUTINE sth2x0 (t, press, err)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@author
     !> Id: envrl.s,v 2.102 1999 / 05 / 19 23:08:13 randyt Exp randyt
@@ -47,7 +47,7 @@ MODULE sth2x
     !
     !
     SUBROUTINE sth2x2 (a, prop, err)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Compute water thermodynamic properties as a function of temperature and quality
@@ -259,7 +259,7 @@ MODULE sth2x
     !
     !
     SUBROUTINE sth2x3 (a, prop, it, err)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Compute water thermodynamic properties as a function of temperature and pressure
@@ -599,7 +599,7 @@ MODULE sth2x
     !
     !
     SUBROUTINE sth2x5 (a, prop, it, err)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Compute water thermodynamic properties as a function of pressure and total enthalpy
@@ -1147,7 +1147,7 @@ MODULE sth2x
     !
     !
     SUBROUTINE sth2xi (a, nuse)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Reads the water properties file
@@ -1160,7 +1160,7 @@ MODULE sth2x
     !
     L_Exists = .FALSE. ! Specifies if the file exists
     I_Opened = .FALSE. ! Specifies if the file is open. It should be opened by now if it exists
-    UseWaterProp = .FALSE. ! Specifies whether to use the built - in water properties.
+    UseWaterProp = .FALSE. ! Specifies whether to use the built _fraptran- in water properties.
     REWIND h2ounit
     INQUIRE (h2ounit, Opened = I_Opened, Exist = L_Exists)
     ! Check to see if the water file was supplied by the user
@@ -1193,7 +1193,7 @@ MODULE sth2x
 102 WRITE (ounit,202)
 202 FORMAT ('0 ******** Insufficient space furnished for water thermodynamic property file.')
     UseWaterProp = .TRUE.
-    ! No water file is supplied by the user or else the file supplied by user has problems. Use default water properties.
+    ! No water file is supplied by the user or else the file supplied by user has problems. Use default water properties_fraptran.
 300 If (UseWaterProp) THEN
         WRITE (ounit, 203)
         WRITE (0, 203)
@@ -1210,6 +1210,7 @@ MODULE sth2x
         llp = jp1 - nt5 - 5
         nsize = jp1 + 6 * nt * np
         nuse = nsize
+
         a(:) = Water(:)
     ENDIF
     !
@@ -1219,7 +1220,7 @@ MODULE sth2x
     !
     !
     SUBROUTINE surten (tin, sigma)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
@@ -1264,7 +1265,7 @@ MODULE sth2x
 !
 !
     FUNCTION thcon (n, t1, rho1)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
     !>@brief
@@ -1330,7 +1331,7 @@ MODULE sth2x
 !
 !
     FUNCTION visc (n, t1, rho1)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
@@ -1393,8 +1394,8 @@ MODULE sth2x
 !
 !
     FUNCTION viscol (pres, temp, rhol, tsatp)
-    USE Kinds
-    USE ErrorMsg, ONLY : fabend
+    USE Kinds_fraptran
+    USE ErrorMsg_fraptran, ONLY : fabend
     IMPLICIT NONE
     !>@brief
     !> Calculates liquid water viscosity.
@@ -1448,7 +1449,7 @@ MODULE sth2x
 !
 !
     SUBROUTINE voidratio (Quality, rf, rg, de, sr, alpha)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -1515,7 +1516,8 @@ MODULE sth2x
     END SUBROUTINE voidratio
     !
     !
-END MODULE sth2x
+END MODULE sth2x_fraptran
+
 
 
 

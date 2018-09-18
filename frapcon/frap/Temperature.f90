@@ -1,9 +1,9 @@
-MODULE Temperature
-    USE Kinds
+MODULE Temperature_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to calculate fuel and cladding 
+    !> This module contains the subroutines used to calculate fuel and cladding _frapcon
     !> temperature.
     !> Subroutines include cldrp, conduc, energy, formfa, fueltp, tmpsub, emssf2, gaprs
     !>@author
@@ -16,7 +16,7 @@ MODULE Temperature
     CONTAINS
     !
     REAL(r8k) FUNCTION formfa (fi, fo, ri, ro)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -55,10 +55,10 @@ MODULE Temperature
     !
     !
     SUBROUTINE cladrp
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : CladAveTemp, qc, dco, dci, j, tci, tco, SurfTempOxide, EOSZrO2Thk, zoxk
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
     !> This Subroutine is called from frpcon and computes the cladding inside surface temperature as well as 
@@ -109,7 +109,7 @@ MODULE Temperature
     !
     !
     SUBROUTINE conduc
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : GapAveTemp, dco, gpthe, qc, ounit, dltgc, hgapt, hgap, hsolid, &
       &                   hgapr, tci, k, dphf, dphfrl, j
@@ -158,10 +158,10 @@ MODULE Temperature
     !
     !
     SUBROUTINE energy
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : PelAveTemp, StoredEnergy, nr, tfring, hrad, j, tref
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
     !> This routine computes the stored energy at the volumetric average temperature -tbar by summing the
@@ -209,11 +209,11 @@ MODULE Temperature
     !
     !
     SUBROUTINE fueltp (tfs, q, fden)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     USE variables_frapcon, ONLY : brnup3, nr, rrev, rrapow, FuelCondFactor, tfuelr2, rtran, j
-    USE Comde
+    USE Comde_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine computes the steady state fuel temperature distribution using the finite difference approach found
@@ -373,7 +373,7 @@ MODULE Temperature
     !
     !
     SUBROUTINE tmpsub
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : modheat, FuelTempRestruRad, HealedCrackRadius, OldHealedCrackRadius, porosnew, &
       &                   tfuelr, rapow, nr, na, crad, Power, rc, PelSurfTemp, rrev, rrapow, tfuelr2, dltgc, &
@@ -383,7 +383,7 @@ MODULE Temperature
     !> This subroutine computes the fuel temperature distribution.
     !>@author
     !> Coded by g a berna in april '78
-    !> Modified by k l davis, august '95 to use the Subroutine fueltp to calculate the fuel temperature profile
+    !> Modified by k l davis, august '95 to use the Subroutine fueltp to calculate the fuel temperature profile_frapcon
     !
     ! Input
     !
@@ -498,9 +498,9 @@ MODULE Temperature
     !
     !
     SUBROUTINE emssf2 (tf, tc, rf, gpthk, fe)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes emissivity factor for fuel-cladding gap radiation heat transfer calculations.
@@ -542,15 +542,15 @@ MODULE Temperature
     !
     !
     SUBROUTINE gaprs (gapd, tpel)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon, ONLY : brnup3, gaphtcmult, nr, RinterfacPress, GapAveTemp, &
       &                   gases, j, gapmin, hgap, hgapr, hsolid, frden, hgapt, coldwk, &
       &                   roughc, roughf, dphfrl, j, press, tci, it, fden, & 
                           TotalHGap, hgapt_flag     ! YU JIANKAI ! TotalHGap, hgapt_flag
-    USE Comde
-    USE Gas, ONLY : ngases, ncGasProperties
+    USE Comde_frapcon
+    USE Gas_frapcon, ONLY : ngases, ncGasProperties
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes gap conductance accounting for radiation heat transfer across gas gap and gap thickness change.
@@ -636,12 +636,12 @@ MODULE Temperature
         ! Convert fuel and cladding surface temperatures from F to K
         tfsi = tfk(tpel)
         tcsi = tfk(tci)
-        ! Use the burnup at the fuel surface from Subroutine tubrnp
+        ! Use the burnup at the fuel surface from Subroutine tubrnp_frapcon
         bupp = brnup3(lschni,nr,1)
         ! Set Cladding Thermal Conductivity
         conc = MatProp ('CLAD', 'THERMCOND', tcsi)
         ! Set Fuel Thermal Conductivity
-        ! Modified by IP, 2/21/2015 to use fden rather than frden
+        ! Modified by IP, 2/21/2015 to use fden rather than frden_frapcon
         ! The fuel density used for calculating thermal conductivity was based off of as-fabricated conditions
         ! but is now calculated based off of current conditions. This is how its calculated in subroutine tmpsub
         ! End of modification
@@ -702,5 +702,7 @@ MODULE Temperature
     ! 
     END SUBROUTINE gaprs
     !
-END MODULE Temperature
+END MODULE Temperature_frapcon
+
+
 

@@ -1,12 +1,12 @@
-MODULE Oxidation
+MODULE Oxidation_fraptran
     !>@brief
-    !> This module contains the subroutines used to calculate high temperature oxidation.
+    !> This module contains the subroutines used to calculate high temperature oxidation_fraptran.
     !> Subroutines include frpcon, metwtb, chitox, and cobild
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/14/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
@@ -14,7 +14,7 @@ MODULE Oxidation
     !
     !
     SUBROUTINE metwtb (t1, t2, d1, d2, drod, TimeIncrement, q, drmax)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
@@ -84,7 +84,7 @@ MODULE Oxidation
     !
     !
     SUBROUTINE chitox (t1, t2, x2, x1, dt, x12, x11, drod2, drod, q, w1, w2, iStoicGrad)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> chitox computes:
@@ -154,9 +154,9 @@ MODULE Oxidation
     SUBROUTINE cobild (t1, t2, dt, am5, drod, pint, ip, ip2, y8, y9, y9a, y9b, aao, abo, aco, ado, &
       &                aeo, afo, ago, aho, aio, aai, abi, aci, adi, aei, afi, agi, ahi, aii, w1, p, &
       &                persat, bwtfr,al8,iStoicGrad)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> This program was adapted from the program "build5" written by r.e. pawel of oak ridge national laboratory (ornl).
@@ -460,7 +460,8 @@ MODULE Oxidation
     END SUBROUTINE cobild
     !
     !
-END MODULE Oxidation
+END MODULE Oxidation_fraptran
+
 
 
 

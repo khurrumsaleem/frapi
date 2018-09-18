@@ -1,8 +1,8 @@
-MODULE Cs_I
-    USE Kinds
+MODULE Cs_I_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutine used to calculate Cs and I in the gap.
+    !> This module contains the subroutine used to calculate Cs and I in the gap_fraptran.
     !> Subroutines include cesiod
     !>@author
     !> Ken Geelhood, PNNL
@@ -12,8 +12,8 @@ MODULE Cs_I
     CONTAINS
     !
     SUBROUTINE cesiod (time, ftmax, delbu, dtime, ftemp, fraden, cs, roid, buloc)
-    USE Kinds
-    USE phypro_h, ONLY : ftmelt
+    USE Kinds_fraptran
+    USE phypro_h_fraptran, ONLY : ftmelt
     IMPLICIT NONE
     !>@brief 
     !> cesiod calculates the amounts of cesium and iodine isotopes available to the fuel rod gap.
@@ -141,7 +141,8 @@ MODULE Cs_I
     !
     END SUBROUTINE cesiod
 !
-END MODULE Cs_I
+END MODULE Cs_I_fraptran
+
 
 
 

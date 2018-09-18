@@ -1,10 +1,10 @@
-MODULE spring
-    USE Kinds
+MODULE spring_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE math
-    USE materials
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE math_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -34,7 +34,7 @@ MODULE spring
     CONTAINS
     !
     SUBROUTINE spring_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -51,7 +51,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_create(label,mat,nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -109,7 +109,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -131,7 +131,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_temp()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -155,7 +155,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -201,7 +201,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -253,7 +253,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_write_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -278,7 +278,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -336,7 +336,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -353,5 +353,7 @@ MODULE spring
 
     END SUBROUTINE spring_deallocate
     !
-END MODULE spring
+END MODULE spring_frapcon
+
+
 

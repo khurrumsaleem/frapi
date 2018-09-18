@@ -1,17 +1,17 @@
-MODULE Material_Properties
-    USE Kinds
+MODULE Material_Properties_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : CladType, imox, ounit, GasFraction
     USE uraniumdioxide_fraptran
     USE mox_fraptran
     USE zirconium_fraptran_fraptran
-    USE zirconium_fraptran_fraptranDioxide
-    USE NCGases
-    USE Crud_Data
+    USE zirconium_fraptran_fraptranDioxide_fraptran
+    USE NCGases_fraptran
+    USE Crud_Data_fraptran
     USE plenumspring_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module calls thermal and mechanical properties for the following materials:
+    !> This module calls thermal and mechanical properties for the following materials_fraptran:
     !> 1) Fuels (imox) : UO2, MOX
     !> 2) Gas (idxgas): He, Ar, Kr, Xe, H2, N2, Air, H2O
     !> 3) Cladding (CladType): Zirc-2, Zirc-4, M5, ZIRLO, Optimized ZIRLO
@@ -39,7 +39,7 @@ MODULE Material_Properties
     REAL(r8k) FUNCTION MatProperty (Material, Property, Temperature, Burnup, OMRatio, Fraction_TD, Gadolinia, Pu, Fraction_Melt, &
       &                             Tmelt, HeatofFusion, Flux, Fluence, ColdWork, OxygenConcen, Oxide, Pressure, &
       &                             Width, GasComposition) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -239,7 +239,8 @@ MODULE Material_Properties
     
     END FUNCTION MatProperty
     !
-END MODULE Material_Properties
+END MODULE Material_Properties_fraptran
+
 
 
 

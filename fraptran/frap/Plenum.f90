@@ -1,11 +1,11 @@
-MODULE Plenum
-    USE Kinds
+MODULE Plenum_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
-    !> This module contains the correlations used to compute the temperature of the gas in the fuel rod plenum
+    !> This module contains the correlations used to compute the temperature of the gas in the fuel rod plenum_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -21,12 +21,12 @@ MODULE Plenum
     !
     SUBROUTINE plnt (od, id, vp, powrod, tau, slen, diac, dias, tip, tsurf, PlenumGasMoles, GasFraction, &
       &              denc, NSteadyTrans, Ncoils, nodpln, q1, q2, abar, bbar, tp, GasPress, nconv)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, sechr, psinm2, gtolb, tfk, tfr
     USE functions_fraptran, ONLY : simq
     USE variables_fraptran, ONLY : ounit, ndebug
-    USE Material_Properties, ONLY : MatProperty
-    USE NCGases, ONLY : ngases
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes temperature of gas in fuel rod plenum
@@ -444,9 +444,9 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Grashof (Length, Tplen, Tfuel)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     USE variables_fraptran, ONLY : GasFraction
     IMPLICIT NONE
     !>@brief
@@ -513,9 +513,9 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Prandtl (Tplen)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     USE variables_fraptran, ONLY : GasFraction
     IMPLICIT NONE
     !>@brief
@@ -571,7 +571,7 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Nusselt (Gr, Pr, Orientation, Geometry, HeatType)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -721,7 +721,8 @@ MODULE Plenum
     !
     END FUNCTION Nusselt
     !
-END MODULE Plenum
+END MODULE Plenum_fraptran
+
 
 
 

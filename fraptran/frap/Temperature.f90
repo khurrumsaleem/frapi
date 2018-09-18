@@ -1,16 +1,16 @@
-MODULE Temperature
-    USE Kinds
+MODULE Temperature_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE energy (EOSTemp, RadialBound, fotmtl, tempcs, EnrgyMeltZ, EnrgyMeltZp1, qmaxmelt, &
       &               qmaxmeltp1, enthp, tbar, k, nvoid, igpnod)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
-    USE phypro_h
+    USE phypro_h_fraptran
     USE variables_fraptran, ONLY : naxn, nmesh
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> Subroutine energy computes radially averaged fuel enthalpy
@@ -75,7 +75,8 @@ MODULE Temperature
     !
     END SUBROUTINE energy
     !
-END MODULE Temperature
+END MODULE Temperature_fraptran
+
 
 
 

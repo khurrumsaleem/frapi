@@ -1,11 +1,11 @@
-MODULE GadRadPower
-    USE Kinds
+MODULE GadRadPower_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> Module GadRadPower contains the Gadolinia radial power profiles for LWR and HWR
+    !> Module GadRadPower contains the Gadolinia radial power profiles for LWR and HWR_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -344,7 +344,7 @@ MODULE GadRadPower
     CONTAINS
     !
     SUBROUTINE LoadGadProperties ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -389,7 +389,7 @@ MODULE GadRadPower
     !
     !
     SUBROUTINE Gdradpow (rprm1, rpow, gadolin, rnorm, buave)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -495,6 +495,8 @@ MODULE GadRadPower
     !
     END SUBROUTINE GdRadPow
     !
-END MODULE GadRadPower
+END MODULE GadRadPower_frapcon
+
+
 
 

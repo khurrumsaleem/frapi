@@ -1,7 +1,7 @@
-MODULE excb_h
-    USE Kinds
+MODULE excb_h_fraptran
+    USE Kinds_fraptran
     !>@brief
-    !> This module replaces the comdeck excb
+    !> This module replaces the comdeck excb_fraptran
     IMPLICIT NONE
     TYPE excb_var
         INTEGER(ipk) :: ndim
@@ -78,7 +78,8 @@ MODULE excb_h
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tplbot   !6,2
     !
 
-END MODULE excb_h
+END MODULE excb_h_fraptran
+
 
 
 

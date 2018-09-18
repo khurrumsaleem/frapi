@@ -1,7 +1,7 @@
-MODULE gascav3d
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
+MODULE gascav3d_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> 3D gas cavity
@@ -390,7 +390,8 @@ MODULE gascav3d
     RETURN
 
   END SUBROUTINE gascav3d_deallocate
-END MODULE gascav3d
+END MODULE gascav3d_fraptran
+
 
 
 

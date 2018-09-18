@@ -1,9 +1,9 @@
-MODULE spring
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE materials_frap
-    USE sparse_matrix
+MODULE spring_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE materials_frap_fraptran
+    USE sparse_matrix_fraptran
     USE variables_fraptran, ONLY : ounit
     !>@brief
     !> Spring: 2-noded two or three Dimensional linear spring element
@@ -33,7 +33,7 @@ MODULE spring
     CONTAINS
     !
     SUBROUTINE spring_init()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize POINTERs
@@ -49,7 +49,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_create (label, mat, nodes)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     ! Create new SPRING element
     INTEGER(ipk), INTENT(IN) :: label,mat,nodes(2)
@@ -105,7 +105,7 @@ MODULE spring
     !
     !
     SUBROUTINE spring_sparse_matrix()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for spring elements
@@ -124,7 +124,7 @@ MODULE spring
 
 
     SUBROUTINE spring_temp()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Calculate temperature dependent properties of the element
@@ -146,7 +146,7 @@ MODULE spring
 
 
     SUBROUTINE spring_fint()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Internal force vector
@@ -194,7 +194,7 @@ MODULE spring
 
 
     SUBROUTINE spring_stIff()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the spring element
@@ -248,7 +248,7 @@ MODULE spring
 
 
     SUBROUTINE spring_Write_output(nunit)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -270,7 +270,7 @@ MODULE spring
 
 
     SUBROUTINE spring_read_output(nunit)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -325,7 +325,7 @@ MODULE spring
 
 
     SUBROUTINE spring_deallocate()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Deallocate element Database
@@ -339,7 +339,8 @@ MODULE spring
     ENDDO
 
   END SUBROUTINE spring_deallocate
-END MODULE spring
+END MODULE spring_fraptran
+
 
 
 

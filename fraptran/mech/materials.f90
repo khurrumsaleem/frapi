@@ -1,9 +1,9 @@
-MODULE materials_frap
-    USE Kinds
-    USE common_parameters
-    USE cladding
-    USE m5_cladding
-    USE nuclear_fuel
+MODULE materials_frap_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE cladding_fraptran
+    USE m5_cladding_fraptran
+    USE nuclear_fuel_fraptran
     IMPLICIT NONE
     !>@brief
     !> Material parameters
@@ -200,7 +200,7 @@ CONTAINS
     TYPE(mat_parameter), POINTER :: current_par
     REAL(r8k), DIMENSION(:,:), POINTER :: mData
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_fraptran
     SELECT CASE ( number )
     CASE ( 0 )
        mat_par = 0.0_r8k
@@ -299,7 +299,7 @@ CONTAINS
     LOGICAL :: mat_plastic
     TYPE(mat_type), POINTER :: current
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_fraptran
     SELECT CASE ( mat )
     CASE ( 0 )
        mat_plastic = .FALSE.
@@ -377,7 +377,7 @@ CONTAINS
     LOGICAL :: mat_creep
     TYPE(mat_type), POINTER :: current
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_fraptran
     SELECT CASE ( mat )
     CASE ( 0 )
        mat_creep = .FALSE.
@@ -428,7 +428,7 @@ CONTAINS
     REAL(r8k) :: sigys,siginf,delta,plmod,fy,dfy,dgamma,tmp,epseff
     LOGICAL :: plinc
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_fraptran
     SELECT CASE ( mat )
     CASE ( 1001 )
        ! UO2 fuel properties
@@ -445,7 +445,7 @@ CONTAINS
        RETURN
     END SELECT
 
-    ! Use default isotropic plasticity model
+    ! Use default isotropic plasticity model_fraptran
 
     ! No plastic calculation
     IF ( .NOT.mat_plastic(mat) ) RETURN
@@ -498,7 +498,7 @@ CONTAINS
 
     deds = 0.0_r8k
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_fraptran
     SELECT CASE ( mat )
     CASE ( 1001 )
        ! UO2 fuel properties
@@ -758,7 +758,8 @@ CONTAINS
 
   END SUBROUTINE mat_deallocate
 
-END MODULE materials_frap
+END MODULE materials_frap_fraptran
+
 
 
 

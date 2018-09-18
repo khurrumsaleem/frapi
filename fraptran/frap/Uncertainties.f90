@@ -1,13 +1,13 @@
-MODULE Uncertainties
-    USE Kinds
+MODULE Uncertainties_fraptran
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE Dyna_h
-    USE resti_h
+    USE Dyna_h_fraptran
+    USE resti_h_fraptran
     USE conversions_fraptran
-    USE Uncertainty_Vals
+    USE Uncertainty_Vals_fraptran
     IMPLICIT NONE
     !>@brief
-    !> Module Uncertainty is used to:
+    !> Module Uncertainty is used to_fraptran:
     !> 1) Bias the following parameters by a fraction of their value:
     !       a) Fuel thermal conductivity
     !       b) Cladding thermal conductivity
@@ -80,7 +80,7 @@ MODULE Uncertainties
     ! Internal
     !
     ! InputStat - identifier for input error (< 0 = EOF, > 0 = input error)
-    USE ErrorMsg, ONLY : namelist_read_error
+    USE ErrorMsg_fraptran, ONLY : namelist_read_error
     IMPLICIT NONE
     !
     REAL(r8k) :: plotsteps = 0.0_r8k        ! Calculated number of plot output steps
@@ -245,10 +245,10 @@ MODULE Uncertainties
     !
     !
     SUBROUTINE dktout (node)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran
-    USE Temperature
+    USE Temperature_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine dktout prints out the code results of interest to the dkt file for DAKOTA post-processing
@@ -817,7 +817,8 @@ MODULE Uncertainties
     !
     !
     !
-END MODULE Uncertainties
+END MODULE Uncertainties_fraptran
+
 
 
 

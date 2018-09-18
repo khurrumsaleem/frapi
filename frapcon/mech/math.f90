@@ -1,7 +1,7 @@
-MODULE math
-    USE Kinds
+MODULE math_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> General purpose mathematical functions and subroutines
@@ -9,7 +9,7 @@ MODULE math
     CONTAINS
     !
     REAL(r8k) FUNCTION vnorm (n, vect)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -31,7 +31,7 @@ MODULE math
     !
     !
     SUBROUTINE inverse3 (A, Ainv, detA)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -66,7 +66,7 @@ MODULE math
     !
     !
     FUNCTION matmul_AAt (A) RESULT (C)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -101,7 +101,7 @@ MODULE math
 
 
     FUNCTION matmul_ABAt (A, B) RESULT(C)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -136,7 +136,7 @@ MODULE math
     !
     !
     FUNCTION matmul_AiBAit (A, B) RESULT(C)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -192,7 +192,7 @@ MODULE math
     !
     !
     SUBROUTINE prin2cart (L, V, C)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -213,7 +213,7 @@ MODULE math
     !
     !
     SUBROUTINE jacobi2 (be, dl2, nvect)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -257,7 +257,7 @@ MODULE math
     !
     !
     SUBROUTINE jacobi3 (be, dl2, nvect)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -386,5 +386,7 @@ MODULE math
 
     END SUBROUTINE jacobi3
     !
-END MODULE math
+END MODULE math_frapcon
+
+
 

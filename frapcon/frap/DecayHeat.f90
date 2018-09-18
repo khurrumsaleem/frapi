@@ -1,11 +1,11 @@
-MODULE Decay
-    USE Kinds
+MODULE Decay_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This module contains decay heat data and calculations
+    !> This module contains decay heat data and calculations_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -23,7 +23,7 @@ MODULE Decay
     !
     !
     SUBROUTINE DecayHeatSetup
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : im, qmpy, ProblemTime, it, na, jst
     IMPLICIT NONE
@@ -55,7 +55,7 @@ MODULE Decay
     INTEGER(ipk) :: i, k
     REAL(r8k) :: t0, ts, frac, dt
     REAL(r8k), DIMENSION(na-1) :: pkw
-    ! Determine the # of decay timesteps (Note: Skip over ProblemTime(0) because must have a power step to have decay)
+    ! Determine the # of decay timesteps (Note: Skip over ProblemTime(0) because must have a power step to have decay_frapcon)
     NDecays = COUNT(qmpy(1:im) < 0.0_r8k)
     IF (NDecays > 0) THEN ! Decay calculation has been requested by user
         ! Allocate the variables associated with DecayHeat and set the problemtimes for the start/stop of decay heating
@@ -80,7 +80,7 @@ MODULE Decay
     !
     !
     SUBROUTINE DecayHeat
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : im, qmpy, ProblemTime, it, na, qaxnorm, dco, jst, jpeak
     IMPLICIT NONE
@@ -180,10 +180,10 @@ MODULE Decay
     !
     !
     REAL(r8k) FUNCTION fans51 (t0, ts, AxNode) RESULT (Pd)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : jst, it, qmpy, qaxnorm, ProblemTime
-    USE Comde
+    USE Comde_frapcon
     IMPLICIT NONE
     !>@brief
     !> This is the function for the ANS 5.1 decay heat correlation.
@@ -284,7 +284,7 @@ MODULE Decay
       &         (/ lambdaU235, lambdaU238, lambdaPu239, lambdaPu241 /), (/ NGroups, NNuclides /) )
     CHARACTER(LEN=6), DIMENSION(NNuclides), PARAMETER :: NuclideID = (/ 'U-235 ' , 'U-238 ', 'Pu-239', 'Pu-241' /)
     !
-    ! note (a) in table 9 of ANS-5.1-2004 says to use 1e13 for any time over 1e13
+    ! note (a) in table 9 of ANS-5.1-2004 says to use 1e13 for any time over 1e13_frapcon
     t00 = MIN(t0, Tinfinity)
     !
     ! Calculate relative power fractions coming from each Nuclide based on fuel composition (atom basis)
@@ -292,7 +292,7 @@ MODULE Decay
     NuclidePowerFraction(2,:,:) = pfU238(:,:)
     NuclidePowerFraction(3,:,:) = pfPu239(:,:)
     ! Note: Since there is no correlation provided for Pu-240 or Pu-242, they are added to Pu-241
-    !       because it initially (first several hundred seconds) has higher power than Pu-239, thus
+    !       because it initially _frapcon(first several hundred seconds) has higher power than Pu-239, thus
     !       making the prediction more conservative. However, these values are typically very small 
     !       ( < ~0.3%) and will not have a major impact on results
     NuclidePowerFraction(4,:,:) = pfPu240(:,:) + pfPu241(:,:) + pfPu242(:,:)
@@ -300,7 +300,7 @@ MODULE Decay
     DO i = 1, NNuclides
         ! Assume all Nuclides produce 200 MeV/Fision
         Q(i) = MeVFission
-        ! Use equation for F(t,T) in note (a) of table 9 in ANS-5.1-2004
+        ! Use equation for F_frapcon(t,T) in note (a) of table 9 in ANS-5.1-2004
         ShutDownTime = ts
         Pmax = 0.0_r8k
         DO a = (it), 1, -1
@@ -333,7 +333,7 @@ MODULE Decay
     CONTAINS
         !
         REAL(r8k) FUNCTION F (ShutDownTime, OperationTime, Nuclide)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -369,9 +369,9 @@ MODULE Decay
         !
         !
         REAL(r8k) FUNCTION G (ShutDownTime, OperationTime, FIFA)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
-        USE Functions
+        USE Functions_frapcon
         IMPLICIT NONE
         !>@brief
         !> This function calculates the factor which accounts for neutron capture in fission products
@@ -428,7 +428,7 @@ MODULE Decay
         !
         !
         REAL(r8k) FUNCTION PdHE (MaxPower, ShutDownTime, OperationTime, R)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -465,7 +465,7 @@ MODULE Decay
         !
         !
         REAL(r8k) FUNCTION FU239 (ShutDownTime, OperationTime, R)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -502,7 +502,7 @@ MODULE Decay
         !
         !
         REAL(r8k) FUNCTION FNp239 (ShutDownTime, OperationTime, R)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -545,7 +545,7 @@ MODULE Decay
     !
     !
     SUBROUTINE AllocateDecayHeat
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : im
     IMPLICIT NONE
@@ -568,7 +568,7 @@ MODULE Decay
     !
     !
     SUBROUTINE DeAllocateDecayHeat
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -583,6 +583,8 @@ MODULE Decay
     !
     END SUBROUTINE DeAllocateDecayHeat
     !
-END MODULE Decay
+END MODULE Decay_frapcon
+
+
 
 

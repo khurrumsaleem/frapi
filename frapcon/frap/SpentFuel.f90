@@ -1,9 +1,9 @@
-MODULE SpentFuel
-    USE Kinds
+MODULE SpentFuel_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines needed for reading the $spentfuel block 
+    !> This module contains the subroutines needed for reading the _frapcon$spentfuel block 
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -12,13 +12,13 @@ MODULE SpentFuel
     CONTAINS
     !
     SUBROUTINE SpentFuelRead ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : iunit, ounit, addgmles, addswell, stopox, IsModelingSpentFuel
-    USE DatingData, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
+    USE DatingData_frapcon, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
       &                    creeptabtime, creeptabtemp, creeptabstress, idatingcreep, ncreeptab, &
       &                    Allocate_DatingData
-    USE FileIO, ONLY : Namelist_Read_Error
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
     IMPLICIT NONE
     !>@brief
     !> Reads the input file for the block $spentfuel, and if it exists, reads the data and allocates
@@ -155,10 +155,10 @@ MODULE SpentFuel
     !
     !
     SUBROUTINE SpentFuelErrorCheck
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit, iquit
-    USE DatingData, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
+    USE DatingData_frapcon, ONLY : ncreephist, creeptime, ncreepstep ,creeppooltime, datingtstep, &
       &                    creeptabtime, creeptabtemp, creeptabstress, idatingcreep, ncreeptab, &
       &                    Allocate_DatingData
     IMPLICIT NONE
@@ -209,5 +209,7 @@ MODULE SpentFuel
     !
     END SUBROUTINE SpentFuelErrorCheck
     !
-END MODULE SpentFuel
+END MODULE SpentFuel_frapcon
+
+
 

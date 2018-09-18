@@ -1,17 +1,17 @@
-MODULE Material_Properties
-    USE Kinds
+MODULE Material_Properties_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : icm, imox, ounit, idxgas
-    USE UraniumDioxide
-    USE MOX
-    USE Zirconium
-    USE ZirconiumDioxide
-    USE Gas
-    USE Crud
-    USE PlenumSpring
+    USE UraniumDioxide_frapcon
+    USE MOX_frapcon
+    USE Zirconium_frapcon
+    USE ZirconiumDioxide_frapcon
+    USE Gas_frapcon
+    USE Crud_frapcon
+    USE PlenumSpring_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module calls thermal and mechanical properties for the following materials:
+    !> This module calls thermal and mechanical properties for the following materials_frapcon:
     !> 1) Fuels (imox) : UO2, MOX
     !> 2) Gas (idxgas): He, Ar, Kr, Xe, H2, N2, Air, H2O
     !> 3) Cladding (icm): Zirc-2, Zirc-4, M5, ZIRLO, Optimized ZIRLO
@@ -26,7 +26,7 @@ MODULE Material_Properties
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (Material, Property, Temperature, Burnup, Burnup_prev, Power) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -167,5 +167,7 @@ MODULE Material_Properties
     !
     END FUNCTION MatProp
     !
-END MODULE Material_Properties
+END MODULE Material_Properties_frapcon
+
+
 

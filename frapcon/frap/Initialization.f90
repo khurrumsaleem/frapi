@@ -1,10 +1,10 @@
-MODULE Initialization
-    USE Kinds
+MODULE Initialization_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to initialize the FRAPCON problem by reading
+    !> This module contains the subroutines used to initialize the FRAPCON problem by reading_frapcon
     !> in the main input blocks and performing necesary unit conversions and error checking.
     !> Subroutines include inital, check, and ResetTimesteps
     !>@author
@@ -15,20 +15,20 @@ MODULE Initialization
     CONTAINS
     !
     SUBROUTINE inital
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon
-    USE DatingData
-    USE Refabrication
-    USE Output_Data, ONLY : print1
-    USE Burn, ONLY : turbin
-    USE Functions, ONLY : terp
-    USE Decay, ONLY : fpdcay, DecayModel, DecayHeat
-    USE Gas, ONLY : ngases
-    USE Developer
-    USE SpentFuel
-    USE FileIO, ONLY : Namelist_Read_Error
+    USE DatingData_frapcon
+    USE Refabrication_frapcon
+    USE Output_Data_frapcon, ONLY : print1
+    USE Burn_frapcon, ONLY : turbin
+    USE Functions_frapcon, ONLY : terp
+    USE Decay_frapcon, ONLY : fpdcay, DecayModel, DecayHeat
+    USE Gas_frapcon, ONLY : ngases
+    USE Developer_frapcon
+    USE SpentFuel_frapcon
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
     IMPLICIT NONE
     !> @brief
     !> Subroutine inital declares the default values before the input
@@ -238,7 +238,7 @@ MODULE Initialization
     dumarray2 = 0.0_r8k
     ! If fraptran start tape made, change jdlpr to 0
     IF (ntape > 0) jdlpr = 0
-    ! For HWR Use rprm1=2.21 based on JNM 255,222-233
+    ! For HWR Use rprm1_frapcon=2.21 based on JNM 255,222-233
     IF (iplant == -4) rprm1 = 2.21_r8k
     ! Make grainsize be 10 micrometers, regardless of user input value
     grnsize = 10.0_r8k
@@ -600,7 +600,7 @@ MODULE Initialization
     DO jj = 1, nt
         DO i = 1, nr
             crad(i,jj) = (1.0_r8k - (REAL(i-1) / REAL(nr-1)) ** 3) * (dp(jj) / 2.0_r8k - rc(jj)) + rc(jj)
-            ! Subroutines fueltp and tubrnp use a reversed nodalization
+            ! Subroutines fueltp and tubrnp use a reversed nodalization_frapcon
             rrev(nr-(i-1),jj) = crad(i,jj)
         END DO
     END DO
@@ -813,10 +813,10 @@ MODULE Initialization
     !
     !
     SUBROUTINE check
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE DatingData
+    USE DatingData_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutines checks the input file for errors
@@ -1146,10 +1146,10 @@ MODULE Initialization
     !
     !
     SUBROUTINE ResetTimesteps
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE Functions, ONLY : ShiftArray
+    USE Functions_frapcon, ONLY : ShiftArray
     !>@brief
     !> This subroutine resets the # of timesteps to a user specified timestep interval
     !>@author
@@ -1332,5 +1332,7 @@ MODULE Initialization
     !
     END SUBROUTINE ResetTimesteps
     !
-END MODULE Initialization
+END MODULE Initialization_frapcon
+
+
 

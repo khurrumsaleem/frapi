@@ -1,19 +1,19 @@
 MODULE variables_fraptran
-    USE Kinds
-    USE bcdcom_h
-    USE bloon_h
-    USE collct_h
-    USE CoolantProperties
-    USE Dyna_h
-    USE excb_h
-    USE FissionGasRelease_h
-    USE frapc
-    USE HeatConduction_h
-    USE htcb_h
-    USE modcom_h
-    USE phypro_h
-    USE resti_h
-    USE scalr_h
+    USE Kinds_fraptran
+    USE bcdcom_h_fraptran
+    USE bloon_h_fraptran
+    USE collct_h_fraptran
+    USE CoolantProperties_fraptran
+    USE Dyna_h_fraptran
+    USE excb_h_fraptran
+    USE FissionGasRelease_h_fraptran
+    USE frapc_fraptran
+    USE HeatConduction_h_fraptran
+    USE htcb_h_fraptran
+    USE modcom_h_fraptran
+    USE phypro_h_fraptran
+    USE resti_h_fraptran
+    USE scalr_h_fraptran
     IMPLICIT NONE
     !
     REAL(r8k) :: maxfueltemp = 0.0_r8k
@@ -288,7 +288,7 @@ MODULE variables_fraptran
     !
     !
     !>@brief
-    !> This Module replaces the comdeck numcom
+    !> This Module replaces the comdeck numcom_fraptran
     TYPE numcom_var
         INTEGER(ipk) :: idebug         !
         INTEGER(ipk) :: ncmesh         ! User specified # of equal area nodes in the cladding
@@ -338,7 +338,7 @@ MODULE variables_fraptran
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: pazp
     !
     !>@brief
-    !> This module replaces the powcom common block.
+    !> This module replaces the powcom common block_fraptran.
     !> It holds the radial power profile & cladding power.
     TYPE powcom_var
         ! # of pairs of radial power profiles values supplied in RadPowProfile
@@ -2456,6 +2456,7 @@ MODULE variables_fraptran
     END SUBROUTINE Allocate_frapc_var
     !
 END MODULE variables_fraptran
+
 
 
 

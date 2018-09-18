@@ -1,11 +1,11 @@
-MODULE cont3d
-    USE Kinds
+MODULE cont3d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE math
-    USE geometry_fpn
-    USE materials
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE math_frapcon
+    USE geometry_fpn_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> 3D contact element
@@ -50,7 +50,7 @@ MODULE cont3d
     CONTAINS
     !
     SUBROUTINE cont3d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -73,7 +73,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_create_surf (label, mat, surf)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -144,7 +144,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_delete_surf (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -232,7 +232,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_activate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -295,7 +295,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_create (label, mat, surf, nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -377,7 +377,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_delete (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -433,7 +433,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -458,7 +458,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_gap (x_node, gap, nv, tv, xi, shapef)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -580,7 +580,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -638,7 +638,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1234,7 +1234,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1245,7 +1245,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1275,7 +1275,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1345,7 +1345,7 @@ MODULE cont3d
     !
     !
     SUBROUTINE cont3d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1376,5 +1376,7 @@ MODULE cont3d
 
     END SUBROUTINE cont3d_deallocate
     !
-END MODULE cont3d
+END MODULE cont3d_frapcon
+
+
 

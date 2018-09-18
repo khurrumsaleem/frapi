@@ -1,12 +1,12 @@
-MODULE Ballooning
+MODULE Ballooning_fraptran
     !>@brief
-    !> This module contains the subroutines used to calculate the cladding ballooning.
+    !> This module contains the subroutines used to calculate the cladding ballooning_fraptran.
     !> Subroutines include balon2 and far1
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
+    USE Kinds_fraptran
     USE zrmodels_fraptran, ONLY : cmlimt, ckmn, caniso, caneal, cstrni
     !
     IMPLICIT NONE
@@ -18,12 +18,12 @@ MODULE Ballooning
       &                frp, fap, acd, aad, ard, fnck, fncn, cwkf, cwnf, stemp, htcs, tstm, rtemp, acs, &
       &                aas, ars, ace, aae, are, dbyz, stresf, tstres, disp, deh, dea, rstran, rave, &
       &                stresr, stresa, radc, dz0, gadolinia)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran, ONLY : polate, simq
     USE variables_fraptran
-    USE Material_Properties, ONLY : MatProperty
-    USE NCGases, ONLY : ngases
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE 
     !>@brief
     !> the baloon Subroutine computes non symmetric cladding deformation
@@ -418,7 +418,7 @@ MODULE Ballooning
                 eps = 1.0_r8k - 1.0_r8k / f
                 !
                 ! calculate fuel thermal conductivity = conf
-                ! use Lucuta model with zero values for burnup and Gd
+                ! use Lucuta model with zero values for burnup and Gd_fraptran
                 ! tfavba, Fuel surface temperature used for fuel bulk average temperature
                 ! Note: why is burnup forced to 0.01 MWd/MTU, TD forced to 95% and OMRatio forced to 2?
                 conf = MatProperty (Material='FUEL', Property='THERMCOND', Temperature=tfavba, Burnup=0.1_r8k, OMRatio=2.0_r8k, &
@@ -827,13 +827,13 @@ MODULE Ballooning
     !
     !
         SUBROUTINE far1 (GasFraction, Baln2Twall, gadolin)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi
-    USE NCGases, ONLY : ngases
+    USE NCGases_fraptran, ONLY : ngases
     USE variables_fraptran, ONLY : ounit
-    USE bloon_h
-    USE phypro_h, ONLY : compmt
-    USE Material_Properties, ONLY : MatProperty
+    USE bloon_h_fraptran
+    USE phypro_h_fraptran, ONLY : compmt
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> This Subroutine calculates flow area reduction resulting from clad ballooning calculated in balon2.
@@ -914,7 +914,7 @@ MODULE Ballooning
     gaph = MatProperty (Material='GAS', Property='GCONR2', Temperature=tgbal, Pressure=psbal, &
       &                 Width=gave, GasComposition=GasFraction)
     
-    ! Use Lucuta model for fuel thermal conductivity with zero for burnup and Gd
+    ! Use Lucuta model for fuel thermal conductivity with zero for burnup and Gd_fraptran
     fuelk = MatProperty (Material='FUEL', Property='THERMCOND', Temperature=tf0bal, Burnup=0.01_r8k, OMRatio=2.0_r8k, &
       &                  Fraction_TD=0.96_r8k, Gadolinia=gadolin, Pu=compmt)
     ! circumferential temperature variation
@@ -1121,7 +1121,8 @@ MODULE Ballooning
     END SUBROUTINE far1
     !
     !
-    END MODULE Ballooning
+    END MODULE Ballooning_fraptran
+
 
 
 

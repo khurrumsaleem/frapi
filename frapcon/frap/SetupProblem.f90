@@ -1,11 +1,11 @@
-MODULE SetupProblem
-    USE Kinds
+MODULE SetupProblem_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE RunProperties
-    USE FEA_Setup
+    USE RunProperties_frapcon
+    USE FEA_Setup_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to set up the FRAPCON problem.
+    !> This module contains the subroutines used to set up the FRAPCON problem_frapcon.
     !> Subroutines include setup, iofiles, axhef
     !>@author
     !> Ken Geelhood, PNNL
@@ -15,16 +15,16 @@ MODULE SetupProblem
     CONTAINS
     !
     SUBROUTINE setup
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE DatingData, ONLY : idatingcreep, Allocate_DatingData, ncreeptab
-    USE Comde
-    USE Initialization, ONLY : inital
-    USE Gas, ONLY : Allocate_Gas
-    USE Decay, ONLY : DecayHeatSetup
-    USE GadRadPower, ONLY : LoadGadProperties
-    USE FileIO, ONLY : Namelist_Read_Error
+    USE DatingData_frapcon, ONLY : idatingcreep, Allocate_DatingData, ncreeptab
+    USE Comde_frapcon
+    USE Initialization_frapcon, ONLY : inital
+    USE Gas_frapcon, ONLY : Allocate_Gas
+    USE Decay_frapcon, ONLY : DecayHeatSetup
+    USE GadRadPower_frapcon, ONLY : LoadGadProperties
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
     IMPLICIT NONE
     !> @brief
     !> Subroutine etup is called from frpcon and is used to read and process input and to set up the pointers 
@@ -98,7 +98,7 @@ MODULE SetupProblem
     !
     !
     SUBROUTINE axhef (qf1, x1)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : nunits, iq, qend, deltaz, WorkArray1, WorkArray2, WorkArray3, ounit, &
       &                   qaxnorm, naxim, jn, jpeak, avgqi, na, nt, fa, ir1, jjc
@@ -371,5 +371,7 @@ MODULE SetupProblem
     !
     END SUBROUTINE axhef
     !
-END MODULE SetupProblem
+END MODULE SetupProblem_frapcon
+
+
 

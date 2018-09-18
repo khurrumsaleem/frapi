@@ -1,6 +1,6 @@
-MODULE math
-    USE Kinds
-    USE common_parameters
+MODULE math_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> General purpose mathematical functions and Subroutines
@@ -8,7 +8,7 @@ MODULE math
     CONTAINS
     
     REAL(r8k) PURE FUNCTION vnorm (n, vect)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Vector norm for vect(1:n)
@@ -29,7 +29,7 @@ MODULE math
     !
     !
     SUBROUTINE inverse3 (A, Ainv, detA)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Calculate inverse and determinant of matrix A(3,3)
@@ -62,7 +62,7 @@ MODULE math
     !
     !
     FUNCTION matmul_AAt(A) RESULT (C)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Matric multiplication C = A A^T for 3x3 matrices
@@ -96,7 +96,7 @@ MODULE math
     !
     !
     FUNCTION matmul_ABAt(A,B) RESULT(C)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Matrix multiplication C = A B A^T where A is general 3x3 matrix and
@@ -129,7 +129,7 @@ MODULE math
     !
     !
     FUNCTION matmul_AiBAit(A,B) RESULT(C)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Solve C = inv(A) B inv(A^T), where A is general 3x3 matrix B is symmetric
@@ -183,7 +183,7 @@ MODULE math
     !
     !
     SUBROUTINE  prin2cart(L,V,C)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Output condenced 3x3 symmetric tensor C from its eigenvalues L and eigen vectors V
@@ -202,7 +202,7 @@ MODULE math
     !
     !
     SUBROUTINE jacobi2 (be, dl2, nvect)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Solve eigen values and vectors for two Dimensional case
@@ -244,7 +244,7 @@ MODULE math
     !
     !
     SUBROUTINE jacobi3 (be, dl2, nvect)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Solve eigen values and vectors for three Dimensional case
@@ -374,7 +374,7 @@ MODULE math
     !
     !
     FUNCTION interpolate(n, Data_x, Data_y, xp) RESULT (yp)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !>
@@ -397,7 +397,8 @@ MODULE math
 
     END FUNCTION interpolate
     !
-END MODULE math
+END MODULE math_fraptran
+
 
 
 

@@ -1,5 +1,5 @@
-MODULE resti_h
-    USE Kinds
+MODULE resti_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     TYPE resti_var
@@ -168,7 +168,8 @@ MODULE resti_h
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: fluxz
     REAL(r8k), DIMENSION(:,:,:), ALLOCATABLE :: tplna
     !
-    END MODULE resti_h
+    END MODULE resti_h_fraptran
+
 
 
 

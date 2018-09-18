@@ -1,6 +1,6 @@
-MODULE nuclear_fuel
-    USE Kinds
-    USE common_parameters
+MODULE nuclear_fuel_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> UO2 fuel material properties
@@ -12,7 +12,7 @@ MODULE nuclear_fuel
     CONTAINS
     !
     FUNCTION fuel_mat_par (temp, keyword)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Return UO2 fuel material property
@@ -35,7 +35,7 @@ MODULE nuclear_fuel
     !
     !
     SUBROUTINE fuel_radial_Return (temp, mu, dtime, epseff0, taueff, gamma, dplmod)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Radial return for power law yield function
@@ -44,7 +44,8 @@ MODULE nuclear_fuel
 
     END SUBROUTINE fuel_radial_Return
     !
-END MODULE nuclear_fuel
+END MODULE nuclear_fuel_fraptran
+
 
 
 

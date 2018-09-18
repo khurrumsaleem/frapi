@@ -1,12 +1,12 @@
-MODULE RadialNodes
+MODULE RadialNodes_fraptran
     !>@brief
-    !> This module contains the subroutines used to determine the heat and relative weight in the radial nodes.
+    !> This module contains the subroutines used to determine the heat and relative weight in the radial nodes_fraptran.
     !> Subroutines include radheatsource and weights
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/14/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
@@ -14,7 +14,7 @@ MODULE RadialNodes
     !
     SUBROUTINE Radheatsource (Nmesh, Nfmesh, Ivoid, Kaxs, CladdingPower, AxNodElevat, Zvoid1, Zvoid2, &
       &                       Fdratio, Radii, VolumeWeightL, VolumeWeightR, Radsrco, Radsrc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : nradialnodes, naxialnodes
     IMPLICIT NONE
     !>@brief
@@ -104,7 +104,7 @@ MODULE RadialNodes
         
         Srcold = Srcnew
         
-        ! Radial source array for use in subroutines HT1SST and HT1TDP:
+        ! Radial source array for use in subroutines HT1SST and HT1TDP_fraptran:
         Radsrc(Kaxs,I) = Volsrc
 
     END DO
@@ -128,7 +128,7 @@ MODULE RadialNodes
     !
     !
     SUBROUTINE Weights (Nmesh, Gapmin, Radii, VolumeWeightL,  VolumeWeightR, AreaWeight)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : nradialnodes
     USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
@@ -188,7 +188,8 @@ MODULE RadialNodes
     
     END SUBROUTINE Weights
     !
-END MODULE RadialNodes
+END MODULE RadialNodes_fraptran
+
 
 
 

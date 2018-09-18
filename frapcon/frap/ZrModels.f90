@@ -1,9 +1,9 @@
-MODULE ZrModels
-    USE Kinds
+MODULE ZrModels_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the Zircaloy caldding models for annealing,  
+    !> This module contains the Zircaloy caldding models for annealing_frapcon,  
     !> yield stress, mechanical limits, cladding true stress and strain.
     !> Subroutines include caneal, ckmn, cmlimt, cstran, cstres
     !>@author
@@ -14,7 +14,7 @@ MODULE ZrModels
     CONTAINS
     !
     SUBROUTINE caneal
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit, cwkf, cwnf, fncn, fnck, delhs, avflux, ctemp, rtemp
     IMPLICIT NONE
@@ -121,7 +121,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE ckmn (ctemp, cexh2, ak, an, am)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : icm, cwkf, fnck, rstran
     IMPLICIT NONE
@@ -249,10 +249,10 @@ MODULE ZrModels
     !
     SUBROUTINE cmlimt (cinwid, cinrad, cdpres, caxrad, caxstr, deltmp, strnyt, strnye, strnue, strnie, &
       &                stsrpt, strrpe, cyldst, cyldse, cultse, cbrste, cbrsst, ctstrt)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : icm, fastfluence, excesh2, cladavgtemp, fnck, rstran, cwkf
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
     !> cmlimt calculates the following limit points of mechanical deformation. (1) true tangential stress at burst is
@@ -421,7 +421,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE cstran (ctemp, strest, cexh2, strant)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : rstran
     IMPLICIT NONE
@@ -474,7 +474,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE cstres (ctemp, strant, cexh2, strest)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : rstran
     IMPLICIT NONE
@@ -518,5 +518,7 @@ MODULE ZrModels
     !
     END SUBROUTINE cstres
     !
-END MODULE ZrModels
+END MODULE ZrModels_frapcon
+
+
 

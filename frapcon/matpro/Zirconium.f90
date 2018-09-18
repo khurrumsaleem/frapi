@@ -1,13 +1,13 @@
-MODULE Zirconium
-    USE Kinds
+MODULE Zirconium_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : siggro, RinterfacPress, ProblemTime, icm, cladelmod, ctmelt, &
       &                   chefus, ctranb, ctrane, ctranz, deloxy, j, it, coldwk, zro2o, cwkf, &
       &                   fnck, FastFlux, FastFluence, delhs, ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Zirconium Properties
+    !> This Module contains all Zirconium Properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !
@@ -19,7 +19,7 @@ MODULE Zirconium
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropZirc (property, temp) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -91,7 +91,7 @@ MODULE Zirconium
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module Zirconium. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module Zirconium_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -100,7 +100,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION cthcon (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -128,7 +128,7 @@ MODULE Zirconium
     !
     ! Notes:
     !
-    ! This version of cthcon does not use time, flux or coldwork as parameters in calculation of zircaloy thermal conductivity.
+    ! This version of cthcon does not use time_frapcon, flux or coldwork as parameters in calculation of zircaloy thermal conductivity.
     ! one standard deviation of this function = 1.01 w/m-k
     !
     REAL(r8k), INTENT(IN) :: ctemp
@@ -140,7 +140,7 @@ MODULE Zirconium
     !
     !
     SUBROUTINE ZircPhysProp
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -191,9 +191,9 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION ccp (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions, ONLY : polate
+    USE Functions_frapcon, ONLY : polate
     IMPLICIT NONE
     !>@brief
     !> ccp calculates the specific heat at constant pressure for zircaloys
@@ -248,7 +248,7 @@ MODULE Zirconium
     !
     !
     SUBROUTINE cthexp (ctemp, cathex, cdthex)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -317,7 +317,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION zoemis (ctmax, zroxid) RESULT (emissv)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -376,7 +376,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION celmod (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -413,7 +413,7 @@ MODULE Zirconium
     !
     ! The expected standard error was derived using additional data from the following references:
     ! (1) c. c. busby and c.r. woods (eds.) "properties of zircaloy-4 tubing", usaec report wapd-tm-585 (december 1966) p 65
-    ! (2) z. spasic, m. pavlovic and g. simis, conference on the use of zirconium alloys in nuclear reactors, marianske
+    ! (2) z. spasic, m. pavlovic and g. simis, conference on the use of zirconium alloys in nuclear reactors_frapcon, marianske
     !     lanze, czech. conf-681086 (1968) pp 277 - 284
     ! (3) r. l. mehan, modulus of elasticity of zircaloy-2 between room temperature and 1000 f, kapl-m-rlm-16 (july 1958)
     ! (4) d. o. northwood, i. m london, and l. e. bahen, journal of nuclear materials 55 (1975) pp 299-310
@@ -470,7 +470,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION cagrow ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -545,7 +545,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION cshear (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -618,7 +618,7 @@ MODULE Zirconium
     !
     !
     REAL(r8k) FUNCTION cmhard (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -647,5 +647,7 @@ MODULE Zirconium
     !
     END FUNCTION cmhard
     !
-END MODULE Zirconium
+END MODULE Zirconium_frapcon
+
+
 

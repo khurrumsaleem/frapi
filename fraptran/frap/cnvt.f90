@@ -1,10 +1,10 @@
-MODULE cnvt
-    USE Kinds
+MODULE cnvt_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE frapc
+    USE frapc_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the convert subroutines that are used to convert between SI and British values when linked with T/H CODE
+    !> This module contains the convert subroutines that are used to convert between SI and British values when linked with T_fraptran/H CODE
     !> This option is used when ncool = 7 and the flag convert_units = .TRUE.
     !>@Author
     !>Modified by Ian Porter, NRC
@@ -14,10 +14,10 @@ MODULE cnvt
     CONTAINS
     !
     SUBROUTINE cnvt12
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> Subroutine converts t/h code input in Module frapc from SI to British units
+    !> Subroutine converts t/h code input in Module frapc from SI to British units_fraptran
     !
     INTEGER(ipk) :: k, nrad, naxn, l
     REAL(r8k) :: z, p, tp, r, tmp
@@ -48,10 +48,10 @@ MODULE cnvt
     !
     !
     SUBROUTINE cnvt21
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This Subroutine converts frap code output in Module frapc from British to SI units
+    !> This Subroutine converts frap code output in Module frapc from British to SI units_fraptran
     !
     INTEGER(ipk) :: k
     REAL(r8k) :: z, hgap, douter, pgap
@@ -69,7 +69,8 @@ MODULE cnvt
     !
     END SUBROUTINE cnvt21
     !
-END MODULE cnvt
+END MODULE cnvt_fraptran
+
 
 
 

@@ -1,8 +1,8 @@
-MODULE cont2d
-    USE Kinds
-    USE common_parameters
-    USE materials_frap
-    USE sparse_matrix
+MODULE cont2d_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE materials_frap_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> 2D contact element
@@ -1180,7 +1180,8 @@ MODULE cont2d
     RETURN
 
   END SUBROUTINE cont2d_deallocate
-END MODULE cont2d
+END MODULE cont2d_fraptran
+
 
 
 

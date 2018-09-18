@@ -1,12 +1,12 @@
-MODULE emssf
-    USE Kinds
-    USE Material_Properties, ONLY : MatProperty
+MODULE emssf_fraptran
+    USE Kinds_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE emssf1(tclad, alpha, zroxid, fe)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
@@ -44,7 +44,7 @@ MODULE emssf
     !
     !
     SUBROUTINE emssf2 (Tfuel, Tclad, rf, gpthk, zroxid, fe)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
@@ -83,7 +83,8 @@ MODULE emssf
     
     END SUBROUTINE emssf2
     !
-END MODULE emssf
+END MODULE emssf_fraptran
+
 
 
 

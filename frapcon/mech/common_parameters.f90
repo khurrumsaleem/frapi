@@ -1,5 +1,5 @@
-MODULE common_parameters
-    USE Kinds
+MODULE common_parameters_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
@@ -127,8 +127,8 @@ MODULE common_parameters
         outwrt, &           ! True if the out put was written for the current load step
         init_fe, &          ! True if FE modelling paramers nedd initialization
         symmetric_matrix, & ! True If stiffness matrix is symmetric
-        elastic_matrix, &   ! True forces to Use elastic tangent stiffness matrix
-        pressure_matrix, &  ! Use stiffnes matrix due to pressure loads
+        elastic_matrix, &   ! True forces to Use elastic tangent stiffness matrix_frapcon
+        pressure_matrix, &  ! Use stiffnes matrix due to pressure loads_frapcon
         lprnmat, &          ! If true, print out tangent stiffness matrix and stop
         lerror, &           ! Error state
         quiet, &            ! If true suppress output to stdout excluding error messages
@@ -178,7 +178,7 @@ MODULE common_parameters
     CONTAINS
     !
     FUNCTION node_coords(i,csys) RESULT(x_node)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -211,7 +211,7 @@ MODULE common_parameters
     !
     !
     SUBROUTINE set_node_status(label,idim,status)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -233,7 +233,7 @@ MODULE common_parameters
     !
     !
     FUNCTION get_node_status (label, idim)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -254,5 +254,7 @@ MODULE common_parameters
     !
     END FUNCTION get_node_status
     !
-END MODULE common_parameters
+END MODULE common_parameters_frapcon
+
+
 

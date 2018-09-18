@@ -1,20 +1,20 @@
-MODULE Coolant
-    USE Kinds
+MODULE Coolant_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE cool (k, theta, RodLength, qcool, delz, dthr, tpo)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr, psift2, tkf, tfr
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, unit, ndebug, Time
-    USE collct_h
-    USE CoolantProperties
-    USE resti_h
-    USE heatconduction_h
-    USE sth2x, ONLY : sth2x2, sth2x3, sth2x5
-    USE Dyna_h, ONLY : CoolEnthalpy, CoolEnthalpy0, CoolDensity, CoolDensity0, CoolMassFlx
+    USE collct_h_fraptran
+    USE CoolantProperties_fraptran
+    USE resti_h_fraptran
+    USE heatconduction_h_fraptran
+    USE sth2x_fraptran, ONLY : sth2x2, sth2x3, sth2x5
+    USE Dyna_h_fraptran, ONLY : CoolEnthalpy, CoolEnthalpy0, CoolDensity, CoolDensity0, CoolMassFlx
     IMPLICIT NONE
     !>@brief
     !> Subroutine specifies coolant conditions for each coolant subchannel at time, Time, and elevation, z
@@ -107,7 +107,7 @@ MODULE Coolant
     ! tc2         = time of last file read of coolant conditions, sec (only used when nqchn = 2) ( input and output)
     ! gum         = unmodified mass flux (not given absolute value) (lbm/ft2-hr)
     ! lhtc/10     = switch to indicate whether or not coolant is helium If lhtc/10 = 9 , yes.  otherwise no.
-    ! pz1 through z2 are arrays that are set in sub. cool but which must be stored in main for use in future calls to sub. cool
+    ! pz1 through z2 are arrays that are set in sub. cool but which must be stored in main for use in future calls to sub_fraptran. cool
     ! prop    = array in which state properties are passed to and  from steam table Subroutines.  values are in si units
     ! prop(1) = coolant temperature  K
     !     (2) = coolant pressure     n/m2
@@ -321,7 +321,7 @@ MODULE Coolant
         acond(26,j) = 0.0_r8k
         acond(27,j) = 0.0_r8k
         GOTO 1000
-        ! Use coolant properties to calculate other conditions from pri, hi.
+        ! Use coolant properties to calculate other conditions from pri_fraptran, hi.
         ! This section uses si units
 100     CONTINUE
         !
@@ -571,7 +571,7 @@ MODULE Coolant
         nhinta = 1
         nhupta = 1
     ENDIF
-    ! If calculating local x, only use coolant conditions for first zone
+    ! If calculating local x, only use coolant conditions for first zone_fraptran
     IF (nqchn == 7) THEN
         i1 = 2
     ELSE
@@ -850,7 +850,7 @@ MODULE Coolant
     hbh(2) = tc1
     hbh(3) = hz2(l)
     hbh(4) = tc2
-    ! Ensure that tc2-tc1 does not cause a problem
+    ! Ensure that tc2-tc1 does not cause a problem_fraptran
     IF (tc2 == tc1) hbh(4) = hbh(4) + 1.0E-8
     !
     htc = polate (hbh, Time, nhbh)
@@ -859,7 +859,7 @@ MODULE Coolant
     pbh(2) = tc1
     pbh(3) = pz2(l)
     pbh(4) = tc2
-    ! Ensure that tc2-tc1 does not cause a problem
+    ! Ensure that tc2-tc1 does not cause a problem_fraptran
     IF (tc2 == tc1) pbh(4) = pbh(4) + 1.0E-8
     !
     pri = polate (pbh, Time, nhbh)
@@ -868,7 +868,7 @@ MODULE Coolant
     tbh(2) = tc1
     tbh(3) = tz2(l)
     tbh(4) = tc2
-    ! Ensure that tc2-tc1 does not cause a problem
+    ! Ensure that tc2-tc1 does not cause a problem_fraptran
     IF (tc2 == tc1) tbh(4) = tbh(4) + 1.0E-8
     !
     tbulk = polate (tbh, Time, nhbh)
@@ -891,10 +891,10 @@ MODULE Coolant
     !
     !
     SUBROUTINE transh (h0km1, h0k,  hkm1, gkm1, rhokm1, rhok, delt, delz, qtav, hk, gk, aasth, nogo)
-    USE Kinds
-    USE CoolantProperties, ONLY : Prop
-    USE sth2x, ONLY : sth2x5
-    USE resti_h, ONLY : nqchn
+    USE Kinds_fraptran
+    USE CoolantProperties_fraptran, ONLY : Prop
+    USE sth2x_fraptran, ONLY : sth2x5
+    USE resti_h_fraptran, ONLY : nqchn
     IMPLICIT NONE
     !
     ! Input
@@ -959,7 +959,7 @@ MODULE Coolant
     !
     !
     SUBROUTINE prntc (acond, z, Time, nchn, k, unit)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
@@ -1047,7 +1047,7 @@ MODULE Coolant
     !
     !
     SUBROUTINE prntmp (tbulk, CoolPress, Time, z, unit, k)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
@@ -1098,7 +1098,8 @@ MODULE Coolant
     END SUBROUTINE prntmp
     !
     !
-END MODULE Coolant
+END MODULE Coolant_fraptran
+
 
 
 

@@ -1,9 +1,9 @@
-MODULE data_grid
-    USE Kinds
+MODULE data_grid_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE quad4
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE quad4_frapcon
     IMPLICIT NONE
     !>@brief
     !> Handle input data that is given in different mesh than what the finite element model uses
@@ -23,7 +23,7 @@ MODULE data_grid
     CONTAINS
     !
     SUBROUTINE grid_1d_create (label, naxn, nradn, elev, rad)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -74,7 +74,7 @@ MODULE data_grid
     !
     !
     FUNCTION grid_1d_interp(label,x) RESULT (valuei)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -150,7 +150,7 @@ MODULE data_grid
     !
     !
     SUBROUTINE grid_1d_temp (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -170,7 +170,7 @@ MODULE data_grid
     !
     !
     SUBROUTINE grid_1d_volstr (label, mat)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -209,7 +209,7 @@ MODULE data_grid
     !
     !
     SUBROUTINE grid_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -229,5 +229,7 @@ MODULE data_grid
 
     END SUBROUTINE grid_deallocate
     !
-END MODULE data_grid
+END MODULE data_grid_frapcon
+
+
 

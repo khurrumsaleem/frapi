@@ -1,9 +1,9 @@
-MODULE cont1d
-    USE Kinds
+MODULE cont1d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> 1D contact element
@@ -59,7 +59,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_create (label, mat, nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -133,7 +133,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -157,7 +157,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -230,7 +230,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -289,7 +289,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -318,7 +318,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -347,7 +347,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -408,7 +408,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -425,5 +425,7 @@ MODULE cont1d
 
     END SUBROUTINE cont1d_deallocate
     !
-END MODULE cont1d
+END MODULE cont1d_frapcon
+
+
 

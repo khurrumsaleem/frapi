@@ -1,12 +1,12 @@
-MODULE rlpst
-    USE Kinds
-    USE frapc
-    USE scalr_h, ONLY : burad
+MODULE rlpst_fraptran
+    USE Kinds_fraptran
+    USE frapc_fraptran
+    USE scalr_h_fraptran, ONLY : burad
     USE conversions_fraptran, ONLY : sechr, ftin
-    USE HeatTransferCoefficient, ONLY : gaphtc
+    USE HeatTransferCoefficient_fraptran, ONLY : gaphtc
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the three files rlpst1.f, rlpst2.f & rlpst3.f.
+    !> This module replaces the three files rlpst1_fraptran.f, rlpst2.f & rlpst3.f.
     !> Those subroutines are all stored in this Moudle
     !>@author
     !> Ian Porter, NRC
@@ -15,7 +15,7 @@ MODULE rlpst
     CONTAINS
     !
     SUBROUTINE rlpst1 (igpnod, ncladi, nmesh, RadialBound)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -108,7 +108,7 @@ MODULE rlpst
       &                HeatFlux, CladMaxT, AxNodElevat, naxn, nmesh, igpnod, ncladi, RadialBound, &
       &                BOSTemp, WatrMetlEnrgy, EOSOxideThick, AlphaThk2, OxiThk2, AlphaThk22, CritHtFlux, &
       &                HGapAv, AxialPowr, powave)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -304,7 +304,7 @@ MODULE rlpst
       &                EOSTemp, ncladi, GasFraction, OxiThk2, RadialBound, igpnod, roughc, roughf, &
       &                frden, tflxc, FastFlux, coldw, AxBurnup, frpo2, CladMaxT, n1, TotalGasMoles, &
       &                HGapAv, fotmtl)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : nmesh
     IMPLICIT NONE
     !>@brief
@@ -438,7 +438,8 @@ MODULE rlpst
     !
     END SUBROUTINE rlpst3
     !
-END MODULE rlpst
+END MODULE rlpst_fraptran
+
 
 
 

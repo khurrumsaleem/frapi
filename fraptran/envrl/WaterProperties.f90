@@ -1,5 +1,5 @@
-MODULE WaterPropertyArray
-    USE Kinds
+MODULE WaterPropertyArray_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This contains the water property array that was the binary file sth2xt.
@@ -5417,7 +5417,8 @@ MODULE WaterPropertyArray
          Water_11251_12000, Water_12001_12750, Water_12751_13500, Water_13501_14250, Water_14251_15000, &
          Water_15001_15750, Water_15751_16140 ]
     !
-    END MODULE WaterPropertyArray
+    END MODULE WaterPropertyArray_fraptran
+
 
 
 

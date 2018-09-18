@@ -1,10 +1,10 @@
-MODULE FEA_Mesh
-    USE Kinds
+MODULE FEA_Mesh_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE FEA_Node
+    USE FEA_Node_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to create mesh for fuel rod
+    !> This module contains the subroutines used to create mesh for fuel rod_frapcon
     !> and to create forced DOF.
     !> Subroutines include mesh_fuel_rod, create_displ
     !>@author
@@ -15,12 +15,12 @@ MODULE FEA_Mesh
     CONTAINS
     !
     SUBROUTINE mesh_fuel_rod
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE geometry_fpn
-    USE pressure1d
-    USE cont1d
+    USE common_parameters_frapcon
+    USE geometry_fpn_frapcon
+    USE pressure1d_frapcon
+    USE cont1d_frapcon
     USE variables_frapcon, ONLY : na, nce, rc, dci, dco, ounit, cpl, icm, dp, deltaz
     IMPLICIT NONE
     !>@brief
@@ -214,9 +214,9 @@ MODULE FEA_Mesh
     !
     !
     SUBROUTINE create_displ (label, u_forced)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Create forced DOF values for a coupled set
@@ -243,5 +243,7 @@ MODULE FEA_Mesh
 
     END SUBROUTINE create_displ
     !
-END MODULE FEA_Mesh
+END MODULE FEA_Mesh_frapcon
+
+
 

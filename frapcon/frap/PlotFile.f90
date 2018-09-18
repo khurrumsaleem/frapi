@@ -1,12 +1,12 @@
-MODULE PlotFile
-    USE Kinds
+MODULE PlotFile_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE Gas, ONLY : ngases
-    USE RunProperties
+    USE Gas_frapcon, ONLY : ngases
+    USE RunProperties_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the output data for the plot file. The plot file can be read by
+    !> This module contains the output data for the plot file_frapcon. The plot file can be read by
     !> the FRAPPlot (Excel program) or APT Plot.
     !>@author
     !> Ian Porter, NRC
@@ -16,9 +16,9 @@ MODULE PlotFile
     CONTAINS
     !
     SUBROUTINE grafini ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Refabrication, ONLY : irefab, nrefab1, nrefab2
+    USE Refabrication_frapcon, ONLY : irefab, nrefab1, nrefab2
     IMPLICIT NONE
     !>@brief
     !> This subroutine writes the header information for the plot file
@@ -198,10 +198,10 @@ MODULE PlotFile
     !
     !
     SUBROUTINE grafout
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE FissionGas, ONLY : FGRData
-    USE Comde
+    USE FissionGas_frapcon, ONLY : FGRData
+    USE Comde_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine prints the data to the plot file at every timestep
@@ -1158,5 +1158,7 @@ MODULE PlotFile
     !
     END SUBROUTINE grafout
     !
-END MODULE PlotFile
+END MODULE PlotFile_frapcon
+
+
 

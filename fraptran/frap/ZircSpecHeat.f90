@@ -1,5 +1,5 @@
-MODULE ZircSpecHeat
-    USE Kinds
+MODULE ZircSpecHeat_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
@@ -7,7 +7,7 @@ MODULE ZircSpecHeat
     CONTAINS
     !
     SUBROUTINE ccpmod (RhoCp, BOSTemp, FinalTemp, k, rhoc, RhoCp0)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit, nmesh, ncladi, Time, ndebug
     IMPLICIT NONE
@@ -85,7 +85,7 @@ MODULE ZircSpecHeat
     !
     !
     REAL(r8k) FUNCTION ccpint (t1, t2)
-    USE Kinds
+    USE Kinds_fraptran
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : CladType, ounit
     IMPLICIT NONE
@@ -166,7 +166,8 @@ MODULE ZircSpecHeat
     !
     END FUNCTION ccpint
     !
-END MODULE ZircSpecHeat
+END MODULE ZircSpecHeat_fraptran
+
 
 
 

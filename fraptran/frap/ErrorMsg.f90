@@ -1,8 +1,8 @@
-MODULE ErrorMsg
-    USE Kinds
+MODULE ErrorMsg_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains subroutines that give error messages and abort the run if necessary.
+    !> This module contains subroutines that give error messages and abort the run if necessary_fraptran.
     !> Subroutines include 
     !>@author
     !> Ken Geelhood, PNNL
@@ -12,7 +12,7 @@ MODULE ErrorMsg
     CONTAINS
     !
     SUBROUTINE fabend
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine aborts execution.
@@ -28,7 +28,7 @@ MODULE ErrorMsg
     !
     !
     SUBROUTINE errori (nerr, nstop)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -79,7 +79,7 @@ MODULE ErrorMsg
     !
     !
     SUBROUTINE Namelist_Read_Error (FileUnit, NameListBlock)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -110,7 +110,8 @@ MODULE ErrorMsg
     !
     END SUBROUTINE Namelist_Read_Error
     !
-END MODULE ErrorMsg
+END MODULE ErrorMsg_fraptran
+
 
 
 

@@ -1,10 +1,10 @@
-MODULE solid1D
-    USE Kinds
+MODULE solid1D_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE sparse_matrix
-    USE Kinds
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
+    USE Kinds_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -73,7 +73,7 @@ MODULE solid1D
     CONTAINS
     !
     SUBROUTINE solid1d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -88,7 +88,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_create (label, mat, nodes, flag)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -191,7 +191,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_delete (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -252,7 +252,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -282,7 +282,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_temp()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -325,7 +325,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_deriv (x1, x2, x3, x4, dV, dNdx, x_gp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -354,7 +354,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_stress()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -509,7 +509,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -540,7 +540,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -613,7 +613,7 @@ MODULE solid1D
     !
     !
     FUNCTION tmodulus (Je, mu, lambda, kappa, sigdev, phyd, gamma, av, taueff, dplmod, deds) RESULT(tmod)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -626,7 +626,7 @@ MODULE solid1D
 
     tmod = 0.0_r8k
 
-    ! Use initial elastic matrix
+    ! Use initial elastic matrix_frapcon
     IF (elastic_matrix) THEN
         tmod(1) = 2.0_r8k * mu + lambda
         tmod(2) = 2.0_r8k * mu + lambda
@@ -715,7 +715,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -743,7 +743,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_strains()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -765,7 +765,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_write_output(nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -801,7 +801,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -879,7 +879,7 @@ MODULE solid1D
     !
     !
     SUBROUTINE solid1d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -896,5 +896,7 @@ MODULE solid1D
 
     END SUBROUTINE solid1d_deallocate
     !
-END MODULE solid1D
+END MODULE solid1D_frapcon
+
+
 

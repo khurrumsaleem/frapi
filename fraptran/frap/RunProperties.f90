@@ -1,9 +1,9 @@
-MODULE RunProperties
-    USE Kinds
+MODULE RunProperties_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to determine run time 
+    !> This module contains the subroutines used to determine run time _fraptran
     !> and data and write out page headers.
     !> Subroutines include clockx, edate, pghead, propid
     !>@author
@@ -16,7 +16,7 @@ MODULE RunProperties
     CONTAINS
     !
     SUBROUTINE clockx(word)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -32,7 +32,7 @@ MODULE RunProperties
     !
     !
     SUBROUTINE edate (chdate)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -56,7 +56,7 @@ MODULE RunProperties
     !
     !
     FUNCTION TimeStamp (ReqInfo) RESULT (ReqData)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -94,7 +94,8 @@ MODULE RunProperties
     !
     END FUNCTION TimeStamp
     !
-END MODULE RunProperties
+END MODULE RunProperties_fraptran
+
 
 
 

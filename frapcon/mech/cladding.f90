@@ -1,11 +1,11 @@
-MODULE cladding
-    USE Kinds
+MODULE cladding_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     USE variables_frapcon, ONLY : comp, FastFlux, rstran, nt, frcoef, ExcessH2Concen
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     USE conversions_frapcon
-    USE ZrModels
+    USE ZrModels_frapcon
     IMPLICIT NONE
     !>@brief
     !> Cladding material properties
@@ -17,7 +17,7 @@ MODULE cladding
     CONTAINS
     !
     REAL(r8k) FUNCTION clad_mat_par(temp,keyword)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -57,7 +57,7 @@ MODULE cladding
     !
     !
     SUBROUTINE clad_radial_return(temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -123,7 +123,7 @@ MODULE cladding
     !
     !
     SUBROUTINE clad_creep_calc(temp,mu,dtime,epseff0,taueff,gamma,deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -181,7 +181,7 @@ MODULE cladding
     !
     !
     SUBROUTINE crepr2(sig, edot, deds, ProblemTime, CladAveTemp, phi, CreepStrain)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -239,5 +239,7 @@ MODULE cladding
     !
     END SUBROUTINE crepr2
     !
-END MODULE cladding
+END MODULE cladding_frapcon
+
+
 

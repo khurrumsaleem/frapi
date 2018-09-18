@@ -1,5 +1,5 @@
 MODULE void_fraptran
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran
     IMPLICIT NONE
@@ -8,11 +8,11 @@ MODULE void_fraptran
     CONTAINS
     !
     SUBROUTINE gsflow
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran, ONLY : polate
     USE variables_fraptran
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !> @brief
     !> Calculates the pressure history in the plenum and swelling zone of a fuel rod. Laminar flowthrough an annulus is modeled.
@@ -59,7 +59,7 @@ MODULE void_fraptran
     !                        at axial node i, DishVperL(i) contains void volume per unit length at axial node i
     ! FuelCenterT(i)       - fuel centerline temperature   (F)
     ! VoverTRatio          - summation of volume/temperature terms, including plenum, in SS ideal gas equation (liters/k)
-    !                        (output for use in converged p estimate)
+    !                        (output for use in converged p estimate_fraptran)
     ! swllfr               - gas flow model switch. If # em20, on. otherwise off
     ! NSteadyTrans         - 1 = steady-state calculations. NSteadyTrans = 2 = transient
     ! CrackTemp(k)         - temperature of gas in fuel cracks at axial node k (F)
@@ -300,10 +300,10 @@ MODULE void_fraptran
       &                vgap, CrackTemp, OpenPorTemp, VolOpenPor, TotalVoidVol, VoidVolumeRatio, &
       &                vplenb, tplenb, BottomPlenumGasMoles, CentVoidVol, roughc, roughf, &
       &                AveDishTemp, TimeofGBSep)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, tfk, tkf
     USE variables_fraptran, ONLY : ounit, explenumv, explenumt, npair, Time, ndebug, n_void_volumes
-    USE collct_h
+    USE collct_h_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes pressure along entire length of fuel rod gas gap - small fuel deformation assumed
@@ -614,7 +614,7 @@ MODULE void_fraptran
     !
     !
     SUBROUTINE swlchk (vplenc, GasPress, TotalGasMoles, GasAx, tplen, naxn, Kswell, k)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     IMPLICIT NONE
     !>@brief
@@ -658,6 +658,7 @@ MODULE void_fraptran
     END SUBROUTINE swlchk
     !
 END MODULE void_fraptran
+
 
 
 

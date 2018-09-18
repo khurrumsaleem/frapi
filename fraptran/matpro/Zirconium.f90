@@ -1,12 +1,12 @@
 MODULE zirconium_fraptran_fraptran
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE functions_fraptran
     USE variables_fraptran, ONLY : CladType
-    USE Uncertainty_Vals
+    USE Uncertainty_Vals_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Zirconium Properties
+    !> This Module contains all Zirconium Properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !
@@ -61,7 +61,7 @@ MODULE zirconium_fraptran_fraptran
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (Zirc, property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -143,7 +143,7 @@ MODULE zirconium_fraptran_fraptran
     !
     REAL(r8k) FUNCTION ccp (Zirc)
     USE variables_fraptran, ONLY : CladType
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief 
     !> ccp calculates the specific heat at constant pressure for zircaloys.
@@ -238,14 +238,14 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     REAL(r8k) PURE FUNCTION celmod (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> celmod calculates cladding young's modulus as a function of temperature, fast neutron fluence, cold work,
     !> and average oxygen concentration. Grain orientation is assumed random.
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> celmod was coded by r. l. miller in march 1974.
     !> updated and corrected by b. w. burnham in october 1975
@@ -279,7 +279,7 @@ MODULE zirconium_fraptran_fraptran
     !
     ! The expected standard error was derived using additional data from the following references:
     ! (1) c. c. busby and c.r. woods (eds.) "properties of zircaloy-4 tubing", usaec report wapd-tm-585 (december 1966) p 65
-    ! (2) z. spasic, m. pavlovic and g. simis, conference on the use of zirconium alloys in nuclear reactors, marianske
+    ! (2) z. spasic, m. pavlovic and g. simis, conference on the use of zirconium alloys in nuclear reactors_fraptran, marianske
     !     lanze, czech. conf-681086 (1968) pp 277 - 284
     ! (3) r. l. mehan, modulus of elasticity of zircaloy-2 between room temperature and 1000 f, kapl-m-rlm-16 (july 1958)
     ! (4) d. o. northwood, i. m london, and l. e. bahen, journal of nuclear materials 55 (1975) pp 299-310
@@ -293,7 +293,7 @@ MODULE zirconium_fraptran_fraptran
     CASE (6, 8) ! Zr-1%Nb model from RRC-KI
         ! This code block calculates cladding Young's modulus as a function of temperature ; Data is derived from
         ! Volkov B.Yu. et.al."Material property library for H1-alloy cladding", Preprint IAE-4941/11, 1989.
-        ! Fedorov et.al."Influence of oxygen content and gamma-irradiation on the elastic module and internal
+        ! Fedorov et.al."Influence of oxygen content and gamma-irradiation on the elastic module and internal_fraptran
         ! friction pure zirconium" Metal Physics vol.32(3) p.621, 1971
         IF (Zirc%Temp > 1073.0_r8k) THEN
             celmod = 9.129e10_r8k - 4.5e7_r8k * Zirc%Temp
@@ -335,7 +335,7 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     REAL(r8k) PURE FUNCTION cmhard (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
@@ -383,13 +383,13 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     REAL(r8k) PURE FUNCTION cshear (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
     !>@brief
     !> cshear calculates the shear modulus of zircaloy-2 and -4 as a function of temperature, fast neutron fluence,
     !> cold work, and average oxygen concentration.  grain orientation is assumed random.
-    !> This is a MATPRO-11, Rev. 1 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 1 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> cshear was coded by r. l. miller, june 1974
     !> modified by d. l. hagrman december 1977
@@ -471,13 +471,13 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     REAL(r8k) FUNCTION cthcon (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType
-    USE Uncertainty_Vals
+    USE Uncertainty_Vals_fraptran
     IMPLICIT NONE
     !>@brief
     !> cthcon calculates cladding thermal conductivity as a function of temperature, time, flux, and cold work
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> This version of cthcon was developed by r.l. miller, dec 1975
     !> last modified by e.r. carlson in june 1978.
@@ -517,7 +517,7 @@ MODULE zirconium_fraptran_fraptran
             cdkdt = 0.0_r8k
         ENDIF
     CASE (1, 2, 3, 4, 5, 7, 9, 10, 11) ! Generic Zircaloy property from MATPRO
-        ! This version of cthcon does not use time, flux or coldwork as parameters in calculation of zircaloy thermal conductivity
+        ! This version of cthcon does not use time_fraptran, flux or coldwork as parameters in calculation of zircaloy thermal conductivity
         ! one standard deviation of this function = 1.01 w/m-k
         cthcon  = 7.511_r8k + Zirc%Temp * (2.088e-2_r8k + Zirc%Temp * (-1.450e-5_r8k + Zirc%Temp * 7.668e-09_r8k))
         cdkdt = 2.088e-2_r8k + Zirc%Temp * (-2.9e-5_r8k + Zirc%Temp * 2.3e-8_r8k)
@@ -533,9 +533,9 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     SUBROUTINE cthexp (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType
-    USE Uncertainty_Vals
+    USE Uncertainty_Vals_fraptran
     IMPLICIT NONE
     !>@brief
     !> cthexp calculates axial and diametral thermal expansion of  zircaloy lwr cladding.
@@ -631,7 +631,7 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     SUBROUTINE PhysProp (Zirc)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : CladType
     IMPLICIT NONE
@@ -692,7 +692,7 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     REAL(r8k) PURE FUNCTION zoemis (Zirc) RESULT (emissv)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -751,6 +751,7 @@ MODULE zirconium_fraptran_fraptran
     END FUNCTION zoemis
     !
 END MODULE zirconium_fraptran_fraptran
+
 
 
 

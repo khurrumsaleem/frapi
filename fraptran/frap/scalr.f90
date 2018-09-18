@@ -1,7 +1,7 @@
-MODULE scalr_h
-    USE Kinds
+MODULE scalr_h_fraptran
+    USE Kinds_fraptran
     !>@brief
-    !> This module replaces comdeck scalr1 & comdeck scalr2
+    !> This module replaces comdeck scalr1 _fraptran& comdeck scalr2
     IMPLICIT NONE
     TYPE scalr_var
         ! Not used
@@ -20,7 +20,7 @@ MODULE scalr_h
         INTEGER(ipk) :: mechan
         ! User specified rupture model with FEA model
         INTEGER(ipk) :: irupt
-        ! User specified whether to use refinement in case of ballooning with FEA model
+        ! User specified whether to use refinement in case of ballooning with FEA model_fraptran
         INTEGER(ipk) :: irefine
         !
         INTEGER(ipk) :: Ifailue
@@ -372,7 +372,8 @@ MODULE scalr_h
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: fuelrad
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: radtemp
     !
-    END MODULE scalr_h
+    END MODULE scalr_h_fraptran
+
 
 
 

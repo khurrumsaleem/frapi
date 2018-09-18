@@ -1,7 +1,7 @@
-MODULE sparse_direct
-    USE Kinds
+MODULE sparse_direct_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Sparse matrix calculations for symmetric positive definite sparse matrix
@@ -44,7 +44,7 @@ MODULE sparse_direct
 
 CONTAINS
     SUBROUTINE sparse_direct_graph (n, nvalues, rowindex, diagindex, columns)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -85,7 +85,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_level (droot, n, level, maxlevel, visited, maxwidth)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -137,7 +137,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_root_sloan (n, nroot, roots, roote)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -236,11 +236,11 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_sloan (n, droots, droote, numbered)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> Use Sloan's algorithm to reorder the numbering of unknowns
+    !> Use Sloan_frapcon's algorithm to reorder the numbering of unknowns
     !
     INTEGER(ipk), INTENT(IN) :: &
             n, &      ! Number of equations
@@ -342,7 +342,7 @@ CONTAINS
     !
     !
     FUNCTION sparse_direct_profile(n) RESULT(prof)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -364,7 +364,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_reorder (n, nvalues, rowindex, diagindex, columns)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -461,7 +461,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_ldlt (n, nvalues, rowindex, diagindex, columns, values, lidef)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -529,7 +529,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_lu (n, nvalues, rowindex, diagindex, columns, values, lidef)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -618,7 +618,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_ldltsol (n, r, x)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -675,7 +675,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_lusol (n, r, x)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -727,7 +727,7 @@ CONTAINS
     !
     !
     SUBROUTINE sparse_direct_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -744,5 +744,7 @@ CONTAINS
 
     END SUBROUTINE sparse_direct_deallocate
     !
-END MODULE sparse_direct
+END MODULE sparse_direct_frapcon
+
+
 
