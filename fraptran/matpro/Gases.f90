@@ -1,7 +1,7 @@
 MODULE NCGases
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : GasFraction, ounit, GasPress, gsmol0
     USE FissionGasRelease_h, ONLY : gsmol0
     IMPLICIT NONE
@@ -908,4 +908,15 @@ MODULE NCGases
     END SUBROUTINE Allocate_Gas
     !
 END MODULE NCGases
+
+
+
+
+
+
+
+
+
+
+
 

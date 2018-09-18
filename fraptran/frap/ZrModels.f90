@@ -1,4 +1,4 @@
-MODULE ZrModels
+MODULE zrmodels_fraptran
     USE Kinds
     USE cnvt
     !>@brief
@@ -877,5 +877,16 @@ MODULE ZrModels
     !
     END SUBROUTINE cstrni
 !
-END MODULE ZrModels
+END MODULE zrmodels_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,4 +1,4 @@
-MODULE TimeStep
+MODULE timestep_fraptran
     USE Kinds
     USE cnvt
     IMPLICIT NONE
@@ -76,7 +76,7 @@ MODULE TimeStep
     USE PlotFile
     USE OutputFile
     USE Uncertainties, ONLY : dktout
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE FEA_IO
     IMPLICIT NONE
     !> @brief
@@ -789,19 +789,19 @@ MODULE TimeStep
     SUBROUTINE comput
     USE Kinds
     USE conversions_fraptran, ONLY : pi, ftom, powcnv, tfk
-    USE Functions, ONLY : polate, terp
+    USE functions_fraptran, ONLY : polate, terp
     USE variables_fraptran
     USE rlpst, ONLY : rlpst2
     USE frapc, ONLY : coupled, t12, t22
-    USE Deformation
+    USE deformation_fraptran
     USE Volume, ONLY : vswell
     USE HeatSolution
     USE ZircSpecHeat
-    USE Void, ONLY : gsflow
+    USE void_fraptran, ONLY : gsflow
     USE NCGases, ONLY : SteamIndex
     USE Plenum, ONLY : plnt
     Use Ballooning
-    USE ZrModels, ONLY : caneal
+    USE zrmodels_fraptran, ONLY : caneal
     USE Oxidation, ONLY : cobild
     USE Initialization, ONLY : phyprp
     USE AxialPower, ONLY : power
@@ -1952,5 +1952,16 @@ MODULE TimeStep
     !
     END SUBROUTINE timstp
 !
-END MODULE TimeStep
+END MODULE timestep_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

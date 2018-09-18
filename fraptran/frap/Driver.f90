@@ -21,7 +21,7 @@ module fraptran2
     USE sth2x, ONLY : sth2xi
     USE Initialization, ONLY : initia
     USE Read_Input
-    USE TimeStep, ONLY : crank6, setup6, comput, store6
+    USE timestep_fraptran, ONLY : crank6, setup6, comput, store6
     USE ErrorMsg, ONLY :errori
     USE CoolantProperties, ONLY : tc1, tc2
     USE htcb_h
@@ -267,4 +267,15 @@ module fraptran2
         end subroutine FRAPTRAN_1_5a
 
 end module fraptran2
+
+
+
+
+
+
+
+
+
+
+
 

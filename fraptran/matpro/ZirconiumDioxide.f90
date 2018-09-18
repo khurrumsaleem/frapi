@@ -1,7 +1,7 @@
-MODULE ZirconiumDioxide
+MODULE zirconium_fraptran_fraptranDioxide
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -90,8 +90,8 @@ MODULE ZirconiumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module ZirconiumDioxide. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module ZirconiumDioxide. Invalid material property called'
+100     FORMAT ('Error in Module zirconium_fraptran_fraptranDioxide. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module zirconium_fraptran_fraptranDioxide. Invalid material property called'
     END SELECT
     
     END FUNCTION MatPropZrO2
@@ -130,5 +130,16 @@ MODULE ZirconiumDioxide
     
     END FUNCTION zotcon
     !
-END MODULE ZirconiumDioxide
+END MODULE zirconium_fraptran_fraptranDioxide
+
+
+
+
+
+
+
+
+
+
+
 

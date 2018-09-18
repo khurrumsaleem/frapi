@@ -3,7 +3,7 @@ MODULE cladding
     USE common_parameters
     USE fraptran_variables
     USE Kinds
-    USE ZrModels, ONLY : ckmn
+    USE zrmodels_fraptran, ONLY : ckmn
     IMPLICIT NONE
     !>@brief
     !> Cladding material properties for FEA Model
@@ -184,5 +184,16 @@ MODULE cladding
     END SUBROUTINE clad_creep_calc
 
 END MODULE cladding
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -2,13 +2,13 @@ MODULE Material_Properties
     USE Kinds
     USE conversions_fraptran
     USE variables_fraptran, ONLY : CladType, imox, ounit, GasFraction
-    USE UraniumDioxide
-    USE MOX
-    USE Zirconium
-    USE ZirconiumDioxide
+    USE uraniumdioxide_fraptran
+    USE mox_fraptran
+    USE zirconium_fraptran_fraptran
+    USE zirconium_fraptran_fraptranDioxide
     USE NCGases
     USE Crud_Data
-    USE PlenumSpring
+    USE plenumspring_fraptran
     IMPLICIT NONE
     !>@brief
     !> This module calls thermal and mechanical properties for the following materials:
@@ -240,4 +240,15 @@ MODULE Material_Properties
     END FUNCTION MatProperty
     !
 END MODULE Material_Properties
+
+
+
+
+
+
+
+
+
+
+
 

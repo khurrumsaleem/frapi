@@ -17,7 +17,7 @@ MODULE HeatTransferCoefficient
     SUBROUTINE htrc (dr, hcoef, hflux, qcrit, tsurf, iht, k, rl, nchfsw, tempcm, zroxid, tmeltc)
     USE Kinds
     USE conversions_fraptran, ONLY : sechr, ftin, tfk, tfr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, Time, ndebug, fdial
     USE Dyna_h
     USE CoolantProperties, ONLY : Prop, aasth, elvrad, nelrad, vfrad1, vfrad2, vfrad3, trad1, trad2, trad3, tshrda, nsrad3
@@ -712,7 +712,7 @@ MODULE HeatTransferCoefficient
       &              h, ts, tsat, tsur, tchf, ih, j, l, tempcm, zroxid, dh, aflow, dr, beta, fluxk, hcsave)
     USE Kinds
     USE conversions_fraptran, ONLY : pi, sechr, tfk, tfr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, Time, ndebug, Radiation
     USE CoolantProperties, ONLY : Prop, aasth
     USE bcdcom_h
@@ -2164,4 +2164,15 @@ MODULE HeatTransferCoefficient
     END SUBROUTINE gaphtc
 !
 END MODULE HeatTransferCoefficient
+
+
+
+
+
+
+
+
+
+
+
 

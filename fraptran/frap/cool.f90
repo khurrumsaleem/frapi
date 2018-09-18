@@ -7,7 +7,7 @@ MODULE Coolant
     SUBROUTINE cool (k, theta, RodLength, qcool, delz, dthr, tpo)
     USE Kinds
     USE conversions_fraptran, ONLY : sechr, psift2, tkf, tfr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, unit, ndebug, Time
     USE collct_h
     USE CoolantProperties
@@ -1099,4 +1099,15 @@ MODULE Coolant
     !
     !
 END MODULE Coolant
+
+
+
+
+
+
+
+
+
+
+
 

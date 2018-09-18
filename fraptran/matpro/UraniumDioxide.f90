@@ -1,7 +1,7 @@
-MODULE UraniumDioxide
+MODULE uraniumdioxide_fraptran
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -111,8 +111,8 @@ MODULE UraniumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module UraniumDioxide. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module UraniumDioxide. Invalid material property called'
+100     FORMAT ('Error in Module uraniumdioxide_fraptran. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module uraniumdioxide_fraptran. Invalid material property called'
     END SELECT
     !
     END FUNCTION MatProp
@@ -574,5 +574,16 @@ MODULE UraniumDioxide
     !
     END FUNCTION fenthl
     !
-END MODULE UraniumDioxide
+END MODULE uraniumdioxide_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

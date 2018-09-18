@@ -23,7 +23,7 @@ MODULE Plenum
       &              denc, NSteadyTrans, Ncoils, nodpln, q1, q2, abar, bbar, tp, GasPress, nconv)
     USE Kinds
     USE conversions_fraptran, ONLY : pi, sechr, psinm2, gtolb, tfk, tfr
-    USE Functions, ONLY : simq
+    USE functions_fraptran, ONLY : simq
     USE variables_fraptran, ONLY : ounit, ndebug
     USE Material_Properties, ONLY : MatProperty
     USE NCGases, ONLY : ngases
@@ -722,4 +722,15 @@ MODULE Plenum
     END FUNCTION Nusselt
     !
 END MODULE Plenum
+
+
+
+
+
+
+
+
+
+
+
 

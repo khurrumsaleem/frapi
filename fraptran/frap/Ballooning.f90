@@ -7,7 +7,7 @@ MODULE Ballooning
     !>@date
     !> 03/11/2016
     USE Kinds
-    USE ZrModels, ONLY : cmlimt, ckmn, caniso, caneal, cstrni
+    USE zrmodels_fraptran, ONLY : cmlimt, ckmn, caniso, caneal, cstrni
     !
     IMPLICIT NONE
     !
@@ -20,7 +20,7 @@ MODULE Ballooning
       &                stresr, stresa, radc, dz0, gadolinia)
     USE Kinds
     USE conversions_fraptran
-    USE Functions, ONLY : polate, simq
+    USE functions_fraptran, ONLY : polate, simq
     USE variables_fraptran
     USE Material_Properties, ONLY : MatProperty
     USE NCGases, ONLY : ngases
@@ -1122,4 +1122,15 @@ MODULE Ballooning
     !
     !
     END MODULE Ballooning
+
+
+
+
+
+
+
+
+
+
+
 

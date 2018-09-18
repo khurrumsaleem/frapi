@@ -1,6 +1,6 @@
 MODULE Reflood_Conditions
     USE Kinds
-    USE Functions, ONLY : polate, simq
+    USE functions_fraptran, ONLY : polate, simq
     USE sth2x, ONLY : surten, thcon, visc, viscol
     IMPLICIT NONE
     !
@@ -10,7 +10,7 @@ MODULE Reflood_Conditions
      &                 acond, tsurf, qq, htc, qcrit, ihtreg, k,Nchan)
     USE Kinds
     USE conversions_fraptran, ONLY : pi, sechr, tfk, tkf
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit,emflag
     USE CoolantProperties
     USE sth2x, ONLY : sth2x2, sth2x3
@@ -934,7 +934,7 @@ MODULE Reflood_Conditions
     SUBROUTINE hcalf (tinit, qlocal, z, h, acond, pdecay, deltat, mode, RodLength, Nchan)
     USE Kinds
     USE conversions_fraptran, ONLY : sechr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE CoolantProperties
     IMPLICIT NONE
     !>@brief
@@ -1325,7 +1325,7 @@ MODULE Reflood_Conditions
 !
     SUBROUTINE wcorr (dtsub, p, tinit, qmax, AxNodElevat, hrad, floodr, Time, hliq, flecht)
     USE Kinds
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
     !>@brief
     !> Subroutine to evaluate pwr flecht heat transfer correlation
@@ -1501,4 +1501,15 @@ MODULE Reflood_Conditions
 !
 !
 END MODULE Reflood_Conditions
+
+
+
+
+
+
+
+
+
+
+
 

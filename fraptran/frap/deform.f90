@@ -1,7 +1,7 @@
-MODULE Deformation
+MODULE deformation_fraptran
     USE Kinds
     USE conversions_fraptran
-    USE ZrModels, ONLY : cmlimt, cstrni
+    USE zrmodels_fraptran, ONLY : cmlimt, cstrni
     !
     CONTAINS
     !
@@ -1972,7 +1972,7 @@ MODULE Deformation
     USE variables_fraptran, ONLY : ounit, CladType, Time, ndebug
     USE Dyna_h
     USE Material_Properties, ONLY : MatProperty
-    USE ZrModels, ONLY : cstres, cstran
+    USE zrmodels_fraptran, ONLY : cstres, cstran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes uniaxial strain given the stress and previous plastic stain. elastic unloading
@@ -2104,7 +2104,7 @@ MODULE Deformation
     USE variables_fraptran, ONLY : ounit
     USE Dyna_h, ONLY : EffFastFluStrenCoef, EffColdWkStrenCoef, OxygenConcenAve, EffFastFluStrnHardExp, EffColdWKStrnHardExp
     USE Material_Properties, ONLY : MatProperty
-    USE ZrModels, ONLY : cstres
+    USE zrmodels_fraptran, ONLY : cstres
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes stress given the previous plastic strain value and an increment of plastic strain.
@@ -2169,5 +2169,16 @@ MODULE Deformation
     !
     END SUBROUTINE stress
 !
-END MODULE Deformation
+END MODULE deformation_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

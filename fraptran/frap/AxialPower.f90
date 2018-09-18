@@ -16,7 +16,7 @@ MODULE AxialPower
       &               powavend, pkwnd, rvoid)
     USE Kinds
     USE conversions_fraptran, ONLY : pi, powcnv, sechr, ftin
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : RodAvePower, AxPowProfile, zvoid1, zvoid2, naxn, nprofile
     IMPLICIT NONE
     !>@brief
@@ -184,4 +184,15 @@ MODULE AxialPower
     END FUNCTION fans  
     !
 END MODULE AxialPower
+
+
+
+
+
+
+
+
+
+
+
 

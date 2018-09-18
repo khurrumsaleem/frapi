@@ -1,7 +1,7 @@
 MODULE ZircSpecHeat
     USE Kinds
     USE conversions_fraptran
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
     !
     CONTAINS
@@ -86,7 +86,7 @@ MODULE ZircSpecHeat
     !
     REAL(r8k) FUNCTION ccpint (t1, t2)
     USE Kinds
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : CladType, ounit
     IMPLICIT NONE
     !>@brief
@@ -167,4 +167,15 @@ MODULE ZircSpecHeat
     END FUNCTION ccpint
     !
 END MODULE ZircSpecHeat
+
+
+
+
+
+
+
+
+
+
+
 

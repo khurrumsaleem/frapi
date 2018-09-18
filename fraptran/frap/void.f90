@@ -1,7 +1,7 @@
-MODULE Void
+MODULE void_fraptran
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     IMPLICIT NONE
     !>@brief
     !>
@@ -10,7 +10,7 @@ MODULE Void
     SUBROUTINE gsflow
     USE Kinds
     USE conversions_fraptran
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran
     USE Material_Properties, ONLY : MatProperty
     IMPLICIT NONE
@@ -657,5 +657,16 @@ MODULE Void
     !
     END SUBROUTINE swlchk
     !
-END MODULE Void
+END MODULE void_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

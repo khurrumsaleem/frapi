@@ -1,7 +1,7 @@
-MODULE MOX
+MODULE mox_fraptran
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE Uncertainty_Vals
     IMPLICIT NONE
     !>@brief
@@ -110,8 +110,8 @@ MODULE MOX
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module MOX. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module MOX. Invalid material property called'
+100     FORMAT ('Error in Module mox_fraptran. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module mox_fraptran. Invalid material property called'
     END SELECT
     
     END FUNCTION MatProp
@@ -586,5 +586,16 @@ MODULE MOX
     !
     !
     !
-END MODULE MOX
+END MODULE mox_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

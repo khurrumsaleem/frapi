@@ -8,7 +8,7 @@ MODULE Initialization
     SUBROUTINE cominp
     USE Kinds
     USE conversions_fraptran, ONLY : pi, ftmetr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran
     USE PlotFile
     USE rlpst, ONLY : rlpst1
@@ -726,11 +726,11 @@ MODULE Initialization
     SUBROUTINE initia
     USE Kinds
     USE conversions_fraptran, ONLY : pi, tfk
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran
     USE Restart, ONLY : restfs
     USE Material_Properties, ONLY : MatProperty
-    USE Void, ONLY : gapprs
+    USE void_fraptran, ONLY : gapprs
     USE NCGases, ONLY : ngases
     IMPLICIT NONE
     !> @brief
@@ -1375,7 +1375,7 @@ MODULE Initialization
     !
     SUBROUTINE powrmp (np2, pt, t0, dppowi, powimx, powict, nprsw)
     USE Kinds
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     IMPLICIT NONE
     !>@brief
     !> Subroutine powrmp calculates parameters for internally programming power ramp to gradually close gap 
@@ -1820,4 +1820,15 @@ MODULE Initialization
     END SUBROUTINE porcor
     !
 END MODULE Initialization
+
+
+
+
+
+
+
+
+
+
+
 

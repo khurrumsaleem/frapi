@@ -232,7 +232,7 @@ MODULE setup
     USE sth2x, ONLY : sth2xi
     USE Initialization, ONLY : initia
     USE Read_Input
-    USE TimeStep, ONLY : crank6
+    USE timestep_fraptran, ONLY : crank6
     USE ErrorMsg, ONLY :errori
     IMPLICIT NONE
     !> @brief
@@ -346,7 +346,7 @@ MODULE setup
     SUBROUTINE iofiles (InputFileName)
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : iunit, ounit, scrunit
     USE RunProperties, ONLY : edate, clockx
     IMPLICIT NONE
@@ -725,5 +725,16 @@ MODULE setup
     END SUBROUTINE Input_Echo
     !
 END MODULE setup
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,4 +1,4 @@
-MODULE Functions
+MODULE functions_fraptran
     USE Kinds
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit
@@ -808,5 +808,16 @@ MODULE Functions
     !
     END SUBROUTINE simq
     !
-END MODULE Functions
+END MODULE functions_fraptran
+
+
+
+
+
+
+
+
+
+
+
 

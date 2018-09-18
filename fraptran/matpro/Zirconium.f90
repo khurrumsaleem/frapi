@@ -1,7 +1,7 @@
-MODULE Zirconium
+MODULE zirconium_fraptran_fraptran
     USE Kinds
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : CladType
     USE Uncertainty_Vals
     IMPLICIT NONE
@@ -133,8 +133,8 @@ MODULE Zirconium
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module Zirconium. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module Zirconium. Invalid material property ID called.'
+100     FORMAT ('Error in Module zirconium_fraptran_fraptran. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module zirconium_fraptran_fraptran. Invalid material property ID called.'
     END SELECT
     !
     END FUNCTION MatProp
@@ -750,5 +750,16 @@ MODULE Zirconium
     !
     END FUNCTION zoemis
     !
-END MODULE Zirconium
+END MODULE zirconium_fraptran_fraptran
+
+
+
+
+
+
+
+
+
+
+
 
