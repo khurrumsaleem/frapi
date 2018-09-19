@@ -105,6 +105,7 @@ contains
         include 'fp_associate_h.f90'
         include 'fp_allocate_h.f90'
 
+        ! WTF ???
         if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')
 
     end subroutine driver_make

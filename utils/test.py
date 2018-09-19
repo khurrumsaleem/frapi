@@ -74,8 +74,8 @@ def draw(filename):
 
         plt.savefig('%s/%s.png'%(dirname, name.split(',')[0].replace(' ','_')))
 
-        data0 = array(data0)
-        data1 = array(data1)
+        data0 = array(data0)[:]
+        data1 = array(data1)[:]
         eps = 1.e-6
         a = (data0 + eps)/(data1 + eps) - 1
         errmax = 100 * max(abs(a))

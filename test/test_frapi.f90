@@ -13,12 +13,14 @@ program frapi_input_file
 
     type (frod_type) :: frod
 
+    logical :: is_restart = .false.
+
     integer, parameter :: ivars_array = 37, ivars_value = 4
     character(len=256) :: filename, string
     character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
     ! ITERATIONAL VARIABLES
-    integer :: i, itime
+    integer :: i, itime, starttime
 
     real(8) :: qtot
 
@@ -204,20 +206,24 @@ program frapi_input_file
 !    igas                                    "Timestep to begin calculation of fission gas release"
     !------------------- RUN TIME STEPS ---------------------------------------
 
+    starttime = 1
+
+    if (starttime > 1) is_restart = .true.
+
     ! ITERATION OVER TIME
-    do itime = 1, im
+    do itime = starttime, im
 
         write(*,*) 'time step : ', itime
 
         qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
         linpow = qf((na+1) * (jst(itime)-1) + 1 : (na+1) * (jst(itime)-1) + na + 1)
         linpow = qtot * linpow / sum(linpow)
-      
+
         t_cool = (/( tfc(tcoolant(i+(na+1)*(itime-1))), i = 1, na+1 )/)
         p_cool = pcoolant(1+(na+1)*(itime-1):na+1+(na+1)*(itime-1)) * PSItoPa
 
         ! INITIAL STATE
-        if (itime == 1) then
+        if (itime == starttime) then
 
             call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
             call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
@@ -236,10 +242,6 @@ program frapi_input_file
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
-            call frod % next(ProblemTime(itime-1))
-
-            call frod % accept()
-
         else
 
             call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
@@ -249,34 +251,48 @@ program frapi_input_file
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
-            call frod % next(ProblemTime(itime-1) - ProblemTime(itime-2))
+        endif
 
-            call frod % accept()
+        if ((is_restart).and.(itime == starttime)) then
+
+            write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', itime-1, '.bin'
+
+            call frod % load(string)
 
         endif
 
-        !write(string, '(I0.10)') itime
-        !call ofile % makegroup(string)
+
+        if (itime == 1) then
+            call frod % next(ProblemTime(itime-1))
+        else
+            call frod % next(ProblemTime(itime-1) - ProblemTime(itime-2))
+        endif
+
+        call frod % accept()
+
         call ofile % write_i4_0('frapi burnup step', itime)
 
         do i = 1, ivars_array
             call frod % get_array(varname_array(i), value)
-            !call ofile % dump(varname_array(i), value)
             call ofile % write_r8_1(varname_array(i), value)
         enddo
 
         do i = 1, ivars_value
             call frod % get_value(varname_value(i), value(1))
-            !call ofile % dump(varname_value(i), value(:2))
             call ofile % write_r8_0(varname_value(i), value(1))
         enddo
 
-        !call ofile % closegroup()
+        if (.not. is_restart) then
+
+            write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', itime, '.bin'
+            call frod % save(string)
+
+        endif
 
     enddo
 
     !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
-    !call frod % destroy()
+    call frod % destroy()
 
     call ofile % close()
 

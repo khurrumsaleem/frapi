@@ -14,6 +14,7 @@ program rastk_input_file
     integer(4) :: n_fuel_rad_in
     integer(4) :: na_r
     integer(4) :: na_in
+    integer(4) :: ncol
     integer(4) :: n_bu ! total number of burnup steps
     integer(4) :: n_iter     ! Number of coupling iterations
     integer(4) :: n_cycle    ! Number of cycles
@@ -107,23 +108,23 @@ program rastk_input_file
     allocate(n_bu_steps(n_cycle+1))
 
     read(i_input_file,*) n_bu_steps(:)
-    read(i_input_file,*) run_media
+    read(i_input_file,*) run_media, ncol
 
     n_bu = n_bu_steps(n_cycle+1)
 
     allocate(height_RASTK(1:na_r +1))
     allocate(height_FRPCN(1:na_in+1))
-    allocate(tmp_time(1:n_bu))
-    allocate(pow_hist(1:na_in,1:n_bu))
-    allocate(pow_hist_loc(1:na_in,1:n_bu))
-    allocate(line_pow_hist(1:na_r,1:n_bu))
+    allocate(tmp_time(1:ncol))
+    allocate(pow_hist(1:na_in,1:ncol))
+    allocate(pow_hist_loc(1:na_in,1:ncol))
+    allocate(line_pow_hist(1:na_r,1:ncol))
     allocate(power_dist_in(1:na_in))
-    allocate(ctf_coo_pres(1:na_in,1:n_bu))
-    allocate(ctf_coo_temp(1:na_in,1:n_bu))
-    allocate(ctf_clad_temp(1:na_in,1:n_bu))
+    allocate(ctf_coo_pres(1:na_in,1:ncol))
+    allocate(ctf_coo_temp(1:na_in,1:ncol))
+    allocate(ctf_clad_temp(1:na_in,1:ncol))
     allocate(power(1:na_r))
 
-    read(i_input_file,*) tmp_time(1:n_bu)  
+    read(i_input_file,*) tmp_time(1:ncol)  
 
     select case (run_media)
         case(1)
@@ -199,6 +200,7 @@ program rastk_input_file
                 write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
                 call frod(i_frod) % load(string)
             endif
+
         enddo
 
         !------------------- RUN TIME STEPS ---------------------------------------
