@@ -35,12 +35,12 @@ add_library(frapi    SHARED ${frapi_src}   )
 
 target_link_libraries(frapi frapcon fraptran)# hdf5_fortran)
 
-#add_executable(test_frapi "test/test_frapi.f90")
+add_executable(test_frapi "test/test_frapi.f90")
 add_executable(test_rastk "test/test_rastk.f90")
 add_executable(main_frapcon "test/main_frapcon.f90")
 add_executable(main_fraptran "test/main_fraptran.f90")
 
-#target_link_libraries(test_frapi frapi)
+target_link_libraries(test_frapi frapi)
 target_link_libraries(test_rastk frapi)
 target_link_libraries(main_frapcon frapi)
 target_link_libraries(main_fraptran frapi)

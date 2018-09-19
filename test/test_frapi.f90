@@ -1,13 +1,15 @@
 program frapi_input_file
 
-    use h5file
+    !use h5file
     use conversions_frapcon
     use fpn_reader
     use frapi, only : frod_type
+    use odfile, only : t_odfile
 
     implicit none
 
-    type (tp_h5file) :: ofile
+    !type (tp_h5file) :: ofile
+    type (t_odfile) :: ofile
 
     type (frod_type) :: frod
 
@@ -80,9 +82,9 @@ program frapi_input_file
     allocate(p_cool(na+1))
     allocate(f_cool(na+1))
 
-    ! CREATE HDF5 FILE
+    ! CREATE OUTPUT FILE
     i = scan(filename, '.', back=.true.)
-    call ofile % open(filename(1:i-1)//'.h5')
+    call ofile % open(filename(1:i-1)//'-frapi.txt')
 
     !-------------------- FUEL ROD INITIALIZATION-----------------------------
     call frod % make(nr=nr, na=na, ngasr=ngasr, nce=nce, &
@@ -253,25 +255,28 @@ program frapi_input_file
 
         endif
 
-        write(string, '(I0.10)') itime
-        call ofile % makegroup(string)
+        !write(string, '(I0.10)') itime
+        !call ofile % makegroup(string)
+        call ofile % write_i4_0('frapi burnup step', itime)
 
         do i = 1, ivars_array
             call frod % get_array(varname_array(i), value)
-            call ofile % dump(varname_array(i), value)
+            !call ofile % dump(varname_array(i), value)
+            call ofile % write_r8_1(varname_array(i), value)
         enddo
 
         do i = 1, ivars_value
             call frod % get_value(varname_value(i), value(1))
-            call ofile % dump(varname_value(i), value(:2))
+            !call ofile % dump(varname_value(i), value(:2))
+            call ofile % write_r8_0(varname_value(i), value(1))
         enddo
 
-        call ofile % closegroup()
+        !call ofile % closegroup()
 
     enddo
 
     !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
-    call frod % destroy()
+    !call frod % destroy()
 
     call ofile % close()
 
