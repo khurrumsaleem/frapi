@@ -21,3 +21,6 @@ work/
 *.plot
 *.tmp
 *.pyc
+*.txt
+*.bin
+*.6
