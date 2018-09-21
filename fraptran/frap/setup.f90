@@ -1,8 +1,8 @@
-MODULE setup
-    USE Kinds
+MODULE setup_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to start and run the problem.
+    !> This module contains the subroutines used to start and run the problem_fraptran.
     !> Subroutines include main, frap, and iofiles
     !>@author
     !> Ken Geelhood, PNNL
@@ -16,20 +16,20 @@ MODULE setup
     !
     !
     SUBROUTINE Main
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
-    USE frapc
-    USE Dyna_h
-    USE collct_h
-    USE resti_h
-    USE excb_h
-    USE scalr_h
-    USE FissionGasRelease_h
-    USE NCGases
-    USE FEA_Setup
-    USE ErrorMsg, ONLY : namelist_read_error
-    USE Initial_Read, ONLY : preread
+    USE frapc_fraptran
+    USE Dyna_h_fraptran
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE FissionGasRelease_h_fraptran
+    USE NCGases_fraptran
+    USE FEA_Setup_fraptran
+    USE ErrorMsg_fraptran, ONLY : namelist_read_error
+    USE Initial_Read_fraptran, ONLY : preread
     IMPLICIT NONE
     !> @brief
     !> Main subroutine in FrapTran computer code. This subroutine controls the reading and processing of the namelist $begin
@@ -226,14 +226,14 @@ MODULE setup
     !
     !
     SUBROUTINE frap
-    USE Kinds
-    USE frapc
+    USE Kinds_fraptran
+    USE frapc_fraptran
     USE variables_fraptran
-    USE sth2x, ONLY : sth2xi
-    USE Initialization, ONLY : initia
-    USE Read_Input
-    USE TimeStep, ONLY : crank6
-    USE ErrorMsg, ONLY :errori
+    USE sth2x_fraptran, ONLY : sth2xi
+    USE Initialization_fraptran, ONLY : initia
+    USE Read_Input_fraptran
+    USE timestep_fraptran, ONLY : crank6
+    USE ErrorMsg_fraptran, ONLY :errori
     IMPLICIT NONE
     !> @brief
     !> Subroutine repeatedly calls the main FrapTran program
@@ -344,11 +344,11 @@ MODULE setup
     !
     !
     SUBROUTINE iofiles (InputFileName)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : iunit, ounit, scrunit
-    USE RunProperties, ONLY : edate, clockx
+    USE RunProperties_fraptran, ONLY : edate, clockx
     IMPLICIT NONE
     !> @brief
     !> Subroutine iofiles reads the command line to get the input file name, opens the input file
@@ -445,7 +445,7 @@ MODULE setup
         IF (Scanning_for_OutputFile) THEN
             IF (line(1:1) == '*') CYCLE ReadLoop ! Keep looking
             IF (line(1:2) == '/*') THEN
-                ! Reached end of file processing and output file information not found. Use defaults.
+                ! Reached end of file processing and output file information not found. Use defaults_fraptran.
                 WRITE (0,203) ounit
                 WRITE (0,500) Today, ClockTime, TRIM(InputFileName), TRIM(FileName)
                 REWIND (iunit)
@@ -673,7 +673,7 @@ MODULE setup
     !
     !
     SUBROUTINE Input_Echo
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : iunit, ounit
     IMPLICIT NONE
@@ -724,6 +724,18 @@ MODULE setup
     !
     END SUBROUTINE Input_Echo
     !
-END MODULE setup
+END MODULE setup_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

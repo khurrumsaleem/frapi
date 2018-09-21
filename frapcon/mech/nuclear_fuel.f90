@@ -1,7 +1,7 @@
-MODULE nuclear_fuel
-    USE Kinds
+MODULE nuclear_fuel_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> UO2 fuel material properties
@@ -13,7 +13,7 @@ MODULE nuclear_fuel
     CONTAINS
     !
     REAL(r8k) FUNCTION fuel_mat_par (temp, keyword)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -38,7 +38,7 @@ MODULE nuclear_fuel
     !
     !
     SUBROUTINE fuel_radial_return (temp, mu, dtime, epseff0, taueff, gamma, dplmod)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -49,6 +49,8 @@ MODULE nuclear_fuel
     !
     END SUBROUTINE fuel_radial_return
     !
-END MODULE nuclear_fuel
+END MODULE nuclear_fuel_frapcon
+
+
 
 

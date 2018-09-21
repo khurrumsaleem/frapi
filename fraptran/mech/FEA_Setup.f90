@@ -1,12 +1,12 @@
-MODULE FEA_Setup
+MODULE FEA_Setup_fraptran
     !>@brief
-    !> This module contains the subroutines used to initialized the Cladding FEA calculation.
+    !> This module contains the subroutines used to initialized the Cladding FEA calculation_fraptran.
     !> Subroutines include default_values, init
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
@@ -14,8 +14,8 @@ MODULE FEA_Setup
     !
     !
 SUBROUTINE default_values()
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Set variables to their default values
@@ -37,7 +37,7 @@ SUBROUTINE default_values()
     dimens = '3D'
     analys = 'STATIC'
 
-    ! Use trapezoidal rule by default (no artIficial damping)
+    ! Use trapezoidal rule by default _fraptran(no artIficial damping)
     newmark_beta = 0.25_r8k
     newmark_gamma = 0.5_r8k
 
@@ -79,24 +79,24 @@ END SUBROUTINE default_values
 !
 !
     SUBROUTINE init()
-    USE Kinds
-    USE common_parameters
-    USE materials_frap
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE geometry
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
-    USE FEA_deallocate
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE materials_frap_fraptran
+    USE spring_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE geometry_fraptran
+    USE pressure1d_fraptran
+    USE pressure2d_fraptran
+    USE pressure3d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE cont3d_fraptran
+    USE FEA_deallocate_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize parameters and variables with default values
@@ -150,5 +150,17 @@ END SUBROUTINE default_values
     END SUBROUTINE init
     !
     !
-END MODULE FEA_Setup
+END MODULE FEA_Setup_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

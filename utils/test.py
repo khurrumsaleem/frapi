@@ -5,7 +5,7 @@ import os
 from subprocess import call
 from h5py import File
 import matplotlib.pyplot as plt
-
+from numpy import array
 
 names = [
 'average linear power, W|cm',
@@ -35,11 +35,12 @@ names = [
 def make(filename):
     call(["../../build/debug/test_frapi", "%s.inp"%filename])
     call(["../../build/debug/main_frapcon", "%s.inp"%filename])
-    call(["../../utils/frap2h5.py", "%s.plot"%filename, "%s-plot.h5"%filename])
+    call(["../../utils/frapcon2h5.py", "%s.plot"%filename, "%s-frapcon.h5"%filename])
+    call(["../../utils/frapi2h5.py", "%s-frapi.txt"%filename, "%s-frapi.h5"%filename])
 
 def draw(filename):
-    f0 = File('%s.h5'%filename)
-    f1 = File('%s-plot.h5'%filename)
+    f0 = File('%s-frapi.h5'%filename)
+    f1 = File('%s-frapcon.h5'%filename)
 
     dirname = '../../doc/graphics'
     if not os.path.isdir(dirname): 
@@ -48,6 +49,8 @@ def draw(filename):
     dirname = '../../doc/graphics/%s'%filename
     if not os.path.isdir(dirname): 
         os.mkdir(dirname)
+
+    print "%50s %10s %10s"%('Parameter', 'RMS, %', 'MAX, %')
 
     for i, name in enumerate(names):
         fig, ax = plt.subplots()
@@ -70,11 +73,17 @@ def draw(filename):
         ax.grid()
 
         plt.savefig('%s/%s.png'%(dirname, name.split(',')[0].replace(' ','_')))
-    
-    #plt.show()
 
-    f0.close()  
-    f1.close()  
+        data0 = array(data0)[:]
+        data1 = array(data1)[:]
+        eps = 1.e-6
+        a = (data0 + eps)/(data1 + eps) - 1
+        errmax = 100 * max(abs(a))
+        errrms = 100 * pow(pow(a, 2).mean(), 0.5)
+        print "%50s %10.1f %10.1f"%(name, errrms, errmax)
+
+    f0.close()
+    f1.close()
 
 if __name__ == '__main__':
     

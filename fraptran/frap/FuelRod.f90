@@ -1,9 +1,9 @@
-MODULE FuelRod_Data
-    USE Kinds
+MODULE FuelRod_Data_fraptran
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE OutputFile
-    USE Uncertainty_Vals
-    USE Uncertainties, ONLY : Uncert_fuelref
+    USE OutputFile_fraptran
+    USE Uncertainty_Vals_fraptran
+    USE Uncertainties_fraptran, ONLY : Uncert_fuelref
     IMPLICIT NONE
     !>@brief
     !>
@@ -63,11 +63,11 @@ MODULE FuelRod_Data
     CONTAINS
     
         SUBROUTINE Allocate_Rods (numrods)
-        USE Kinds
+        USE Kinds_fraptran
         IMPLICIT NONE
         !>@brief
         !> This subroutine allocates the data type fraptran for the # of rods that are being modeled
-        !> FRAPTRAN holds all of the common variable that are stored in every module for a given rod.
+        !> FRAPTRAN holds all of the common variable that are stored in every module for a given rod_fraptran.
         !>@author
         !> Ian Porter, NRC
         !>@date
@@ -79,7 +79,7 @@ MODULE FuelRod_Data
         END SUBROUTINE Allocate_rods
     
         SUBROUTINE Update (FuelRod)
-        USE Kinds
+        USE Kinds_fraptran
         IMPLICIT NONE
         !>@brief
         !> This subroutine updates all of the FRAPTRAN variables for a given fuel rod
@@ -133,7 +133,7 @@ MODULE FuelRod_Data
         !
         !
         SUBROUTINE Remember (FuelRod)
-        USE Kinds, ONLY : ipk, r8k
+        USE Kinds_fraptran, ONLY : ipk, r8k
         IMPLICIT NONE
         !>@brief
         !> This subroutine remembers all of the FRAPTRAN variables for a given fuel rod
@@ -3104,5 +3104,17 @@ MODULE FuelRod_Data
         
         END SUBROUTINE Remember_Uncertainty
     
-END MODULE FuelRod_Data
+END MODULE FuelRod_Data_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

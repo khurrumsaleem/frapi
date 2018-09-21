@@ -1,14 +1,14 @@
-MODULE FEA_Mesh
+MODULE FEA_Mesh_fraptran
     !>@brief
-    !> This module contains the subroutines used to create mesh for fuel rod
+    !> This module contains the subroutines used to create mesh for fuel rod_fraptran
     !> and to create forced DOF.
     !> Subroutines include mesh_fuel_rod, create_displ, create_gascav
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
-    USE FEA_Node
+    USE Kinds_fraptran
+    USE FEA_Node_fraptran
     !
     IMPLICIT NONE
     !
@@ -17,8 +17,8 @@ MODULE FEA_Mesh
     !
     !
 SUBROUTINE create_displ (label, u_forced)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Create forced DOF values for a coupled set
@@ -47,14 +47,14 @@ END SUBROUTINE create_displ
 !
 !
     SUBROUTINE mesh_fuel_rod (na, nce, ncladi, nmesh, rc, rpp, RadialBoundO, AxialNodLen, cpl, pitch)
-    USE Kinds
-    USE common_parameters
-    USE geometry
-    USE pressure1d
-    USE cont1d
-    USE gascav1d
-    USE gascav2d
-    USE fraptran_variables
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE geometry_fraptran
+    USE pressure1d_fraptran
+    USE cont1d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE fraptran_variables_fraptran
     IMPLICIT NONE
     !>@brief
     !> Create element mesh for a fuel rod and mark nodes and elements to correct groups
@@ -266,8 +266,8 @@ END SUBROUTINE create_displ
     !
     !
     SUBROUTINE create_gascav (label, mgas)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Create or update gas cavity Data
@@ -310,5 +310,17 @@ END SUBROUTINE create_displ
 
     END SUBROUTINE create_gascav
     !
-END MODULE FEA_Mesh
+END MODULE FEA_Mesh_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,12 +1,12 @@
-MODULE Refabrication
-    USE Kinds
+MODULE Refabrication_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit, gasmo, x, qf, totl, cpl, it, airin, an2in, argin, fgin, hein, &
       &                   kryin, xein, cpl, totl, deltaz, jmin, jmax, Spring
-    USE RunProperties
+    USE RunProperties_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the refabrication parameters
+    !> This module contains the refabrication parameters_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -31,7 +31,7 @@ MODULE Refabrication
     CONTAINS
     !
     SUBROUTINE RodRefabrication
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -100,7 +100,7 @@ MODULE Refabrication
     !
     !
     SUBROUTINE axhef2 (qf1, x1)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : nunits, na, deltaz, qaxnorm, iq, qend, WorkArray1, WorkArray2, WorkArray3, &
       &                   ounit, naxim, jn, jpeak, avgqi, fa, ir1, jjc, nt, jmin, jmax
@@ -359,5 +359,7 @@ MODULE Refabrication
     !
     END SUBROUTINE axhef2
     !
-END MODULE Refabrication
+END MODULE Refabrication_frapcon
+
+
 

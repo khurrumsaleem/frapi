@@ -1,11 +1,11 @@
-MODULE ZirconiumDioxide
-    USE Kinds
+MODULE ZirconiumDioxide_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Zirconium Properties
+    !> This Module contains all Zirconium Properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -19,7 +19,7 @@ MODULE ZirconiumDioxide
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropZrO2 (property, temp) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -81,7 +81,7 @@ MODULE ZirconiumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module ZirconiumDioxide. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module ZirconiumDioxide_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     END FUNCTION MatPropZrO2
@@ -89,7 +89,7 @@ MODULE ZirconiumDioxide
     !
     !
     REAL(r8k) FUNCTION zotcon (ctemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -112,7 +112,7 @@ MODULE ZirconiumDioxide
     !
     ! Note:
     !
-    ! Use caution above 1700k
+    ! Use caution above 1700k_frapcon
     !
     REAL(r8k), INTENT(IN) :: ctemp
     !
@@ -120,5 +120,7 @@ MODULE ZirconiumDioxide
     !
     END FUNCTION zotcon
     !
-END MODULE ZirconiumDioxide
+END MODULE ZirconiumDioxide_frapcon
+
+
 

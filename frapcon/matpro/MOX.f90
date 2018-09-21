@@ -1,13 +1,13 @@
-MODULE MOX
-    USE Kinds
+MODULE MOX_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : den, deng, comp, ounit, imox, gadoln, facmot, prvden, tsint, rsntr, &
       &                   RelocModel, RinterfacPress, bup, afdn, j, fden, ftmelt, fhefus, fdelta, &
       &                   sigftc, sigftex, sigswell, fotmtl
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all MOX (U-Pu-O) Properties
+    !> This Module contains all MOX _frapcon(U-Pu-O) Properties
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -25,7 +25,7 @@ MODULE MOX
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropMOX (property, temp, burnup, burnup_prev, power) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -98,7 +98,7 @@ MODULE MOX
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module MOX. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module MOX_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -106,7 +106,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fthcon (ftemp, burnup) RESULT (con)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -190,7 +190,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION UPuO2Density ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : den, deng, comp, j
     IMPLICIT NONE
@@ -228,7 +228,7 @@ MODULE MOX
     !
     !
     SUBROUTINE MOXPhysProp
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -265,7 +265,7 @@ MODULE MOX
     CONTAINS
         !
         REAL(r8k) FUNCTION sldus (PuConc)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !
@@ -282,7 +282,7 @@ MODULE MOX
         !
         !
         REAL(r8k) FUNCTION liqdus (PuConc)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !
@@ -301,7 +301,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fcp (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -372,7 +372,7 @@ MODULE MOX
     CONTAINS
         !
         REAL(r8k) FUNCTION cp (c1, c2, c3, th, ed, t, fotmtl)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -390,7 +390,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fswell (bu, bul, ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -454,7 +454,7 @@ MODULE MOX
     !
     !
     REAL(r8K) FUNCTION fthexp (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -541,7 +541,7 @@ MODULE MOX
     CONTAINS
         !
         REAL(r8k) FUNCTION ftx (c1, c2, c3, ed, t)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -557,7 +557,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION femiss (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -593,7 +593,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fudens (ftemp, bu)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -706,7 +706,7 @@ MODULE MOX
     CONTAINS
         !
         REAL(r8k) FUNCTION dlen2 (alen, bu, abu)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -722,7 +722,7 @@ MODULE MOX
         !
         !
         REAL(r8k) FUNCTION dlen3 (bu)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@author
@@ -740,7 +740,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fenthl (temp)
-    USE kinds
+    USE kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -800,7 +800,7 @@ MODULE MOX
     CONTAINS
         !
         REAL(r8k) FUNCTION cpdt (c1, th, c2, otm, ed, t, c3)
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         IMPLICIT NONE
         !>@brief
@@ -822,7 +822,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION UO2gtrloc (burnup, p)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : dp, cdg
     IMPLICIT NONE
@@ -895,7 +895,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION UO2YoungMod (temp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -920,7 +920,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION fpoir (ftemp)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -954,7 +954,7 @@ MODULE MOX
     !
     !
     REAL(r8k) FUNCTION felmod (ftemp, fraden, fotmtl)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : comp
     IMPLICIT NONE
@@ -1015,5 +1015,7 @@ MODULE MOX
     !
     END FUNCTION felmod
     !
-END MODULE MOX
+END MODULE MOX_frapcon
+
+
 

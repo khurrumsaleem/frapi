@@ -1,8 +1,8 @@
-MODULE modcom_h
-    USE Kinds
+MODULE modcom_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the modcom common block
+    !> This module replaces the modcom common block_fraptran
     TYPE modcom_var
         INTEGER(ipk) :: mwork
         INTEGER(ipk) :: mtabl1
@@ -19,5 +19,17 @@ MODULE modcom_h
     INTEGER(ipk) :: mgaspr
     REAL(r8k) :: trise
     !
-    END MODULE modcom_h
+    END MODULE modcom_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

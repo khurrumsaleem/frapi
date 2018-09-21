@@ -1,33 +1,33 @@
-MODULE HeatTransferCoefficient
+MODULE HeatTransferCoefficient_fraptran
     !>@brief
-    !> This module contains the subroutines used to calculate the cladding to coolant 
+    !> This module contains the subroutines used to calculate the cladding to coolant _fraptran
     !> heat transfer coefficient and the cladding to pellet gap heat transfer coefficient.
     !> Subroutines include htrc, qdot, root1, and gaphtc
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/14/2016
-    USE Kinds
-    USE ErrorMsg, ONLY : fabend
+    USE Kinds_fraptran
+    USE ErrorMsg_fraptran, ONLY : fabend
     !
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE htrc (dr, hcoef, hflux, qcrit, tsurf, iht, k, rl, nchfsw, tempcm, zroxid, tmeltc)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr, ftin, tfk, tfr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, Time, ndebug, fdial
-    USE Dyna_h
-    USE CoolantProperties, ONLY : Prop, aasth, elvrad, nelrad, vfrad1, vfrad2, vfrad3, trad1, trad2, trad3, tshrda, nsrad3
-    USE resti_h
-    USE htcb_h
-    USE heatconduction_h
-    USE sth2x, ONLY : sth2x2, sth2x3, VoidRatio, thcon
-    USE scalr_h, ONLY : fqcrit
-    USE Material_Properties, ONLY : MatProperty
-    USE HeatFluxCorrelations
+    USE Dyna_h_fraptran
+    USE CoolantProperties_fraptran, ONLY : Prop, aasth, elvrad, nelrad, vfrad1, vfrad2, vfrad3, trad1, trad2, trad3, tshrda, nsrad3
+    USE resti_h_fraptran
+    USE htcb_h_fraptran
+    USE heatconduction_h_fraptran
+    USE sth2x_fraptran, ONLY : sth2x2, sth2x3, VoidRatio, thcon
+    USE scalr_h_fraptran, ONLY : fqcrit
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE HeatFluxCorrelations_fraptran
     IMPLICIT NONE
     !
     ! htflxa          = axially averaged rod heat flux past time step,btu/sec-ft2 (surface heat flux at past time step input)
@@ -98,7 +98,7 @@ MODULE HeatTransferCoefficient
     !              80 - single-phase convection to helium gas
     !
     ! Note: If fluid is helium, not water: jchf = 9 and mode = 80;
-    ! Heat transfer mode selection logic is bypassed; Use Dittus-Boelter-type htc everywhere
+    ! Heat transfer mode selection logic is bypassed; Use Dittus_fraptran-Boelter-type htc everywhere
     !
     ! lhtc            = indicator for heat transfer correlations
     ! ndebug          = debug print flag
@@ -710,14 +710,14 @@ MODULE HeatTransferCoefficient
     !
     SUBROUTINE qdot (a, b, cpf, cpg, cp, rf, rg, r, MassFlowRate, Quality, hd, hf, hg, CoolPress, qcrit, qq, tbulk, &
       &              h, ts, tsat, tsur, tchf, ih, j, l, tempcm, zroxid, dh, aflow, dr, beta, fluxk, hcsave)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, sechr, tfk, tfr
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : ounit, Time, ndebug, Radiation
-    USE CoolantProperties, ONLY : Prop, aasth
-    USE bcdcom_h
-    USE emssf, ONLY : emssf1
-    USE sth2x, ONLY : sth2x0, sth2x3, surten, VoidRatio, thcon, visc, viscol
+    USE CoolantProperties_fraptran, ONLY : Prop, aasth
+    USE bcdcom_h_fraptran
+    USE emssf_fraptran, ONLY : emssf1
+    USE sth2x_fraptran, ONLY : sth2x0, sth2x3, surten, VoidRatio, thcon, visc, viscol
     IMPLICIT NONE
     !> @brief
     !> qdot calculates surface temperature, flux, and h.t.c., given a specific heat transfer correlation and conduction values.
@@ -774,9 +774,9 @@ MODULE HeatTransferCoefficient
     !            2 = low flow post-CHF boiling, with laminar flow
     !
     ! jtr          - indicator for transition boiling correlation
-    !            0 = use modified Tong-Young for mode 4
-    !            1 = use modified Condie-Bengston for mode 4
-    !            2 = use Bjornard-GrIffith for mode 4
+    !            0 = use modified Tong_fraptran-Young for mode 4
+    !            1 = use modified Condie_fraptran-Bengston for mode 4
+    !            2 = use Bjornard_fraptran-GrIffith for mode 4
     !
     ! tempcm       - peak clad temperature (F)
     ! zroxid       - oxide layer thickness
@@ -1022,7 +1022,7 @@ MODULE HeatTransferCoefficient
             !
             tkf = thcon (n1, tsat, r)
             !
-            ! If liquid subcooled, use relaps viscosity Subroutine
+            ! If liquid subcooled, use relaps viscosity Subroutine_fraptran
             !
             IF (Quality <= 0.0_r8k) THEN
                 pressi = CoolPress * 6.896552e3_r8k !Note: This conversion is wrong. Should be 6.89475729e+3_r8k Pa/psi
@@ -1910,7 +1910,7 @@ MODULE HeatTransferCoefficient
     !
     !
     SUBROUTINE root1 (c1, c2, x1, x2)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -1955,13 +1955,13 @@ MODULE HeatTransferCoefficient
     !
     SUBROUTINE gaphtc (gpthki, rf, pfc, tg, tf, tc, pg, GasFraction, flux, tflux, rufc, ruff, frden, &
       &                coldw, zro, fotmtl, tempcm, modfd, hgapt, gadolin, bulocal, gapmin, node)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr, tfk, tfr
     USE variables_fraptran, ONLY : ounit, Time, ndebug
-    USE phypro_h
-    USE emssf, ONLY : emssf2
-    USE Material_Properties, ONLY : MatProperty
-    USE NCGases, ONLY : ngases, ncGasProperties
+    USE phypro_h_fraptran
+    USE emssf_fraptran, ONLY : emssf2
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE NCGases_fraptran, ONLY : ngases, ncGasProperties
     IMPLICIT NONE
     !>@brief
     !> Model for gap conductance computed by this subroutine is described in report BNWL-1894
@@ -2117,7 +2117,7 @@ MODULE HeatTransferCoefficient
         IF (npass == 1) pfc = 0.0_r8k
         IF (npass == 2) pfc = pfcinp
         ! hsolid will be calculated in units of W/m2-K and then converted
-        ! pfc is in psi, convert to kg/cm2 for use in cee
+        ! pfc is in psi, convert to kg/cm2 for use in cee_fraptran
         pfc1 = pfc / 14.2232_r8k
         prel = MAX(pfc / hmeyer, 0.0_r8k)
         ! mean roughness in m
@@ -2163,5 +2163,17 @@ MODULE HeatTransferCoefficient
     !
     END SUBROUTINE gaphtc
 !
-END MODULE HeatTransferCoefficient
+END MODULE HeatTransferCoefficient_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

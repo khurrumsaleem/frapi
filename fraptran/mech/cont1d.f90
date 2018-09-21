@@ -1,8 +1,8 @@
-MODULE cont1d
-    USE Kinds
-    USE common_parameters
-    USE materials_frap
-    USE sparse_matrix
+MODULE cont1d_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE materials_frap_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> 1D contact element
@@ -46,7 +46,7 @@ MODULE cont1d
     CONTAINS
     !
     SUBROUTINE cont1d_init()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize cont1d Database
@@ -64,7 +64,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_create (label, mat, nodes)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Create new element
@@ -136,7 +136,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_delete (label)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Delete element from the Database
@@ -190,7 +190,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_sparse_matrix()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Initialize sparse matrix storage for cont1d elements
@@ -212,7 +212,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_fint()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Contact forces
@@ -283,7 +283,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_stIff()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Stiffness matrix for the CONT1D elements
@@ -340,7 +340,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_update()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Update contact condition
@@ -367,7 +367,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_Write_output(nunit)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Write output to a file in unit 'nunit'
@@ -394,7 +394,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_read_output(nunit)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Read output from unit 'nunit'
@@ -453,7 +453,7 @@ MODULE cont1d
     !
     !
     SUBROUTINE cont1d_deallocate()
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Deallocate cont1d Database
@@ -468,6 +468,18 @@ MODULE cont1d
 
     END SUBROUTINE cont1d_deallocate
     !
-END MODULE cont1d
+END MODULE cont1d_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

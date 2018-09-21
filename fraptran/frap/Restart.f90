@@ -1,10 +1,10 @@
-MODULE Restart
-    USE Kinds
+MODULE Restart_fraptran
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE rlpst
+    USE rlpst_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module performs FRAPCON-to-FRAPTRAN reads and FRAPTRAN-to-FRAPTRAN restart file read/write (Not yet implemented)
+    !> This module performs FRAPCON_fraptran-to-FRAPTRAN reads and FRAPTRAN-to-FRAPTRAN restart file read/write (Not yet implemented)
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -13,7 +13,7 @@ MODULE Restart
     CONTAINS
     !
     SUBROUTINE Write_Restart
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This writes the restart file
@@ -23,7 +23,7 @@ MODULE Restart
     END SUBROUTINE Write_Restart
     
     SUBROUTINE Read_Restart
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This reads the restart file
@@ -34,10 +34,10 @@ MODULE Restart
     SUBROUTINE restfs (trest, BOSOxideThick, SwellDispl, CldPlasStrn, EffStrain, CladMaxT, OpenPorosity, &
       &                AxBurnup, RadialBound, GasPress, igpnod, GapThick, GasFraction, TotalGasMoles, &
       &                gadolin, burad, radsrco, colddec, ureloc, FastFlux, tflux)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ngasr, ansr, fmgp, gasavail1, gasavail2, ounit, fcunit
-    USE resti_h, ONLY : nmesh, ncladi, naxn
-    USE NCGases, ONLY : ngases
+    USE resti_h_fraptran, ONLY : nmesh, ncladi, naxn
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Read a FRAPCON restart file to initialize history dependent variables that are not specified by card input. 
@@ -374,5 +374,17 @@ MODULE Restart
     !
     END SUBROUTINE restfs
     !
-    END MODULE Restart
+    END MODULE Restart_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

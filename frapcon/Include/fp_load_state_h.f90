@@ -640,4 +640,3 @@ read(ifile) this % r__g1old
 read(ifile) this % r__g2old
 read(ifile) this % r__g3old
 read(ifile) this % r__g4old
-

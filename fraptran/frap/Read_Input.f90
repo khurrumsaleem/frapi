@@ -1,9 +1,9 @@
-MODULE Read_Input
-    USE Kinds
-    USE ErrorMsg, ONLY : namelist_read_error
+MODULE Read_Input_fraptran
+    USE Kinds_fraptran
+    USE ErrorMsg_fraptran, ONLY : namelist_read_error
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to read the input file.
+    !> This module contains the subroutines used to read the input file_fraptran.
     !> Subroutines include cardin, bcdinp, cinip, definp, intinp, ioinp
     !> modinp, numinp, powinp
     !>@author
@@ -22,12 +22,12 @@ MODULE Read_Input
     CONTAINS
     !
     SUBROUTINE cardin
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE frapc, ONLY : coupled
-    USE UntinpData, ONLY : Convert_Input_Units
-    USE Uncertainties, ONLY : ReadUncertainty
-    USE Initialization
+    USE frapc_fraptran, ONLY : coupled
+    USE UntinpData_fraptran, ONLY : Convert_Input_Units
+    USE Uncertainties_fraptran, ONLY : ReadUncertainty
+    USE Initialization_fraptran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine controls the input of all data blocks.  It processes the input
@@ -168,8 +168,8 @@ MODULE Read_Input
     ! Terminate program based on error switch
     IF (ierr > 0) THEN
         WRITE(ounit,201)
-201     FORMAT(40x,' ***** Execution terminated because of input errors ***** '////)
-        ERROR STOP 'Execution terminated because of input errors in Subroutine: cardin'
+201     FORMAT(40x,' ***** Execution terminated because of input errors _fraptran***** '////)
+        ERROR STOP 'Execution terminated because of input errors in Subroutine_fraptran: cardin'
     ENDIF
     !
     END SUBROUTINE cardin
@@ -177,16 +177,16 @@ MODULE Read_Input
     !
     !
     SUBROUTINE bcdinp
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : TO_UPPERCASE
     USE variables_fraptran, ONLY : ounit, htco, tem, pbh1, pbh2, hlqcl, ts, unit, iunit, reflpr
-    USE collct_h
-    USE resti_h
-    USE htcb_h
-    USE excb_h
-    USE CoolantProperties
-    USE bcdcom_h
-    USE Dyna_h, ONLY : nodchf, Extentofbow, tschf, techf
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE htcb_h_fraptran
+    USE excb_h_fraptran
+    USE CoolantProperties_fraptran
+    USE bcdcom_h_fraptran
+    USE Dyna_h_fraptran, ONLY : nodchf, Extentofbow, tschf, techf
     IMPLICIT NONE
     !> @brief
     !> Subroutine to read in Boundary Condition ($boundary) Data block
@@ -693,9 +693,9 @@ MODULE Read_Input
     !
     !
     SUBROUTINE cininp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE NCGases, ONLY : ngases, HeIndex
+    USE NCGases_fraptran, ONLY : ngases, HeIndex
     IMPLICIT NONE
     !> @brief
     !> This Subroutine initializes all input common block variables.
@@ -844,7 +844,7 @@ MODULE Read_Input
     !
     !
     SUBROUTINE definp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
     IMPLICIT NONE
     !> @brief
@@ -1171,15 +1171,15 @@ MODULE Read_Input
     !
     !
     SUBROUTINE intinp
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit, gadoln, unit, naxn, iunit, &
       & fluxz, ncs, GasFraction, npelraddeviat, nfastf, pdrato, rnbnt, &
       & totnb, roughf, roughc, bumtp, compmt, deloxy, imox, CladType, GasMoles0, nepp0, eppinp, radpel, &
       & cladid, cladod, fuelpeldiam, rf, cladtk, pitch, fotmtl, tsntrk, fgrns, cldwdc, splbp, coldbp, &
       & spdbp, volbp, ncolbp, nbotpl, rsntr
-    USE scalr_h
-    USE NCGases, ONLY : ngases
+    USE scalr_h_fraptran
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Subroutine to read in the $design block
@@ -1431,51 +1431,51 @@ MODULE Read_Input
     SELECT CASE (CladType)
     CASE (1)
         WRITE(ounit,401)
-401     FORMAT(15x,'CladType = 1 entered; will use generic Zircaloy properties')
+401     FORMAT(15x,'CladType = 1 entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (2)
         WRITE(ounit,402)
-402     FORMAT(15x,'CladType = 2 (Zircaloy-2) entered; will use generic Zircaloy properties')
+402     FORMAT(15x,'CladType = 2 (Zircaloy-2) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (3)
         WRITE(ounit,403)
-403     FORMAT(15x,'CladType = 3 (Optimized ZIRLO) entered; will use generic Zircaloy properties')
+403     FORMAT(15x,'CladType = 3 (Optimized ZIRLO) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (4)
         WRITE(ounit,404)
-404     FORMAT(15x,'CladType = 4 (Zircaloy-4) entered; will use generic Zircaloy properties')
+404     FORMAT(15x,'CladType = 4 (Zircaloy-4) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (5)
         WRITE(ounit,405)
-405     FORMAT(15x,'CladType = 5 (ZIRLO) entered; will use generic Zircaloy properties')
+405     FORMAT(15x,'CladType = 5 (ZIRLO) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (6)
         WRITE(ounit,406)
-406     FORMAT(15x,'CladType = 6 (Zr-1%Nb) entered; will use RRC-KI Zr-1%Nb properties')
+406     FORMAT(15x,'CladType = 6 (Zr-1%Nb) entered; will use RRC_fraptran-KI Zr-1%Nb properties')
         rhoc = 408.05_r8k
         beta1 = 0.5_r8k
         deloxy = 0.0_r8k
     CASE (7)
         WRITE(ounit,407)
-407     FORMAT(15x,'CladType = 7 (M5) entered; will use generic Zircaloy properties')
+407     FORMAT(15x,'CladType = 7 (M5) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (8)
         WRITE(ounit,408)
-408     FORMAT(15x,'CladType = 8 (E-110) entered; will use RRC-KI Zr-1%Nb properties')
+408     FORMAT(15x,'CladType = 8 (E-110) entered; will use RRC_fraptran-KI Zr-1%Nb properties')
         rhoc = 408.05_r8k
         beta1 = 0.5_r8k
         deloxy = 0.0_r8k
     CASE (9)
         WRITE(ounit,409)
-409     FORMAT(15x,'CladType = 9 (low-tin Zry) entered; will use generic Zircaloy properties')
+409     FORMAT(15x,'CladType = 9 (low-tin Zry) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (10)
         WRITE(ounit,410)
-410     FORMAT(15x,'CladType = 10 (cold-worked annealed SRA) entered; will use generic Zircaloy properties')
+410     FORMAT(15x,'CladType = 10 (cold-worked annealed SRA) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     CASE (11)
         WRITE(ounit,411)
-411     FORMAT(15x,'CladType = 11 (fully annealed Zry) entered; will use generic Zircaloy properties')
+411     FORMAT(15x,'CladType = 11 (fully annealed Zry) entered; will use generic Zircaloy properties_fraptran')
         rhoc = 409.54_r8k
     END SELECT
     
@@ -1552,12 +1552,12 @@ MODULE Read_Input
     !
     !
     SUBROUTINE ioinp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, iunit, unit, dtplta, npltn
-    USE collct_h
-    USE resti_h
-    USE excb_h
-    USE scalr_h
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine to read in $ioData block
@@ -1752,16 +1752,16 @@ MODULE Read_Input
     !
     !
     SUBROUTINE modinp
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit, iunit, tref, nthermex, unit, swllfr, gasphs, gasths, prestmp, cexh2a, protectiveoxide, &
       &                   nidoxide, explenumv, explenumt, npair, CladType
-    USE resti_h
-    USE excb_h
-    USE scalr_h
-    USE FissionGasRelease_h
-    USE modcom_h
-    USE Dyna_h, ONLY : oxideid, oxideod
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE FissionGasRelease_h_fraptran
+    USE modcom_h_fraptran
+    USE Dyna_h_fraptran, ONLY : oxideid, oxideod
     IMPLICIT NONE
     !>@brief
     !> Subroutine to read $model block
@@ -2013,7 +2013,7 @@ MODULE Read_Input
             nFGRpairs = (icount - 1) / 2
 
         CASE (2)
-            ! Use FRAPFGR model, reading from FRAPCON restart file
+            ! Use FRAPFGR model_fraptran, reading from FRAPCON restart file
         END SELECT
         
     ENDIF
@@ -2085,7 +2085,7 @@ MODULE Read_Input
 141     FORMAT(/10x,'Thermal Expansion Calculated With Maximum of Circumferential and Radial Thermal Expansion Models')
     CASE DEFAULT
         WRITE(ounit,*) nthermex
-145     FORMAT(/10x,'Bad input for fuel thermal expansion model. Will use default radial free thermal expansion model. ',&
+145     FORMAT(/10x,'Bad input for fuel thermal expansion model. Will use default radial free thermal expansion model_fraptran. ',&
           &         'nthermex =',i3)
         nthermex = 0
     END SELECT
@@ -2244,14 +2244,14 @@ MODULE Read_Input
     !
     !
     SUBROUTINE numinp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, iunit, unit, zelev, nfmesh, ncmesh, fmesh, cmesh, idebug, maxit, noiter, nunopt
-    USE Dyna_h
-    USE collct_h
-    USE resti_h
-    USE excb_h
-    USE scalr_h
-    USE heatconduction_h
+    USE Dyna_h_fraptran
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE heatconduction_h_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine to read in $solution block
@@ -2532,12 +2532,12 @@ MODULE Read_Input
     !
     !
     SUBROUTINE powinp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE collct_h
-    USE resti_h
-    USE scalr_h
-    USE Dyna_h, ONLY : buradv, bufrad
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE scalr_h_fraptran
+    USE Dyna_h_fraptran, ONLY : buradv, bufrad
     IMPLICIT NONE
     !> @brief
     !> Subroutine to read $power block
@@ -2588,7 +2588,7 @@ MODULE Read_Input
 110     FORMAT ('Syntax error in namelist POWER part of line. modheat = ',e12.5,/,'Execution terminated in Subroutine: powinp')
         ERROR STOP 'Syntax error in namelist POWER part of line. Variable modheat. Execution terminated in Subroutine: powinp'
     ELSE IF (modheat < 0.0_r8k) THEN
-        ! Use the Gamma Coolant Density Model
+        ! Use the Gamma Coolant Density Model_fraptran
         ModHeatModel = 'CoolantDensity'
         WRITE(0,111)
         WRITE(ounit,111)
@@ -2658,7 +2658,7 @@ MODULE Read_Input
     !# of pairs
     nprad = (icount - 1) / 2
     
-    ! Load 2-D radial power profile-related arrays for later use in cominp
+    ! Load 2-D radial power profile-related arrays for later use in cominp_fraptran
     nradq = nprad / naxn
     IF (nradq > 0) THEN
         ALLOCATE (radtemp(1:naxialnodes,1:nradq))
@@ -2693,7 +2693,7 @@ MODULE Read_Input
     !# of pairs
     ibu = (icount - 1) / 2
     
-    ! Load 2-D burnup-related arrays for later use in cominp
+    ! Load 2-D burnup-related arrays for later use in cominp_fraptran
     nbuq = ibu / naxn
     IF (nbuq > 0) THEN
         ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
@@ -2833,5 +2833,17 @@ MODULE Read_Input
     !
     END SUBROUTINE powinp
     !
-END MODULE Read_Input
+END MODULE Read_Input_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

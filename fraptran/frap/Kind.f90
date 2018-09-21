@@ -1,8 +1,8 @@
-MODULE Kinds
+MODULE Kinds_fraptran
     USE ISO_FORTRAN_ENV, ONLY : INT32, INT64, REAL32, REAL64, REAL128
     IMPLICIT NONE
     !>@brief
-    !> This module contains the kinds used for specifying the precision of variables
+    !> This module contains the kinds used for specifying the precision of variables_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -13,5 +13,17 @@ MODULE Kinds
     ! Single precision for integers
     INTEGER(int64), PARAMETER :: ipk = INT32
     !
-END MODULE Kinds
+END MODULE Kinds_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

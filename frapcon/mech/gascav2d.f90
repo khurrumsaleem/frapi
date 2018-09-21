@@ -1,8 +1,8 @@
-MODULE gascav2d
-    USE Kinds
+MODULE gascav2d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> Axisymmetric 2D gas cavity
@@ -48,7 +48,7 @@ MODULE gascav2d
     CONTAINS
     !
     SUBROUTINE gascav2d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -106,7 +106,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_create (label, gascav, nodes, flag)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -196,7 +196,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -236,7 +236,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_temp()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -264,7 +264,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_deriv()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -328,7 +328,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_vpt()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -360,7 +360,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_fext()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -433,7 +433,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -551,7 +551,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -575,7 +575,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -650,7 +650,7 @@ MODULE gascav2d
     !
     !
     SUBROUTINE gascav2d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -667,5 +667,7 @@ MODULE gascav2d
 
     END SUBROUTINE gascav2d_deallocate
     !
-END MODULE gascav2d
+END MODULE gascav2d_frapcon
+
+
 

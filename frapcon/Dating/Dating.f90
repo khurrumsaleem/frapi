@@ -1,11 +1,11 @@
-MODULE DatingData
-    !> Module Dating calculates cladding creep of spent fuel
+MODULE DatingData_frapcon
+    !> Module Dating calculates cladding creep of spent fuel_frapcon
     !> @author
     !> Modified by I. Porter & P. Raynaud, NRC & K. Geelhood, PNNL
     !> @date
     !> March 2014
     USE variables_frapcon, ONLY : na, ounit, im, nunits, ddunit
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     !
     ! Input
@@ -35,7 +35,7 @@ MODULE DatingData
     !
     ! INTERP - Interpolates to give output values at t = tout by using data in the y array.
     ! STIFF  - The core integration subroutine, which integrates over a single step and does associated error control.
-    ! COSET  - Sets coefficients for use in tstep.
+    ! COSET  - Sets coefficients for use in tstep_frapcon.
     ! PSET   - Computes and processes the jacobian matrix, j = df/dy.
     ! DEC    - Performs the lu decomposition of a matrix.
     ! SOL    - Solves a linear system a*x = b, after dec has been called for the matrix a.
@@ -207,7 +207,7 @@ MODULE DatingData
     CONTAINS
     !
     SUBROUTINE Datingdriver
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : CladAveTemp, FastFluence, sig
     IMPLICIT NONE
@@ -258,7 +258,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE Dating_Main
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -479,7 +479,7 @@ MODULE DatingData
             ! *** THE TEMPERATURE AND STRESS AT TOUT.         ***
             ! *** GEAR INTERPOLATES STRAIN, RECOV AND DAM AT  ***
             ! *** TOUT BUT DOES NOT INTERPOLATE TEMPERATURE   ***
-            ! *** AND STRESS BECAUSE THEY ARE NOT CALCULATED  ***
+            ! *** AND STRESS BECAUSE THEY ARE NOT CALCULATED  _frapcon***
             ! *** FROM RATE EQUATIONS IN DIFFUN.              ***
             ! ***************************************************
             !
@@ -578,7 +578,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE DRIVE (T0, Y0)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -627,8 +627,8 @@ MODULE DatingData
     !           by a test on EPS. possibly too much accuracy has been requested, or a bad choice of MF was made.
     !       -3 the integration was halted after failing to achieve corrector convergence even after reducing H by a
     !           factor of 1.e10 from its initial value.
-    !       -4 immediate halt because of illegal values of input parameters. see printed message.
-    !       -5 DATING_INDEX was -1 on input, but the desired changes of parameters were not implemented because TOUT
+    !       -4 immediate halt because of illegal values of input parameters_frapcon. see printed message.
+    !       -5 DATING_INDEX was -1 on input, but the desired changes of parameters were not implemented because TOUT_frapcon
     !           was not beyond T. interpolation to T = TOUT was performed as on a normal return. to continue,
     !           simply call again with DATING_INDEX = -1 and a new TOUT.
     !       -6 DATING_INDEX was 2 on input, but TOUT was not beyond T. no action was taken.
@@ -975,7 +975,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE INTERP (TOUT, Y, Y0)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -1026,7 +1026,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE STIFF (Y, NQ)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -1559,7 +1559,7 @@ MODULE DatingData
                 END IF
                 ! a change in NQ up or down by 1 is considered if L = 0.
                 ! if L = 1 and NQ < MAXDER, then ERROR is saved
-                ! for use in a possible order increase on the next step.
+                ! for use in a possible order increase on the next step_frapcon.
                 ! a change in H or NQ is made only of the increase in H
                 ! is by a factor of at least 1.3.
                 ! if not, L is set to 2 to prevent testing for that many
@@ -1622,7 +1622,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE DIFFUN (Y, YDOT)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     ! CREEP ADDED FOR REVISED COBLE AND CLIMB CREEP EQUATIONS WITH DG WIDTH
@@ -1841,11 +1841,11 @@ MODULE DatingData
     !
     !
     SUBROUTINE COSET (NQ, EL, TQ)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
-    !> COSET is called by STIFF and sets coefficients for use there.
+    !> COSET is called by STIFF and sets coefficients for use there_frapcon.
     !>
     !>for each order NQ, the coefficients in EL are contained in the PERTST array
     !>
@@ -1918,7 +1918,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE PSET (Y, CON, IER)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -1977,7 +1977,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE DEC (A, IP, IER)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -1995,7 +1995,7 @@ MODULE DatingData
     !> IP(N)        = (-1)**(number of interchanges) or o .
     !> IER          = 0 if a nonsingular, or K if A found to be
     !>              singular at stage k.
-    !> use SOL to obtain solution of linear system.
+    !> use SOL to obtain solution of linear system_frapcon.
     !> DETERM(A) = IP(N)*A(1,1)*A(2,2)*...*A(N,N).
     !> if IP(N)=0, A is singular, SOL will divide by zero.
     !> interchanges finished in U , only partly in L .
@@ -2062,7 +2062,7 @@ MODULE DatingData
     !
     !
     SUBROUTINE SOL (A, B, IP)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -2074,7 +2074,7 @@ MODULE DatingData
     !> A =      triangularized matrix obtained from DEC.
     !> B =      right hand side vector.
     !> IP =     pivot vector obtained from DEC.
-    !>          do not use if DEC has set IER/=0.
+    !>          do not use if DEC has set IER_frapcon/=0.
     !>
     !> output..
     !> B =      solution vector, X .
@@ -2117,11 +2117,11 @@ MODULE DatingData
     !
     !
     SUBROUTINE Allocate_DatingData
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
-    !> Allocate_DatingData allocates the arrays used by the Dating module based on the user input
+    !> Allocate_DatingData allocates the arrays used by the Dating module based on the user input_frapcon
     !> value for ncreeptab
     !> @author
     !> Coded by Ian Porter, NRC
@@ -2154,6 +2154,8 @@ MODULE DatingData
     !
     END SUBROUTINE Allocate_DatingData
     !
-END MODULE DatingData
+END MODULE DatingData_frapcon
+
+
 
 

@@ -4,8 +4,8 @@
     LOGICAL                                               :: r__nconvg                                
     LOGICAL                                               :: r__ncont                                 
     LOGICAL                                               :: r__IsModelingSpentFuel    
-    LOGICAL                                               :: r__hgapt_flag     ! YU JIANKAI 
-    LOGICAL                                               :: r__flag_iapws     ! YU JIANKAI	
+    LOGICAL                                               :: r__hgapt_flag
+    LOGICAL                                               :: r__flag_iapws
     Character   (LEN=80)                                  :: r__title                                 
     CHARACTER   (LEN=10)                                  :: r__PrintType                             
     CHARACTER   (LEN=12)                                  :: r__RelocModel                            

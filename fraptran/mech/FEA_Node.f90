@@ -1,12 +1,12 @@
-MODULE FEA_Node
+MODULE FEA_Node_fraptran
     !>@brief
-    !> This module contains the subroutine used to create a node.
+    !> This module contains the subroutine used to create a node_fraptran.
     !> Subroutines include create_node
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
@@ -14,8 +14,8 @@ MODULE FEA_Node
     !
     !
     SUBROUTINE create_node (label, node_x0)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Create node
@@ -112,5 +112,17 @@ MODULE FEA_Node
     END SUBROUTINE create_node    
     !
     !
-END MODULE FEA_Node
+END MODULE FEA_Node_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

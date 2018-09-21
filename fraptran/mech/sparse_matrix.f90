@@ -1,7 +1,7 @@
-MODULE sparse_matrix
-    USE Kinds
-    USE common_parameters
-    USE sparse_direct
+MODULE sparse_matrix_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_direct_fraptran
     IMPLICIT NONE
     !>@brief
     !> Matrix calculations for symmetric or non symmetric sparse matrices with a symmetric non zero structure
@@ -403,6 +403,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE sparse_matrix_deallocate
-END MODULE sparse_matrix
+END MODULE sparse_matrix_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

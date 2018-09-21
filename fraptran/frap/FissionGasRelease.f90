@@ -1,7 +1,7 @@
-MODULE FissionGasRelease_h
-    USE Kinds
+MODULE FissionGasRelease_h_fraptran
+    USE Kinds_fraptran
     !>@brief
-    !> This module replaces the comdeck FissionGasRelease and transfgr
+    !> This module replaces the comdeck FissionGasRelease and transfgr_fraptran
     IMPLICIT NONE
     TYPE FissionGasRelease_var
         INTEGER(ipk) :: ngasr
@@ -57,5 +57,17 @@ MODULE FissionGasRelease_h
     !
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasavail2
     !
-    END MODULE FissionGasRelease_h
+    END MODULE FissionGasRelease_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

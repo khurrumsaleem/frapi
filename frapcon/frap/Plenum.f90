@@ -1,16 +1,16 @@
-MODULE Plenum
-    USE Kinds
+MODULE Plenum_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Gas
-    USE Material_Properties
-    USE CladDeformation
-    USE CoolantData
-    USE CorrosionData
-    USE Temperature
-    USE Refabrication, ONLY : jmax, irefab
+    USE Gas_frapcon
+    USE Material_Properties_frapcon
+    USE CladDeformation_frapcon
+    USE CoolantData_frapcon
+    USE CorrosionData_frapcon
+    USE Temperature_frapcon
+    USE Refabrication_frapcon, ONLY : jmax, irefab
     IMPLICIT NONE
     !>@brief
-    !> This module contains the calculations needed to estimate the plenum temperature
+    !> This module contains the calculations needed to estimate the plenum temperature_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -25,14 +25,14 @@ MODULE Plenum
     CONTAINS
     !
     SUBROUTINE plnt
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : qmpy, deltaz, CladIrradGrowStrn, BulkCoolantTemp, na, eps, crdtt, dci, &
       &                   dco, PelAveTemp, CladAveTemp, p2, qend, qaxnorm, de, HotNodLength, &
       &                   tpa, visc, hpv, go, it, totl, tplen, amfair, amffg, coldwk, cpl, &
       &                   fa, hpl, hfll, hflmdb, hflmp, Nu, press, j, nt, m, jmin, jmax, Spring
-    USE Material_Properties, ONLY : MatProp
-    USE Gas
+    USE Material_Properties_frapcon, ONLY : MatProp
+    USE Gas_frapcon
     IMPLICIT NONE
     !>@brief
     !> Subroutine plnt is called from frpcon and computes the plenum temperature and hot state plenum volume
@@ -276,7 +276,7 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Grashof (Length, Tplen, Tfuel)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -343,7 +343,7 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Prandtl (Tplen)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -399,7 +399,7 @@ MODULE Plenum
     !
     !
     REAL(r8k) FUNCTION Nusselt (Gr, Pr, Orientation, Geometry, HeatType)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -548,5 +548,7 @@ MODULE Plenum
     !
     END FUNCTION Nusselt
     !
-END MODULE Plenum
+END MODULE Plenum_frapcon
+
+
 

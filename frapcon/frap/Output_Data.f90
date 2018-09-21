@@ -1,15 +1,15 @@
-MODULE Output_Data
-    USE Kinds
+MODULE Output_Data_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE Gas, ONLY : ngases
-    USE RunProperties
-    USE Material_Properties, ONLY : MatProp
+    USE Gas_frapcon, ONLY : ngases
+    USE RunProperties_frapcon
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
-    !> This module contains the output data for the following files:
+    !> This module contains the output data for the following files_frapcon:
     !> print1 (FILE=06) This is the input information for the output file
     !> print2 (FILE=06) This is the run information for the output file
-    !> frttr file (FILE=50) This file is for the FRAPCON to TRACE BU dependent data for NRC internal use only
+    !> frttr file (FILE=50) This file is for the FRAPCON to TRACE BU dependent data for NRC internal use only_frapcon
     !> @author
     !> Ian Porter, NRC
     !> @date
@@ -23,7 +23,7 @@ MODULE Output_Data
     !   Output File
     ! ******************
     SUBROUTINE print1
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !> @brief
@@ -378,9 +378,9 @@ MODULE Output_Data
     !
     !
     SUBROUTINE print2
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
     !> Subroutine print2 produces the output file data
@@ -635,7 +635,7 @@ MODULE Output_Data
             tsecon = ProblemTime(it)
             qcm = qc(j-1) * Bhft2toWm2
             !
-            ! These adjustments by 10 should be removed when the cause is found.
+            ! These adjustments by 10 should be removed when the cause is found_frapcon.
             !
             bpp = BOSNodeburnup(j-1) / 10.0_r8k
             bp = EOSNodeburnup(j-1) / 10.0_r8k
@@ -927,7 +927,7 @@ MODULE Output_Data
         IF (icm <= 7) WRITE (ounit,1030) pkZrO2WtGain
         ! Ouputs of regulatory interest
         ! Rod internal pressure
-        ! Set peak node location. The - 1 is because the array starts at node 0.
+        ! Set peak node location. The - 1 is because the array starts at node 0_frapcon.
         pknode = MAXLOC(pit, DIM=1) - 1
         SELECT CASE (ngasmod)
         CASE (1, 2, 3)
@@ -1139,10 +1139,10 @@ MODULE Output_Data
     ! ******************
     !
     SUBROUTINE fraptotrace
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : j, it, rp, press
-    USE Material_Properties
+    USE Material_Properties_frapcon
     IMPLICIT NONE
     !> @brief
     !> fraptotrace was written to store burnup dependent data that can be used to develop an input file for the T/H Code TRACE
@@ -1229,6 +1229,8 @@ MODULE Output_Data
     !
     END SUBROUTINE fraptotrace
     !
-END MODULE Output_Data
+END MODULE Output_Data_frapcon
+
+
 
 

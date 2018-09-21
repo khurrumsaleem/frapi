@@ -1,7 +1,7 @@
-MODULE Deformation
-    USE Kinds
+MODULE deformation_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE ZrModels, ONLY : cmlimt, cstrni
+    USE zrmodels_fraptran, ONLY : cmlimt, cstrni
     !
     CONTAINS
     !
@@ -10,7 +10,7 @@ MODULE Deformation
       &                 FuelResidStrn, CldResidStrn, OldCldAxStrn, OldFuelAxStrn, n2, ldir, k, edot1, &
       &                 edot2, edot3, tcmax, FastFlux, coldw, TimeIncrement, NSteadyTrans, nedtsw, &
       &                 nconv, rmp0, CladThickness0, pitch, t0)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, naxn, ndebug
     IMPLICIT NONE
     !>@brief
@@ -143,12 +143,12 @@ MODULE Deformation
     !
     !
     SUBROUTINE deform
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, ftin, tfk
     USE variables_fraptran
-    USE Uncertainty_Vals
-    USE Material_Properties, ONLY : MatProperty
-    USE FEModel
+    USE Uncertainty_Vals_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE FEModel_fraptran
     IMPLICIT NONE
     !> @brief
     !> Subroutine computes stresses and strains in fuel rod
@@ -452,7 +452,7 @@ MODULE Deformation
                     rrMax = -urcirB / (2.0_r8k * urcirA)
                     urmax = urcirA * rrMax ** 2 + urcirB * rrMax + urcirC
                     IF (rrMax>RadialBound(mmax)) THEN
-                        ! The true maximum is to the right of the mmax meshpoint USE radial thermal expansion
+                        ! The true maximum is to the right of the mmax meshpoint USE radial thermal expansion_fraptran
                         ! for the rest of the area between rrMax and meshpoint(mmax + 1)
                         rRest = RadialBound(mmax + 1) - rrMax
                         ethm1 = MatProperty (Material='FUEL', Property='THEXP', Temperature=tfk(EOSTemp(mmax,k)), &
@@ -499,7 +499,7 @@ MODULE Deformation
             !
             CrackVolume(k) = CrakWidth
             ! Temporarily store crack widths at fuel outer surface in CldPermStrn
-            ! Note: This term is only given a value but not used. Value given is 0.0_r8k becaUSE c2 = 0.0_r8k. IP
+            ! Note: This term is only given a value but not used. Value given is 0.0_r8k becaUSE c2 _fraptran= 0.0_r8k. IP
             CrackWidth(k) = 2.0_r8k * pi * c2
             ! add fission swelling and relocation terms to radial coordinates
             ! distribute evenly between radial nodes
@@ -1103,7 +1103,7 @@ MODULE Deformation
       &              WorkSpaceTCMx, tempcs, CldStrnRat, FastFlux, tflux, coldw, WorkSpaceRCI, &
       &              WorkSpaceRCO, NSteadyTrans, TimeIncrement, nedtsw, nconvg, pitch, FuelSrfStrRat, &
       &              FuelSrfStrRat0, EDotFZ, EDotFZ0, PelRadDeviat, CldElStrn, nmesh, ncladi)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : ftin
     USE variables_fraptran, ONLY : ounit, e, pois, CladType, Time, ndebug
     IMPLICIT NONE
@@ -1336,7 +1336,7 @@ MODULE Deformation
       &           rci, rco, rfo, ceps, cepp, cep, csig, OldCladT, OldGasPrs, OldCoolPrs, OldPelDis, &
       &           t0, n2, ldir, k, edot1, edot2, edot3, tcmax, FastFlux, coldw, TimeIncrement, &
       &           nedtsw, nconv, rmp0, CladThickness0, pitch)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, naxn, Time, ndebug
     IMPLICIT NONE
     !>@brief
@@ -1401,13 +1401,13 @@ MODULE Deformation
     !
     SUBROUTINE cladf (pg, pc, tc, rci, rco, csig, ceps, cepp, cep, fs, tempcs, edot1, edot2, edot3, tcmax, &
       &               tflux, coldw, TimeIncrement, nedtsw2, nconv, rmp0, CladThickness0, pitch, k, e, v)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ndebug
-    USE Dyna_h, ONLY : cladeffstress, efffastflustrencoef, effcoldwkstrencoef, oxygenconcenave
-    USE resti_h, ONLY : knonue
-    USE bloon_h, ONLY : nbncal, tcebal, chstrs, taxbal, trabal
+    USE Dyna_h_fraptran, ONLY : cladeffstress, efffastflustrencoef, effcoldwkstrencoef, oxygenconcenave
+    USE resti_h_fraptran, ONLY : knonue
+    USE bloon_h_fraptran, ONLY : nbncal, tcebal, chstrs, taxbal, trabal
     USE conversions_fraptran, ONLY : pi, tfk
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !
     INTEGER(ipk) :: itcntg, nconv, k, nedtsw2, kload, i
@@ -1593,11 +1593,11 @@ MODULE Deformation
     SUBROUTINE couple (rci, rco, csig, ceps, cepp, cep, urf, delta, pint, tempcs, idbg, edot1, &
       &                edot2, edot3, tcmax, tflux, coldw, TimeIncrement, k, edot01, edot02, edot03, &
       &                CladThickness0, e, v)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit, CladType, ndebug, Time
-    USE Dyna_h
-    USE Material_Properties, ONLY : MatProperty
+    USE Dyna_h_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !
     ! CladThickness0 - Initial cold state cladding thickness (in)
@@ -1898,7 +1898,7 @@ MODULE Deformation
     !
     !
     SUBROUTINE repack (factor, IndexRepack, pinf, star, dpcold, ColdDiametralGap, modfd)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This model is a simple empirical model to account for repacking and hour-glassing and the resultant early lockup
@@ -1967,12 +1967,12 @@ MODULE Deformation
 !
     SUBROUTINE strain (sig, eps, epplas, temp, edot1, edot2, edot3, tcmax, coldw, tflux, &
       &                TimeIncrement, k, kload)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit, CladType, Time, ndebug
-    USE Dyna_h
-    USE Material_Properties, ONLY : MatProperty
-    USE ZrModels, ONLY : cstres, cstran
+    USE Dyna_h_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE zrmodels_fraptran, ONLY : cstres, cstran
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes uniaxial strain given the stress and previous plastic stain. elastic unloading
@@ -2099,12 +2099,13 @@ MODULE Deformation
     !
     !
     SUBROUTINE stress (sig, eplase, dep, temp, edot1, edot2, edot3, tcmax, coldw, k)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
     USE variables_fraptran, ONLY : ounit
-    USE Dyna_h, ONLY : EffFastFluStrenCoef, EffColdWkStrenCoef, OxygenConcenAve, EffFastFluStrnHardExp, EffColdWKStrnHardExp
-    USE Material_Properties, ONLY : MatProperty
-    USE ZrModels, ONLY : cstres
+    USE Dyna_h_fraptran, ONLY : EffFastFluStrenCoef, &
+        EffColdWkStrenCoef, OxygenConcenAve, EffFastFluStrnHardExp, EffColdWKStrnHardExp
+    USE Material_Properties_fraptran, ONLY : MatProperty
+    USE zrmodels_fraptran, ONLY : cstres
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes stress given the previous plastic strain value and an increment of plastic strain.
@@ -2169,5 +2170,17 @@ MODULE Deformation
     !
     END SUBROUTINE stress
 !
-END MODULE Deformation
+END MODULE deformation_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

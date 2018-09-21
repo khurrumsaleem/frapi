@@ -1,8 +1,8 @@
-MODULE phypro_h
-    USE Kinds
+MODULE phypro_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the comdeck phypro
+    !> This module replaces the comdeck phypro_fraptran
     !> It stores the physical properties of the fuel & cladding materials
     TYPE phypro_var
         ! Fuel Type
@@ -36,6 +36,18 @@ MODULE phypro_h
     REAL(r8k) :: deloxy
     !
     !
-    END MODULE phypro_h
+    END MODULE phypro_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

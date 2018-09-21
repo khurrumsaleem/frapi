@@ -1,9 +1,9 @@
-MODULE hex8
-    USE Kinds
-    USE common_parameters
-    USE math
-    USE sparse_matrix
-    USE materials_frap
+MODULE hex8_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE math_fraptran
+    USE sparse_matrix_fraptran
+    USE materials_frap_fraptran
     IMPLICIT NONE
     !>@brief
     !> Hexahedral 8-node brick element with mean dilation procedure
@@ -1215,6 +1215,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE hex8_deallocate
-END MODULE hex8
+END MODULE hex8_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,5 +1,5 @@
-MODULE OutputFile
-    USE Kinds
+MODULE OutputFile_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -18,7 +18,7 @@ MODULE OutputFile
     CONTAINS
     !
     SUBROUTINE Allocate_Output_vars (naxial)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Allocate the variables needed for printing to the output file
@@ -53,11 +53,11 @@ MODULE OutputFile
     !
     !
     SUBROUTINE prntot
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, sechr, ftom, ftin, tfk
     USE variables_fraptran
-    USE Temperature
-    USE NCGases, ONLY : ngases
+    USE Temperature_fraptran
+    USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
     !>@brief
     !> Subroutine prints out results of calculations
@@ -1005,5 +1005,17 @@ MODULE OutputFile
     !
     END SUBROUTINE prntot
     !
-    END MODULE OutputFile
+    END MODULE OutputFile_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

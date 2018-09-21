@@ -1,8 +1,8 @@
-MODULE solid1D
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
-    USE materials_frap
+MODULE solid1D_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
+    USE materials_frap_fraptran
     IMPLICIT NONE
     !>@brief
     !> 1 1/2-Dimensional axisymmetric SOLID1D element
@@ -605,7 +605,7 @@ CONTAINS
 
     tmod = 0.0_r8k
 
-    ! Use initial elastic matrix
+    ! Use initial elastic matrix_fraptran
     IF ( elastic_matrix ) THEN
        tmod(1) = 2.0_r8k*mu + lambda
        tmod(2) = 2.0_r8k*mu + lambda
@@ -863,6 +863,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE solid1d_deallocate
-END MODULE solid1D
+END MODULE solid1D_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

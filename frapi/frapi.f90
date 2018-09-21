@@ -35,7 +35,7 @@ module frapi
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
 !        procedure :: transient => p_transient       ! Transient time step
-!        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
+        procedure :: frapc2t   => p_frapc2t         ! Pass data from FRAPCON to FRAPTRAN
     end type frod_type
 
     ! TEMPORARY VARIABLES
@@ -49,7 +49,7 @@ contains
     subroutine frod_make(this, nr, na, ngasr, nce, &
                   mechan, ngasmod, icm, icor, iplant, &
                   imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
-                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose)
+                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws)
 
         class (frod_type), intent(inout) :: this
 
@@ -73,6 +73,7 @@ contains
         integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
         logical, optional :: verbose     ! Print the output data in terminal
+        logical, optional :: flag_iapws  ! flag to indicate the iapws-if97 version of steam table to be used (default : true)
 
         integer :: nr_ = 17
         integer :: na_ = 10
@@ -364,7 +365,7 @@ contains
 
         select case(key)
         case("thickness of the axial nodes, cm")
-            this % dfcon % r__deltaz(1:n) = var(:) * cmtoft            
+            this % dfcon % r__deltaz(1:n) = var(:) * cmtoft
             this % dfcon % r__x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
             this % dfcon % r__x(2:n+1)    = (/( sum(this % dfcon % r__deltaz(:i)), i = 1, n )/)
             this % dfcon % r__deltaz(n+1) = this % dfcon % r__cpl
@@ -664,8 +665,8 @@ contains
 
         class (frod_type), intent(inout) :: this
 
-        this % dfcon  % restfs()
-        this % dftran % restfs()
+        call this % dfcon  % restfs()
+        call this % dftran % restfs()
 
     end subroutine p_frapc2t
 

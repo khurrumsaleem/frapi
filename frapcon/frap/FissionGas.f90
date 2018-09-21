@@ -1,12 +1,12 @@
-MODULE FissionGas
-    USE Kinds
+MODULE FissionGas_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions, ONLY : terp
+    USE Functions_frapcon, ONLY : terp
     USE variables_frapcon, ONLY : ounit, na, rc, ngasr
-    USE Material_Properties
+    USE Material_Properties_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the fission gas release subroutines
+    !> This module contains the fission gas release subroutines_frapcon
     !
     ! IFBA Variables
     REAL(r8k), SAVE :: B_atoms, ZrB2_MolarMass
@@ -85,7 +85,7 @@ MODULE FissionGas
     CONTAINS
     !
     SUBROUTINE ALLOCATE_FGR_Variables
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ngasr, na
     IMPLICIT NONE
@@ -188,7 +188,7 @@ MODULE FissionGas
     FGRData%SCAN%resolGas = 0.0_r8k
     FGRData%SCAN%proGas = 0.0_r8k
     FGRData%SCAN%relGas = 0.0_r8k
-    ! Assign local pointers used only in module FissionGas
+    ! Assign local pointers used only in module FissionGas_frapcon
     gp => FGRData%gp
     gpold => FGRData%gpold
     rls => FGRData%rls
@@ -230,11 +230,11 @@ MODULE FissionGas
     !
     !
     SUBROUTINE gaspro
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, imox, comp, moxtype, EOSNodeburnup, dp, na, fgmgp, hemgp, &
       &                   deltaz, qc, rc, it, j, frden, sgapf, dcoBOL
-    USE Comde
+    USE Comde_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine is called from frpcon and computes the fission gas and helium production.
@@ -288,7 +288,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE fgasre
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, den, ngasmod, Power, dci, ifbarel, tfuelr, rapow, &
       &                   nr, im, ngasr, crad, deltaz, dp, rc, ProblemTime, na, angr, fmgr, hmgr, &
@@ -296,19 +296,19 @@ MODULE FissionGas
       &                   rdotwrt, it, j, totl, grnsize, ifba, b10, zrb2thick, zrb2den, &
       &                   press, afgr, angi, delh, delbp, ir1, gasflg, dcoBOL, nvoid, rdot, &
       &                   ah2ogr, ah2og, h2omi, EOSNodeBurnup
-    USE Refabrication, ONLY : irefab
+    USE Refabrication_frapcon, ONLY : irefab
     IMPLICIT NONE
     !
     !>@brief
     !> Subroutine fgasre computes the fission gas production and release, the helium production and release,
     !> and the nitrogen release for a given axial node. fgasre is called by the frpcon subroutine.
     !>@author
-    !> This Subroutine was modified for use in frap-t and frapcon by g a berna from frap-s in oct 77.
+    !> This Subroutine was modified for use in frap_frapcon-t and frapcon by g a berna from frap-s in oct 77.
     !> The Subroutine was modified by DD Lanning and K Geelhood in 1995 to better accommodate a new fission gas release
     !> subroutine (MASSIH) and modified version of RADAR.
     !> See Letters:
     !> Lanning to Siefken, 7/24/95, "Recommended Fission Gas Release Models for FRAPCON-3" 
-    !> Lanning to Davis, 8/17/95, "Recommended Updates to FRAPCON Regarding use of subroutines RADAR and TUBRNP for ...."
+    !> Lanning to Davis, 8/17/95, "Recommended Updates to FRAPCON Regarding use of subroutines RADAR and TUBRNP for _frapcon...."
     !
     !
     ! Input
@@ -431,7 +431,7 @@ MODULE FissionGas
             ! calculation of fission gas release (ans-5.4 model)
             brnup = EOSNodeburnup(j-1) - delbp / 2.0_r8k
             ! calculate flux depression array
-            ! Use rapow from Subroutine radar
+            ! Use rapow from Subroutine radar_frapcon
             DO irv = 1, nr
                 dv(irv) = crad(irv,j-1) * 2.0_r8k
                 ! rv is a Function of dv
@@ -465,7 +465,7 @@ MODULE FissionGas
             Vol_ZrB2(j-1) = pi * ((dp(j-1) / 2.0_r8k + zrb2thick) ** 2 - (dp(j-1) / 2.0_r8k) ** 2) * in2tocm2 * deltaz(j-1) * ftocm
         END IF
         ! HeProd in Atoms He/cm^3/s
-        ! factor of 2.46 because Richard Pagh used this for Density.
+        ! factor of 2.46 because Richard Pagh used this for Density_frapcon.
         ! 5.472 is 90% TD (6.08 is TD)
         HeProd(j-1) = (-(9.66127e8_r8k * ifba + 1.088109e11_r8k) * (Boron10(j-1) ** 2) + (-2.10296e10_r8k * ifba + &
           &           4.88343e13_r8k) * Boron10(j-1)) * Power(j-1) / 5.64_r8k * 6.08_r8k * zrb2den / 100.0_r8k / 4.53_r8k
@@ -530,7 +530,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE ans54 (brnup, rv, dv)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
                           qaxnorm, ngasr, na, rc, tfuelr, dp, releas, it, j, ir1, dcoBOL, rdot
@@ -741,7 +741,7 @@ MODULE FissionGas
     ! This requires a shutdown of a 4*half-life period of time. The Subroutine does not consider this problem.
     IF (j == 2) THEN
         IF (it == 1 .OR. jst(it) /= 1) THEN
-            ! Calculate gas production factors to use as weighting factors for average release fraction for the rod
+            ! Calculate gas production factors to use as weighting factors for average release fraction for the rod_frapcon
             pftot = 0.0_r8k
             DO jj = 1, (na - 1)
                 DO i = 1, ngasr
@@ -820,12 +820,12 @@ MODULE FissionGas
     !
     !
     SUBROUTINE massih (rv, dv)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : imox, den, sigfgr, igas, Power, crad, nr, ngasr, tfuelr, dp, rc, &
       &                   na, ounit, nplot, j, it, gasflg, delbp, press, grnsize, delh, rdot, &
       &                   EOSNodeburnup
-    USE Refabrication, ONLY : irefab
+    USE Refabrication_frapcon, ONLY : irefab
     IMPLICIT NONE
     !>@brief
     !> Subroutine massih is called by fgasre and returns cumulative fission gas release for the axial region (rdot)
@@ -1121,11 +1121,11 @@ MODULE FissionGas
     !
     !
     SUBROUTINE frapfgr (rv, dv)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : den, sigfgr, Power, gasavail1, gasavail2, crad, nr, ngasr, tfuelr, rc, &
       &                   dp, na, nplot, j, it, gasflg, delbp, delh, press, grnsize, rdot, EOSNodeburnup
-    USE Refabrication, ONLY : irefab
+    USE Refabrication_frapcon, ONLY : irefab
     IMPLICIT NONE
     !>@brief
     !> Subroutine frapfgr is called by fgasre and returns cumulative fission gas release for the axial region (rdot)
@@ -1357,7 +1357,7 @@ MODULE FissionGas
                     IF (arg4 > 4.0e-4_r8k .AND. arg4 < 85.0_r8k) f4 = EXP(-b4 * dtau) - 1.0_r8k
                     IF (arg4 < 4.0e-4_r8k) f4 = -b4 * dtau
                     IF (arg4 > 85.0_r8k) f4 = -1.0_r8k
-                    ! Resolution term as a function of temp and use in the calculation of term1, term2, and term3
+                    ! Resolution term as a function of temp and use in the calculation of term1_frapcon, term2, and term3
                     IF (tempk <= 1528.77_r8k) THEN
                         resolterm = MAX(1.0_r8k, 0.14009_r8k * EXP(0.00282_r8k * tempk))
                     ELSE
@@ -1503,7 +1503,7 @@ MODULE FissionGas
     !
     !
     REAL(r8k) FUNCTION graingro (pow, delh, grnin, tempK, dfs, rc, den)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !
@@ -1550,7 +1550,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE totgas
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : acmfg, acmn2, acmhe, acmh2, acmh2o, amgpt, hmgpt, he_ifba, imox, &
       &                   den, EOSNodeburnup, dp, deltaz, amfhe, amfh2, amfn2, amfarg, amfkry, &
@@ -1558,7 +1558,7 @@ MODULE FissionGas
       &                   fgmgp, hemgp, ang, gasmo, nread, gases, it, kryin, ir1, h2in, th2ofr, &
       &                   airin, angi, an2in, argin, fgin, hein, h2omi, xein, tfgfr, thefr, &
       &                   amffg, sgapf, h2oin, ah2ogr, gmlesAsFab, gmlesReleased, jmin, jmax
-    USE Refabrication, ONLY : irefab
+    USE Refabrication_frapcon, ONLY : irefab
     IMPLICIT NONE
     !>@brief
     !> The Subroutine totgas calculates the cumulative gas release of fission gas, helium, and nitrogen for the entire rod.
@@ -1754,7 +1754,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE scangas (gp, gg, gb, grs, rls, ansr)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : j
     IMPLICIT NONE
@@ -1799,7 +1799,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE ans54_2011 (brnup, rv, dv)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, jst, qmpy, dt, prdct, ansd, den, ounit, crad, nr, im, &
                           qaxnorm, ngasr, na, rc, tfuelr, dp, releas, it, j, ir1, dcoBOL, &
@@ -1893,9 +1893,9 @@ MODULE FissionGas
     !
     ! Note: IP 7/13/2015
     !
-    ! This does not need to be re-calculated every timestep becuse dp is as-fabricated
+    ! This does not need to be re-calculated every timestep becuse dp is as_frapcon-fabricated
     ! Also, this does not take into account the dish or chamfer
-    ! Why not use values calculated in Initialization, lines ~ 700 - 750?
+    ! Why not use values calculated in Initialization_frapcon, lines ~ 700 - 750?
     !
     ! Calculate fuel volumes (cm^3)
     Vring = (deltaz(j-1) * fttoin) * pi * ansda * in3tocm3
@@ -1965,7 +1965,7 @@ MODULE FissionGas
     !
     !
     SUBROUTINE gasplt
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ProblemTime, ounit, releas, it
     IMPLICIT NONE
@@ -2052,5 +2052,7 @@ MODULE FissionGas
     !
     END SUBROUTINE gasplt
     !
-END MODULE FissionGas
+END MODULE FissionGas_frapcon
+
+
 

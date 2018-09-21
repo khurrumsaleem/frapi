@@ -1,12 +1,12 @@
-MODULE NCGases
-    USE Kinds
+MODULE NCGases_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : GasFraction, ounit, GasPress, gsmol0
-    USE FissionGasRelease_h, ONLY : gsmol0
+    USE FissionGasRelease_h_fraptran, ONLY : gsmol0
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Gas Properties
+    !> This Module contains all Gas Properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -181,7 +181,7 @@ MODULE NCGases
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (Gas, property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -207,7 +207,7 @@ MODULE NCGases
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module Gas. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module Gas_fraptran. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -216,7 +216,7 @@ MODULE NCGases
     !
     !
     SUBROUTINE LoadGases ()
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -344,7 +344,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION gthcon (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -445,7 +445,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION gconr2 (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -455,7 +455,7 @@ MODULE NCGases
     !> gconr2 was coded by r. c. young march 1975
     !> modified by d. l. hagrman october 1979
     !> Modified by PNNL, February 1997, to clean up coding and delete licensing audit coding.
-    !> Modified by Ian Porter, NRC, 1/13/2016 to allow the code to use updated gas properties
+    !> Modified by Ian Porter, NRC, 1/13/2016 to allow the code to use updated gas properties_fraptran
     !
     ! Input
     !
@@ -561,7 +561,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION gvisco (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit, GasFraction
     IMPLICIT NONE
@@ -639,7 +639,7 @@ MODULE NCGases
     DO i = 1, ngases
         sum = 0.0_r8k
         DO j = 1, ngases
-            ! MATPRO document does not say to use the i /= j but calculations are inconsistent for single gas otherwise (IP)
+            ! MATPRO document does not say to use the i _fraptran/= j but calculations are inconsistent for single gas otherwise (IP)
             IF (i /= j) THEN
                 rmoles = ncGasProperties(j)%MWt / ncGasProperties(i)%MWt
                 gij = (1.0_r8k + SQRT(vgas(i) / vgas(j)) * (ncGasProperties(j)%MWt / ncGasProperties(i)%MWt) ** 0.25_r8k) ** 2 &
@@ -657,7 +657,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION CP (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -752,7 +752,7 @@ MODULE NCGases
         ! rhoH2O = GasRho (Gas%Temp, 'Steam')
         ! Gas Density
         ! rhoGas = GasRho (Gas%Temp, 'NCGases')
-        ! If steam was NOT modeled as a NCGas, would need to use a weighted average.
+        ! If steam was NOT modeled as a NCGas, would need to use a weighted average_fraptran.
         ! Gascp = (rhoH2O * cpH2O + rhoGas * cpa) / (rhoH2O + rhoGas)
         ! However, steam is currently modeled as a NCGas
         CP = cpa
@@ -766,7 +766,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION Rho (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -836,7 +836,7 @@ MODULE NCGases
     !
     !
     REAL(r8k) FUNCTION MWt (Gas)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -881,7 +881,7 @@ MODULE NCGases
     !
     !
     SUBROUTINE Allocate_Gas
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -907,5 +907,17 @@ MODULE NCGases
     
     END SUBROUTINE Allocate_Gas
     !
-END MODULE NCGases
+END MODULE NCGases_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

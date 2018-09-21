@@ -1,8 +1,8 @@
-MODULE GammaHeating
-    USE Kinds
+MODULE GammaHeating_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module is used to model the gamma-ray heating distribution of the fuel, cladding and coolant.
+    !> This module is used to model the gamma_fraptran-ray heating distribution of the fuel, cladding and coolant.
     !>@author
     !> Ian Porter, University of South Carolina
     !>@date
@@ -11,7 +11,7 @@ MODULE GammaHeating
     CONTAINS
     !
     REAL(r8k) PURE FUNCTION GammaClad (WaterDensity)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine GammaClad calculates the gamma-ray heating of the cladding as a function of coolant density
@@ -48,7 +48,7 @@ MODULE GammaHeating
     !
     !
     REAL(r8k) PURE FUNCTION GammaCoolant (WaterDensity)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This subroutine calculates the gamma-ray heating of the coolant
@@ -82,5 +82,17 @@ MODULE GammaHeating
         
     END FUNCTION GammaCoolant
     !
-END MODULE GammaHeating
+END MODULE GammaHeating_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

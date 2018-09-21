@@ -1,8 +1,8 @@
-MODULE Data_grid
-    USE Kinds
-    USE common_parameters
-    USE materials_frap
-    USE quad4
+MODULE Data_grid_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE materials_frap_fraptran
+    USE quad4_fraptran
     IMPLICIT NONE
     !>@brief
     !> Handle input data that is given in dIfferent mesh than what the finite element model uses
@@ -221,6 +221,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE grid_deallocate
-END MODULE Data_grid
+END MODULE Data_grid_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

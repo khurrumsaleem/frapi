@@ -1,10 +1,10 @@
-MODULE Functions
-    USE Kinds
+MODULE functions_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This module contains the main functions used by FRAPCON
+    !> This module contains the main functions used by FRAPCON_fraptran
     !> Functions include polate, terp, bes2, and ShiftArray
     !>@author
     !> Ian Porter, NRC
@@ -14,7 +14,7 @@ MODULE Functions
     CONTAINS
     !
     REAL(r8k) FUNCTION polate (xy, xx, nn, kk)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -156,7 +156,7 @@ MODULE Functions
     !
     !
     REAL(r8k) FUNCTION terp (tt, ti, td, n)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -259,7 +259,7 @@ MODULE Functions
     !
     !
     REAL(r8k) FUNCTION bes2 (arg, n, m, ier)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -352,7 +352,7 @@ MODULE Functions
     CONTAINS
         !
         REAL(r8k) FUNCTION bi0l (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -366,7 +366,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bi0g (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -380,7 +380,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bi1l (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -394,7 +394,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bk0l (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -408,7 +408,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bk0g (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -422,7 +422,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bk1l (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -436,7 +436,7 @@ MODULE Functions
         !
         !
         REAL(r8k) FUNCTION bk1g (x)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         !>@author
         !> Ian Porter, NRC
@@ -452,7 +452,7 @@ MODULE Functions
     !
     !
     SUBROUTINE ShiftArray (size1, size2, ArrayVal, ShiftType)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -510,7 +510,7 @@ MODULE Functions
     !
     !
     SUBROUTINE ReAllocateArray (size_old, size_new, startval, RealArray)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -549,7 +549,7 @@ MODULE Functions
     !
     !
     SUBROUTINE ReAllocateArray1DInteger (size_old, size_new, startval, IntArray)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -589,7 +589,7 @@ MODULE Functions
     !
     !
     SUBROUTINE ReAllocateArray2D (size1_old, size1_new, startval1, size2_old, size2_new, startval2, RealArray)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -636,7 +636,7 @@ MODULE Functions
     !
     SUBROUTINE ReAllocateArray3D(size1_old, size1_new, startval1, size2_old, size2_new, startval2, &
       &                          size3_old, size3_new, startval3, RealArray)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -688,7 +688,7 @@ MODULE Functions
     !
     !
     SUBROUTINE simq (a, b, n, ks)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -808,5 +808,17 @@ MODULE Functions
     !
     END SUBROUTINE simq
     !
-END MODULE Functions
+END MODULE functions_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

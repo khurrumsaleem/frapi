@@ -1,5 +1,5 @@
     subroutine fdate(str)
-    USE Kinds
+    USE Kinds_fraptran
     implicit none
     CHARACTER(LEN=8) :: Date
     CHARACTER(LEN=10) :: Time
@@ -48,5 +48,17 @@
    !
    return
    end subroutine fdate
+
+
+
+
+
+
+
+
+
+
+
+
 
 

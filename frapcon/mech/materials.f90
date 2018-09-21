@@ -1,10 +1,10 @@
-MODULE materials
-    USE Kinds
+MODULE materials_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE cladding
-    USE m5_cladding
-    USE nuclear_fuel
+    USE common_parameters_frapcon
+    USE cladding_frapcon
+    USE m5_cladding_frapcon
+    USE nuclear_fuel_frapcon
     IMPLICIT NONE
     !
     INTEGER(ipk) :: nmat ! Number of materials
@@ -40,7 +40,7 @@ MODULE materials
     CONTAINS
     !
     SUBROUTINE mat_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -60,7 +60,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_create(mat)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -110,7 +110,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_create_par (mat, label, ndata)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !
@@ -196,7 +196,7 @@ MODULE materials
     !
     !
     REAL(r8k) FUNCTION mat_par (number, temp, keyword)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -209,7 +209,7 @@ MODULE materials
     TYPE(mat_parameter), POINTER :: current_par
     REAL(r8k), POINTER :: mdata(:,:)
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_frapcon
     SELECT CASE (number)
     CASE (0)
         mat_par = 0.0_r8k
@@ -299,7 +299,7 @@ MODULE materials
     !
     !
     FUNCTION mat_plastic (mat)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -309,7 +309,7 @@ MODULE materials
     LOGICAL :: mat_plastic
     TYPE(mat_type), POINTER :: current
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_frapcon
     SELECT CASE (mat)
     CASE (0)
         mat_plastic = .FALSE.
@@ -347,7 +347,7 @@ MODULE materials
     !
     !
     FUNCTION mat_volstr (mat)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -381,7 +381,7 @@ MODULE materials
     !
     !
     FUNCTION mat_creep (mat)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -391,7 +391,7 @@ MODULE materials
     LOGICAL :: mat_creep
     TYPE(mat_type), POINTER :: current
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_frapcon
     SELECT CASE (mat)
     CASE (0)
         mat_creep = .FALSE.
@@ -429,7 +429,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_radial_return (mat, temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -443,7 +443,7 @@ MODULE materials
     REAL(r8k) :: sigys, siginf, delta, plmod, fy, dfy, dgamma, tmp, epseff
     LOGICAL :: plinc
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_frapcon
     SELECT CASE (mat)
     CASE (1001)
         ! UO2 fuel properties
@@ -459,7 +459,7 @@ MODULE materials
         RETURN
     END SELECT
 
-    ! Use default isotropic plasticity model
+    ! Use default isotropic plasticity model_frapcon
 
     ! No plastic calculation
     IF (.NOT. mat_plastic(mat)) RETURN
@@ -495,7 +495,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_creep_calc(mat, temp, mu, dtime, epseff0, taueff, gamma, deds)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -513,7 +513,7 @@ MODULE materials
 
     deds = 0.0_r8k
 
-    ! Use library properties for material numbers greater than 999
+    ! Use library properties for material numbers greater than 999_frapcon
     SELECT CASE (mat)
     CASE (1001)
         ! UO2 fuel properties
@@ -567,7 +567,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_maximums (mat, epseff, sigeff, plSED, sigma)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -603,7 +603,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -639,7 +639,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -758,7 +758,7 @@ MODULE materials
     !
     !
     SUBROUTINE mat_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -784,5 +784,7 @@ MODULE materials
 
     END SUBROUTINE mat_deallocate
     !
-END MODULE materials
+END MODULE materials_frapcon
+
+
 

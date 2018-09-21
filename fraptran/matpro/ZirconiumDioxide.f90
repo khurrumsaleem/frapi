@@ -1,11 +1,11 @@
-MODULE ZirconiumDioxide
-    USE Kinds
+MODULE zirconium_fraptran_fraptranDioxide_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Functions
+    USE functions_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Zirconium Properties
+    !> This Module contains all Zirconium Properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -28,7 +28,7 @@ MODULE ZirconiumDioxide
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropZrO2 (ZrO2, Property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -90,8 +90,8 @@ MODULE ZirconiumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module ZirconiumDioxide. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module ZirconiumDioxide. Invalid material property called'
+100     FORMAT ('Error in Module zirconiumDioxide. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module zirconiumDioxide. Invalid material property called'
     END SELECT
     
     END FUNCTION MatPropZrO2
@@ -99,7 +99,7 @@ MODULE ZirconiumDioxide
     !
     !
     REAL(r8k) FUNCTION zotcon (ZrO2)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -122,7 +122,7 @@ MODULE ZirconiumDioxide
     !
     ! Note:
     !
-    ! Use caution above 1700k
+    ! Use caution above 1700k_fraptran
     !
     CLASS (ZircaloyDioxide), INTENT(IN) :: ZrO2
     
@@ -130,5 +130,17 @@ MODULE ZirconiumDioxide
     
     END FUNCTION zotcon
     !
-END MODULE ZirconiumDioxide
+END MODULE zirconium_fraptran_fraptranDioxide_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

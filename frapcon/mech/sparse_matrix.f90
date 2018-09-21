@@ -1,8 +1,8 @@
-MODULE sparse_matrix
-    USE Kinds
+MODULE sparse_matrix_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE sparse_direct
-    USE common_parameters
+    USE sparse_direct_frapcon
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Matrix calculations for symmetric or non symmetric sparse matrices with a symmetric non zero structure
@@ -44,7 +44,7 @@ MODULE sparse_matrix
     CONTAINS
     !
     SUBROUTINE sparse_matrix_init(n)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -70,7 +70,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_add_member (icol, irow)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -119,7 +119,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_add_element (en, numbers)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -146,7 +146,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_storage_form()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -219,7 +219,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_zero_values()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -232,7 +232,7 @@ MODULE sparse_matrix
     !
     !
     FUNCTION sparse_matrix_pointer(i,j) RESULT (ip)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -256,7 +256,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_place_value (i, j, value_ij)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -297,7 +297,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_place_element (ne, dofnum, K_e)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -327,7 +327,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_prnmat()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -360,7 +360,7 @@ MODULE sparse_matrix
     !
     !
     SUBROUTINE sparse_matrix_solve (symmetric_matrix, n, b, x)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -420,5 +420,7 @@ MODULE sparse_matrix
     !
     END SUBROUTINE sparse_matrix_deallocate
     !
-END MODULE sparse_matrix
+END MODULE sparse_matrix_frapcon
+
+
 

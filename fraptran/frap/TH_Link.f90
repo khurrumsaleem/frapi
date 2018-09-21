@@ -1,8 +1,8 @@
-MODULE TH_link
-    USE Kinds
+MODULE TH_link_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to link FRAPTRAN to a TH code.
+    !> This module contains the subroutines used to link FRAPTRAN to a TH code_fraptran.
     !> Subroutines include Update_Coolant
     !>@author
     !> Ken Geelhood, PNNL
@@ -12,11 +12,11 @@ MODULE TH_link
     CONTAINS
     !
     SUBROUTINE Update_Coolant ()
-    USE Kinds
-    USE frapc
+    USE Kinds_fraptran
+    USE frapc_fraptran
     USE variables_fraptran
     USE conversions_fraptran, ONLY : ftom
-    USE FuelRod_Data, ONLY : FRAPTRAN_Vars
+    USE FuelRod_Data_fraptran, ONLY : FRAPTRAN_Vars
     IMPLICIT NONE
     !>@brief
     !> This subroutine updates the coolant arrays (axial) that are used to store coolant data when linked with a T/H Code
@@ -29,5 +29,17 @@ MODULE TH_link
     
     END SUBROUTINE Update_Coolant
     
-END MODULE TH_link
+END MODULE TH_link_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

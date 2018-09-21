@@ -1,9 +1,9 @@
    SUBROUTINE nlfemp_stop (wrtout)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE FEA_IO, ONLY : write_output
-    USE FEA_deallocate
+    USE common_parameters_frapcon
+    USE FEA_IO_frapcon, ONLY : write_output
+    USE FEA_deallocate_frapcon
     IMPLICIT NONE
     !>@brief
     !> Stop the calculation
@@ -25,4 +25,6 @@
     STOP
 
    END SUBROUTINE nlfemp_stop
+
+
 

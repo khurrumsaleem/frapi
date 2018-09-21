@@ -1,9 +1,9 @@
-MODULE FuelDeformation
-    USE Kinds
+MODULE FuelDeformation_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to calculate fuel deformation 
+    !> This module contains the subroutines used to calculate fuel deformation _frapcon
     !> due to thermal expansion, irradiation swelling, and relocation.
     !> Subroutines include fexpan, gtrloc, swell
     !>@author
@@ -14,9 +14,9 @@ MODULE FuelDeformation
     CONTAINS
     !
     SUBROUTINE gtrloc
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon, ONLY : RelocModel, fuelreloc, j, rlcstrn, gasflg, rlcstrnold, &
       &                   hsolid, Relocation, dp, Power, EOSNodeBurnup, cdg
     IMPLICIT NONE
@@ -67,9 +67,9 @@ MODULE FuelDeformation
     !
     !
     SUBROUTINE fexpan
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon, ONLY : facmot, tfuelr, tfring, na, nr, uo2exp, crad, ftmelt, j, afal, sumexp
     IMPLICIT NONE
     !>@brief
@@ -116,9 +116,9 @@ MODULE FuelDeformation
     !
     !
     SUBROUTINE swell
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties
+    USE Material_Properties_frapcon
     USE variables_frapcon, ONLY : comp, nr, ProblemTime, porosold, porosnew, addswell, slim, gaprecov, tfuelr, &
       &                   hrad, uo2exp, dpw, dpwpp, dpw2, dpwpp2, densf, densp, crad, rlcstrn, rc, j, &
       &                   it, tsint, rsntr, dphf, afdn, prvden, BOSNodeBurnup, EOSNodeBurnup
@@ -204,5 +204,7 @@ MODULE FuelDeformation
     !
     END SUBROUTINE swell
     !
-END MODULE FuelDeformation
+END MODULE FuelDeformation_frapcon
+
+
 

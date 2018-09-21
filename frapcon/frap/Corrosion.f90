@@ -1,15 +1,15 @@
-MODULE CorrosionData
-    USE Kinds
+MODULE CorrosionData_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : calcoxide, icm, iplant, ounit, sigh2, zr2vintage, EOSZrO2Thk, sigcor, &
       &                   FastFlux, dco, dci, dp, StartofStepPickupH2Con, EndofStepPickupH2Con, &
       &                   CladH2Concen, ExcessH2Concen, ZrO2ThkNoAd, EOSNodeBurnup, &
       &                   qc, CladOutSurfTemp, j, iter, zro2wg, cladavgtemp, delhs, &
       &                   chorg, ppmh2o, zro2i, zro2o, zoxk, excesh2, SurfTempOxide
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
-    !> Module CorrosionData calculates the oxide layer thickness, hydrogen uptake and temperature rise across from the oxide layer
+    !> Module CorrosionData calculates the oxide layer thickness_frapcon, hydrogen uptake and temperature rise across from the oxide layer
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -18,7 +18,7 @@ MODULE CorrosionData
     CONTAINS
     !
     SUBROUTINE Corrosion
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -73,7 +73,7 @@ MODULE CorrosionData
     !
     !
     SUBROUTINE corros (tcoi, qci, zoxki)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -247,7 +247,7 @@ MODULE CorrosionData
     !
     !
     SUBROUTINE chuptk (dp, dco, dci, tcoi, qci, zoxki)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -373,5 +373,7 @@ MODULE CorrosionData
     !
     END SUBROUTINE chuptk
     !
-END MODULE CorrosionData
+END MODULE CorrosionData_frapcon
+
+
 

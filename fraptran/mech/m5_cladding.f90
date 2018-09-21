@@ -1,6 +1,6 @@
-MODULE m5_cladding
-    USE Kinds
-    USE common_parameters
+MODULE m5_cladding_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> M5 cladding material properties
@@ -12,7 +12,7 @@ MODULE m5_cladding
     CONTAINS
     !
     FUNCTION m5_clad_mat_par (temp, keyword)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> RETURN cladding material property
@@ -31,7 +31,7 @@ MODULE m5_cladding
     !
     !
     SUBROUTINE m5_clad_radial_Return(temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Radial RETURN for power law yield function
@@ -43,7 +43,7 @@ MODULE m5_cladding
     !
     !
     SUBROUTINE m5_clad_creep_calc (temp, mu, dtime, epseff0, taueff, gamma, deds)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Cladding creep calculation
@@ -51,6 +51,18 @@ MODULE m5_cladding
 
     END SUBROUTINE m5_clad_creep_calc
     !
-END MODULE m5_cladding
+END MODULE m5_cladding_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

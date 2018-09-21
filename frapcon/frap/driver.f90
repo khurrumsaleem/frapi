@@ -1,40 +1,40 @@
 module frapcon4
 
-    use Kinds
+    use Kinds_frapcon
     use variables_frapcon
-    use Decay
-    use Refabrication
-    use DatingData
-    use SetupProblem, only : setup, axhef
+    use Decay_frapcon
+    use Refabrication_frapcon
+    use DatingData_frapcon
+    use SetupProblem_frapcon, only : setup, axhef
     use conversions_frapcon
-    use RunProperties
-    use FEA_Setup
-    use Comde
-    use Initialization, only : check, ResetTimesteps
-    use Gas, only : Allocate_Gas, ngases
-    use GadRadPower, only : LoadGadProperties
-    use TimeStep
-    USE CoolantData
-    USE CorrosionData
-    USE Output_Data
-    USE PlotFile
-    USE Material_Properties
-    USE FissionGas
-    USE Restart
-    USE Burn
-    USE MechanicalDeform
-    USE Plenum
-    USE void
-    USE FEA_IO, ONLY : write_output
-    USE CladDeformation
-    USE FuelDeformation
-    USE Temperature
-    USE ZrModels
-    USE CladCreep
-    USE Functions, ONLY : terp
-    USE Developer
-    USE SpentFuel
-    USE FileIO, ONLY : Namelist_Read_Error
+    use RunProperties_frapcon
+    use FEA_Setup_frapcon
+    use Comde_frapcon
+    use Initialization_frapcon, only : check, ResetTimesteps
+    use Gas_frapcon, only : Allocate_Gas, ngases
+    use GadRadPower_frapcon, only : LoadGadProperties
+    use TimeStep_frapcon
+    USE CoolantData_frapcon
+    USE CorrosionData_frapcon
+    USE Output_Data_frapcon
+    USE PlotFile_frapcon
+    USE Material_Properties_frapcon
+    USE FissionGas_frapcon
+    USE Restart_frapcon
+    USE Burn_frapcon
+    USE MechanicalDeform_frapcon
+    USE Plenum_frapcon
+    USE void_frapcon
+    USE FEA_IO_frapcon, ONLY : write_output
+    USE CladDeformation_frapcon
+    USE FuelDeformation_frapcon
+    USE Temperature_frapcon
+    USE ZrModels_frapcon
+    USE CladCreep_frapcon
+    USE Functions_frapcon, ONLY : terp
+    USE Developer_frapcon
+    USE SpentFuel_frapcon
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
 
     implicit none
 
@@ -60,7 +60,7 @@ module frapcon4
         procedure :: save_state => driver_save_state
         procedure :: load_state => driver_load_state
         procedure :: destroy => driver_destroy
-        procedure :: rastfs => driver_rastfs
+        procedure :: restfs => driver_restfs
 
     end type frapcon_driver
 
@@ -106,7 +106,8 @@ contains
         include 'fp_associate_h.f90'
         include 'fp_allocate_h.f90'
 
-        if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')
+        ! WTF ???
+!        if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')
 
     end subroutine driver_make
 
@@ -169,12 +170,12 @@ contains
         this % mechan              = 2                           ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
         this % ngasmod             = 2                           ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
         this % jst(1)              = 1                           ! Sequential # of the power shape to be used for each timestep
-        this % nplot               = 0                           ! Output options Specifies whether to print plot information for use with Excel package FRAPlot or APT Plot (0 = no, 1 = limited, 2 = detailed)
+        this % nplot               = 0                           ! Output options Specifies whether to print plot information for use with Excel package FRAPlot or APT Plot _frapcon(0 = no, 1 = limited, 2 = detailed)
         this % iq                  = 1                           ! Axial power shape indicator (0 = user-input, 1 = chopped cosine)
         this % jdlpr               = 0                           ! Specifies the output file printing option (-1 = axial summary, 0 = peak-power node, 1 = all axial nodes)
         this % nunits              = 1                           ! Signal for units system to be used for input and output: 1 = British units 0 = SI units
         this % ivardm              = 0                           ! Option to specify variable axial node length (1 = ON, 0 = OFF(Default))
-        this % nsp                 = 1                           ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
+        this % nsp                 = 1                           !
         this % chmfrh              = 0.d0                        ! Chamfer height
         this % chmfrw              = 0.d0                        ! Chamfer width
         this % comp                = 0.d0                        ! PuO2 weight percent if MOX fuel (wt%)
@@ -217,7 +218,7 @@ contains
         this % qend                = 0.3d0                       ! Fraction of end-node heat that transfers to the plenum gas
         this % igas                = 0                           ! Time step to begin calculation of fission gas release
         this % frcoef              = 0.015d0                     ! Coulomb friction coefficient between the cladding and the fuel pellet
-        this % igascal             = 1                           ! Internal pressure calculation for FEA model igascal=1 normal pressure calculation igascal=0 use prescribed pressure set by p1
+        this % igascal             = 1                           ! Internal pressure calculation for FEA model igascal=1 normal pressure calculation igascal=0 use prescribed pressure set by p1_frapcon
         this % sigftc              = 0.0d0                       ! Bias on fuel thermal conductivity model (# of standard deviations)
         this % sigftex             = 0.0d0                       ! Bias on fuel thermal expansion model (# of standard deviations)
         this % sigfgr              = 0.0d0                       ! Bias on fission gas release model (# of standard deviations)
@@ -263,8 +264,8 @@ contains
         this % fuelreloc           =-1.0d0                       ! User-supplied value for fuel relocation
         this % gaprecov            = 0.5d0                       ! User-supplied value for gap recovery
         this % TimeIntegration     = 0                           ! Specify time integration technique (0 = None, 1 = Linear Interpolation, 2 = Histogram)
-        this % newtimestep         = 1.0d0                       ! The new timestep value to use for the calculation. (days) Used when TimeIntegration = 1 or 2
-        this % RestartTime         =-1.0d0                       ! Problem Time (s) to use for a restart calculation
+        this % newtimestep         = 1.0d0                       ! The new timestep value to use for the calculation_frapcon. (days) Used when TimeIntegration = 1 or 2
+        this % RestartTime         =-1.0d0                       ! Problem Time (s) to use for a restart calculation_frapcon
         this % nfrttr              = 0                           ! Specifies to create the output file read by the NRC's Internal AIG for TRACE Runs (0 = no, 1 = yes)
         this % nread               = 0                           ! Specifies to start from a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
         this % nrestr              = 0                           ! Specifies to write a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
@@ -294,7 +295,7 @@ contains
         this % roughf              = 7.87d-5                     ! Fuel roughness, in
         this % vs                  = 30.d0                       ! Number of spring turns
         this % rsntr               = 100.d0                      ! Expected resintering density increase, kg/m**3
-        this % nsp                 = 0                           ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
+        this % nsp                 = 0                           !
         this % slim                = 0.05d0                      ! User supplied swelling limit (vol fraction) (Default = 0.05)
         this % enrpu39             = 0.d0                        ! Fuel pellet Pu-239 content
         this % enrpu40             = 0.d0                        ! Fuel pellet Pu-240 content
@@ -687,7 +688,7 @@ contains
                     !WRITE (ounit,810) FuelCladGap(j-1), RinterfacPress(j-1)
                 END IF
                 Relocation(j-1) = MAX(Relocation(j-1), 0.0_r8k)
-                ! New way (IP - use value from k instead of k-1)
+                ! New way (IP - use value from k instead of k_frapcon-1)
                 EstGapDeltaT(j-1) = dltgc(MIN(k,30))
                 gpthpg(j) = gpthe(MIN(k,30))
                 HotThermalGap(j-1) = gpthe(MIN(k,30))
@@ -791,7 +792,7 @@ contains
         !
         IF (nfrttr == 1) CALL fraptotrace
         !
-        ! The following call to grafout stores the plot information for use with the Excel plot package Aplotter.xls.
+        ! The following call to grafout stores the plot information for use with the Excel plot package Aplotter_frapcon.xls.
         !
         !IF (nplot >= 1 .AND. it > 1) THEN
             !CALL grafout
@@ -911,7 +912,7 @@ contains
 
         include "fp_deallocate_h.f90"
 
-        if (.not. this % verbose) close(ounit, status='delete')
+        !if (.not. this % verbose) close(ounit, status='delete')
 
     end subroutine driver_destroy
 
@@ -970,7 +971,7 @@ contains
     dumarray2 = 0.0_r8k
     ! If fraptran start tape made, change jdlpr to 0
     IF (ntape > 0) jdlpr = 0
-    ! For HWR Use rprm1=2.21 based on JNM 255,222-233
+    ! For HWR Use rprm1_frapcon=2.21 based on JNM 255,222-233
     IF (iplant == -4) rprm1 = 2.21_r8k
     ! Make grainsize be 10 micrometers, regardless of user input value
     grnsize = 10.0_r8k
@@ -1332,7 +1333,7 @@ contains
     DO jj = 1, nt
         DO i = 1, nr
             crad(i,jj) = (1.0_r8k - (REAL(i-1) / REAL(nr-1)) ** 3) * (dp(jj) / 2.0_r8k - rc(jj)) + rc(jj)
-            ! Subroutines fueltp and tubrnp use a reversed nodalization
+            ! Subroutines fueltp and tubrnp use a reversed nodalization_frapcon
             rrev(nr-(i-1),jj) = crad(i,jj)
         END DO
     END DO
@@ -1543,18 +1544,18 @@ contains
     END SUBROUTINE init_check
 
     subroutine FRAPCON_4_0_Patch_1
-        USE Kinds
+        USE Kinds_frapcon
         USE conversions_frapcon
         USE variables_frapcon, ONLY : ProblemTime, ounit, it
-        USE FileIO, ONLY : iofiles, IOEcho
-        USE TimeStep
+        USE FileIO_frapcon, ONLY : iofiles, IOEcho
+        USE TimeStep_frapcon
         USE, INTRINSIC :: ISO_FORTRAN_ENV
         IMPLICIT NONE
         !>@brief
         !> This is the driver for the FRAPCON Code. Version 4.0 Patch 1.
         !
         REAL(r8k) :: LastTime
-        !
+
         CALL iofiles
         CALL IOEcho
         !
@@ -1568,9 +1569,13 @@ contains
         !
     end subroutine FRAPCON_4_0_Patch_1
 
-    subroutine rastfs
-    end subroutine rastfs
+    subroutine driver_restfs(this)
+        class (frapcon_driver), intent(out) :: this
+        call restfs
+    end subroutine driver_restfs
 
 end module frapcon4
+
+
 
 

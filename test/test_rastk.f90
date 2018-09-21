@@ -6,6 +6,7 @@ program rastk_input_file
 
     character(len = 32) :: iname
     character(len = 32) :: oname
+    character(len = 64) :: string
 
     integer :: i_input_file = 42
     integer :: i_output_file = 43
@@ -13,14 +14,17 @@ program rastk_input_file
     integer(4) :: n_fuel_rad_in
     integer(4) :: na_r
     integer(4) :: na_in
-    integer(4) :: n_bu       ! Number of burnup steps
+    integer(4) :: ncol
+    integer(4) :: n_bu ! total number of burnup steps
     integer(4) :: n_iter     ! Number of coupling iterations
+    integer(4) :: n_cycle    ! Number of cycles
     integer(4) :: run_media
     integer(4) :: iz
     integer(4) :: i_bu_step
     integer(4) :: n_frod     ! Number of fuel rods
     integer(4) :: i_frod
     integer(4) :: i_iter
+    integer(4) :: i_cycle
 
     real(8) :: init_enrich
     real(8) :: pitch_in
@@ -37,6 +41,7 @@ program rastk_input_file
     type(frod_type), allocatable :: frod(:)
 
     integer(4), allocatable :: z_meshes(:)
+    integer(4), allocatable :: n_bu_steps(:)    ! Number of burnup steps over cycle
 
     real(8), allocatable  :: pow_hist(:,:)
     real(8), allocatable  :: line_pow_hist(:,:)
@@ -98,22 +103,28 @@ program rastk_input_file
     read(i_input_file,*) z_meshes(1:na_in)
     read(i_input_file,*) thickness_RASTK(1:na_r)
     read(i_input_file,*) init_den
-    read(i_input_file,*) n_bu
-    read(i_input_file,*) run_media
+    read(i_input_file,*) n_cycle
+
+    allocate(n_bu_steps(n_cycle+1))
+
+    read(i_input_file,*) n_bu_steps(:)
+    read(i_input_file,*) run_media, ncol
+
+    n_bu = n_bu_steps(n_cycle+1)
 
     allocate(height_RASTK(1:na_r +1))
     allocate(height_FRPCN(1:na_in+1))
-    allocate(tmp_time(1:n_bu))
-    allocate(pow_hist(1:na_in,1:n_bu))
-    allocate(pow_hist_loc(1:na_in,1:n_bu))
-    allocate(line_pow_hist(1:na_r,1:n_bu))
+    allocate(tmp_time(1:ncol))
+    allocate(pow_hist(1:na_in,1:ncol))
+    allocate(pow_hist_loc(1:na_in,1:ncol))
+    allocate(line_pow_hist(1:na_r,1:ncol))
     allocate(power_dist_in(1:na_in))
-    allocate(ctf_coo_pres(1:na_in,1:n_bu))
-    allocate(ctf_coo_temp(1:na_in,1:n_bu))
-    allocate(ctf_clad_temp(1:na_in,1:n_bu))
+    allocate(ctf_coo_pres(1:na_in,1:ncol))
+    allocate(ctf_coo_temp(1:na_in,1:ncol))
+    allocate(ctf_clad_temp(1:na_in,1:ncol))
     allocate(power(1:na_r))
 
-    read(i_input_file,*) tmp_time(1:n_bu)  
+    read(i_input_file,*) tmp_time(1:ncol)  
 
     select case (run_media)
         case(1)
@@ -166,87 +177,98 @@ program rastk_input_file
     hdish  = 0.0094d0 * 2.54d0 * 10.d0
 
     ! arguments must be the same for all fuel rods
-    do i_frod = 1, n_frod
 
-        call frod(i_frod) % make(nr=n_fuel_rad_in-1, na=na_in, ngasr=45, nce=5, &
-                                 ifixedcoolt = 1, ifixedcoolp = 1, ifixedtsurf = 0, &
-                                 iq = 0, ivardm = 1, verbose = .false.)
+    do i_cycle = 1, n_cycle
 
-        call frod(i_frod) % set_value("cladding thickness, cm", clad_rad - gap_rad)
-        call frod(i_frod) % set_value("gap thickness, cm", gap_rad - fuel_rad)
-        call frod(i_frod) % set_value("outer cladding diameter, cm", 2 * clad_rad)
-        call frod(i_frod) % set_value("fuel rod pitch, cm", pitch_in)
-        call frod(i_frod) % set_value("as-fabricated apparent fuel density, %TD", init_den * 10.40d0/10.96d0)
-        call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
-        call frod(i_frod) % set_array("thickness of the axial nodes, cm", thickness_FRPCN)
-        call frod(i_frod) % set_value("dish shoulder width, mm", dishsd)
-        call frod(i_frod) % set_value("dish height, mm", hdish)
-
-    enddo
-
-    !------------------- RUN TIME STEPS ---------------------------------------
-
-    ! ITERATION OVER TIME
-    do i_bu_step = 1, n_bu
-
-        ! ITERATION OVER FUEL RODS
         do i_frod = 1, n_frod
 
-            ! ITERATION BETWEEN RAST-K AND FRAPCON CODES
-            do i_iter = 1, n_iter
+            call frod(i_frod) % make(nr=n_fuel_rad_in-1, na=na_in, ngasr=45, nce=5, &
+                                     ifixedcoolt = 1, ifixedcoolp = 1, ifixedtsurf = 0, &
+                                     iq = 0, ivardm = 1, verbose = .false.)
 
-                ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
-                power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
-                power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
-                power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
+            call frod(i_frod) % set_value("cladding thickness, cm", clad_rad - gap_rad)
+            call frod(i_frod) % set_value("gap thickness, cm", gap_rad - fuel_rad)
+            call frod(i_frod) % set_value("outer cladding diameter, cm", 2 * clad_rad)
+            call frod(i_frod) % set_value("fuel rod pitch, cm", pitch_in)
+            call frod(i_frod) % set_value("as-fabricated apparent fuel density, %TD", init_den * 10.40d0/10.96d0)
+            call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
+            call frod(i_frod) % set_array("thickness of the axial nodes, cm", thickness_FRPCN)
+            call frod(i_frod) % set_value("dish shoulder width, mm", dishsd)
+            call frod(i_frod) % set_value("dish height, mm", hdish)
 
-                tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
-                pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
-
-                ! SETUP THE UPDATED VARIABLES
-                call frod(i_frod) % set_array("linear power, W|cm", power_FRPCN)
-                call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
-                call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
-                call frod(i_frod) % set_value("inlet coolant temperature, C", tcool_FRPCN(1))
-                call frod(i_frod) % set_value("inlet coolant pressure, MPa", pcool_FRPCN(1))
-                call frod(i_frod) % set_value("coolant mass flux, kg|(s*m^2)", mass_flow_rate_in)
-
-                if(i_bu_step == 1) then
-                    ! DO INITIAL TIME STEP
-                    call frod(i_frod) % init()
-                else
-                    ! DO TRIAL TIME STEP
-                    dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
-                    call frod(i_frod) % next(dtime)
-                endif
-
-                ! TAKE OUTPUT VARIABLES FROM FRAPCON
-                call frod(i_frod) % get_array('fuel volume average temperature, C', fue_avg_temp)
-                call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
-                call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
-                call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
-                call frod(i_frod) % get_array('mechanical gap thickness, um', t_fuecladgap)
-                call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
-                call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
-                call frod(i_frod) % get_array('cladding axial stress, MPa', hoop_stress)
-                call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
-
-                ! ACCEPT THE LAST TRIAL TIME STEP
-                if(i_iter == n_iter) call frod(i_frod) % accept()
-            enddo
-
-            ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
-            !write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
-            !call frod(i_frod) % save(string)
-            !call frod(i_frod) % load(string)
+            if (i_cycle > 1) then
+                write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
+                call frod(i_frod) % load(string)
+            endif
 
         enddo
 
-    enddo
+        !------------------- RUN TIME STEPS ---------------------------------------
 
-    !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
-    do i_frod = 1, n_frod
-        call frod(i_frod) % destroy()
+        ! ITERATION OVER TIME
+        do i_bu_step = n_bu_steps(i_cycle), n_bu_steps(i_cycle+1)
+
+            ! ITERATION OVER FUEL RODS
+            do i_frod = 1, n_frod
+
+                ! ITERATION BETWEEN RAST-K AND FRAPCON CODES
+                do i_iter = 1, n_iter
+
+                    ! LEAD LINEAR POWER HISTORY TO THE FRAPCON INPUT
+                    power = line_pow_hist(:, i_bu_step) * thickness_RASTK(:)
+                    power_FRPCN(1)  = sum(power(:z_meshes(1))) / thickness_FRPCN(1)
+                    power_FRPCN(2:) = (/( sum(power(sum(z_meshes(:i-1))+1:sum(z_meshes(:i)))) / thickness_FRPCN(i), i = 2, na_in )/)
+
+                    tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
+                    pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
+
+                    ! SETUP THE UPDATED VARIABLES
+                    call frod(i_frod) % set_array("linear power, W|cm", power_FRPCN)
+                    call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
+                    call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
+                    call frod(i_frod) % set_value("inlet coolant temperature, C", tcool_FRPCN(1))
+                    call frod(i_frod) % set_value("inlet coolant pressure, MPa", pcool_FRPCN(1))
+                    call frod(i_frod) % set_value("coolant mass flux, kg|(s*m^2)", mass_flow_rate_in)
+
+                    if(i_bu_step == 1) then
+                        ! DO INITIAL TIME STEP
+                        call frod(i_frod) % init()
+                    else
+                        ! DO TRIAL TIME STEP
+                        dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
+                        call frod(i_frod) % next(dtime)
+                    endif
+
+                    ! TAKE OUTPUT VARIABLES FROM FRAPCON
+                    call frod(i_frod) % get_array('fuel volume average temperature, C', fue_avg_temp)
+                    call frod(i_frod) % get_array('bulk coolant temperature, C', coo_avg_temp)
+                    call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
+                    call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
+                    call frod(i_frod) % get_array('mechanical gap thickness, um', t_fuecladgap)
+                    call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
+                    call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
+                    call frod(i_frod) % get_array('cladding axial stress, MPa', hoop_stress)
+                    call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
+
+                    ! ACCEPT THE LAST TRIAL TIME STEP
+                    if(i_iter == n_iter) call frod(i_frod) % accept()
+                enddo
+
+            enddo
+
+        enddo
+
+        !----------------------------- DEALLOCATE THE FUEL RODS --------------------------
+        do i_frod = 1, n_frod
+
+            ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
+            write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
+            call frod(i_frod) % save(string)
+
+            call frod(i_frod) % destroy()
+
+        enddo
+
     enddo
 
     !----------------------------- SAVE LAST STATE ------------------------------------

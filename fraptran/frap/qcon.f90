@@ -1,5 +1,5 @@
-MODULE HeatCond
-    USE Kinds
+MODULE HeatCond_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     CONTAINS
@@ -7,11 +7,11 @@ MODULE HeatCond
     SUBROUTINE qcon (a1, indxjk, RadialBound, dtheta, nmesh, igpnod, ncladi, naxn, naz, nzmesh, kt, &
       &              kz, ndim, nsymm, IterationCount, nnaz, kthta, k, j, HeatFlow, ntstep, tfmelt, &
       &              rhof, TimeIncrement, nvoids, voidcp, fotmtl, frden, qcold, qctot, gadolin, burad)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, tfk, tkf
     USE variables_fraptran, ONLY : ounit, Time, ndebug
-    USE phypro_h
-    USE Material_Properties, ONLY : MatProperty
+    USE phypro_h_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes heat conducted in azimuthal and axial directions into row of meshes on a radial line
@@ -354,7 +354,7 @@ MODULE HeatCond
     !
     !
     SUBROUTINE idxgn1 (nmesh, naxn, nnaz, naz, nzmesh, ndim, l, k, j, kthta, kt, ngen, ngen2, kz)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine computes index for vector storage form of multi-Dimensional arrays with running index 
@@ -390,5 +390,17 @@ MODULE HeatCond
     !
     END SUBROUTINE idxgn1
 !
-END MODULE HeatCond
+END MODULE HeatCond_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

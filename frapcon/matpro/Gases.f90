@@ -1,12 +1,12 @@
-MODULE Gas
-    USE Kinds
+MODULE Gas_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : gases, ounit, amfhe, amfair, amfarg, amfh2, amfkry, amfn2, amfh2o, amfxe, &
       &                   xein, kryin, press, amffg
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all Gas Properties
+    !> This Module contains all Gas Properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -153,7 +153,7 @@ MODULE Gas
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropGas (property, temp) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -177,7 +177,7 @@ MODULE Gas
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module Gas. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module Gas_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -186,7 +186,7 @@ MODULE Gas
     !
     !
     SUBROUTINE LoadGases
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -314,7 +314,7 @@ MODULE Gas
     !
     !
     REAL(r8k) FUNCTION gthcon (gtempK)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : press
     IMPLICIT NONE
@@ -416,7 +416,7 @@ MODULE Gas
     !
     !
     REAL(r8k) FUNCTION gvisco (gtempK)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit, gases
     IMPLICIT NONE
@@ -495,7 +495,7 @@ MODULE Gas
     DO i = 1, ngases
         sum = 0.0_r8k
         DO j = 1, ngases
-            ! MATPRO document does not say to use the i /= j but calculations are inconsistent for single gas otherwise (IP)
+            ! MATPRO document does not say to use the i _frapcon/= j but calculations are inconsistent for single gas otherwise (IP)
             IF (i /= j) THEN
                 rmoles = ncGasProperties(j)%MWt / ncGasProperties(i)%MWt
                 gij = (1.0_r8k + SQRT(vgas(i) / vgas(j)) * (ncGasProperties(j)%MWt / ncGasProperties(i)%MWt) ** 0.25_r8k) ** 2 &
@@ -513,7 +513,7 @@ MODULE Gas
     !
     !
     REAL(r8k) FUNCTION GasCP (gtempK)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -608,7 +608,7 @@ MODULE Gas
         ! rhoH2O = GasRho (gtempK, 'Steam')
         ! Gas Density
         ! rhoGas = GasRho (gtempK, 'NCGases')
-        ! If steam was NOT modeled as a NCGas, would need to use a weighted average.
+        ! If steam was NOT modeled as a NCGas, would need to use a weighted average_frapcon.
         ! Gascp = (rhoH2O * cpH2O + rhoGas * cpa) / (rhoH2O + rhoGas)
         ! However, steam is currently modeled as a NCGas
         GasCP = cpa
@@ -622,7 +622,7 @@ MODULE Gas
     !
     !
     REAL(r8k) FUNCTION GasRho (gtempK)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -692,7 +692,7 @@ MODULE Gas
     !
     !
     REAL(r8k) FUNCTION GasMWt ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -736,7 +736,7 @@ MODULE Gas
     !
     !
     SUBROUTINE Allocate_Gas ()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -758,5 +758,7 @@ MODULE Gas
     !
     END SUBROUTINE Allocate_Gas
     !
-END MODULE Gas
+END MODULE Gas_frapcon
+
+
 

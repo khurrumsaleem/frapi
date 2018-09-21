@@ -1,5 +1,5 @@
-MODULE CoolantProperties
-    USE Kinds
+MODULE CoolantProperties_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     TYPE Coolant_Properties
@@ -302,6 +302,18 @@ MODULE CoolantProperties
     !
     !
     !
-    END MODULE CoolantProperties
+    END MODULE CoolantProperties_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

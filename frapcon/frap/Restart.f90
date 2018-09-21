@@ -1,12 +1,12 @@
-MODULE Restart
-    USE Kinds
+MODULE Restart_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE Comde
-    USE FissionGas
+    USE Comde_frapcon
+    USE FissionGas_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the following restart information:
+    !> This module contains the following restart information_frapcon:
     !> 1) Reads and writes to a FRAPCON Restart File
     !> 2) FRAPCON to FRAPTRAN restart file
     !>@author
@@ -17,7 +17,7 @@ MODULE Restart
     CONTAINS
     !
     SUBROUTINE WriteRestart
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -39,7 +39,6 @@ MODULE Restart
         WRITE (0,100)
         WRITE (ntaps) Description
         ! ************************
-        ! *** Variables Module ***
         ! ************************
         WRITE (ntaps) im, na, ngasr, nr, nce
         WRITE (ntaps) cvv, vfrcpl
@@ -87,7 +86,6 @@ MODULE Restart
         ! **************************************
         WRITE (ounit,110) it-1, ProblemTime(it)
         ! ************************
-        ! *** Variables Module ***
         ! ************************
         ! Write the time-step (it-1) and the time in seconds
         WRITE (ntaps) it-1, ProblemTime(it)
@@ -251,7 +249,6 @@ MODULE Restart
         WRITE (ntaps) densp
         WRITE (ntaps) brnup3
         ! ********************
-        ! *** Comde Module ***
         ! ********************
         WRITE (ntaps) lschni
         WRITE (ntaps) brnup1
@@ -276,7 +273,6 @@ MODULE Restart
         WRITE (ntaps) enriPu242
         WRITE (ntaps) por000
         ! ********************************
-        ! *** FissionGasRelease Module ***
         ! ********************************
         WRITE (ntaps) FGRData%ANS54%pfave
         WRITE (ntaps) FGRData%ansr
@@ -319,7 +315,7 @@ MODULE Restart
     !
     !
     SUBROUTINE ReadRestart
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -336,7 +332,6 @@ MODULE Restart
     CHARACTER(LEN=70) :: Description
     !
     ! ************************
-    ! *** Variables Module ***
     ! ************************
     READ (ntapi) Description
     IF (Description == 'FRAPCON') THEN
@@ -394,7 +389,6 @@ MODULE Restart
     ! **************************************
     !
     ! ************************
-    ! *** Variables Module ***
     ! ************************
     ! READ the time-step (it-1) and the time in seconds
     DO WHILE (.NOT. CorrectTimestep)
@@ -560,7 +554,6 @@ MODULE Restart
         READ (ntapi) densp
         READ (ntapi) brnup3
         ! ********************
-        ! *** Comde Module ***
         ! ********************
         READ (ntapi) lschni
         READ (ntapi) brnup1
@@ -585,7 +578,6 @@ MODULE Restart
         READ (ntapi) enriPu242
         READ (ntapi) por000
         ! ********************************
-        ! *** FissionGasRelease Module ***
         ! ********************************
         READ (ntapi) FGRData%ANS54%pfave
         READ (ntapi) FGRData%ansr
@@ -617,7 +609,7 @@ MODULE Restart
         READ (ntapi) FGRData%g2old
         READ (ntapi) FGRData%g3old
         READ (ntapi) FGRData%g4old
-        ! Check to see if this is the correct timestep to use for restart
+        ! Check to see if this is the correct timestep to use for restart_frapcon
         IF (nread < 0) THEN
             IF (RestartTime2 == RestartTime) CorrectTimestep = .TRUE.
         ELSE
@@ -656,11 +648,11 @@ MODULE Restart
     ! ***********************
     !
     SUBROUTINE restfs
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : na, nr, im, ngasr, gadoln, colddef, colddec, ProblemTime, rlcstrn, fgmgp, epp, &
       &                   gasmo, rapow, ifixedcoolp, CoolantPressure, crad, gases, press, it, nt, rci, rp, dcoBOL
-    USE FissionGas, ONLY : FGRData
+    USE FissionGas_frapcon, ONLY : FGRData
     IMPLICIT NONE
     !> @brief
     !> Subroutine restfs writes a restart file that can be Read by FRAPTRAN.
@@ -742,7 +734,7 @@ MODULE Restart
         DO k = 2, nap1
             IF (ifixedcoolp == 1) THEN ! User supplied axially varying coolant pressure
                 CoolantPress(k) = CoolantPressure(it,k)
-            ELSE ! The same value is repeated because it is assumed constant at all axial nodes in FRAPCON.
+            ELSE ! The same value is repeated because it is assumed constant at all axial nodes in FRAPCON_frapcon.
                 CoolantPress(k) = p2(it)
             END IF
         END DO
@@ -940,5 +932,7 @@ MODULE Restart
     !
     END SUBROUTINE restfs
     !
-END MODULE Restart
+END MODULE Restart_frapcon
+
+
 

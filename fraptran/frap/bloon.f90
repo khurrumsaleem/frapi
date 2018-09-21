@@ -1,8 +1,8 @@
-MODULE bloon_h
-    USE Kinds
+MODULE bloon_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module reeplaces the comdeck bloona & bloonb
+    !> This module reeplaces the comdeck bloona _fraptran& bloonb
     TYPE bloon_var
         INTEGER(ipk) :: ifbaln      !1 If balon2 predicts failure
         INTEGER(ipk) :: jmnbal      !balon2 radial contact node
@@ -117,5 +117,17 @@ MODULE bloon_h
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: zfarbl
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: ablona
     !
-    END MODULE bloon_h
+    END MODULE bloon_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,12 +1,12 @@
-MODULE PlotFile
-    USE Kinds
+MODULE PlotFile_fraptran
+    USE Kinds_fraptran
     USE variables_fraptran
-    USE Dyna_h
-    USE resti_h
+    USE Dyna_h_fraptran
+    USE resti_h_fraptran
     USE conversions_fraptran, ONLY : pi, coneu
-    USE Uncertainty_Vals
+    USE Uncertainty_Vals_fraptran
     !>@brief
-    !> This module contains the subroutines needed to make the plot file
+    !> This module contains the subroutines needed to make the plot file_fraptran
     !>@author
     !> Updated by Ian Porter, NRC
     !>@date
@@ -18,7 +18,7 @@ MODULE PlotFile
     CONTAINS
     !
     SUBROUTINE grafini
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine grafini prints the descriptions of the variables written to the plot file.
@@ -136,10 +136,10 @@ MODULE PlotFile
     !
     !
     SUBROUTINE grafout ()
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran
-    USE Temperature
+    USE Temperature_fraptran
     IMPLICIT NONE
     !>@brief
     !> Subroutine grafout prints out the code results to the plot file as user-specified time intervals
@@ -718,5 +718,17 @@ MODULE PlotFile
     !
     END SUBROUTINE grafout
     !
-    END MODULE PlotFile
+    END MODULE PlotFile_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

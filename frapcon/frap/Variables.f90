@@ -1,8 +1,8 @@
 MODULE variables_frapcon
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains all of the common variables that are set by the input file and used within the code.
+    !> This module contains all of the common variables that are set by the input file and used within the code_frapcon.
     !>@author
     !> Ian Porter, NRC
     !
@@ -55,7 +55,7 @@ MODULE variables_frapcon
     ! Central Void Index. (0 = No central void, 1 = Central void exists)
     INTEGER(ipk), TARGET :: nvoid
     ! Output options
-    ! Specifies whether to print plot information for use with Excel package FRAPlot or APT Plot
+    ! Specifies whether to print plot information for use with Excel package FRAPlot or APT Plot_frapcon
     ! (0 = no, 1 = limited, 2 = detailed)
     INTEGER(ipk), TARGET :: nplot
     ! Specifies if coupled to T/H code  (0 = no, 1 = yes) [Not used]
@@ -74,7 +74,7 @@ MODULE variables_frapcon
     INTEGER(ipk), TARGET :: ntape
     ! File unit #'s
     ! Output File
-    INTEGER(ipk), TARGET :: ounit = 6 ! old: 6 YU JIANKAI
+    INTEGER(ipk), TARGET :: ounit = 73 ! old: 6 YU JIANKAI
     ! Input File
     INTEGER(ipk), TARGET :: iunit = 55
     ! Scratch file
@@ -127,13 +127,13 @@ MODULE variables_frapcon
     INTEGER(ipk), TARGET :: igas
     ! Internal pressure calculation for FEA model
     INTEGER(ipk), TARGET :: igascal
-    ! Specify to use fixed cladding surface temperatures
+    ! Specify to use fixed cladding surface temperatures_frapcon
     INTEGER(ipk), TARGET :: ifixedtsurf
-    ! Specify which type of coolant conditions to use (0 = constant, 1 = time-dependent)
+    ! Specify
     INTEGER(ipk), TARGET :: nsp
-    ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
+    ! Specify whether to use user_frapcon-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
     INTEGER(ipk), TARGET :: ifixedcoolt
-    ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
+    ! Specify whether to use user_frapcon-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
     INTEGER(ipk), TARGET :: ifixedcoolp
     ! Specify time integration technique (0 = None, 1 = Linear Interpolation, 2 = Histogram)
     INTEGER(ipk), TARGET :: TimeIntegration
@@ -478,7 +478,7 @@ MODULE variables_frapcon
     REAL(r8k), TARGET :: slim
     ! User supplied gap heat transfer coefficient multiplier
     REAL(r8k), TARGET :: gaphtcmult
-    ! Problem Time (s) to use for a restart calculation
+    ! Problem Time (s) to use for a restart calculation_frapcon
     REAL(r8k), TARGET :: RestartTime
     ! Uncertainty options
     ! Bias on fuel thermal conductivity model (# of standard deviations)
@@ -497,7 +497,7 @@ MODULE variables_frapcon
     REAL(r8k), TARGET :: sigcor
     ! Bias on cladding hydrogen pickup model (# of standard deviations)
     REAL(r8k), TARGET :: sigh2
-    ! The new timestep value to use for the calculation. (days) Used when TimeIntegration = 1 or 2
+    ! The new timestep value to use for the calculation_frapcon. (days) Used when TimeIntegration = 1 or 2
     REAL(r8k), TARGET :: newtimestep
     ! Flag to specify when to stop the oxidation calcualtion
     REAL(r8k), TARGET :: stopox
@@ -1178,7 +1178,7 @@ MODULE variables_frapcon
     CONTAINS
     !
     SUBROUTINE Set_Defaults
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This subroutine sets default values for scalars
@@ -1207,7 +1207,7 @@ MODULE variables_frapcon
     !
     !
     SUBROUTINE Allocate_Time_Arrays
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine allocates the time-dependent arrays
@@ -1330,7 +1330,7 @@ MODULE variables_frapcon
     !
     !
     SUBROUTINE Allocate_Axial_Arrays
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine allocates the axial-dependent arrays
@@ -1676,7 +1676,7 @@ MODULE variables_frapcon
     !
     !
     SUBROUTINE Allocate_Radial_Arrays
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine allocates the radial-dependent arrays
@@ -1700,7 +1700,7 @@ MODULE variables_frapcon
     !
     !
     SUBROUTINE Allocate_2D_Arrays
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine allocates 2D arrays for various combinations of na, nr and im
@@ -1835,7 +1835,7 @@ MODULE variables_frapcon
     !
     !
     SUBROUTINE Allocate_3D_Arrays
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine allocates 3D arrays
@@ -1860,4 +1860,6 @@ MODULE variables_frapcon
     END SUBROUTINE Allocate_3D_Arrays
     !
 END MODULE variables_frapcon
+
+
 

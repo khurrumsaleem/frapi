@@ -1,5 +1,5 @@
-MODULE htcb_h
-    USE Kinds
+MODULE htcb_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !>This modules replaces the common file htcb
@@ -31,5 +31,17 @@ MODULE htcb_h
     REAL(r8k) :: htflxa
     REAL(r8k) :: bowthr
     !
-    END MODULE htcb_h
+    END MODULE htcb_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,9 +1,9 @@
-MODULE TimeStep
-    USE Kinds
+MODULE TimeStep_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to advance the problem in time.
+    !> This module contains the subroutines used to advance the problem in time_frapcon.
     !> Subroutines include frpcon, newgap, store
     !>@author
     !> Ken Geelhood, PNNL
@@ -13,31 +13,31 @@ MODULE TimeStep
     CONTAINS
     !
     SUBROUTINE frpcon
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE CoolantData
-    USE CorrosionData
-    USE Output_Data
-    USE PlotFile
-    USE Material_Properties
+    USE CoolantData_frapcon
+    USE CorrosionData_frapcon
+    USE Output_Data_frapcon
+    USE PlotFile_frapcon
+    USE Material_Properties_frapcon
     USE variables_frapcon
-    USE Refabrication
-    USE DatingData
-    USE FissionGas
-    USE Restart
-    USE Burn
-    USE Decay
-    USE MechanicalDeform
-    USE SetupProblem, ONLY : setup
-    USE FileIO, ONLY : Namelist_Read_Error
-    USE Plenum
-    USE void
-    USE FEA_IO, ONLY : write_output
-    USE CladDeformation
-    USE FuelDeformation
-    USE Temperature
-    USE ZrModels
-    USE CladCreep
+    USE Refabrication_frapcon
+    USE DatingData_frapcon
+    USE FissionGas_frapcon
+    USE Restart_frapcon
+    USE Burn_frapcon
+    USE Decay_frapcon
+    USE MechanicalDeform_frapcon
+    USE SetupProblem_frapcon, ONLY : setup
+    USE FileIO_frapcon, ONLY : Namelist_Read_Error
+    USE Plenum_frapcon
+    USE void_frapcon
+    USE FEA_IO_frapcon, ONLY : write_output
+    USE CladDeformation_frapcon
+    USE FuelDeformation_frapcon
+    USE Temperature_frapcon
+    USE ZrModels_frapcon
+    USE CladCreep_frapcon
     IMPLICIT NONE
     !>@brief
     !> frpcon is called from driver and calls all of the major subcodes
@@ -338,7 +338,7 @@ MODULE TimeStep
                     WRITE (ounit,810) FuelCladGap(j-1), RinterfacPress(j-1)
                 END IF
                 Relocation(j-1) = MAX(Relocation(j-1), 0.0_r8k)
-                ! New way (IP - use value from k instead of k-1)
+                ! New way (IP - use value from k instead of k_frapcon-1)
                 EstGapDeltaT(j-1) = dltgc(MIN(k,30))
                 gpthpg(j) = gpthe(MIN(k,30))
                 HotThermalGap(j-1) = gpthe(MIN(k,30))
@@ -440,7 +440,7 @@ MODULE TimeStep
         !
         IF (nfrttr == 1) CALL fraptotrace
         !
-        ! The following call to grafout stores the plot information for use with the Excel plot package Aplotter.xls.
+        ! The following call to grafout stores the plot information for use with the Excel plot package Aplotter_frapcon.xls.
         !
         IF (nplot >= 1 .AND. it > 1) THEN
             CALL grafout
@@ -498,7 +498,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE newgap
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : gpthe, gpth, dltgc, j, k, nconvg, ncont, gapmin, convc
     IMPLICIT NONE
@@ -557,7 +557,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE store
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : BOSNodeburnup, EOSNodeburnup, BOSZrO2Thk, StartofStepPickupH2Con, &
       &                   EndofStepPickupH2Con, EOSZrO2Thk, deltaz, CladH2Concen, &
@@ -640,7 +640,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE SetPeakPowerValues (SaveLoop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
     IMPLICIT NONE
@@ -697,5 +697,7 @@ MODULE TimeStep
     !
     END SUBROUTINE SetPeakPowerValues
     !
-END MODULE TimeStep
+END MODULE TimeStep_frapcon
+
+
 

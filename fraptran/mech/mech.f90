@@ -1,18 +1,18 @@
-MODULE FEModel
+MODULE FEModel_fraptran
     !>@brief
-    !> This module contains the subroutines used to run the Cladding FEM Model.
+    !> This module contains the subroutines used to run the Cladding FEM Model_fraptran.
     !> Subroutines include mech, create_gascav, del_node, mesh1dto2d,
     !> read_output, remesh_fuel rod,temp_storage
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/10/2016
-    USE Kinds
-    USE StaticFEA
-    USE FEA_IO
-    USE FEA_Mesh
-    USE FEA_Node
-    USE ZrModels, ONLY : ckmn
+    USE Kinds_fraptran
+    USE StaticFEA_fraptran
+    USE FEA_IO_fraptran
+    USE FEA_Mesh_fraptran
+    USE FEA_Node_fraptran
+    USE zrmodels_fraptran, ONLY : ckmn
     !
     IMPLICIT NONE
     !
@@ -30,22 +30,22 @@ MODULE FEModel
      ruptstrain,nodpln,tplna,irefine,refine,Ifaila,Ifail,RodFailIndex,coefk, &
      coefn,coefm,Emodulus,CladYieldStress,NFrapconInitialization,ntstep, &
      EffStrain)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : tfk
-    USE common_parameters
-    USE fraptran_variables
-    USE geometry
-    USE pressure1d
-    USE pressure2d
-    USE Data_grid
-    USE cladding
-    USE nuclear_fuel
-    USE quad4
-    USE solid1d
-    USE cont1d
+    USE common_parameters_fraptran
+    USE fraptran_variables_fraptran
+    USE geometry_fraptran
+    USE pressure1d_fraptran
+    USE pressure2d_fraptran
+    USE Data_grid_fraptran
+    USE cladding_fraptran
+    USE nuclear_fuel_fraptran
+    USE quad4_fraptran
+    USE solid1d_fraptran
+    USE cont1d_fraptran
     Use variables_fraptran, ONLY : CladType
-    USE Uncertainty_Vals
-    USE Material_Properties, ONLY : MatProperty
+    USE Uncertainty_Vals_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> Driver Subroutine for the finite element model of FRAPTRAN
@@ -55,7 +55,7 @@ MODULE FEModel
        ncladi,nmesh, & ! Indices for RadiaBound arrays
        irupt, &   ! Flag for rupture model
        nodpln, &  ! Number of nodes in upper plenum
-       irefine, & ! Use mesh refinement in case of ballooning
+       irefine, & ! Use mesh refinement in case of ballooning_fraptran
        Ifaila, &  ! Ruptured axial cladding node number
        Ifail, &   ! Flag for rupture
        NFrapconInitialization, & ! Flag for FRAPCON3 initialization
@@ -157,7 +157,7 @@ MODULE FEModel
      ! Reference temperature
      tref = 293.15_r8k
 
-     ! use British units
+     ! use British units_fraptran
      units = 0
 
      ! Upper plenum length
@@ -553,8 +553,8 @@ MODULE FEModel
 
 
     SUBROUTINE del_node(label)
-    USE Kinds
-    USE common_parameters
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Remove node entry from the Database
@@ -624,17 +624,17 @@ MODULE FEModel
     END SUBROUTINE del_node
 
     SUBROUTINE mesh1dto2d(refine,ne,ia)
-    USE Kinds
-    USE common_parameters
-    USE geometry
-    USE solid1d
-    USE quad4
-    USE gascav1d
-    USE gascav2d
-    USE pressure1d
-    USE cont1d
-    USE cont2d
-    USE fraptran_variables
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE geometry_fraptran
+    USE solid1d_fraptran
+    USE quad4_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE pressure1d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE fraptran_variables_fraptran
     IMPLICIT NONE
     !>@brief
     !> Replace a SOLID1D mesh with QUAD4 mesh
@@ -880,23 +880,23 @@ MODULE FEModel
     END SUBROUTINE mesh1dto2d
 
         SUBROUTINE read_output (numout, nout_unit)
-    USE Kinds
-    USE common_parameters
-    USE materials_frap
-    USE geometry
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE materials_frap_fraptran
+    USE geometry_fraptran
+    USE spring_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE pressure1d_fraptran
+    USE pressure2d_fraptran
+    USE pressure3d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE cont3d_fraptran
     IMPLICIT NONE
     !>@brief
     !> Read restart file for the FE model from output unit
@@ -1128,14 +1128,14 @@ MODULE FEModel
         END SUBROUTINE read_output
 
     SUBROUTINE remesh_fuel_rod (na, nmesh, RadialBoundO, AxialNodLen, cpl, pitch)
-    USE Kinds
-    USE common_parameters
-    USE geometry
-    USE pressure1d
-    USE cont1d
-    USE gascav1d
-    USE gascav2d
-    USE fraptran_variables
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE geometry_fraptran
+    USE pressure1d_fraptran
+    USE cont1d_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE fraptran_variables_fraptran
     IMPLICIT NONE
     !>@brief
     !> Modify FRAPCON3-element mesh to be fit for FRAPTRAN analysis
@@ -1266,11 +1266,11 @@ MODULE FEModel
     END SUBROUTINE remesh_fuel_rod
     
 SUBROUTINE temp_storage(ic)
-  USE Kinds
-  USE common_parameters
-  USE solid1d
-  USE cont1d
-  USE pressure1d
+  USE Kinds_fraptran
+  USE common_parameters_fraptran
+  USE solid1d_fraptran
+  USE cont1d_fraptran
+  USE pressure1d_fraptran
   IMPLICIT NONE
   CHARACTER(LEN=1), INTENT(IN) :: ic
   TYPE(node_type),POINTER :: cnode
@@ -1358,6 +1358,18 @@ SUBROUTINE temp_storage(ic)
 
 END SUBROUTINE temp_storage
     
-    END MODULE FEModel
+    END MODULE FEModel_fraptran
     
+
+
+
+
+
+
+
+
+
+
+
+
 

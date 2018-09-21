@@ -1,11 +1,11 @@
-MODULE UraniumDioxide
-    USE Kinds
+MODULE uraniumdioxide_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE Functions
-    USE Uncertainty_Vals
+    USE functions_fraptran
+    USE Uncertainty_Vals_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all UO2 Properties
+    !> This Module contains all UO2 Properties_fraptran
     !>@author
     !> Ian Porter, NRC
     !
@@ -55,7 +55,7 @@ MODULE UraniumDioxide
     CONTAINS
     !
     REAL(r8k) FUNCTION MatProp (UO2, property) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -111,8 +111,8 @@ MODULE UraniumDioxide
     CASE DEFAULT ! Wrong property called
         WRITE (0,100) property
         WRITE (ounit,100) property
-100     FORMAT ('Error in Module UraniumDioxide. Invalid material property ID. Material Property ID = ',a20)
-        ERROR STOP 'Error in Module UraniumDioxide. Invalid material property called'
+100     FORMAT ('Error in Module uraniumdioxide_fraptran. Invalid material property ID. Material Property ID = ',a20)
+        ERROR STOP 'Error in Module uraniumdioxide_fraptran. Invalid material property called'
     END SELECT
     !
     END FUNCTION MatProp
@@ -120,8 +120,8 @@ MODULE UraniumDioxide
     !
     !
     FUNCTION fthcon (UO2) RESULT (con)
-    USE Kinds
-    USE Uncertainty_Vals
+    USE Kinds_fraptran
+    USE Uncertainty_Vals_fraptran
     USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
@@ -162,7 +162,7 @@ MODULE UraniumDioxide
     bug = UO2%Burnup / 1.0e3_r8k
     IF (bug < 1.0e-10_r8k) bug = 0.001_r8k
     !
-    ! Use modified NFI model for UO2
+    ! Use modified NFI model for UO2_fraptran
     ! Temperature dependence of annealing of irradiation effects
     h = 1.0_r8k / (1.0_r8k + 396.0_r8k * EXP(-6380.0_r8k / UO2%Temp))
     ! Phonon term
@@ -185,7 +185,7 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION UPuO2Density (UO2)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE
     !>@brief
@@ -224,9 +224,9 @@ MODULE UraniumDioxide
     !
     !
     SUBROUTINE UO2PhysProp (UO2)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran
-    USE phypro_h
+    USE phypro_h_fraptran
     IMPLICIT NONE
     !>@brief
     !> Physical Properties of UO2. (Tmelt, Uranium content, TD, density)
@@ -264,7 +264,7 @@ MODULE UraniumDioxide
     CONTAINS
         !
         REAL(r8k) FUNCTION sldus (PuConc)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         IMPLICIT NONE
         !
@@ -281,7 +281,7 @@ MODULE UraniumDioxide
         !
         !
         REAL(r8k) FUNCTION liqdus (PuConc)
-        USE Kinds
+        USE Kinds_fraptran
         USE conversions_fraptran
         IMPLICIT NONE
         !
@@ -300,15 +300,15 @@ MODULE UraniumDioxide
     !
     !
     FUNCTION fcp (UO2)
-    USE phypro_h
-    USE Kinds
-    USE Uncertainty_Vals
+    USE phypro_h_fraptran
+    USE Kinds_fraptran
+    USE Uncertainty_Vals_fraptran
     USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> The function fcp is used to calculate the specific heat capacity of uo2, puo2, and (U/Pu)O2 fuels
     !> as a function of temperature, fraction of fuel which is molten, puo2 content, and oxygen-to-metal ratio.
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> fcp was originally coded by v.f.baston in march 1974.
     !> last modified by g.a.reymann in may 1978.
@@ -383,16 +383,16 @@ MODULE UraniumDioxide
     !
     !
     FUNCTION fthexp (UO2)
-    USE Kinds
-    USE phypro_h
-    USE Uncertainty_Vals
+    USE Kinds_fraptran
+    USE phypro_h_fraptran
+    USE Uncertainty_Vals_fraptran
     USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
     !> Calculate the strain of the fuel caused by thermal expansion for UO2, PuO2, or (U,Pu)O2 as a function of
     !> temperature, puo2 content, and fraction of the fuel which is molten. The correlations were derived with the
     !> assumption that the thermal expansion strain is zero at 300k.
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> fthexp was originally coded by v.f.baston in march 1974
     !> modified by c.s.olsen in feb. 1975
@@ -469,11 +469,11 @@ MODULE UraniumDioxide
     !
     !
     PURE REAL(r8k) FUNCTION femiss (UO2)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> femiss calculates fuel emissivity as a function of temperature. 
-    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT
+    !> This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FRAPT_fraptran
     !>@author
     !> femiss was coded by r. e. mason in october 1978.
     !> Modified by PNNL, January 1997, to clean up coding and delete licensing analysis and sensitivity uncertainty coding
@@ -507,8 +507,8 @@ MODULE UraniumDioxide
     !
     !
     REAL(r8k) FUNCTION fenthl (UO2)
-    USE Kinds
-    USE Uncertainty_Vals
+    USE Kinds_fraptran
+    USE Uncertainty_Vals_fraptran
     USE variables_fraptran, ONLY : idx
     IMPLICIT NONE
     !>@brief
@@ -574,5 +574,17 @@ MODULE UraniumDioxide
     !
     END FUNCTION fenthl
     !
-END MODULE UraniumDioxide
+END MODULE uraniumdioxide_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

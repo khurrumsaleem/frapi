@@ -1,6 +1,6 @@
-MODULE sparse_direct
-    USE Kinds
-    USE common_parameters
+MODULE sparse_direct_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
     IMPLICIT NONE
     !>@brief
     !> Sparse matrix calculations for symmetric positive definite sparse matrix
@@ -226,7 +226,7 @@ CONTAINS
 
 
     SUBROUTINE sparse_direct_sloan(n,droots,droote,numbered)
-    ! Use Sloan's algorithm to reorder the numbering of unknowns
+    ! Use Sloan_fraptran's algorithm to reorder the numbering of unknowns
     IMPLICIT NONE
     INTEGER(ipk), INTENT(IN) :: &
          n, & ! Number of equations
@@ -718,6 +718,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE sparse_direct_deallocate
-END MODULE sparse_direct
+END MODULE sparse_direct_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

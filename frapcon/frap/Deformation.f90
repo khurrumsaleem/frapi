@@ -1,9 +1,9 @@
-MODULE Deformation
-    USE Kinds
+MODULE Deformation_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines subroutines related to PCMI and cladding deformation.
+    !> This module contains the subroutines subroutines related to PCMI and cladding deformation_frapcon.
     !> Subroutines include couple, fcmi, fladf, gapcls, gaptf, crepr, reppr, crapf, stress, strain
     !>@author
     !> Ken Geelhood, PNNL
@@ -13,7 +13,7 @@ MODULE Deformation
     CONTAINS
     !
     REAL(r8k) FUNCTION crapf (sag, edot, ProblemTime, tc, phi, ecreep)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -71,7 +71,7 @@ MODULE Deformation
     REAL(r8k) FUNCTION gaptf (f, delta, epp, rci, rco, ceps, cepp, cep, csig, OldCladAvTemp, OldGapPress, &
       &                       OldCoolPress, OldFuelDispl, j, nrelax, dtime, ProblemTime, CreepStrain, crep, &
       &                       CladH2Concen, ExcessH2Concen, na, nplast)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : CladAveTemp, FuelSurfDispl, CladEffPlasStrain, CoolantPress, GapPress
     IMPLICIT NONE
@@ -155,10 +155,10 @@ MODULE Deformation
       &                FuelSurfDispl, delta, sigeff, sigy, RinterfacPress, nrelax, dtime, &
       &                ProblemTime, crep, CladH2Concen, ExcessH2Concen, iquit, nplast, it, &
       &                alfdt, flux)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !
     ! Input
@@ -354,7 +354,7 @@ MODULE Deformation
       &              OldCladStrn, OldFuelStrn, OldCladAvTemp, OldGapPress, OldCoolPress, &
       &              OldFuelDispl, IgapIndexOld, eppsav, dtime, ProblemTime, CreepStrain, repsav, &
       &              rfpsav, epp1, CladH2Concen, ExcessH2Concen, UniformAxNodStrn, iquit, jjj, it, nplast, nrelax)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon,  ONLY : CladAveTemp, sigeff, sigy, FuelSurfDispl, &
       &                    CladInSurDisp, AxialNodLength, PrevCladEffPlasStrn, CoolantPress, &
@@ -573,9 +573,9 @@ MODULE Deformation
     SUBROUTINE cladf (GapPress, CoolantPress, CladAveTemp, rci, rco, csig, ceps, cepp, cep, &
       &               fs, nrelax, dtime, ProblemTime, CreepStrain, CladH2Concen, ExcessH2Concen, &
       &               nplast, sigeff, sigy, alfdt, j, jcreep)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties, ONLY : MatProp
+    USE Material_Properties_frapcon, ONLY : MatProp
     IMPLICIT NONE
     !>@brief
     !> cladf is called from fcmi and gaptf and calculates the free standing cladding deformation
@@ -681,7 +681,7 @@ MODULE Deformation
       &                OldFuelDispl, j, feps, rfeps, reps, OldCladStrn, OldFuelStrn, &
       &                nrelax, dtime, ProblemTime, CreepStrain, CladH2Concen, ExcessH2Concen, &
       &                na, iquit, nplast)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : CladAveTemp, FuelSurfDispl, PrevCladEffPlasStrn, ounit
     IMPLICIT NONE
@@ -861,7 +861,7 @@ MODULE Deformation
     !
     !
     SUBROUTINE crepr (sig, edot, CladAveTemp, GapPress, CoolantPress, rci, rco, ProblemTime, j, dtime, jcreep)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : icm, sigcreep, stold, stnew, deltimeold, deltimenew, FastFlux, &
       &                   sagold, sagnew, delsagold, delsagnew, delst, fnck, cwkf
@@ -1011,7 +1011,7 @@ MODULE Deformation
     !
     !
     SUBROUTINE creep (sig, edot, z, CladAveTemp, phi, ecreep, iquit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
@@ -1136,11 +1136,11 @@ MODULE Deformation
     !
     !
     SUBROUTINE stress (sig, dep, epplas, CladAveTemp, cexh2)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : ounit
-    USE Material_Properties, ONLY : MatProp
-    USE ZrModels
+    USE Material_Properties_frapcon, ONLY : MatProp
+    USE ZrModels_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes stress given the previous plastic strain value and an increment of plastic strain.
@@ -1174,7 +1174,7 @@ MODULE Deformation
     !
     tcak = tfk(CladAveTemp)
     elmod = MatProp ('CLAD', 'YOUNG_MOD', tcak)
-    ! The follow was commented out because the value for dep is fixed in
+    ! The follow was commented out because the value for dep is fixed in_frapcon
     ! the call from couple as either 0.0 (1st call) or 1.0E-4 (2nd call)
     ! Check to ensure dep is not negative
     !IF (dep < 0.0_r8k) THEN
@@ -1202,10 +1202,10 @@ MODULE Deformation
     !
     !
     SUBROUTINE strain (sig, eps, epplas, CladAveTemp, ExcessH2Concen)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Material_Properties, ONLY : MatProp
-    USE ZrModels
+    USE Material_Properties_frapcon, ONLY : MatProp
+    USE ZrModels_frapcon
     IMPLICIT NONE
     !>@brief
     !> This Subroutine computes uniaxial strain given the stress and previous plastic stain. elastic unloading
@@ -1268,5 +1268,7 @@ MODULE Deformation
     !
     END SUBROUTINE strain
     !
-END MODULE Deformation
+END MODULE Deformation_frapcon
+
+
 

@@ -1,9 +1,9 @@
-MODULE cont2d
-    USE Kinds
+MODULE cont2d_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE sparse_matrix
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE sparse_matrix_frapcon
     IMPLICIT NONE
     !>@brief
     !> 2D contact element
@@ -68,7 +68,7 @@ MODULE cont2d
     CONTAINS
     !
     SUBROUTINE cont2d_init()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -91,7 +91,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_create_surf (label, mat, numt, numc, tnodes, cnodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -152,7 +152,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_delete_surf (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -240,7 +240,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_activate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -297,7 +297,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_create (label, mat, surf, nodes)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -390,7 +390,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_delete (label)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -446,7 +446,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_sparse_matrix()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -469,7 +469,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_fint()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -570,7 +570,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_stiff()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -622,7 +622,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_stiff_n (x1, x2, x3, pfact, alpha0, Ke)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -739,7 +739,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_stiff_t (x1, x2, x3, pfact, alpha0, l0, Ke)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -862,7 +862,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_stiff_fr (x1, x2, x3, pfact, frcoef, dir, alpha0, Ke)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     !>@brief
     !> CONT2D element matrix when there is tangential slipping
@@ -983,7 +983,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_update()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1012,7 +1012,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_write_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1057,7 +1057,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_read_output (nunit)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1166,7 +1166,7 @@ MODULE cont2d
     !
     !
     SUBROUTINE cont2d_deallocate()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -1192,5 +1192,7 @@ MODULE cont2d
 
     END SUBROUTINE cont2d_deallocate
     !
-END MODULE cont2d
+END MODULE cont2d_frapcon
+
+
 

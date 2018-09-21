@@ -1,5 +1,5 @@
 MODULE conversions_frapcon
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> This file contains the subroutines used to perform unit conversions and holds the conversion factors used in the code.
@@ -251,7 +251,7 @@ MODULE conversions_frapcon
     ! ** Temperature Conversion Functions **
     !
     REAL(r8k) FUNCTION tkf (tk)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function : convert K  to  F
@@ -265,7 +265,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tkc(tk)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  K  to  C
@@ -279,7 +279,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tfr (tf)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  F  to  R
@@ -293,7 +293,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION trc (tr)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  R  to  C
@@ -307,7 +307,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tfk(tf)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  F  to  K
@@ -321,7 +321,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tcr (tc)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  C  to  R
@@ -335,7 +335,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tfc (tf)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  F  to  C
@@ -349,7 +349,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tcf(tc)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  C  to  F
@@ -363,7 +363,7 @@ MODULE conversions_frapcon
     !
     !
     REAL(r8k) FUNCTION tck(tc)
-    USE Kinds
+    USE Kinds_frapcon
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  C  to  K
@@ -375,4 +375,6 @@ MODULE conversions_frapcon
     END FUNCTION tck
     !
 END MODULE conversions_frapcon
+
+
 

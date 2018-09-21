@@ -1,37 +1,37 @@
-MODULE FEA_deallocate
+MODULE FEA_deallocate_fraptran
     !>@brief
-    !> This module contains the subroutines used to deallocate all FEA variables.
+    !> This module contains the subroutines used to deallocate all FEA variables_fraptran.
     !> Subroutines include nlfemp_deallocate
     !>@author
     !> Ken Geelhood, PNNL
     !>@date
     !> 03/11/2016
-    USE Kinds
+    USE Kinds_fraptran
     !
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE nlfemp_deallocate()
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
-    USE materials_frap
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE geometry
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE Data_grid
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
+    USE materials_frap_fraptran
+    USE spring_fraptran
+    USE quad4_fraptran
+    USE hex8_fraptran
+    USE solid1d_fraptran
+    USE geometry_fraptran
+    USE pressure1d_fraptran
+    USE pressure2d_fraptran
+    USE pressure3d_fraptran
+    USE Data_grid_fraptran
+    USE gascav1d_fraptran
+    USE gascav2d_fraptran
+    USE gascav3d_fraptran
+    USE cont1d_fraptran
+    USE cont2d_fraptran
+    USE cont3d_fraptran
     IMPLICIT NONE
     !>@brief
     !> Deallocate all finite element variables
@@ -94,5 +94,17 @@ MODULE FEA_deallocate
     END SUBROUTINE nlfemp_deallocate    
     
        !
-END MODULE FEA_deallocate
+END MODULE FEA_deallocate_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,8 +1,8 @@
-MODULE AxialPower
-    USE Kinds
+MODULE AxialPower_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to calculate axial power as a function of time.
+    !> This module contains the subroutines used to calculate axial power as a function of time_fraptran.
     !> Subroutines include power, fans
     !>@author
     !> Ken Geelhood, PNNL
@@ -14,9 +14,9 @@ MODULE AxialPower
     SUBROUTINE power (nptha, npaxp, AxNodElevat, Time, TimeIncrement, rf, pkw, p2, p1, powave, powopi, timop, &
       &               fpdcay, mpdcay, NSteadyTrans, powict, powimx, ntstep, ExtentOfBow, nqbow, pkw0, Gscale, &
       &               powavend, pkwnd, rvoid)
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, powcnv, sechr, ftin
-    USE Functions, ONLY : polate
+    USE functions_fraptran, ONLY : polate
     USE variables_fraptran, ONLY : RodAvePower, AxPowProfile, zvoid1, zvoid2, naxn, nprofile
     IMPLICIT NONE
     !>@brief
@@ -147,7 +147,7 @@ MODULE AxialPower
     !
     !
     PURE FUNCTION fans (t0, ts)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This is the function for the ANS 5.1 decay heat.
@@ -170,18 +170,30 @@ MODULE AxialPower
       &    2.10E-05_r8k, 9.99E-06_r8k, 2.54E-06_r8k, 6.63E-07_r8k, 1.23E-07_r8k, 2.72E-08_r8k, 3.30E-09_r8k, &
       &    7.42E-10_r8k, 2.47E-10_r8k, 1.56E-13_r8k, 2.26E-14_r8k, 2.05E-14_r8k ]
     INTEGER(ipk) :: i
-    ! note (a) in table 9 of ANS-5.1-2004 says to use 1e13 for any time over 1e13
+    ! note (a) in table 9 of ANS-5.1-2004 says to use 1e13 for any time over 1e13_fraptran
     t00 = t0
     IF (t0 > 1.0e13_r8k) t00 = 1.0e13_r8k
     sum = 0.0_r8k
-    ! use equation for F(t,T) in note (a) of table 9 in ANS-5.1-2004
+    ! use equation for F_fraptran(t,T) in note (a) of table 9 in ANS-5.1-2004
     DO i = 1, 23
         sum = sum + alpha(i) / lambda(i) * EXP(-lambda(i) * ts) * (1.0_r8k - EXP(-lambda(i) * t00))
     END DO
-    ! use 200 MeV/fission to convert to fraction of previous reactor power
+    ! use 200 MeV_fraptran/fission to convert to fraction of previous reactor power
     fans = sum / 200.0_r8k
     !
     END FUNCTION fans  
     !
-END MODULE AxialPower
+END MODULE AxialPower_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

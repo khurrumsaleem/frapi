@@ -1,8 +1,8 @@
-MODULE HeatConduction_h
-    USE Kinds
+MODULE HeatConduction_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the comdeck HeatConduction
+    !> This module replaces the comdeck HeatConduction_fraptran
     TYPE HeatConduction_var
         INTEGER(ipk) :: Nchan
         ! Surface area at xo (ht1tdp.f)
@@ -63,5 +63,17 @@ MODULE HeatConduction_h
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: RhoCp0
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: PrevIterateTemp
     !
-    END MODULE HeatConduction_h
+    END MODULE HeatConduction_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

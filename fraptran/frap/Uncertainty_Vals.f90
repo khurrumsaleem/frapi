@@ -1,8 +1,8 @@
-MODULE Uncertainty_Vals
-    USE Kinds
+MODULE Uncertainty_Vals_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the user-input uncertainty values
+    !> This module contains the user_fraptran-input uncertainty values
     TYPE Uncertainty_Var
         ! INPUT: fuel thermal conductivity uncertainty multiplier
         REAL(r8k) :: sigfuelthermcond
@@ -51,5 +51,17 @@ MODULE Uncertainty_Vals
     INTEGER(ipk) :: ndktparams
     INTEGER(ipk) :: dktoutcounter
     !
-END MODULE Uncertainty_Vals
+END MODULE Uncertainty_Vals_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,9 +1,9 @@
-MODULE void
-    USE Kinds
+MODULE void_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to calculate void volume and gas pressure.
+    !> This module contains the subroutines used to calculate void volume and gas pressure_frapcon.
     !> Subroutines include gspres, volume
     !>@author
     !> Ken Geelhood, PNNL
@@ -13,10 +13,10 @@ MODULE void
     CONTAINS
     !
     SUBROUTINE gspres
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon
-    USE Refabrication, ONLY : irefab, fgpavrefab
+    USE Refabrication_frapcon, ONLY : irefab, fgpavrefab
     IMPLICIT NONE
     !>@brief
     !> This subroutine is called from frpcon and computes the rod internal gas pressure
@@ -158,7 +158,7 @@ MODULE void
     !
     !
     SUBROUTINE volume
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : den, AnnulusVolume, PorosityVolume, GapVolume, FuelVolume, &
       &                   RinterfacVolume, CrackVolume, CladVolume, RinternalVolume, &
@@ -290,5 +290,7 @@ MODULE void
     !
    END SUBROUTINE volume
     !
-END MODULE void
+END MODULE void_frapcon
+
+
 

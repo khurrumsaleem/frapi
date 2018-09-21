@@ -1,14 +1,14 @@
 ! This file contains the following miscellaneous material properties:
 ! Crud, Plenum spring
     
-MODULE Crud
-    USE Kinds
+MODULE Crud_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains crud properties
+    !> This Module contains crud properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -20,7 +20,7 @@ MODULE Crud
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropCrud (property, temp) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -48,24 +48,24 @@ MODULE Crud
     CASE DEFAULT ! Wrong property called
         WRITE (0, 100) property
         WRITE (ounit, 100) property
-100     FORMAT ('Error in Module Crud. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module Crud_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
     END FUNCTION MatPropCrud
     !
-END MODULE Crud
+END MODULE Crud_frapcon
 !
 !
 !
-MODULE PlenumSpring
-    USE Kinds
+MODULE PlenumSpring_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
-    !> This Module contains all plenum spring properties
+    !> This Module contains all plenum spring properties_frapcon
     !>@author
     !> Ian Porter, NRC
     !>@date
@@ -82,7 +82,7 @@ MODULE PlenumSpring
     CONTAINS
     !
     REAL(r8k) FUNCTION MatPropSpring (property, temp) RESULT (mat_prop)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -110,7 +110,7 @@ MODULE PlenumSpring
     CASE DEFAULT ! Wrong property called
         WRITE (0, 100) property
         WRITE (ounit, 100) property
-100     FORMAT ('Error in Module PlenumSpring. Invalid material property ID. Material Property ID = ',a20)
+100     FORMAT ('Error in Module PlenumSpring_frapcon. Invalid material property ID. Material Property ID = ',a20)
         STOP
     END SELECT
     !
@@ -119,7 +119,7 @@ MODULE PlenumSpring
     !
     !
     REAL(r8k) FUNCTION Springthexp (TempK)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -143,5 +143,7 @@ MODULE PlenumSpring
     !
     END FUNCTION Springthexp
     !
-END MODULE PlenumSpring
+END MODULE PlenumSpring_frapcon
+
+
 

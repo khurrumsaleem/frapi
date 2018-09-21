@@ -1,10 +1,10 @@
-MODULE Comde
-    USE Kinds
+MODULE Comde_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : na, nr, im
     IMPLICIT NONE
     !>@brief
-    !> This module replaces the comde.h file. This is the common file used from the transuranis code.
+    !> This module replaces the comde_frapcon.h file. This is the common file used from the transuranis code.
     !> It is used by subroutines gaspro, tubrnp, turbin, turbo, gaprs and fueltp.
     !>@author
     !> Ian Porter, NRC
@@ -50,7 +50,7 @@ MODULE Comde
     CONTAINS
     !
     SUBROUTINE Allocate_Comde
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
@@ -114,5 +114,7 @@ MODULE Comde
     !
     END SUBROUTINE Allocate_Comde
     !
-END MODULE comde
+END MODULE comde_frapcon
+
+
 

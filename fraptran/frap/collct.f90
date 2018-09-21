@@ -1,5 +1,5 @@
-Module collct_h
-    USE Kinds
+Module collct_h_fraptran
+    USE Kinds_fraptran
     IMPLICIT NONE
     !
     TYPE collct_var
@@ -93,7 +93,7 @@ Module collct_h
         INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: icglob
         ! Used for restart. Length = lcolc2
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: acolct
-        ! Gas pressure history. This needs to be double checked because the name is used twice for different reasons
+        ! Gas pressure history. This needs to be double checked because the name is used twice for different reasons_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: gasphs
         ! Plenum temperature history. gasths(x,1) is for the upper plenum and gasths(x,2) is for the lower plenum
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasths
@@ -168,5 +168,17 @@ Module collct_h
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tpln
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tplbt1
     !
-    END MODULE collct_h
+    END MODULE collct_h_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

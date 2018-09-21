@@ -1,8 +1,8 @@
-MODULE gascav2d
-    USE Kinds
-    USE Kinds
-    USE common_parameters
-    USE sparse_matrix
+MODULE gascav2d_fraptran
+    USE Kinds_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE sparse_matrix_fraptran
     IMPLICIT NONE
     !>@brief
     !> Axisymmetric 2D gas cavity
@@ -633,6 +633,18 @@ CONTAINS
     RETURN
 
   END SUBROUTINE gascav2d_deallocate
-END MODULE gascav2d
+END MODULE gascav2d_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

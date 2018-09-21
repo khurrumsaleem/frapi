@@ -1,8 +1,8 @@
-MODULE ZrModels
-    USE Kinds
-    USE cnvt
+MODULE zrmodels_fraptran
+    USE Kinds_fraptran
+    USE cnvt_fraptran
     !>@brief
-    !> This module contains the Zircaloy caldding models for annealing,  
+    !> This module contains the Zircaloy caldding models for annealing_fraptran,  
     !> yield stress, mechanical limits, coefficients of anisotropy,
     !> cladding true stress and strain.
     !> Subroutines include caneal, caniso, ckmn, cmlimt, cstran, cstres, cstrni
@@ -16,7 +16,7 @@ MODULE ZrModels
     CONTAINS
     !
     SUBROUTINE caneal (FastFlux, delh, ctemp, rtemp, fnck, fncn, cwkf, cwnf)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : Time
     IMPLICIT NONE
     !>@brief
@@ -130,11 +130,11 @@ MODULE ZrModels
     !
     !
     SUBROUTINE caniso (dep1, dep2, dep3, ctemp, f1p, f2p, f3p, a1d, a2d, a3d, a1s, a2s, a3s, a1e, a2e, a3e)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> caniso calculates coefficients of anisotropy for relating effective stress to stress components and relating
-    !> effective strain to strain components. This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FrapTran
+    !> effective strain to strain components. This is a MATPRO-11, Rev. 2 routine modified by PNNL for use in FrapTran_fraptran
     !>@author
     !> caniso was coded by d. l. hagrman october 1978
     !> modified by d. l. hagrman in june 1979
@@ -255,7 +255,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE ckmn (ctemp, deloxy, fnck, fncn, cwkf, cwnf, rstran, ak, an, am)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType, cexh2l, ounit
     IMPLICIT NONE
     !>@brief
@@ -407,7 +407,7 @@ MODULE ZrModels
         ELSE
             am = 0.02280034483_r8k - 3.448275862e-7_r8k * t
         ENDIF
-        ! check whether use non-irradiated or irradiated properties
+        ! check whether use non_fraptran-irradiated or irradiated properties
         IF (fluence > 1.0e25_r8k) THEN
             ! irradiated Zr-1%Nb parameters
             ! strain hardening exponent, n
@@ -467,9 +467,9 @@ MODULE ZrModels
     SUBROUTINE cmlimt (ctemp, deloxy, fnck, fncn, cwkf, cwnf, cinwid, cinrad, cdpres, caxrad, caxstr, &
       &                rstran, deltmp, strnyt, strnye, strnue, strnie, stsrpt, strrpe, cyldst, cyldse, &
       &                cultse, cbrste, cbrsst, ctstrt, ak, an, am, elmod)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : CladType, cexh2l, ounit, ndebug
-    USE Material_Properties, ONLY : MatProperty
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> cmlimt calculates the following limit points of mechanical deformation:
@@ -709,7 +709,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE cstres (ctemp, deloxy, fnck, fncn, cwkf, cwnf, rstran, strant, strest)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> cstres calculates cladding effective stress as a function of true cladding strain, true cladding strain rate,
@@ -754,7 +754,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE cstran (ctemp, deloxy, fnck, fncn, cwkf, cwnf, rstran, strest, strant)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> cstran calculates cladding strain as a function of true cladding stress, true cladding strain rate,
@@ -802,7 +802,7 @@ MODULE ZrModels
     !
     !
     SUBROUTINE cstrni (delh, ctemp, deloxy, fnck, fncn, cwkf, cwnf, strest, strant)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, CladType, ndebug
     IMPLICIT NONE
     !>@brief
@@ -862,7 +862,7 @@ MODULE ZrModels
     rstran = (strant - stran4) / delh
     ! correct am for revised rstran if necessary
     RETURN
-    ! The following lines are not computed because the flag itransient was removed (set to 1)
+    ! The following lines are not computed because the flag itransient was removed _fraptran(set to 1)
     IF (rstran < 1.0e-5_r8k) rstran = 1.0e-5_r8k
     IF (rstran > 6.34e-03_r8k) RETURN
     ii = ii + 1
@@ -877,5 +877,17 @@ MODULE ZrModels
     !
     END SUBROUTINE cstrni
 !
-END MODULE ZrModels
+END MODULE zrmodels_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

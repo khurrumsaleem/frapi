@@ -1,9 +1,9 @@
-MODULE FEA_IO
-    USE Kinds
+MODULE FEA_IO_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines to create the input and output for the cladding FEA model.
+    !> This module contains the subroutines to create the input and output for the cladding FEA model_frapcon.
     !> Subroutines include fileo, input_read_error, line_search, read_input_line, write_output
     !>@author
     !> Ken Geelhood, PNNL
@@ -13,9 +13,9 @@ MODULE FEA_IO
     CONTAINS
     !
     SUBROUTINE fileo()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Opening the input and output files
@@ -34,9 +34,9 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE input_read_error()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Report line number and stop program
@@ -50,9 +50,9 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE line_search (dl_max, ln_iter, dl, dl_a, dl_b, dl_c, r, r_a, r_b, r_c, conv_ln)
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Line search
@@ -76,7 +76,7 @@ MODULE FEA_IO
 
     ! Line search If there is a zero point
     IF (r_c < 0.0_r8k) THEN
-        ! Use bisection to find the zero point
+        ! Use bisection to find the zero point_frapcon
         IF (r < 0.0_r8k) THEN
             dl_c = dl
             r_c = r
@@ -162,9 +162,9 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE read_input_line()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
+    USE common_parameters_frapcon
     IMPLICIT NONE
     !>@brief
     !> Read next uncommented nonempty line from input line
@@ -185,24 +185,24 @@ MODULE FEA_IO
     !
     !
     SUBROUTINE write_output()
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE common_parameters
-    USE materials
-    USE geometry_fpn
-    USE spring
-    USE quad4
-    USE hex8
-    USE solid1d
-    USE pressure1d
-    USE pressure2d
-    USE pressure3d
-    USE gascav1d
-    USE gascav2d
-    USE gascav3d
-    USE cont1d
-    USE cont2d
-    USE cont3d
+    USE common_parameters_frapcon
+    USE materials_frapcon
+    USE geometry_fpn_frapcon
+    USE spring_frapcon
+    USE quad4_frapcon
+    USE hex8_frapcon
+    USE solid1d_frapcon
+    USE pressure1d_frapcon
+    USE pressure2d_frapcon
+    USE pressure3d_frapcon
+    USE gascav1d_frapcon
+    USE gascav2d_frapcon
+    USE gascav3d_frapcon
+    USE cont1d_frapcon
+    USE cont2d_frapcon
+    USE cont3d_frapcon
     IMPLICIT NONE
     !>@brief
     !> Write restart/output file for the FE model to unit "out_unit"
@@ -308,5 +308,7 @@ MODULE FEA_IO
 
     END SUBROUTINE write_output
     !
-END MODULE FEA_IO
+END MODULE FEA_IO_frapcon
+
+
 

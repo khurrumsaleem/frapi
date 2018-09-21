@@ -4,7 +4,7 @@ TODO:
 3. Supress output from frapcon ...done!
 4. Check fuel rod failure conditions
 5. HDF5 or binary file for restart ...done!
-6. Parallelization with MPI or ZMQ
+6. Parallelization with MPI or ZMQ ...?
 7. Deallocation of FRAPCON variables ...done!
 8. Memory cost reduction ...? (now it is about 7 KB per fuel rod)
 9. Double the fuel rod stack ...? (will increase memory costs)

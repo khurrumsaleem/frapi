@@ -1,9 +1,6 @@
 * GOESINS:
-FILE05='nullfile.tmp', STATUS='unknown', FORM='FORMATTED',
-CARRIAGE CONTROL='LIST'
-*
 * GOESOUTS:
-FILE06='IFA-432-r3.out', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
+FILE73='IFA-432-r3.out', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
 FILE66='IFA-432-r3.plot', STATUS='UNKNOWN', FORM='FORMATTED'
 /********************************************************************
 ifa 432 rod 3

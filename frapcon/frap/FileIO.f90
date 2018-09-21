@@ -1,14 +1,14 @@
-MODULE FileIO
-    USE Kinds
-    USE RunProperties, ONLY : edate, clockx
+MODULE FileIO_frapcon
+    USE Kinds_frapcon
+    USE RunProperties_frapcon, ONLY : edate, clockx
     IMPLICIT NONE
     !
     CONTAINS
     !
     SUBROUTINE iofiles
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Functions
+    USE Functions_frapcon
     USE variables_frapcon, ONLY : iunit, ounit, scrunit
     IMPLICIT NONE
     !> @brief
@@ -62,10 +62,10 @@ MODULE FileIO
         ! If command line argument is provided, this will be read as the input file name (only 1 argument allowed)
        CALL GET_COMMAND_ARGUMENT(1,command_line)
     ELSE
-        ! No command line argument is present. Therefore, code will use default input file name
+        ! No command line argument is present. Therefore, code will use default input file name_frapcon
         command_line = Default_input_file
     END IF
-    
+
     ! Check to see if input file exists. If not, have user re-enter file name or terminate program execution
     InputFile_Inquiry: DO
         InputFileName = command_line
@@ -78,7 +78,7 @@ MODULE FileIO
             IF (TO_UPPERCASE(command_line(1:1)) == 'Q') ERROR STOP 'Program execution stopped by command line interface'
         END IF
     END DO InputFile_Inquiry
-    
+
     ! Open input file
     IF (File_is_open) THEN
         ! Rewind the file if it is already open to ensure read starts from the beginning
@@ -89,14 +89,14 @@ MODULE FileIO
         IF (InputStat > 0) CALL File_IO_Error (FileUnit=iunit, InputStat=InputStat, FileName=InputFileName, &
             &                                  Status='old', Form='formatted', Access='sequential')
     ENDIF
-    
+
     ! Get current date and time
     CALL edate (Today)
     CALL clockx (ClockTime)
     
     ! Start by looking for output file information
     Scanning_for_OutputFile = .TRUE.
-    
+
     ! Read the input file to get the I/O file information
     ReadLoop: DO
         
@@ -111,7 +111,7 @@ MODULE FileIO
         IF (Scanning_for_OutputFile) THEN
             IF (line(1:1) == '*') CYCLE ReadLoop ! Keep looking
             IF (line(1:2) == '/*') THEN
-                ! Reached end of file processing and output file information not found. Use defaults.
+                ! Reached end of file processing and output file information not found. Use defaults_frapcon.
                 WRITE (0,203) ounit
                 WRITE (0,500) Today, ClockTime, TRIM(InputFileName), TRIM(FileName)
                 REWIND (iunit)
@@ -150,7 +150,7 @@ MODULE FileIO
 
         ! Store first line in File_Info and look for line continuations
         File_Info(1:) = TRIM(line)
-        
+
         File_Data_Search: DO
             ! Check for line continuations (commas), starting after the "=" sign
             jlast = (3 + EqualSign) + INDEX(line(4+EqualSign:),',')
@@ -183,9 +183,9 @@ MODULE FileIO
             ELSE
                 EXIT File_Data_Search
             END IF
-        
+
         END DO File_Data_Search
-        
+
         ! ----- File Name -----
         FileName = Search_String (File_Info, 'FILE')
         
@@ -195,7 +195,7 @@ MODULE FileIO
         ELSE
             Status = 'UNKNOWN'
         END IF
-        
+
         ! If it's a scratch file (originally called nullfile), set status to scratch. Note that this file is no longer used needed.
         IF (TO_UPPERCASE(TRIM(FileName)) == 'NULLFILE') Status = 'SCRATCH'
         
@@ -212,19 +212,19 @@ MODULE FileIO
         ELSE
             Access = 'SEQUENTIAL'
         END IF
-        
+
         ! Open the file
         IF (Scanning_for_OutputFile .OR. (.NOT. Scanning_for_OutputFile .AND. FileUnit /= ounit)) THEN
-            IF (FileName == 'NULLFILE' .OR. Status == 'SCRATCH') THEN
-                ! Ensure file is not alredy open from command line read
-                INQUIRE (unit = FileUnit, opened = File_is_open)
-                IF (File_is_open) CLOSE (unit = FileUnit)
-            ENDIF
+!            IF (FileName == 'NULLFILE' .OR. Status == 'SCRATCH') THEN
+!                ! Ensure file is not alredy open from command line read
+!                INQUIRE (unit = FileUnit, opened = File_is_open)
+!                IF (File_is_open) CLOSE (unit = FileUnit)
+!            ENDIF
             OPEN (unit = FileUnit, file = FileName, status = Status, form = Form, access = Access, iostat = InputStat)
             IF (InputStat > 0) CALL File_IO_Error (FileUnit=FileUnit, InputStat=InputStat, FileName=FileName, &
               &                                    Status=Status, Form=Form, Access=Access)
         END IF
-        
+
         ! Write data when scanning for output file
         IF (Scanning_for_OutputFile) THEN
             WRITE (ounit,501)
@@ -237,7 +237,7 @@ MODULE FileIO
         ! Clear the stored data in File_Info and line
         File_Info = ' '
         line = ' '
-        
+
     END DO ReadLoop
     
 100 FORMAT (a)
@@ -268,7 +268,7 @@ MODULE FileIO
       & 5x,'ff          rr      rr  aa      aa  pp           ccccccccc   oooooooo   nn      nn '///)
 600 FORMAT(/' Enter file name or "q" to quit.', /' >')
 900 FORMAT(a)
-    
+
         CONTAINS
         
             FUNCTION Search_String (String, KeyWord) RESULT (Value)
@@ -334,7 +334,7 @@ MODULE FileIO
     !
     !
     SUBROUTINE IOEcho
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
     USE variables_frapcon, ONLY : iunit, ounit
     IMPLICIT NONE
@@ -387,7 +387,7 @@ MODULE FileIO
     !
     !
     SUBROUTINE Namelist_Read_Error (FileUnit, NameListBlock)
-    USE Kinds
+    USE Kinds_frapcon
     USE variables_frapcon, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -414,9 +414,13 @@ MODULE FileIO
     READ (FileUnit,'(A)') errorline 
     WRITE (0,'(A)') TRIM(errorline)
     WRITE (ounit,'(A)') TRIM(errorline)
+    write(*,*) 'ERROR BLOCK:', namelistblock
+    write(*,*) 'ERROR LINE:', trim(errorline)
     ERROR STOP 'Namelist read error. See output file for details. Execution Stopped in Subroutine: Namelist_Read_Error.'
     !
     END SUBROUTINE Namelist_Read_Error
     !
-END MODULE FileIO
+END MODULE FileIO_frapcon
+
+
 

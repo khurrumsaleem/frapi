@@ -1,7 +1,7 @@
-MODULE MechanicalDeform
-    USE Kinds
+MODULE MechanicalDeform_frapcon
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE Deformation
+    USE Deformation_frapcon
     IMPLICIT NONE
     !
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: prevcladstrn, prevfuelstrn, PrevCladEffPlasStrain
@@ -9,9 +9,9 @@ MODULE MechanicalDeform
     CONTAINS
     !
     SUBROUTINE fracas
-    USE Kinds
+    USE Kinds_frapcon
     USE conversions_frapcon
-    USE FEModel
+    USE FEModel_frapcon
     USE variables_frapcon
     IMPLICIT NONE
     !
@@ -40,7 +40,7 @@ MODULE MechanicalDeform
     ! This was modified by IP 8/13/15
     ! It was determined that HotNodLength was not being calculated before being used for axial nodes > j-1
     ! during the first timestep and for the following timesteps, it is truly using HotNodLength from the previous
-    ! timestep because volume (where HotNodLength is calculated) is not called until outside of the
+    ! timestep because volume _frapcon(where HotNodLength is calculated) is not called until outside of the
     ! gap convergence loop
     HotNodLength(j-1) = 0.0_r8k
     DO l = 1, nrm1
@@ -121,5 +121,7 @@ MODULE MechanicalDeform
     !
     END SUBROUTINE fracas
     !
-END MODULE MechanicalDeform
+END MODULE MechanicalDeform_frapcon
+
+
 

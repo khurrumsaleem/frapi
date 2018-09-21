@@ -1,5 +1,5 @@
 MODULE conversions_fraptran
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This file contains the subroutines used to perform unit conversions and holds the conversion factors used in the code.
@@ -89,7 +89,7 @@ MODULE conversions_fraptran
     CONTAINS
     !
     PURE FUNCTION TO_UPPERCASE (String) RESULT (NewString)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function changes lowercase text in a string to uppercase text
@@ -119,7 +119,7 @@ MODULE conversions_fraptran
     !
     !
     PURE FUNCTION TO_LOWERCASE (String) RESULT (NewString)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> This function changes uppercase text in a string to lowercase text
@@ -149,7 +149,7 @@ MODULE conversions_fraptran
     ! ** Temperature Conversion Functions **
     !
     PURE ELEMENTAL FUNCTION tkf (T_Kelvin) RESULT (T_Fahrenheit)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion: K to F
@@ -167,7 +167,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tfr (T_Fahrenheit) RESULT (T_Rankine)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  F  to  R
@@ -181,7 +181,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tkc (T_Kelvin) RESULT (T_Celcius)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion: Kelvin to Celcius
@@ -199,7 +199,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION trc (T_Rankine) RESULT (T_Celcius)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  R  to  C
@@ -213,7 +213,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tfk (T_Fahrenheit) RESULT (T_Kelvin)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion: F to K
@@ -231,7 +231,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tcr (T_Celcius) RESULT (T_Rankine)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  C  to  R
@@ -245,7 +245,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tfc (T_Fahrenheit) RESULT (T_Celcius)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  F  to  C
@@ -259,7 +259,7 @@ MODULE conversions_fraptran
     !
     !
     PURE ELEMENTAL FUNCTION tcf (T_Celcius) RESULT (T_Fahrenheit)
-    USE Kinds, ONLY : r8k
+    USE Kinds_fraptran, ONLY : r8k
     IMPLICIT NONE
     !>@brief
     !> Temperature conversion function: convert  C  to  F
@@ -273,7 +273,7 @@ MODULE conversions_fraptran
     !
     !
     SUBROUTINE coneu (xin, xout, itype)
-    USE Kinds, ONLY : ipk, r8k
+    USE Kinds_fraptran, ONLY : ipk, r8k
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -355,4 +355,16 @@ MODULE conversions_fraptran
     END SUBROUTINE coneu
     !
 END MODULE conversions_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

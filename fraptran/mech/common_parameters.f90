@@ -1,5 +1,5 @@
-MODULE common_parameters
-    USE Kinds
+MODULE common_parameters_fraptran
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi
     IMPLICIT NONE
     !>@brief
@@ -170,8 +170,8 @@ MODULE common_parameters
         outwrt, & ! true If the out put was written for the current load step
         init_fe, & ! true If FE modelling paramers nedd initialization
         symmetric_matrix, & ! True If stIffness matrix is symmetric
-        elastic_matrix, & ! True forces to use elastic tangent stIffness matrix
-        pressure_matrix, & ! Use stIffnes matrix due to pressure loads
+        elastic_matrix, & ! True forces to use elastic tangent stIffness matrix_fraptran
+        pressure_matrix, & ! Use stIffnes matrix due to pressure loads_fraptran
         lprnmat, & ! If true print out tangent stIffness matrix and STOP
         lerror, & ! Error state
         quiet, & ! If true suppress output to stdout excluding error messages
@@ -186,7 +186,7 @@ MODULE common_parameters
     CONTAINS
     !
     FUNCTION node_coords (i, csys) RESULT(x_node)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Find node coordinates x for node i
@@ -218,7 +218,7 @@ MODULE common_parameters
     !
     !
     SUBROUTINE set_node_status(label,idim,status)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Set node DOF status
@@ -239,7 +239,7 @@ MODULE common_parameters
     !
     !
     FUNCTION get_node_status (label, idim)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Get node DOF status
@@ -262,7 +262,7 @@ MODULE common_parameters
     !
     !  
     SUBROUTINE set_vpt (label, vpt0, V0)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Set initial VpT value for gas cavity
@@ -286,7 +286,7 @@ MODULE common_parameters
     !
     !
     SUBROUTINE gascav_failure(label,p)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Switch for prescribed pressure in gas cavity
@@ -309,6 +309,18 @@ MODULE common_parameters
 
     END SUBROUTINE gascav_failure
     !
-END MODULE common_parameters
+END MODULE common_parameters_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

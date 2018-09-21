@@ -1,9 +1,9 @@
-MODULE cladding
-    USE Kinds
-    USE common_parameters
-    USE fraptran_variables
-    USE Kinds
-    USE ZrModels, ONLY : ckmn
+MODULE cladding_fraptran
+    USE Kinds_fraptran
+    USE common_parameters_fraptran
+    USE fraptran_variables_fraptran
+    USE Kinds_fraptran
+    USE zrmodels_fraptran, ONLY : ckmn
     IMPLICIT NONE
     !>@brief
     !> Cladding material properties for FEA Model
@@ -15,8 +15,8 @@ MODULE cladding
     CONTAINS
     
     FUNCTION clad_mat_par (temp, keyword)
-    USE Kinds
-    USE Material_Properties, ONLY : MatProperty
+    USE Kinds_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> Returns cladding material property
@@ -72,8 +72,8 @@ MODULE cladding
     !
     !
     SUBROUTINE clad_radial_Return (temp, mu, dtime, epseff0, taueff, gamma, dplmod, deds)
-    USE Kinds
-    USE Material_Properties, ONLY : MatProperty
+    USE Kinds_fraptran
+    USE Material_Properties_fraptran, ONLY : MatProperty
     IMPLICIT NONE
     !>@brief
     !> Radial return for power law yield function
@@ -141,7 +141,7 @@ MODULE cladding
     !
     !
     SUBROUTINE clad_creep_calc (temp, mu, dtime, epseff0, taueff, gamma, deds)
-    USE Kinds
+    USE Kinds_fraptran
     IMPLICIT NONE
     !>@brief
     !> Cladding creep calculation
@@ -183,6 +183,18 @@ MODULE cladding
 
     END SUBROUTINE clad_creep_calc
 
-END MODULE cladding
+END MODULE cladding_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
 

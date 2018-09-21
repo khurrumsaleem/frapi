@@ -1,9 +1,9 @@
-MODULE TimeStep
-    USE Kinds
-    USE cnvt
+MODULE timestep_fraptran
+    USE Kinds_fraptran
+    USE cnvt_fraptran
     IMPLICIT NONE
     !>@brief
-    !> This module contains the subroutines used to advance the problem in time.
+    !> This module contains the subroutines used to advance the problem in time_fraptran.
     !> Subroutines include crank6, store6, setup6, init6, restrw
     !> comput, honr, timstp
     !>@author
@@ -14,17 +14,17 @@ MODULE TimeStep
     CONTAINS
     !
     SUBROUTINE crank6
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, afrap, Time
-    USE CoolantProperties, ONLY : tc1, tc2
-    USE Dyna_h
-    USE collct_h
-    USE resti_h
-    USE htcb_h
-    USE excb_h
-    USE scalr_h
-    USE frapc
-    USE cnvt
+    USE CoolantProperties_fraptran, ONLY : tc1, tc2
+    USE Dyna_h_fraptran
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE htcb_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE frapc_fraptran
+    USE cnvt_fraptran
     IMPLICIT NONE
     !> @brief
     !> This subroutine calls the subroutines which compute fuel rod solution for an advanced time
@@ -69,15 +69,15 @@ MODULE TimeStep
     !
     !
     SUBROUTINE store6
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : ftin, tfk
     USE variables_fraptran
-    USE rlpst, ONLY : rlpst3
-    USE PlotFile
-    USE OutputFile
-    USE Uncertainties, ONLY : dktout
-    USE Functions, ONLY : polate
-    USE FEA_IO
+    USE rlpst_fraptran, ONLY : rlpst3
+    USE PlotFile_fraptran
+    USE OutputFile_fraptran
+    USE Uncertainties_fraptran, ONLY : dktout
+    USE functions_fraptran, ONLY : polate
+    USE FEA_IO_fraptran
     IMPLICIT NONE
     !> @brief
     !> This Subroutine stores the value of the fuel rod variables computed by subroutine comput.
@@ -246,7 +246,7 @@ MODULE TimeStep
         SEDPNNLold(k) = SEDPNNL(k)
         CladEffStressOld(k) = CladEffStress(k)
         ! calculate SED using EPRI formulation, hoop and axial only
-        ! 6/11/03: use absolute values for stress and strain increments
+        ! 6/11/03: use absolute values for stress and strain increments_fraptran
         ! calculate incremental strain
         delHoopStrain = ABS(EPStrain1 - EPStrain1old(k))
         delAxialStrain = ABS(EPStrain2 - EPstrain2old(k))
@@ -356,14 +356,14 @@ MODULE TimeStep
     
         ! Determine the plot time
         SELECT CASE (coupled)
-        CASE (.FALSE.) ! If not coupled, use the default way of calculating the plot time
+        CASE (.FALSE.) ! If not coupled, use the default way of calculating the plot time_fraptran
             dtplta(npltn*2+2) = tmax
             DO icount = 1, npltn
                 idtp = 2 * icount - 1
                 IF (Time >= (dtplta(idtp+1) - 1.0e-6_r8k) .AND. Time < (dtplta(idtp+3) - 1.0e-6_r8k)) EXIT
             ENDDO
             dtplt1 = dtplta(idtp) ! New plot time increment
-        CASE (.TRUE.) ! If coupled, use the print interval specified in the T/H Code
+        CASE (.TRUE.) ! If coupled, use the print interval specified in the T_fraptran/H Code
             DO icount = 1, SIZE(gfInt)
                 IF (Time >= tEnd(icount) - 1.0e-6_r8k .AND. Time < tEnd(icount+1)-1.0e-6_r8k) EXIT
             ENDDO
@@ -379,14 +379,14 @@ MODULE TimeStep
         node = 1 ! hard wired to print out the values for the DAKOTA output at axial node #1
         CALL dktout (node)
         SELECT CASE (coupled)
-        CASE (.FALSE.) !If not coupled, use the default way of calculating the plot time
+        CASE (.FALSE.) !If not coupled, use the default way of calculating the plot time_fraptran
             dtdkta(ndktn*2+2) = tmax
             DO icount = 1,ndktn
                 idtp = 2 * icount - 1
                 IF (Time >= dtdkta(idtp+1) - 1.0e-6_r8k .AND. Time < dtdkta(idtp+3) - 1.0e-6_r8k) Exit
             ENDDO
             dtdkt1 = dtdkta(idtp) !New plot time increment
-        CASE (.TRUE.) !If coupled, use the print interval specified in the T/H Code
+        CASE (.TRUE.) !If coupled, use the print interval specified in the T_fraptran/H Code
             ! P. Raynaud NOTE: gfInt in the plot time for the TH code. 
             ! It may be required to create a dakota output time for the TH code...?
             DO icount = 1, SIZE(gfInt)
@@ -448,7 +448,7 @@ MODULE TimeStep
             IF (Time >= dtpoa(idtp+1) - 1.0e-6_r8k .AND. Time < dtpoa(idtp+3) - 1.0e-6_r8k) EXIT
         ENDDO
         dtpo1 = dtpoa(idtp)
-    CASE (.TRUE.) !If coupled, use the print interval specified in the T/H Code
+    CASE (.TRUE.) !If coupled, use the print interval specified in the T_fraptran/H Code
         DO icount = 1, SIZE(edInt)
             IF (Time >= tEnd(icount) - 1.0e-6_r8k .AND. Time < tEnd(icount+1) - 1.0e-6_r8k) EXIT
         ENDDO
@@ -463,7 +463,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE setup6
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ncards, ncool, ndtad, t1, t2, &
     & IndexTempConverg, time, ntstep, ncall, t0, tmax, vsn, vs0, tEnd, coupled
     IMPLICIT NONE
@@ -498,10 +498,10 @@ MODULE TimeStep
     !
     !
     SUBROUTINE init6
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, afrap, maxidx, amatpc, unit, apowrd, aprntb, a1, time, DebugTime, fdial, acoold, arest1, &
       &                   irest2, irest3, aexcb, tz1, ithymx, ablona, trecrd, ascal1, ascal2, ascal3, ftmelt, aflcht
-    USE collct_h
+    USE collct_h_fraptran
     IMPLICIT NONE
     !> @brief
     !> This Subroutine performs transient initialization
@@ -510,7 +510,7 @@ MODULE TimeStep
     ! afrap(1) = time (s)
     ! afrap(2) = index for afrap of last written word
     !
-    ! Debug is for use in controling debug output by setting DebugTime
+    ! Debug is for use in controling debug output by setting DebugTime_fraptran
     !
     INTEGER(ipk) :: la1tot, lstart, lpostn, lcolc2, l
     REAL(r8k), DIMENSION(1) :: aphypr
@@ -644,7 +644,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE restrw
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran
     IMPLICIT NONE
     !> @brief
@@ -787,25 +787,25 @@ MODULE TimeStep
     !
     !
     SUBROUTINE comput
-    USE Kinds
+    USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, ftom, powcnv, tfk
-    USE Functions, ONLY : polate, terp
+    USE functions_fraptran, ONLY : polate, terp
     USE variables_fraptran
-    USE rlpst, ONLY : rlpst2
-    USE frapc, ONLY : coupled, t12, t22
-    USE Deformation
-    USE Volume, ONLY : vswell
-    USE HeatSolution
-    USE ZircSpecHeat
-    USE Void, ONLY : gsflow
-    USE NCGases, ONLY : SteamIndex
-    USE Plenum, ONLY : plnt
-    Use Ballooning
-    USE ZrModels, ONLY : caneal
-    USE Oxidation, ONLY : cobild
-    USE Initialization, ONLY : phyprp
-    USE AxialPower, ONLY : power
-    USE Cs_I, ONLY : cesiod
+    USE rlpst_fraptran, ONLY : rlpst2
+    USE frapc_fraptran, ONLY : coupled, t12, t22
+    USE deformation_fraptran
+    USE Volume_fraptran, ONLY : vswell
+    USE HeatSolution_fraptran
+    USE ZircSpecHeat_fraptran
+    USE void_fraptran, ONLY : gsflow
+    USE NCGases_fraptran, ONLY : SteamIndex
+    USE Plenum_fraptran, ONLY : plnt
+    Use Ballooning_fraptran
+    USE zrmodels_fraptran, ONLY : caneal
+    USE Oxidation_fraptran, ONLY : cobild
+    USE Initialization_fraptran, ONLY : phyprp
+    USE AxialPower_fraptran, ONLY : power
+    USE Cs_I_fraptran, ONLY : cesiod
     IMPLICIT NONE
     !> @brief
     !> This Subroutine computes the value of the fuel rod variables at an advanced time.
@@ -867,7 +867,7 @@ MODULE TimeStep
             IF (ntstep == 1) ndtred = 0
             ! If ndtred=1, explicit temperature solution forced
         CASE DEFAULT
-            ! Check to see if smaller time step should be enforced because of ballooning.
+            ! Check to see if smaller time step should be enforced because of ballooning_fraptran.
             dtenfb = 1.0E10_r8k
             !
             DO k = 1, naxn
@@ -896,7 +896,7 @@ MODULE TimeStep
                     IF ((Time >= dtmaxa(idtp+1) - 1.0e-8_r8k) .AND. (Time < dtmaxa(idtp+3) - 1.0e-8_r8k)) EXIT
                 ENDDO
                 dtp = dtmaxa(idtp)
-            CASE (.TRUE.) !Use values from T/H Code
+            CASE (.TRUE.) !Use values from T_fraptran/H Code
                 dtp = t22 - t12
             END SELECT
             !
@@ -1269,7 +1269,7 @@ MODULE TimeStep
         Ifstor(14) = nfcall
         Ifstor(15) = nedtsw
         Ifstor(16) = nbalsw
-        ! Set boundary node numbers to values for use with dynamically dimensioned arrays
+        ! Set boundary node numbers to values for use with dynamically dimensioned arrays_fraptran
         Ifstor(1)  = igpnod
         Ifstor(2)  = ncladi
         Ifstor(3)  = nmesh
@@ -1723,7 +1723,7 @@ MODULE TimeStep
     DO k = 1, naxn
         ! calculate radially averaged fuel burnup during time step
         dzpowi = 0.5_r8k * (AxialPowr(k) + AxialPowr0(k)) * 0.001_r8k * TimeIncrement
-        !Consider the possibility of a central void, and use the value for fuel density from input (in lb/ft3)
+        !Consider the possibility of a central void, and use the value for fuel density from input _fraptran(in lb/ft3)
         nfirst = 1
         IF (nvoid == 1) THEN
             IF(AxNodElevat(k) >= zvoid1 .AND. AxNodElevat(k) <= zvoid2) nfirst = 2
@@ -1845,7 +1845,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE honr (xi, xo, xnew, np)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     IMPLICIT NONE
     !>@brief
@@ -1918,7 +1918,7 @@ MODULE TimeStep
     !
     !
     SUBROUTINE timstp
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit, timeincrement, dtp, nitdt, dtenfb, dtenfo, dtold
     IMPLICIT NONE
     !> @brief
@@ -1952,5 +1952,17 @@ MODULE TimeStep
     !
     END SUBROUTINE timstp
 !
-END MODULE TimeStep
+END MODULE timestep_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 

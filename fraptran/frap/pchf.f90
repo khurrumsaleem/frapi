@@ -1,6 +1,6 @@
-MODULE HeatFluxCorrelations
-    USE Kinds
-    USE sth2x, ONLY : surten
+MODULE HeatFluxCorrelations_fraptran
+    USE Kinds_fraptran
+    USE sth2x_fraptran, ONLY : surten
     IMPLICIT NONE
     !
     CONTAINS
@@ -8,7 +8,7 @@ MODULE HeatFluxCorrelations
     SUBROUTINE pchf (MassFlowRate, hfp, hgp, hin, CoolPress, Quality, cl, dr, dh, hd, chf, icwf, &
       &             HtFlxFac, SurfHtFlux, AxNodElevat, k, acond, j1, tsat, rf, rg, alpha, cpg, &
       &             twall, cpf, tbulk, naxn, Nchan, r, cp)
-    USE Kinds
+    USE Kinds_fraptran
     USE variables_fraptran, ONLY : ounit
     USE conversions_fraptran, ONLY : sechr
     IMPLICIT NONE
@@ -29,7 +29,7 @@ MODULE HeatFluxCorrelations
     !            0 = calculate HtFlxFac and cold wall effect
     !            1 = calculate only HtFlxFac
     !            2 = calculate only cold wall influence
-    !            3 = use neither HtFlxFac nor cold wall factor
+    !            3 = use neither HtFlxFac nor cold wall factor_fraptran
     ! HtFlxFac     - non-unIform axial heat flux factor (calculated only in steady state, reset to 1.0 at flow reversal)
     ! SurfHtFlux   - surface heat fluxes at each axial node
     !
@@ -239,15 +239,15 @@ MODULE HeatFluxCorrelations
     ! * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     !
     ! check range on pressure
-    !   If P < 200 psia, use Biasi chf correlation
+    !   If P < 200 psia, use Biasi chf correlation_fraptran
     !
     IF (CoolPress < 200.0_r8k) GOTO 600
     !
     g = MassFlowRate / 1.0E6
     !
     ! check range on mass flux
-    !   If g > 4.5 Mlbm/hr-ft2, use Biasi chf correlation
-    !   If g < 0.2 Mlbm/hr-ft2, use Zuber with GrIffith modIfication
+    !   If g > 4.5 Mlbm/hr-ft2, use Biasi chf correlation_fraptran
+    !   If g < 0.2 Mlbm/hr-ft2, use Zuber with GrIffith modIfication_fraptran
     !
     IF (g > 4.5_r8k) GOTO 600
     IF (g < 0.2_r8k) GOTO 510
@@ -257,7 +257,7 @@ MODULE HeatFluxCorrelations
     xxin = (hin - hfp) / hfg
     !
     ! check range on quality
-    !   If xx > 0.75, use Biasi chf correlation
+    !   If xx > 0.75, use Biasi chf correlation_fraptran
     !
     IF (xx > 0.75_r8k) GOTO 600
     !
@@ -353,15 +353,15 @@ MODULE HeatFluxCorrelations
     !* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
     !
     ! check range on pressure
-    !    If p < 90 psia, use Biasi chf correlation
+    !    If p < 90 psia, use Biasi chf correlation_fraptran
     !
     IF (CoolPress < 90.0_r8k) GOTO 600
     !
     g = MassFlowRate / 1.0E6_r8k
     !
     ! check range on mass flux
-    !    If g > 3 Mlbm / hr - ft2, use Biasi correlation
-    !    If g < 0.04 Mlbm / hr - ft2, use Zuber with GrIffith modIfication
+    !    If g > 3 Mlbm / hr - ft2, use Biasi correlation_fraptran
+    !    If g < 0.04 Mlbm / hr - ft2, use Zuber with GrIffith modIfication_fraptran
     !
     IF (g > 3.0_r8k) GOTO 600
     IF (g < 0.04_r8k) GOTO 510    
@@ -452,15 +452,15 @@ MODULE HeatFluxCorrelations
     ! * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     !
     ! check range on pressure
-    !   If p < 15 psia or p > 2700 psia, use Biasi chf correlation
+    !   If p < 15 psia or p > 2700 psia, use Biasi chf correlation_fraptran
     !
     IF (CoolPress < 15.0_r8k .OR. CoolPress > 2700.0_r8k) GOTO 600
     !
     g = MassFlowRate / 1.0E6_r8k
     !
     ! check range on mass flux
-    !   If g > 13.7 Mlbm/hr-ft2, use Biasi chf correlation
-    !   If g < 0.0073 Mlbm/hr-ft2, use Zuber with GrIffith modIfication
+    !   If g > 13.7 Mlbm/hr-ft2, use Biasi chf correlation_fraptran
+    !   If g < 0.0073 Mlbm/hr-ft2, use Zuber with GrIffith modIfication_fraptran
     !
     IF (g > 13.7_r8k) GOTO 600
     IF (g < 0.0073_r8k) GOTO 510    
@@ -623,7 +623,7 @@ MODULE HeatFluxCorrelations
     g = MassFlowRate / 1.0E6_r8k
     !
     ! check range on mass flux
-    !   If g > 0.2 Mlbm/hr-ft2, use Biasi chf correlation
+    !   If g > 0.2 Mlbm/hr-ft2, use Biasi chf correlation_fraptran
     !
     IF (g > 0.2_r8k) GOTO 600
     !
@@ -675,8 +675,8 @@ MODULE HeatFluxCorrelations
     !
     g = MassFlowRate / 1.0E6
     !
-    ! check range on mass flux: If g < 0.2 Mlbm/hr-ft2, use modified Zuber correlation
-    ! check range on void fraction: alpha > 0.8 indicates annular film flow; must use modified Zuber to define chf
+    ! check range on mass flux: If g < 0.2 Mlbm/hr-ft2, use modified Zuber correlation_fraptran
+    ! check range on void fraction: alpha > 0.8 indicates annular film flow; must use modified Zuber to define chf_fraptran
     !
     IF (g <= 0.2_r8k .OR. alpha > 0.8_r8k) GOTO 510
     
@@ -713,5 +713,17 @@ MODULE HeatFluxCorrelations
     !
     END SUBROUTINE pchf
 
-END MODULE HeatFluxCorrelations
+END MODULE HeatFluxCorrelations_fraptran
+
+
+
+
+
+
+
+
+
+
+
+
 
