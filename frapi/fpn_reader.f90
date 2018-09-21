@@ -257,4 +257,7 @@ module fpn_reader
 
     end subroutine read_frapcon_file
 
+    subroutine read_fraptran_file(filename)
+    end subroutine read_fraptran_file
+
 end module fpn_reader

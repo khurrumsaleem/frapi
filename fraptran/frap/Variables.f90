@@ -35,7 +35,7 @@ MODULE variables_fraptran
     ! Scratch unit. Fixed to 5
     INTEGER(ipk), PARAMETER :: scrunit = 5
     ! Output File. Default = 6
-    INTEGER(ipk), PARAMETER :: ounit = 6
+    INTEGER(ipk), PARAMETER :: ounit = 79
     ! Plot File. Default = 66
     INTEGER(ipk), PARAMETER :: plotunit = 66
     ! FRAPTRAN Restart File. Default = 2
@@ -1899,7 +1899,7 @@ MODULE variables_fraptran
     
     ! Set the total array size
     Total = 10 * naxialnodes + 6
-    
+
     ! Allocate the arrays
     ALLOCATE (Prop(1:26))
     ALLOCATE (nhprs(1:naxialnodes))
@@ -1943,7 +1943,7 @@ MODULE variables_fraptran
     ALLOCATE (pz2(1:naxialnodes))
     ALLOCATE (tz1(1:Total))
     ALLOCATE (aasth(1:17000))
-    
+
     ! Set the default values
     aasth = 0.0_r8k
     nvol = 0
