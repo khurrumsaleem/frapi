@@ -49,7 +49,7 @@ contains
     subroutine frod_make(this, nr, na, ngasr, nce, &
                   mechan, ngasmod, icm, icor, iplant, &
                   imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
-                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose)
+                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws)
 
         class (frod_type), intent(inout) :: this
 
@@ -73,6 +73,7 @@ contains
         integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
         integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
         logical, optional :: verbose     ! Print the output data in terminal
+        logical, optional :: flag_iapws  ! flag to indicate the iapws-if97 version of steam table to be used (default : true)
 
         integer :: nr_ = 17
         integer :: na_ = 10

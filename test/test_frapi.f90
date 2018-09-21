@@ -13,7 +13,8 @@ program frapi_input_file
 
     type (frod_type) :: frod
 
-    logical :: is_restart = .false.
+    logical :: is_restart
+    logical :: is_save
 
     integer, parameter :: ivars_array = 37, ivars_value = 4
     character(len=256) :: filename, string
@@ -96,7 +97,7 @@ program frapi_input_file
         moxtype = moxtype, idxgas = idxgas, &
         iq = iq, ivardm=ivardm, &
         ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
-        verbose=.false.)
+        verbose=.false., flag_iapws=.false.)
 
     if (.not. (jn(1) == na+1) ) then
         x(2: ) = (/( i * (x(jn(1)) - x(1)) / na, i = 1, na )/)
@@ -207,6 +208,7 @@ program frapi_input_file
     !------------------- RUN TIME STEPS ---------------------------------------
 
     starttime = 1
+    is_save = .false.
 
     if (starttime > 1) is_restart = .true.
 
@@ -285,7 +287,7 @@ program frapi_input_file
         if (.not. is_restart) then
 
             write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', itime, '.bin'
-            call frod % save(string)
+            if (is_save) call frod % save(string)
 
         endif
 

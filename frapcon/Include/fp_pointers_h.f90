@@ -4,7 +4,7 @@
     LOGICAL              ,                    POINTER :: nconvg                                  ! Convergence flag on gap and pellet temperature distribution iteration
     LOGICAL              ,                    POINTER :: ncont                                   ! non-convergence index (30 iterations) on gap and pellet temperature distribution iteration
     LOGICAL              ,                    POINTER :: IsModelingSpentFuel                     !
-	LOGICAL              ,                    POINTER :: hgapt_flag                              ! YU JIANKAI
+    LOGICAL              ,                    POINTER :: hgapt_flag                              ! YU JIANKAI
     LOGICAL              ,                    POINTER :: flag_iapws                              ! YU JIANKAI
     Character   (LEN=80) ,                    POINTER :: title                                   ! Stores the title card information
     CHARACTER   (LEN=10) ,                    POINTER :: PrintType                               ! Identifier to print axial node loop or summary printout
@@ -642,4 +642,3 @@
     REAL        (r8k)    ,  DIMENSION(:,:,:), POINTER :: g2old                                   !                           
     REAL        (r8k)    ,  DIMENSION(:,:,:), POINTER :: g3old                                   !                           
     REAL        (r8k)    ,  DIMENSION(:,:,:), POINTER :: g4old                                   !                           
-
