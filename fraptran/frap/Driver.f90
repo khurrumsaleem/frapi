@@ -26,10 +26,13 @@ module fraptran2
     USE CoolantProperties_fraptran, ONLY : tc1, tc2
     USE htcb_h_fraptran
     USE cnvt_fraptran
+    use ivars_fraptran, only : tp_ivars
 
     implicit none
 
     type, public :: fraptran_driver
+
+        type(tp_ivars) :: ivars
 
         contains
 
@@ -43,7 +46,7 @@ module fraptran2
 
     contains
 
-    subroutine p_make(this)
+    subroutine p_make(this, naxn_, nfmesh_, ncmesh_, verbose)
 
         implicit none
 
@@ -52,16 +55,18 @@ module fraptran2
         INTEGER(ipk) :: IndexGrainBndSep, k, i, InputStat = 0
         INTEGER(ipk) :: radial, axial, ntimepairs
         INTEGER(ipk) :: lmax, lrest, l1
+        integer :: naxn_, nfmesh_, ncmesh_
         real(8) :: dt
-
+        logical :: verbose
 
         call Allocate_rods(numrods = 1)
 
-        naxn = 400
-        nfmesh = 400
-        ncmesh = 400
+        naxn = naxn_
+        nfmesh = nfmesh_
+        ncmesh = ncmesh_
 
         ! Set the # of axial, radial and timesteps to allocate the code's values on.
+        defsize = 2
         pre_na = naxn + 25
         pre_nr = nfmesh + ncmesh + 1
         pre_nt = defsize
@@ -162,29 +167,31 @@ module fraptran2
         ! lafrap = 1
         lmax = lafrap
 
+        ncards = 1
+
         ! Read the restart array
 !        READ(unit = frtrunit, iostat = InputStat) (afrap(lrest), lrest = 4,lmax)
 
 
         ! Initialize water property tables (This is done in cominp if no restart)
-        l1 = 17000
+!        l1 = 17000
         !Get water properties
-        CALL sth2xi (aasth, l1)
-        IF (l1 < 0) Call errori (2,0)
+!        CALL sth2xi (aasth, l1)
+!        IF (l1 < 0) Call errori (2,0)
 
-        tmax = t2
+!        tmax = t2
 
-        t0 = t1
-        tc1 = t1
-        tc2 = t2
+!        t0 = t1
+!        tc1 = t1
+!        tc2 = t2
 
         ! If ncards = 0 , cold startup
         ! Read input data and initialize variables
         IF (ncards == 1 .AND. first_pass) THEN
             ! read input cards
-            CALL cardin
+!            CALL cardin
             ! initialize variables
-            CALL initia
+!            CALL initia
         END IF
 
     end subroutine p_make
@@ -192,6 +199,15 @@ module fraptran2
     subroutine p_init(this)
 
         class (fraptran_driver), intent(inout) :: this
+
+        ! Read input data and initialize variables
+        IF (ncards == 1 .AND. first_pass) THEN
+            ! read input cards
+            CALL cardin(this % ivars)
+            ! initialize variables
+!            CALL initia
+        END IF
+
 
     end subroutine p_init
 

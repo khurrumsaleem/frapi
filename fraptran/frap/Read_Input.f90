@@ -1,6 +1,7 @@
 MODULE Read_Input_fraptran
     USE Kinds_fraptran
     USE ErrorMsg_fraptran, ONLY : namelist_read_error
+    use ivars_fraptran, only : tp_ivars
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to read the input file_fraptran.
@@ -21,7 +22,7 @@ MODULE Read_Input_fraptran
     !
     CONTAINS
     !
-    SUBROUTINE cardin
+    SUBROUTINE cardin(ivars)
     USE Kinds_fraptran
     USE variables_fraptran
     USE frapc_fraptran, ONLY : coupled
@@ -35,6 +36,7 @@ MODULE Read_Input_fraptran
     !> $power, $model & $boundary.
     !
     INTEGER(ipk) :: i
+    type(tp_ivars), optional :: ivars
     
     ! ************ bcdinp arrays *****************
     mbowr      =    151

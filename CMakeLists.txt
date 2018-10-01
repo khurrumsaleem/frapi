@@ -23,17 +23,13 @@ file(GLOB fraptran_src "fraptran/envrl/*.f90"
 
 file(GLOB frapi_src     "frapi/*.f90")
 
-#include_directories(/usr/local/include/frapcon /usr/local/include/fraptran)# /usr/local/hdf5/include)
-
-include_directories(./frapcon/Include ./include)
-
-#link_directories(/usr/local/lib /usr/local/hdf5/lib)
+include_directories(./frapcon/Include ./fraptran/include ./include)
 
 add_library(frapcon  SHARED ${frapcon_src} )
 add_library(fraptran SHARED ${fraptran_src})
 add_library(frapi    SHARED ${frapi_src}   )
 
-target_link_libraries(frapi frapcon fraptran)# hdf5_fortran)
+target_link_libraries(frapi frapcon fraptran)
 
 add_executable(test_frapi2 "test/test_frapi2.f90")
 add_executable(test_frapi "test/test_frapi.f90")

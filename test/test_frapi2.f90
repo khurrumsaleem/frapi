@@ -43,6 +43,17 @@ program frapi_input_file
             call read_fraptran_file(filename)
     end select
 
+    call frod % make(nr=nr, na=na, ngasr=ngasr, nce=nce, &
+        frapmode=frapmode, mechan = mechan, ngasmod = ngasmod, &
+        icm = icm, icor = icor, iplant = iplant, &
+        imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
+        moxtype = moxtype, idxgas = idxgas, &
+        iq = iq, ivardm=ivardm, &
+        ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
+        verbose=.false., flag_iapws=.false.)
+
+    write(*,*) 'Successfuly finished!'
+
     stop
 
     call read_frapcon_file(filename)

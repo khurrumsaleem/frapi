@@ -46,13 +46,14 @@ module frapi
 
 contains
 
-    subroutine frod_make(this, nr, na, ngasr, nce, &
+    subroutine frod_make(this, nr, na, ngasr, nce, frapmode, &
                   mechan, ngasmod, icm, icor, iplant, &
                   imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
                   ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws)
 
         class (frod_type), intent(inout) :: this
 
+        character(len=20), optional :: frapmode  ! 'frapcon' (default) or 'fraptran' calculations
         integer, optional :: nr          ! number of radial segments
         integer, optional :: na          ! number of axial segments
         integer, optional :: ngasr       ! number of radial gas release nodes
@@ -80,37 +81,51 @@ contains
         integer :: ngasr_ = 45
         integer :: nce_ = 5
         logical :: verbose_ = .false. 
+        character(len=20) :: frapmode_ = 'frapcon'
 
         n  = na
         m  = nr
 
-        if( present(nr     ) ) nr_      = nr
-        if( present(na     ) ) na_      = na
-        if( present(ngasr  ) ) ngasr_   = ngasr
-        if( present(nce    ) ) nce_     = nce
-        if( present(verbose) ) verbose_ = verbose
+        if( present(nr      ) ) nr_      = nr
+        if( present(na      ) ) na_      = na
+        if( present(ngasr   ) ) ngasr_   = ngasr
+        if( present(nce     ) ) nce_     = nce
+        if( present(verbose ) ) verbose_ = verbose
+        if( present(frapmode) ) frapmode_= frapmode
 
-        call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
+        select case (frapmode_)
+        case ('frapcon')
 
-        call this % dfcon % deft()
+            call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
-        if( present(mechan     ) ) this % dfcon % mechan      = mechan     
-        if( present(ngasmod    ) ) this % dfcon % ngasmod     = ngasmod    
-        if( present(icm        ) ) this % dfcon % icm         = icm        
-        if( present(icor       ) ) this % dfcon % icor        = icor       
-        if( present(iplant     ) ) this % dfcon % iplant      = iplant     
-        if( present(imox       ) ) this % dfcon % imox        = imox        
-        if( present(igascal    ) ) this % dfcon % igascal     = igascal    
-        if( present(zr2vintage ) ) this % dfcon % zr2vintage  = zr2vintage 
-        if( present(moxtype    ) ) this % dfcon % moxtype     = moxtype    
-        if( present(idxgas     ) ) this % dfcon % idxgas      = idxgas     
-        if( present(iq         ) ) this % dfcon % iq          = iq
-        if( present(ivardm     ) ) this % dfcon % ivardm      = ivardm
-        if( present(ifixedcoolt) ) this % dfcon % ifixedcoolt = ifixedcoolt
-        if( present(ifixedcoolp) ) this % dfcon % ifixedcoolp = ifixedcoolp
-        if( present(ifixedtsurf) ) this % dfcon % ifixedtsurf = ifixedtsurf
+            call this % dfcon % deft()
 
-        call this % dfcon % dump()
+            if( present(mechan     ) ) this % dfcon % mechan      = mechan     
+            if( present(ngasmod    ) ) this % dfcon % ngasmod     = ngasmod    
+            if( present(icm        ) ) this % dfcon % icm         = icm        
+            if( present(icor       ) ) this % dfcon % icor        = icor       
+            if( present(iplant     ) ) this % dfcon % iplant      = iplant     
+            if( present(imox       ) ) this % dfcon % imox        = imox        
+            if( present(igascal    ) ) this % dfcon % igascal     = igascal    
+            if( present(zr2vintage ) ) this % dfcon % zr2vintage  = zr2vintage 
+            if( present(moxtype    ) ) this % dfcon % moxtype     = moxtype    
+            if( present(idxgas     ) ) this % dfcon % idxgas      = idxgas     
+            if( present(iq         ) ) this % dfcon % iq          = iq
+            if( present(ivardm     ) ) this % dfcon % ivardm      = ivardm
+            if( present(ifixedcoolt) ) this % dfcon % ifixedcoolt = ifixedcoolt
+            if( present(ifixedcoolp) ) this % dfcon % ifixedcoolp = ifixedcoolp
+            if( present(ifixedtsurf) ) this % dfcon % ifixedtsurf = ifixedtsurf
+
+            call this % dfcon % dump()
+
+        case ('fraptran')
+
+            call this % dftran % make(na_, nr_, nce_, verbose_)
+
+        case default
+            write(*,*) "ERROR: 'mode' must be 'frapcon' or 'fraptran' "
+
+        end select
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
         if(.not. allocated(weight)) allocate(weight(m))

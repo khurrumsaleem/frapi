@@ -259,7 +259,6 @@ MODULE setup_fraptran
     t1 = t12
     t2 = t22
     ndtad = ndtadv
-    
     ! Check to see if restart tape to be read
     IF (ncool /= 7 .AND. ncards /= 1) THEN
         ! This works when nrepr is set to 2. It will read the last timestep value.
