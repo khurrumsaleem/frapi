@@ -171,8 +171,6 @@ program frapi_input_file
     ! ITERATION OVER TIME
     do itime = starttime, im
 
-        write(*,*) 'time step : ', itime
-
         qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
         linpow = qf((na+1) * (jst(itime)-1) + 1 : (na+1) * (jst(itime)-1) + na + 1)
         linpow = qtot * linpow / sum(linpow)

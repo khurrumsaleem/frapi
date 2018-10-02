@@ -80,7 +80,11 @@ def draw(filename):
         a = (data0 + eps)/(data1 + eps) - 1
         errmax = 100 * max(abs(a))
         errrms = 100 * pow(pow(a, 2).mean(), 0.5)
-        print "%50s %10.1f %10.1f"%(name, errrms, errmax)
+        if errmax < 5 and errrms < 1: 
+            res = 'OK'
+        else:
+            res = 'FAIL'
+        print "%50s %10.1f %10.1f %s"%(name, errrms, errmax, res)
 
     f0.close()
     f1.close()

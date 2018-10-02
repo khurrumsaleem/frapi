@@ -209,13 +209,12 @@ program frapi_input_file
 
     starttime = 1
     is_save = .false.
+    is_restart = .false.
 
     if (starttime > 1) is_restart = .true.
 
     ! ITERATION OVER TIME
     do itime = starttime, im
-
-        write(*,*) 'time step : ', itime
 
         qtot = 1.D+3 * qmpy(itime) / ftocm ! Wt/cm
         linpow = qf((na+1) * (jst(itime)-1) + 1 : (na+1) * (jst(itime)-1) + na + 1)
