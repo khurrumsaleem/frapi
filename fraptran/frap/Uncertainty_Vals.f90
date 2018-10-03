@@ -36,20 +36,20 @@ MODULE Uncertainty_Vals_fraptran
         INTEGER(ipk) :: dktoutcounter
     END TYPE Uncertainty_Var
     !
-    REAL(r8k) :: sigfuelthermcond
-    REAL(r8k) :: sigfuelthermexp
-    REAL(r8k) :: sigfuelheatcapa
-    REAL(r8k) :: sigcladthermcond
-    REAL(r8k) :: sigcladthermexp
-    REAL(r8k) :: sigcladyieldstr
-    REAL(r8k) :: sigsurfhtc
-    REAL(r8k) :: tdkt
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: dtdkta
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: dktouts
-    LOGICAL :: dakota
-    INTEGER(ipk) :: ndktn
-    INTEGER(ipk) :: ndktparams
-    INTEGER(ipk) :: dktoutcounter
+    REAL(r8k) , target :: sigfuelthermcond
+    REAL(r8k) , target :: sigfuelthermexp
+    REAL(r8k) , target :: sigfuelheatcapa
+    REAL(r8k) , target :: sigcladthermcond
+    REAL(r8k) , target :: sigcladthermexp
+    REAL(r8k) , target :: sigcladyieldstr
+    REAL(r8k) , target :: sigsurfhtc
+    REAL(r8k) , target :: tdkt
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: dtdkta
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: dktouts
+    LOGICAL , target :: dakota
+    INTEGER(ipk) , target :: ndktn
+    INTEGER(ipk) , target :: ndktparams
+    INTEGER(ipk) , target :: dktoutcounter
     !
 END MODULE Uncertainty_Vals_fraptran
 

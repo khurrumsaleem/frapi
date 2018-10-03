@@ -1,17 +1,35 @@
-a = set("""ffch, emptm, fltgap2, RodDiameter, RodLength, gapthk, gsms, rodfabtemp, fdens, sumg,
-             ph, pl, doffst, fpowr, CladPower, buoxide, fastfluence, dtss, prsacc, tmpac1, epsht1,
-             ProblemEndTime, ProblemStartTime, gbse, achn, splbp, tpowf, ruptstrain, naxn, scd, dtplta,
-             gasmoles0, bowthr, hrad, dofang, coldbp, inlet, ts, frden, cexh2a, azpang, zad, refdtm, press, htclev,
-             totnb, timop, powop, gapthk, gbh, ffch, gbse, tem, fuelgasswell, prsacc, fpowr, tref, temptm, tblka,
-             rodlength, res, pelh, pdrato, tgas0, tsntrk, modheat, spdbp, pbh2, pbh1, pressure, achn, flxsec,
-             rodavepower, tflux, fluxz, axpowprofile, hlqcl, geometry, nodchf, roddiameter, epsht1, pow,
-             profilestarttime, cladpower, rshrd, doffst, chf, gappr0, emptm, swd, trise, htca, buoxide,
-             fltgap2, hydiam, dishd, cldwdc, ph, oxideod, pl, dtss, bup, hupta, hinta, pazp, fldrat, radpel,
-             hbh, temp, cfluxa, rvoid, dofset, problemendtime, extentofbow, fltgap, oxideid, gasphs, frpo2,
-             trest, inp, spl, refine, eppinp, fuelpeldiam, tmpac1, coldw, openporosityfraction, dhe, explenumv,
-             dtpoa, techf, dhy, zs, volbp, radpowprofile, relfraca, profile, tschf, gsms, dishv0, problemstarttime,
-             gasths, rnbnt, zvoid2, prestm, zvoid1, vplen, fgrns, rshd, time, pfflec
-""".split())
+data = """
+NRestart, ncards, IndexFC2Print, IndexGrainBndSep, ProblemEndTime, 
+ProblemStartTime, gbse,
+coolant, reflood, radiation, heat, jchf, jfb, upppl, hupta, zad, zs, 
+fltgap, fltgap2, geomet, tape1, nvol1, nchn, lowpl, pressu, massfl, 
+  coreav, chf, filmbo, coldwa, axpow, bowing, spefbz, geometry, nbundl, 
+  time, radiat, ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, 
+  geom, temp, tape2,nvol2, press, zone, htco, nodchf, tem, dhe, dhy, achn, 
+  hinta, pbh1, gbh, hbh, ffch, bowthr, ExtentOfBow, tschf, techf, hydiam, 
+  flxsec, emptm, refdtm, hrad, temptm, fldrat, prestm, hlqcl, rshrd, ts, 
+  pbh2, htclev, htca, tblka, nucbo, nbhtc, jtr,
+ pitch, pdrato, rnbnt, CladType, RodLength, RodDiameter, dishd, pelh, dishv0, 
+ FuelPelDiam, roughf, frden, bup, rshd, frpo2, fotmtl, tsntrk, fgrns, gadoln, 
+ gapthk, coldw, roughc, cfluxa, tflux, cldwdc, spl, scd, swd, vplen, splbp, 
+ coldbp, spdbp, volbp, gfrac, gsms, gappr0, tgas0, fluxz, radpel, eppinp, 
+ totnb, ncs, ncolbp, OpenPorosityFraction,
+ unitin, unitout, trest, inp, res, pow, dtpoa, dtplta,
+internal, metal, deformation, heat, inst, nsym, naz, gasphs, oxideid, 
+oxideod, zvoid1, zvoid2, rvoid, dofset, dofang, cexh2a, gasflo, grass, prescri, 
+idoxid, odoxid, cathca, baker, noball, cenvoi, rtheta, presfgr, relfraca, tref, 
+TranSwell, FuelGasSwell, PlenumTemp, nthermex, ProtectiveOxide, frcoef, mechan, 
+irupt, ruptstrain, irefine, refine, nIDoxide, BuOxide, explenumv, explenumt, 
+iStoicGrad, prestmp, gasths, ngastmp, trise, relocmodel,
+ dtmaxa, dtss, prsacc, tmpac1, soltyp, maxit, noiter, epsht1, 
+   naxn, zelev, nfmesh, ncmesh, fmesh, cmesh, nce,
+RodAvePower, AxPowProfile, RadPowProfile, butemp, azpang, pazp, ph, pl, 
+doffst, fpowr, powop, tpowf, timop, fpdcay, CladPower, azang, profile, 
+NumAxProfiles, ProfileStartTime, modheat
+"""
 
-n = len(a)
-print ("%s "*n)%tuple(a)
+data = [a.replace(',', '') for a in data.split()]
+for a in data:
+      n = data.count(a)
+      if n > 1: print a, n
+

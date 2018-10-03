@@ -164,27 +164,27 @@ MODULE CoolantProperties_fraptran
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: trad3
     END TYPE Coolant_Properties
     !
-    INTEGER(ipk) :: nvol
-    INTEGER(ipk) :: ithymx
-    INTEGER(ipk) :: ixazim
-    INTEGER(ipk) :: ncall
-    INTEGER(ipk) :: nbrtmp           !
-    INTEGER(ipk) :: nbrfdr           !
-    INTEGER(ipk) :: nbrfht           !
-    INTEGER(ipk) :: kaxnlo           !
-    INTEGER(ipk) :: liqnod           !
-    INTEGER(ipk) :: izadfg           !
-    INTEGER(ipk) :: irup             !
-    INTEGER(ipk) :: nbrpst           !
-    INTEGER(ipk) :: nflec            !
-    INTEGER(ipk) :: nbrliq           !
-    INTEGER(ipk) :: npaxpf           !
-    INTEGER(ipk) :: mzq1             !
-    INTEGER(ipk) :: mflt             !
-    INTEGER(ipk) :: mbdl             !
-    INTEGER(ipk) :: ntempf           !
-    INTEGER(ipk) :: nsrad3
-    INTEGER(ipk) :: nelrad
+    INTEGER(ipk) , target :: nvol
+    INTEGER(ipk) , target :: ithymx
+    INTEGER(ipk) , target :: ixazim
+    INTEGER(ipk) , target :: ncall
+    INTEGER(ipk) , target :: nbrtmp           !
+    INTEGER(ipk) , target :: nbrfdr           !
+    INTEGER(ipk) , target :: nbrfht           !
+    INTEGER(ipk) , target :: kaxnlo           !
+    INTEGER(ipk) , target :: liqnod           !
+    INTEGER(ipk) , target :: izadfg           !
+    INTEGER(ipk) , target :: irup             !
+    INTEGER(ipk) , target :: nbrpst           !
+    INTEGER(ipk) , target :: nflec            !
+    INTEGER(ipk) , target :: nbrliq           !
+    INTEGER(ipk) , target :: npaxpf           !
+    INTEGER(ipk) , target :: mzq1             !
+    INTEGER(ipk) , target :: mflt             !
+    INTEGER(ipk) , target :: mbdl             !
+    INTEGER(ipk) , target :: ntempf           !
+    INTEGER(ipk) , target :: nsrad3
+    INTEGER(ipk) , target :: nelrad
     REAL(r8k), POINTER :: tt
     REAL(r8k), POINTER :: CoolantPress
     REAL(r8k), POINTER :: v
@@ -207,98 +207,98 @@ MODULE CoolantProperties_fraptran
     REAL(r8k), POINTER :: kappag
     REAL(r8k), POINTER :: csubpf
     REAL(r8k), POINTER :: csubpg
-    REAL(r8k) :: tc1
-    REAL(r8k) :: tc2
-    REAL(r8k) :: hliq                !
-    REAL(r8k) :: qmax                !
-    REAL(r8k) :: empytm              ! User specified problem time for start of adiabatic heatup, s
-    REAL(r8k) :: hrad                ! User specified radiation heat transfer coefficient
-    REAL(r8k) :: fldrte              ! flood rate, in/s
-    REAL(r8k) :: zqch                !
-    REAL(r8k) :: oldtim              !
-    REAL(r8k) :: tflood              ! Time since start of reflood, s
-    REAL(r8k) :: crf                 ! Carry out rate fraction (reflood)
-    REAL(r8k) :: templo              ! coolant temp of next lower axial node, F
-    REAL(r8k) :: rhostm              ! specific density of steam from sth2x
-    REAL(r8k) :: cpstem              ! heat capacity of steam from sth2x
-    REAL(r8k) :: tsatt               ! Saturation temperature
-    REAL(r8k) :: pressr              ! system pressure, psia
-    REAL(r8k) :: pressi              ! system pressure, SI units
-    REAL(r8k) :: cpmult              ! heat capacity multiplier, unitless
-    REAL(r8k) :: gflow               ! outlet mass flow rate
-    REAL(r8k) :: temphi              ! new coolant bulk temperature
-    REAL(r8k) :: ruplev              ! rupture elevation, ft
-    REAL(r8k) :: pavg                ! Average rod power, kw/ft
-    REAL(r8k) :: refdtm              ! Problem time for initiation of reflood, s
-    REAL(r8k) :: hydiam              ! Channel hydraulic diameter, ft
-    REAL(r8k) :: flxsec              ! flow channel cross sectional area, ft^2
-    REAL(r8k) :: tsub                ! coolant subcooling (tsat - tcoolant), F
-    REAL(r8k) :: pdeint              ! 
-    REAL(r8k) :: flowbk              ! Flow blockage, %
-    REAL(r8k) :: tempmx              ! Max clad surface temperature, F
-    REAL(r8k) :: pfflec              ! flect axial power peaking factor
-    REAL(r8k) :: tfoldf              ! Time (maybe for flooding), s
-    REAL(r8k) :: pdecy               ! 
-    REAL(r8k) :: drflt               ! 
-    REAL(r8k) :: pfnuc               !
-    REAL(r8k) :: toldfc              !
-    REAL(r8k) :: zqflt               !
-    REAL(r8k) :: qaxpk               !
-    REAL(r8k) :: zpkfc               !
-    REAL(r8k) :: fltgap              !
-    REAL(r8k) :: pavgft              !
-    REAL(r8k) :: rcpar               !
-    REAL(r8k) :: zad
-    REAL(r8k) :: zs
-    REAL(r8k) :: trodfc
-    REAL(r8k) :: nu1
-    REAL(r8k) :: nu2
-    REAL(r8k) :: nu3
-    CHARACTER(LEN=8) :: rupflg
-    CHARACTER(LEN=8) :: lodmrk
+    REAL(r8k) , target :: tc1
+    REAL(r8k) , target :: tc2
+    REAL(r8k) , target :: hliq                !
+    REAL(r8k) , target :: qmax                !
+    REAL(r8k) , target :: empytm              ! User specified problem time for start of adiabatic heatup, s
+    REAL(r8k) , target :: hrad                ! User specified radiation heat transfer coefficient
+    REAL(r8k) , target :: fldrte              ! flood rate, in/s
+    REAL(r8k) , target :: zqch                !
+    REAL(r8k) , target :: oldtim              !
+    REAL(r8k) , target :: tflood              ! Time since start of reflood, s
+    REAL(r8k) , target :: crf                 ! Carry out rate fraction (reflood)
+    REAL(r8k) , target :: templo              ! coolant temp of next lower axial node, F
+    REAL(r8k) , target :: rhostm              ! specific density of steam from sth2x
+    REAL(r8k) , target :: cpstem              ! heat capacity of steam from sth2x
+    REAL(r8k) , target :: tsatt               ! Saturation temperature
+    REAL(r8k) , target :: pressr              ! system pressure, psia
+    REAL(r8k) , target :: pressi              ! system pressure, SI units
+    REAL(r8k) , target :: cpmult              ! heat capacity multiplier, unitless
+    REAL(r8k) , target :: gflow               ! outlet mass flow rate
+    REAL(r8k) , target :: temphi              ! new coolant bulk temperature
+    REAL(r8k) , target :: ruplev              ! rupture elevation, ft
+    REAL(r8k) , target :: pavg                ! Average rod power, kw/ft
+    REAL(r8k) , target :: refdtm              ! Problem time for initiation of reflood, s
+    REAL(r8k) , target :: hydiam              ! Channel hydraulic diameter, ft
+    REAL(r8k) , target :: flxsec              ! flow channel cross sectional area, ft^2
+    REAL(r8k) , target :: tsub                ! coolant subcooling (tsat - tcoolant), F
+    REAL(r8k) , target :: pdeint              ! 
+    REAL(r8k) , target :: flowbk              ! Flow blockage, %
+    REAL(r8k) , target :: tempmx              ! Max clad surface temperature, F
+    REAL(r8k) , target :: pfflec              ! flect axial power peaking factor
+    REAL(r8k) , target :: tfoldf              ! Time (maybe for flooding), s
+    REAL(r8k) , target :: pdecy               ! 
+    REAL(r8k) , target :: drflt               ! 
+    REAL(r8k) , target :: pfnuc               !
+    REAL(r8k) , target :: toldfc              !
+    REAL(r8k) , target :: zqflt               !
+    REAL(r8k) , target :: qaxpk               !
+    REAL(r8k) , target :: zpkfc               !
+    REAL(r8k) , target :: fltgap              !
+    REAL(r8k) , target :: pavgft              !
+    REAL(r8k) , target :: rcpar               !
+    REAL(r8k) , target :: zad
+    REAL(r8k) , target :: zs
+    REAL(r8k) , target :: trodfc
+    REAL(r8k) , target :: nu1
+    REAL(r8k) , target :: nu2
+    REAL(r8k) , target :: nu3
+    CHARACTER(LEN=8) , target :: rupflg
+    CHARACTER(LEN=8) , target :: lodmrk
     ! Arrays
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nhprs
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: ntprs
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nvprs
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: npprs
-    REAL(r8k), DIMENSION(:), ALLOCATABLE, TARGET :: Prop
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tz2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: z1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: z2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gz1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gz2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hz1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hz2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pz1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pz2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tz1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: flthit
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: faxzq
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: qaxzq
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tempfc
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: aflcht
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: prestm
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hlqclp
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: temptm
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: fldrat
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: aasth
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: acoold
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: vfrad1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: vfrad2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: vfrad3
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: elvrad
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: htclev
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gbh
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hbh
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hinta
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hupta
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pbh
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tshrda
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: htca
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tblka
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: trad1
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: trad2
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: trad3
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: nhprs
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: ntprs
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: nvprs
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: npprs
+    REAL(r8k), DIMENSION(:), ALLOCATABLE,  target :: Prop
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: tz2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: z1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: z2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gz1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gz2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hz1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hz2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pz1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pz2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: tz1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: flthit
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: faxzq
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: qaxzq
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: tempfc
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: aflcht
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: prestm
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hlqclp
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: temptm
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: fldrat
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: aasth
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: acoold
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: vfrad1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: vfrad2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: vfrad3
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: elvrad
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: htclev
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gbh
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hbh
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hinta
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hupta
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pbh
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: tshrda
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: htca
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: tblka
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: trad1
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: trad2
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: trad3
     !
     !
     !

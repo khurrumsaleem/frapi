@@ -47,34 +47,19 @@ module frapi
 contains
 
     subroutine frod_make(this, nr, na, ngasr, nce, frapmode, &
-                  mechan, ngasmod, icm, icor, iplant, &
-                  imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
-                  ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws)
+               mechan, ngasmod, icm, icor, iplant, &
+               imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
+               ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws, relocmodel, &
+               coolant, mheat, bheat, reflood, internal, metal, deformation, inst, geomet, &
+               nvol1, lowpl, pressu, massfl, coreav, chf, filmbo, coldwa, axpow, bowing, &
+               spefbz, geometry, nbundl, refloodtime, radiat, ruptur, liquid, inlet, reflo, &
+               pressure, collaps, frapt4, geom, temp, tape2, nvol2, press, zone, upppl, &
+               jfb, nucbo, unitin, unitout, res, pow, gasflo, idoxid, cathca, baker, &
+               noball, cenvoi, soltyp)
 
         class (frod_type), intent(inout) :: this
 
-        character(len=20), optional :: frapmode  ! 'frapcon' (default) or 'fraptran' calculations
-        integer, optional :: nr          ! number of radial segments
-        integer, optional :: na          ! number of axial segments
-        integer, optional :: ngasr       ! number of radial gas release nodes
-        integer, optional :: nce         ! number of radial elements in the cladding for the FEA model
-        integer, optional :: mechan      ! Cladding mechanical model (1 = FEA, 2 = FRACAS-I)
-        integer, optional :: ngasmod     ! Fission gas release model (1 = ANS5.4, 2 = Massih(Default), 3 = FRAPFGR, 4 = ANS5.4_2011)
-        integer, optional :: icm         ! cladding type 4: Zircaloy-4
-        integer, optional :: icor        ! crud model (0 or 1 = constant layer, 2= time dependent)
-        integer, optional :: iplant      ! plant type Plant type, -2: PWR, -3: BWR, -4: HBWR
-        integer, optional :: imox        ! fuel type (Fuel type, 0: UO_2)
-        integer, optional :: igascal     ! Internal pressure calculation for FEA model igascal=1 normal pressure calculation igascal=0 use prescribed pressure set by p1
-        integer, optional :: zr2vintage  ! zircaloy-2 vintage
-        integer, optional :: moxtype     ! flag for type of Pu used in MOX
-        integer, optional :: idxgas      ! fill gas type
-        integer, optional :: iq          ! Axial power shape indicator (0 = user-input, 1 = chopped cosine)
-        integer, optional :: ivardm      ! Option to specify variable axial node length (1 is on, 0 is off (default))
-        integer, optional :: ifixedcoolt ! Specify whether to use user-supplied coolant temperatures at each axial node (0 = No (Default), 1 = User-supplied)
-        integer, optional :: ifixedcoolp ! Specify whether to use user-supplied coolant pressures at each axial node (0 = No (Default), 1 = User-supplied)
-        integer, optional :: ifixedtsurf ! Specify to use fixed cladding surface temperatures
-        logical, optional :: verbose     ! Print the output data in terminal
-        logical, optional :: flag_iapws  ! flag to indicate the iapws-if97 version of steam table to be used (default : true)
+        include "fp_options_h.f90"
 
         integer :: nr_ = 17
         integer :: na_ = 10
@@ -100,27 +85,82 @@ contains
 
             call this % dfcon % deft()
 
-            if( present(mechan     ) ) this % dfcon % mechan      = mechan     
-            if( present(ngasmod    ) ) this % dfcon % ngasmod     = ngasmod    
-            if( present(icm        ) ) this % dfcon % icm         = icm        
-            if( present(icor       ) ) this % dfcon % icor        = icor       
-            if( present(iplant     ) ) this % dfcon % iplant      = iplant     
-            if( present(imox       ) ) this % dfcon % imox        = imox        
-            if( present(igascal    ) ) this % dfcon % igascal     = igascal    
-            if( present(zr2vintage ) ) this % dfcon % zr2vintage  = zr2vintage 
-            if( present(moxtype    ) ) this % dfcon % moxtype     = moxtype    
-            if( present(idxgas     ) ) this % dfcon % idxgas      = idxgas     
-            if( present(iq         ) ) this % dfcon % iq          = iq
-            if( present(ivardm     ) ) this % dfcon % ivardm      = ivardm
-            if( present(ifixedcoolt) ) this % dfcon % ifixedcoolt = ifixedcoolt
-            if( present(ifixedcoolp) ) this % dfcon % ifixedcoolp = ifixedcoolp
-            if( present(ifixedtsurf) ) this % dfcon % ifixedtsurf = ifixedtsurf
+            if( present(mechan      ) ) this % dfcon  % mechan      = mechan
+            if( present(ngasmod     ) ) this % dfcon  % ngasmod     = ngasmod
+            if( present(icm         ) ) this % dfcon  % icm         = icm
+            if( present(icor        ) ) this % dfcon  % icor        = icor
+            if( present(iplant      ) ) this % dfcon  % iplant      = iplant
+            if( present(imox        ) ) this % dfcon  % imox        = imox
+            if( present(igascal     ) ) this % dfcon  % igascal     = igascal
+            if( present(zr2vintage  ) ) this % dfcon  % zr2vintage  = zr2vintage
+            if( present(moxtype     ) ) this % dfcon  % moxtype     = moxtype
+            if( present(idxgas      ) ) this % dfcon  % idxgas      = idxgas
+            if( present(iq          ) ) this % dfcon  % iq          = iq
+            if( present(ivardm      ) ) this % dfcon  % ivardm      = ivardm
+            if( present(ifixedcoolt ) ) this % dfcon  % ifixedcoolt = ifixedcoolt
+            if( present(ifixedcoolp ) ) this % dfcon  % ifixedcoolp = ifixedcoolp
+            if( present(ifixedtsurf ) ) this % dfcon  % ifixedtsurf = ifixedtsurf
 
             call this % dfcon % dump()
 
         case ('fraptran')
 
             call this % dftran % make(na_, nr_, nce_, verbose_)
+
+            call this % dftran % deft()
+
+            if( present(coolant     ) ) this % dftran % coolant     = coolant
+            if( present(bheat       ) ) this % dftran % bheat       = bheat
+            if( present(mheat       ) ) this % dftran % mheat       = mheat
+            if( present(reflood     ) ) this % dftran % reflood     = reflood
+            if( present(internal    ) ) this % dftran % internal    = internal
+            if( present(metal       ) ) this % dftran % metal       = metal
+            if( present(deformation ) ) this % dftran % deformation = deformation
+            if( present(inst        ) ) this % dftran % inst        = inst
+            if( present(geomet      ) ) this % dftran % geomet      = geomet
+            if( present(nvol1       ) ) this % dftran % nvol1       = nvol1
+            if( present(lowpl       ) ) this % dftran % lowpl       = lowpl
+            if( present(pressu      ) ) this % dftran % pressu      = pressu
+            if( present(massfl      ) ) this % dftran % massfl      = massfl
+            if( present(coreav      ) ) this % dftran % coreav      = coreav
+            if( present(chf         ) ) this % dftran % chf         = chf
+            if( present(filmbo      ) ) this % dftran % filmbo      = filmbo
+            if( present(coldwa      ) ) this % dftran % coldwa      = coldwa
+            if( present(axpow       ) ) this % dftran % axpow       = axpow
+            if( present(bowing      ) ) this % dftran % bowing      = bowing
+            if( present(spefbz      ) ) this % dftran % spefbz      = spefbz
+            if( present(geometry    ) ) this % dftran % geometry    = geometry
+            if( present(nbundl      ) ) this % dftran % nbundl      = nbundl
+            if( present(refloodtime ) ) this % dftran % refloodtime = refloodtime
+            if( present(radiat      ) ) this % dftran % radiat      = radiat
+            if( present(ruptur      ) ) this % dftran % ruptur      = ruptur
+            if( present(liquid      ) ) this % dftran % liquid      = liquid
+            if( present(inlet       ) ) this % dftran % inlet       = inlet
+            if( present(reflo       ) ) this % dftran % reflo       = reflo
+            if( present(pressure    ) ) this % dftran % pressure    = pressure
+            if( present(collaps     ) ) this % dftran % collaps     = collaps
+            if( present(frapt4      ) ) this % dftran % frapt4      = frapt4
+            if( present(geom        ) ) this % dftran % geom        = geom
+            if( present(temp        ) ) this % dftran % temp        = temp
+            if( present(tape2       ) ) this % dftran % tape2       = tape2
+            if( present(nvol2       ) ) this % dftran % nvol2       = nvol2
+            if( present(press       ) ) this % dftran % press       = press
+            if( present(zone        ) ) this % dftran % zone        = zone
+            if( present(upppl       ) ) this % dftran % upppl       = upppl
+            if( present(jfb         ) ) this % dftran % jfb         = jfb
+            if( present(nucbo       ) ) this % dftran % nucbo       = nucbo
+            if( present(unitin      ) ) this % dftran % unitin      = unitin
+            if( present(unitout     ) ) this % dftran % unitout     = unitout
+            if( present(res         ) ) this % dftran % res         = res
+            if( present(pow         ) ) this % dftran % pow         = pow
+            if( present(gasflo      ) ) this % dftran % gasflo      = gasflo
+            if( present(idoxid      ) ) this % dftran % idoxid      = idoxid
+            if( present(cathca      ) ) this % dftran % cathca      = cathca
+            if( present(baker       ) ) this % dftran % baker       = baker
+            if( present(noball      ) ) this % dftran % noball      = noball
+            if( present(cenvoi      ) ) this % dftran % cenvoi      = cenvoi
+            if( present(soltyp      ) ) this % dftran % soltyp      = soltyp
+            if( present(relocmodel  ) ) this % dftran % relocmodel  = relocmodel
 
         case default
             write(*,*) "ERROR: 'mode' must be 'frapcon' or 'fraptran' "
@@ -133,28 +173,6 @@ contains
         if(.not. allocated(tmp1))   allocate(tmp1(n))
         if(.not. allocated(tmp2))   allocate(tmp2(m+1))
         if(.not. allocated(tmp3))   allocate(tmp3(n+1))
-
-!        real(8), optional :: thkcld      ! Cladding thickness, cm
-!        real(8), optional :: thkgap      ! Gap thickness, cm
-!        real(8), optional :: dco         ! Outer cladding diameter, cm
-!        real(8), optional :: pitch       ! Fuel rod pitch, cm
-!        real(8), optional :: den         ! As-fabricated apparent fuel density, %TD
-!        real(8), optional :: enrch       ! Fuel enrichment u-235
-!        real(8), optional :: dx(:)       ! Thickness of the axial nodes, cm
-
-! fraptran initialization
-!        ! FRAPCON radial nodes at fuel pellet surface, cladding inside surface, cladding outside surface
-!        READ(fcunit,*) nfofs, ncifs, ncofs
-
-        ! Radius to each FRAPCON radial node (ft)
-!        this % dftran % radfs(1:nr) = this % dfcon % crad(1:nr) ! 
-!        this % dftran % radfs(nr+1) = this % dfcon % crad(nr+1)
-!        this % dftran % radfs(nr+2) = this % dfcon % crad(nr+2)
-
-!        this % dftran % ngasr = 
-!            ALLOCATE (ansr(1:ngasr))
-!            ALLOCATE (gasavail1(1:naxn,1:ngasr))
-!            ALLOCATE (gasavail2(1:naxn,1:ngasr))
 
     end subroutine frod_make
 
@@ -194,7 +212,7 @@ contains
         class (frod_type), intent(inout) :: this
 
         character(*) :: filename
-        
+
         call this % dfcon % load_state(filename)
 
     end subroutine frod_load
@@ -374,7 +392,6 @@ contains
         character(*) :: key
         integer      :: it
         real(8)      :: var(:)
-!        real(8)      :: mmtoin = 1.d0/intomm
 
         it = this % dfcon % r__it
 
@@ -472,8 +489,6 @@ contains
         character(*) :: key
         integer      :: it
         real(8)      :: var
-!        real(8)      :: ra, rb, ya, yb, h, temper, volume
-!        real(8)      :: linteg ! integral of linear function
 
         it = this % dfcon % it
 
@@ -684,93 +699,5 @@ contains
         call this % dftran % restfs()
 
     end subroutine p_frapc2t
-
-
-!    subroutine p_frapc2t(this)
-
-!        class (frod_type), intent(inout) :: this
-
-!        this % dfcon  % restfs()
-!        this % dftran % restfs()
-!
-!        it = this % dfcon % it
-!
-!        ! Oxidation layer thickness at cladding outside surface, inches
-!        this % dftran % BOSOxideThick(1:n) = this % dfcon % EOSZrO2Thk(1:n) * fttoin
-!
-!        ! Excess H2 concenctration in cladding (ppm)
-!        this % dftran % cexh2a(1:n) = this % dfcon % CladH2Concen(1:n)
-!
-!        ! Peak historic cladding temp. (K) 
-!        ! WTF?? << units missmatch !!!
-!        this % dftran % CladMaxT(1:n) = this % dfcon % ctmax(1:n)
-!
-!        ! Open porosity at each axial node (fraction of pellet volume)
-!        this % dftran % OpenPorosity(1:n) = this % dfcon % FuelPorosity(1:n)
-!
-!        ! Fuel burnup  (MW-sec/kg)
-!        this % dftran % AxBurnup(1:n) = this % dfcon % EOSNodeburnup(1:n) * 86.4D0
-!
-!        ! Fast neutron fluence, n/m^2
-!        tflux = this % dfcon % ProblemTime(it)
-!        this % dftran % restfluence(1:n)= this % dfcon % FastFluence(1:n) / tflux
-!
-!        ! Gram-moles of gas in fuel rod
-!        this % dftran % TotalGasMoles = this % dfcon % gasmo(it)
-!
-!        ! Fraction of each component of gas
-!        ! Assume that nitrogen is set to 0.0 as this was not part of the original restart
-!        this % dftran % GasFraction(1) = this % dfcon % gases(1) ! Helium
-!        this % dftran % GasFraction(2) = this % dfcon % gases(2) ! Argon
-!        this % dftran % GasFraction(3) = this % dfcon % gases(3) ! Krypton
-!        this % dftran % GasFraction(4) = this % dfcon % gases(4) ! Xenon
-!        this % dftran % GasFraction(5) = this % dfcon % gases(5) ! Hydrogen
-!        this % dftran % GasFraction(6) = 0.D0                    ! << WTF??
-!        this % dftran % GasFraction(7) = this % dfcon % gases(6) ! Nitrogen
-!        this % dftran % GasFraction(8) = this % dfcon % gases(7) ! Air
-!
-!        ! Normalize radii to match FrapTran value
-!        radnorm = RadialBound(igpnod) / radfs(nfofs)
-!        radfsn(1:nfofs) = radfs(1:nfofs) * radnorm
-!
-!        ! Cladding plastic strains
-!        this % dftran % CldPlasStrnFrapcon(1:n, 1:3) = this % dfcon % epp(1:n, 1:3)
-!
-!        ! Cladding effective plastic strain
-!        this % dftran % EffStrain(1:n) = this % dfcon % efstrn(1:n)
-!
-!!        this % dftran % FrapconTemp(1:nfmesh,n) = this % dfcon % tmpfuel(1:n)
-!! TODO: interpolation of the fuel/cladding temperatures
-!
-!        ! Net permanent fuel deformation due to fuel swelling and densification (no relocation); inches, convert to feet
-!        this % dftran % SwellDispl(1:n) = this % dfcon % colddef(1:n) / 12.D0
-!
-!        ! Net permanent cladding deformation; inches, convert to feet
-!        this % dftran % colddec(k:n) = this % dfcon % colddec(1:n) / 12.D0
-!
-!        ! Permanent fuel relocation displacement; inches, convert to feet
-!        this % dftran % ureloc(1:n) = this % dfcon % ureloc(1:n) / 12.D0
-!
-!        ! Gadolinia content of fuel (WTF?? > currently only reads for 1 axial node)
-!        this % dftran % gadolin(1:n) = this % dfcon % gadolin(1:n)
-!
-!        ! Radial burnup profile at each axial node
-!        ! this % dftran % burado(1:n,1:m) = this % dfcon % brnup3(1:n,1:m)
-!        ! Interpolate to define burnup profile at FrapTran nodes
-!        ! TODO: interpolation of the burnup profile
-!        ! burad(1:n,igpnod) <= burado(1:n,1:m)
-!
-!        ! Radial power profile at each axial node
-!        ! TODO: interpolate the power profile
-!        ! this % dftran % radsrco(1:n,1:igpnod) <= this % dfcon % rapow(1:n,1:m)
-!
-!        ! FRAPCON fission gas release model
-!        this % dftran % ngasmod = this % dfcon % ngasmod
-!        this % dftran % ansr(:) = this % dfcon % ansr(:)
-!        this % dftran % gasavail1(:,:) = this % dfcon % gasavail1(:,:)
-!        this % dftran % gasavail2(:,:) = this % dfcon % gasavail2(:,:)
-!        this % dftran % fmgp(:) = this % dfcon % fmgp(:)
-!
-!    end subroutine p_frapc2t
 
 end module frapi

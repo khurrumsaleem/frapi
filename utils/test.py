@@ -20,6 +20,7 @@ names = [
 'cladding radial strain, %',
 'cladding hoop strain, %',
 'cladding axial stress, MPa',
+#'cladding radial stress, MPa', there is not in the frapcon's output *.plot file 
 'cladding hoop stress, MPa',
 'gap pressure, MPa',
 'oxide thickness, um',
@@ -50,7 +51,7 @@ def draw(filename):
     if not os.path.isdir(dirname): 
         os.mkdir(dirname)
 
-    print "%50s %10s %10s"%('Parameter', 'RMS, %', 'MAX, %')
+    print "%50s %10s %10s %10s %10s"%('Parameter', 'Units', 'RMS, %', 'MAX, %', 'Result')
 
     for i, name in enumerate(names):
         fig, ax = plt.subplots()
@@ -83,8 +84,9 @@ def draw(filename):
         if errmax < 5 and errrms < 1: 
             res = 'OK'
         else:
-            res = 'FAIL'
-        print "%50s %10.1f %10.1f %s"%(name, errrms, errmax, res)
+            res = 'ERROR'
+        name, units = name.split(',')
+        print "%50s %10s %10.1f %10.1f %10s"%(name, units, errrms, errmax, res)
 
     f0.close()
     f1.close()

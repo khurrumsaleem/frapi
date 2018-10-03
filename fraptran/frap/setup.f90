@@ -46,7 +46,8 @@ MODULE setup_fraptran
     ! IndexFC2Print    - 1 = print detailed Fracas-2 stress-strain calculations
     ! IndexGrainBndSep - 1 = grain boundary separation effects are considered and gbse input is required
     !
-    INTEGER(ipk) :: IndexGrainBndSep, k, i, InputStat = 0
+    INTEGER(ipk), target :: IndexGrainBndSep
+    integer(ipk) :: k, i, InputStat = 0
     INTEGER(ipk) :: radial, axial, ntimepairs
     INTEGER(ipk), PARAMETER :: unitmax = 99999_ipk
     REAL(r8k) :: ProblemStartTime = 0.0_r8k

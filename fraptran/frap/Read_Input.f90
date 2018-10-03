@@ -1,7 +1,6 @@
 MODULE Read_Input_fraptran
     USE Kinds_fraptran
     USE ErrorMsg_fraptran, ONLY : namelist_read_error
-    use ivars_fraptran, only : tp_ivars
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to read the input file_fraptran.
@@ -12,17 +11,35 @@ MODULE Read_Input_fraptran
     !>@date
     !> 03/11/2016
     !
-    PRIVATE
-    PUBLIC :: cardin
+    !PRIVATE
+    !PUBLIC :: cardin
     !
     ! Input units flag
     INTEGER(ipk) :: iu
     INTEGER(ipk), PARAMETER :: British = 1_ipk
     INTEGER(ipk), PARAMETER :: SI = 2_ipk
     !
+    character(len=3), target  :: coolant, bheat, mheat, reflood, internal, metal, deformation
+    character(len=10), target :: inst 
+
+    integer(ipk), target :: geomet, nvol1, lowpl, pressu, massfl, coreav, chf, filmbo, &
+                            coldwa, axpow, bowing, spefbz, geometry, nbundl, refloodtime, radiat, &
+                            ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, geom, &
+                            tape2, nvol2, press, zone, upppl, jfb, nucbo, unitin, &
+                            unitout, res, pow, gasflo, baker, noball, &
+                            cenvoi, soltyp, temp, azang, profile, nsym, grass, &
+                            prescri, idoxid, odoxid, cathca, rtheta, &
+                            PlenumTemp, tape1, inp, IndexGrainBndSep
+
+    real(r8k), target :: doffst, fpowr, cladpower, ffch, emptm, fltgap2, &
+                         RodDiameter, RodLength, gapthk, gsms, rodfabtemp, fdens, sumg, &
+                         buoxide, fastfluence, ph, pl
+
+    real(r8k), dimension(:), allocatable, target :: butemp, gfrac
+
     CONTAINS
     !
-    SUBROUTINE cardin(ivars)
+    SUBROUTINE cardin
     USE Kinds_fraptran
     USE variables_fraptran
     USE frapc_fraptran, ONLY : coupled
@@ -36,8 +53,9 @@ MODULE Read_Input_fraptran
     !> $power, $model & $boundary.
     !
     INTEGER(ipk) :: i
-    type(tp_ivars), optional :: ivars
-    
+
+!    type(fraptran_driver), optional :: driver
+
     ! ************ bcdinp arrays *****************
     mbowr      =    151
     mgbh       =    2000
@@ -181,7 +199,7 @@ MODULE Read_Input_fraptran
     SUBROUTINE bcdinp
     USE Kinds_fraptran
     USE conversions_fraptran, ONLY : TO_UPPERCASE
-    USE variables_fraptran, ONLY : ounit, htco, tem, pbh1, pbh2, hlqcl, ts, unit, iunit, reflpr
+    USE variables_fraptran, ONLY : ounit, htco, tem, pbh1, pbh2, hlqcl, ts, unit, iunit, reflpr, is_export
     USE collct_h_fraptran
     USE resti_h_fraptran
     USE htcb_h_fraptran
@@ -193,15 +211,12 @@ MODULE Read_Input_fraptran
     !> @brief
     !> Subroutine to read in Boundary Condition ($boundary) Data block
     !
-    INTEGER(ipk) :: geomet, tape1, nvol1, lowpl, pressu, massfl, coreav, chf, filmbo, coldwa, axpow, &
-      &             bowing, spefbz, geometry, nbundl, time, radiat, ruptur, liquid, inlet, reflo, pressure, &
-      &             collaps, frapt4, geom, temp, tape2, nvol2, press, zone, upppl, jfb, nucbo, i, iiopt, &
-      &             nchmfd, l, ndat, InputStat = 0
-    REAL(r8k) :: ffch, emptm, fltgap2
+    INTEGER(ipk) :: i, iiopt, nchmfd, l, ndat, InputStat = 0
+!    REAL(r8k) :: ffch, emptm, fltgap2
     REAL(r8k), PARAMETER :: pfflc1 = 1.66_r8k       ! Flecht axial power peaking factor (peak power)/(average power)
-    CHARACTER(LEN=3) :: coolant = 'OFF'
+!    CHARACTER(LEN=3) :: coolant = 'OFF'
     CHARACTER(LEN=3) :: heat = 'OFF'
-    CHARACTER(LEN=3) :: reflood = 'OFF'
+!    CHARACTER(LEN=3) :: reflood = 'OFF'
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$boundary selection input block'
     CHARACTER(LEN=10), DIMENSION(2,11), PARAMETER :: Units = reshape([ &
       &          '(ft)      ', '(m)       ', &
@@ -220,75 +235,83 @@ MODULE Read_Input_fraptran
     NAMELIST /boundary / coolant, reflood, radiation, heat, jchf, jfb, upppl, hupta, zad, zs, &
       &                  fltgap, fltgap2, geomet, tape1, nvol1, nchn, lowpl, pressu, massfl, &
       &                  coreav, chf, filmbo, coldwa, axpow, bowing, spefbz, geometry, nbundl, &
-      &                  time, radiat, ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, &
+      &                  refloodtime, radiat, ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, &
       &                  geom, temp, tape2,nvol2, press, zone, htco, nodchf, tem, dhe, dhy, achn, &
       &                  hinta, pbh1, gbh, hbh, ffch, bowthr, ExtentOfBow, tschf, techf, hydiam, &
       &                  flxsec, emptm, refdtm, hrad, temptm, fldrat, prestm, hlqcl, rshrd, ts, &
       &                  pbh2, htclev, htca, tblka, nucbo, nbhtc, jtr
-    
-    ! Write block being read to output file
-    WRITE(ounit,'(A)') BlockDescription
-    
-    ! Set default values
+
     pfflec = pfflc1
     nbrliq = 0
-    jchf = 0
-    jfb = 0
-    jtr = 0
-    nbhtc = 0
-    upppl = 0
-    zad = 0.0_r8k
-    zs = 0.0_r8k
-    fltgap = 0.0_r8k
-    fltgap2 = 0.0_r8k
-    geomet = 0
-    tape1 = 0
-    nvol1 = 0
-    lowpl = 0
-    pressu = 0
-    massfl = 0
-    coreav = 0
-    chf = 0
-    filmbo = 0
-    nucbo = 0
-    coldwa = 0
-    axpow = 0
-    bowing = 0
-    spefbz = 0
-    geometry = 0
-    nbundl = 0
-    time = 0
-    radiat = 0
-    ruptur = 0
-    liquid = 0
-    inlet = 0
-    reflo = 0
-    pressure = 0
-    collaps = 0
-    frapt4 = 0
-    geom = 0
-    temp = 0
-    tape2 = 0
-    nvol2 = 0
-    press = 0
-    zone = 0
-    htco = 0
-    tem = 0
-    dhe = 0.0_r8k
-    dhy = 0.0_r8k
-    achn = 0.0_r8k
-    ffch = 0.0_r8k
-    bowthr = 0
-    hydiam = 0.0_r8k
-    flxsec = 0.0_r8k
-    emptm = 1.0E20_r8k
-    refdtm = 1.0E20_r8k
-    hrad = 0.0_r8k
-    rshrd = 0.0_r8k
+
+    if (.not. is_export) then
+        ! Write block being read to output file
+        WRITE(ounit,'(A)') BlockDescription
+
+        ! Set default values
+        coolant = 'OFF'
+        heat = 'OFF'
+        reflood = 'OFF'
+        jchf = 0
+        jfb = 0
+        jtr = 0
+        nbhtc = 0
+        upppl = 0
+        zad = 0.0_r8k
+        zs = 0.0_r8k
+        fltgap = 0.0_r8k
+        fltgap2 = 0.0_r8k
+        geomet = 0
+        tape1 = 0
+        nvol1 = 0
+        lowpl = 0
+        pressu = 0
+        massfl = 0
+        coreav = 0
+        chf = 0
+        filmbo = 0
+        nucbo = 0
+        coldwa = 0
+        axpow = 0
+        bowing = 0
+        spefbz = 0
+        geometry = 0
+        nbundl = 0
+        refloodtime = 0
+        radiat = 0
+        ruptur = 0
+        liquid = 0
+        inlet = 0
+        reflo = 0
+        pressure = 0
+        collaps = 0
+        frapt4 = 0
+        geom = 0
+        temp = 0
+        tape2 = 0
+        nvol2 = 0
+        press = 0
+        zone = 0
+        htco = 0
+        tem = 0
+        dhe = 0.0_r8k
+        dhy = 0.0_r8k
+        achn = 0.0_r8k
+        ffch = 0.0_r8k
+        bowthr = 0
+        hydiam = 0.0_r8k
+        flxsec = 0.0_r8k
+        emptm = 1.0E20_r8k
+        refdtm = 1.0E20_r8k
+        hrad = 0.0_r8k
+        rshrd = 0.0_r8k
     
-    ! Read $boundary
-    READ (iunit, boundary, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'boundary')
+        ! Read $boundary
+        READ (iunit, boundary, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'boundary')
+    else
+        heat = bheat
+    endif
     
     ! Ensure all input option characters are in uppercase
     coolant = TO_UPPERCASE(coolant)
@@ -407,7 +430,7 @@ MODULE Read_Input_fraptran
             IF (mbdl == 0) mflt = 0
             IF (mbdl < 0) mbdl = ABS(mbdl)
         ENDIF
-        IF (time == 1) THEN
+        IF (refloodtime == 1) THEN
             empytm = emptm
             reflpr = refdtm
         ENDIF
@@ -643,7 +666,7 @@ MODULE Read_Input_fraptran
         IF (geometry == 1) WRITE(ounit,410) hydiam, Units(iu,1), flxsec, Units(iu,3)
 410     FORMAT(15x,'Hydraulic diameter for reflood is:             ',1pe13.4,a4,/, &
           &    15x,'Flow channel cross sectional area for reflood: ',1pe13.4,a7)
-        IF (time == 1) WRITE(ounit,412) refdtm, empytm
+        IF (refloodtime == 1) WRITE(ounit,412) refdtm, empytm
 412     FORMAT(15x,'Problem time for initiation of reflood:        ',1pe13.4,'(s)',/, &
           &    15x,'Problem time for start of adiabatic heatup:    ',1pe13.4,'(s)')
         IF (radiat == 1) WRITE(ounit,413) hrad, Units(iu,8), Units(iu,9)
@@ -1179,7 +1202,7 @@ MODULE Read_Input_fraptran
       & fluxz, ncs, GasFraction, npelraddeviat, nfastf, pdrato, rnbnt, &
       & totnb, roughf, roughc, bumtp, compmt, deloxy, imox, CladType, GasMoles0, nepp0, eppinp, radpel, &
       & cladid, cladod, fuelpeldiam, rf, cladtk, pitch, fotmtl, tsntrk, fgrns, cldwdc, splbp, coldbp, &
-      & spdbp, volbp, ncolbp, nbotpl, rsntr
+      & spdbp, volbp, ncolbp, nbotpl, rsntr, is_export
     USE scalr_h_fraptran
     USE NCGases_fraptran, ONLY : ngases
     IMPLICIT NONE
@@ -1189,8 +1212,8 @@ MODULE Read_Input_fraptran
     !> Modified by I. Porter, NRC, April 2014 to clean coding and convert to .f90
     !
     INTEGER(ipk) :: i, icount, j, InputStat = 0
-    REAL(r8k) :: RodDiameter, RodLength, gapthk, gsms, rodfabtemp, fdens, sumg
-    REAL(r8k), DIMENSION(ngases) :: gfrac
+!    REAL(r8k) :: RodDiameter, RodLength, gapthk, gsms, rodfabtemp, fdens, sumg
+!    REAL(r8k), DIMENSION(ngases) :: gfrac
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$design input block'
     CHARACTER(LEN=10), DIMENSION(2,5), PARAMETER :: Units = reshape([ &
       &                           '(ft)      ', '(m)       ', &
@@ -1205,59 +1228,64 @@ MODULE Read_Input_fraptran
       &                 gapthk, coldw, roughc, cfluxa, tflux, cldwdc, spl, scd, swd, vplen, splbp, &
       &                 coldbp, spdbp, volbp, gfrac, gsms, gappr0, tgas0, fluxz, radpel, eppinp, &
       &                 totnb, ncs, ncolbp, OpenPorosityFraction
-    
-    ! Write block being read to output file
-    WRITE(ounit,'(A)') BlockDescription
-    
-    ! Set default values
-    fluxz = 0.0_r8k
-    pitch = 0.0_r8k
-    pdrato = 1.32_r8k
-    rnbnt = 1.0_r8k
-    CladType = 4
-    RodLength = 0.0_r8k
-    RodDiameter = 0.0_r8k
-    rshd = 0.0_r8k
-    dishd = 0.0_r8k
-    pelh = 0.0_r8k
-    dishv0 = 0.0_r8k
-    FuelPelDiam = 0.0_r8k
-    roughf = 2.0_r8k
-    frden = 0.0_r8k
-    bup = 0.0_r8k
-    frpo2 = 0.0_r8k
-    fotmtl = 2.0_r8k
-    tsntrk = 1883.0_r8k
-    fgrns = 10.0_r8k
-    gadoln = -1.0_r8k
-    gapthk = 0.0_r8k
-    coldw = 0.0_r8k
-    roughc = 0.5_r8k
-    cfluxa = 0.0_r8k
-    tflux = 0.0_r8k
-    cldwdc = 0.0_r8k
-    spl = 0.0_r8k
-    scd = 0.0_r8k
-    swd = 0.0_r8k
-    vplen = 0.0_r8k
-    splbp = 0.0_r8k
-    coldbp = 0.0_r8k
-    spdbp = 0.0_r8k
-    volbp = 0.0_r8k
+
     GasMoles0 = 0.0_r8k
-    gfrac(1) = 1.0_r8k
-    gfrac(2:ngases) = 0.0_r8k
-    gappr0 = 0.0_r8k
-    tgas0 = 0.0_r8k
-    totnb = 289.0_r8k
-    ncs = 1
-    ncolbp = 1
-    OpenPorosityFraction = 0.0_r8k
-    gsms = 0.0_r8k
+
+    if (.not. allocated(gfrac)) allocate(gfrac(ngases))
+
+    if (.not. is_export) then
+        ! Write block being read to output file
+        WRITE(ounit,'(A)') BlockDescription
     
-    ! Read $design
-    READ (iunit, design, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'design')
+        ! Set default values
+        fluxz = 0.0_r8k
+        pitch = 0.0_r8k
+        pdrato = 1.32_r8k
+        rnbnt = 1.0_r8k
+        CladType = 4
+        RodLength = 0.0_r8k
+        RodDiameter = 0.0_r8k
+        rshd = 0.0_r8k
+        dishd = 0.0_r8k
+        pelh = 0.0_r8k
+        dishv0 = 0.0_r8k
+        FuelPelDiam = 0.0_r8k
+        roughf = 2.0_r8k
+        frden = 0.0_r8k
+        bup = 0.0_r8k
+        frpo2 = 0.0_r8k
+        fotmtl = 2.0_r8k
+        tsntrk = 1883.0_r8k
+        fgrns = 10.0_r8k
+        gadoln = -1.0_r8k
+        gapthk = 0.0_r8k
+        coldw = 0.0_r8k
+        roughc = 0.5_r8k
+        cfluxa = 0.0_r8k
+        tflux = 0.0_r8k
+        cldwdc = 0.0_r8k
+        spl = 0.0_r8k
+        scd = 0.0_r8k
+        swd = 0.0_r8k
+        vplen = 0.0_r8k
+        splbp = 0.0_r8k
+        coldbp = 0.0_r8k
+        spdbp = 0.0_r8k
+        volbp = 0.0_r8k
+        gfrac(1) = 1.0_r8k
+        gfrac(2:ngases) = 0.0_r8k
+        gappr0 = 0.0_r8k
+        tgas0 = 0.0_r8k
+        totnb = 289.0_r8k
+        ncs = 1
+        ncolbp = 1
+        OpenPorosityFraction = 0.0_r8k
+        gsms = 0.0_r8k
+    
+        ! Read $design
+        READ (iunit, design, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'design')
+    endif
     
     ! Set options based on input
     
@@ -1555,7 +1583,7 @@ MODULE Read_Input_fraptran
     !
     SUBROUTINE ioinp
     USE Kinds_fraptran
-    USE variables_fraptran, ONLY : ounit, iunit, unit, dtplta, npltn
+    USE variables_fraptran, ONLY : ounit, iunit, unit, dtplta, npltn, is_export
     USE collct_h_fraptran
     USE resti_h_fraptran
     USE excb_h_fraptran
@@ -1566,27 +1594,30 @@ MODULE Read_Input_fraptran
     !>@author
     !> Modified by I. Porter, NRC, April 2014 to clean coding and convert to .f90
     !
-    INTEGER(ipk) :: icount, i, unitin, unitout, inp, res, pow, InputStat = 0
+!    INTEGER(ipk) :: icount, i, unitin, unitout, inp, res, pow, InputStat = 0
+    INTEGER(ipk) :: icount, i, InputStat = 0
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$ioData input block'
     
     ! Define $ioData
     NAMELIST / ioData / unitin, unitout, trest, inp, res, pow, dtpoa, dtplta
+
+    if (.not. is_export) then
+        ! Write block being read to output file
+        WRITE(ounit,'(A)') BlockDescription
     
-    ! Write block being read to output file
-    WRITE(ounit,'(A)') BlockDescription
+        ! Set default values
+        unitin = 0
+        unitout = 0
+        trest = 0.0_r8k
+        inp = 0
+        res = 0
+        pow = 0
     
-    ! Set default values
-    unitin = 0
-    unitout = 0
-    trest = 0.0_r8k
-    inp = 0
-    res = 0
-    pow = 0
-    
-    ! Read $ioData
-    READ (iunit, ioData, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'ioData')
-    
+        ! Read $ioData
+        READ (iunit, ioData, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'ioData')
+    endif
+
     ! Set input file units
     IF (unitin == 0) THEN
         unit = .TRUE.
@@ -1757,7 +1788,7 @@ MODULE Read_Input_fraptran
     USE Kinds_fraptran
     USE conversions_fraptran
     USE variables_fraptran, ONLY : ounit, iunit, tref, nthermex, unit, swllfr, gasphs, gasths, prestmp, cexh2a, protectiveoxide, &
-      &                   nidoxide, explenumv, explenumt, npair, CladType
+      &                   nidoxide, explenumv, explenumt, npair, CladType, is_export
     USE resti_h_fraptran
     USE excb_h_fraptran
     USE scalr_h_fraptran
@@ -1770,14 +1801,15 @@ MODULE Read_Input_fraptran
     !>@author
     !> Modified by I. Porter, NRC, April 2014 to clean coding and convert to .f90
     !
-    INTEGER(ipk) :: nsym, gasflo, grass, prescri, idoxid, odoxid, cathca, baker, noball, cenvoi, i, rtheta, &
-      &             PlenumTemp, unitin, icount, InputStat = 0
-    REAL(r8k) :: buoxide, fastfluence
-    CHARACTER(LEN=3) :: internal = 'OFF'
-    CHARACTER(LEN=3) :: metal = 'OFF'
-    CHARACTER(LEN=3) :: deformation = 'OFF'
+!    INTEGER(ipk) :: nsym, gasflo, grass, prescri, idoxid, odoxid, cathca, baker, noball, cenvoi, i, rtheta, &
+!      &             PlenumTemp, unitin, icount, InputStat = 0
+!    REAL(r8k) :: buoxide, fastfluence
+    integer(ipk) :: i, icount, inputstat = 0
+!    CHARACTER(LEN=3) :: internal = 'OFF'
+!    CHARACTER(LEN=3) :: metal = 'OFF'
+!    CHARACTER(LEN=3) :: deformation = 'OFF'
     CHARACTER(LEN=3) :: heat = 'OFF'
-    CHARACTER(LEN=10) :: inst = 'OFF'
+!    CHARACTER(LEN=10) :: inst = 'OFF'
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$model selection input block'
     CHARACTER(LEN=10), DIMENSION(2,3), PARAMETER :: Units = reshape([ &
       &          '(ft)      ', '(m)       ', &
@@ -1794,64 +1826,68 @@ MODULE Read_Input_fraptran
     
     ! Write block being read to output file
     WRITE(ounit,'(A)') BlockDescription
+
+    if (.not. is_export) then
+        ! Set default values
+        gasphs = 0.0_r8k
+        gasths = 0.0_r8k
+        cexh2a = 0.0_r8k
+        relfraca = 0.0_r8k
+        oxideod = 3.0e-6_r8k
+        oxideid = 3.0e-6_r8k
+        nsym = 0
+        naz = 0
+        cathca = 0
+        iStoicGrad = 0
+        baker = 0 
+        ProtectiveOxide = 0
+        zvoid1 = 0.0_r8k
+        zvoid2 = 0.0_r8k
+        rvoid = 0.0_r8k
+        dofset = 0.0_r8k
+        dofang = 0.0_r8k
+        gasflo = 0
+        grass = 0
+        prescri = 0
+        prestmp = 0
+        idoxid = 0
+        odoxid = 0
+        noball = 0
+        cenvoi = 0
+        rtheta = 0
+        TranSwell = 0
+        presfgr = 0
+        PlenumTemp = 0
+        nthermex = 0
+        nIDoxide = 0
+        BuOxide = 0.0_r8k
+        explenumv = 0.0_r8k
+        frcoef = 0.015_r8k
+        mechan = 2
+        irupt = 1
+        ruptstrain = 1.0_r8k
+        irefine = 1
+        refine = 3.0_r8k
     
-    ! Set default values
-    gasphs = 0.0_r8k
-    gasths = 0.0_r8k
-    cexh2a = 0.0_r8k
-    relfraca = 0.0_r8k
-    oxideod = 3.0e-6_r8k
-    oxideid = 3.0e-6_r8k
-    nsym = 0
-    naz = 0
-    cathca = 0
-    iStoicGrad = 0
-    baker = 0 
-    ProtectiveOxide = 0
-    zvoid1 = 0.0_r8k
-    zvoid2 = 0.0_r8k
-    rvoid = 0.0_r8k
-    dofset = 0.0_r8k
-    dofang = 0.0_r8k
-    gasflo = 0
-    grass = 0
-    prescri = 0
-    prestmp = 0
-    idoxid = 0
-    odoxid = 0
-    noball = 0
-    cenvoi = 0
-    rtheta = 0
-    TranSwell = 0
-    presfgr = 0
-    PlenumTemp = 0
-    nthermex = 0
-    nIDoxide = 0
-    BuOxide = 0.0_r8k
-    explenumv = 0.0_r8k
-    frcoef = 0.015_r8k
-    mechan = 2
-    irupt = 1
-    ruptstrain = 1.0_r8k
-    irefine = 1
-    refine = 3.0_r8k
+        ! Set default temperatures based on input units
+        IF (.NOT. unit) THEN
+            trise = 10.0_r8k / 1.8_r8k
+            tref = 298.15_r8k
+            explenumt(1) = 298.15_r8k
+            explenumt(2) = 0.0_r8k
+        ELSE
+            trise = 10.0_r8k
+            tref = 77.0_r8k
+            explenumt(1) = 77.0_r8k
+            explenumt(2) = 0.0_r8k
+        ENDIF
     
-    ! Set default temperatures based on input units
-    IF (.NOT. unit) THEN
-        trise = 10.0_r8k / 1.8_r8k
-        tref = 298.15_r8k
-        explenumt(1) = 298.15_r8k
-        explenumt(2) = 0.0_r8k
-    ELSE
-        trise = 10.0_r8k
-        tref = 77.0_r8k
-        explenumt(1) = 77.0_r8k
-        explenumt(2) = 0.0_r8k
-    ENDIF
-    
-    ! Read $model
-    READ (iunit, model, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'model')
+        ! Read $model
+        READ (iunit, model, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'model')
+    else
+        heat = mheat
+    endif
     
     ! Ensure all input option characters are in uppercase
     deformation = TO_UPPERCASE(deformation)
@@ -2247,7 +2283,9 @@ MODULE Read_Input_fraptran
     !
     SUBROUTINE numinp
     USE Kinds_fraptran
-    USE variables_fraptran, ONLY : ounit, iunit, unit, zelev, nfmesh, ncmesh, fmesh, cmesh, idebug, maxit, noiter, nunopt
+    USE variables_fraptran, ONLY : ounit, iunit, unit, zelev, nfmesh, &
+                                   ncmesh, fmesh, cmesh, idebug, maxit, &
+                                   noiter, nunopt, is_export
     USE Dyna_h_fraptran
     USE collct_h_fraptran
     USE resti_h_fraptran
@@ -2260,7 +2298,7 @@ MODULE Read_Input_fraptran
     !>@author
     !> Modified by I. Porter, NRC, March 2014 to clean coding and convert to .f90
     !
-    INTEGER(ipk) :: icount, i, j, soltyp, InputStat = 0
+    INTEGER(ipk) :: icount, i, j, InputStat = 0
     CHARACTER(LEN=4), DIMENSION(2,2), PARAMETER :: Units = &
     &                                              reshape([ '(F) ', '(K) ', '(ft)', '(m) ' ], [2, 2])
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$solution control definition input block'
@@ -2268,27 +2306,30 @@ MODULE Read_Input_fraptran
     ! Define $solution
     NAMELIST / solution / dtmaxa, dtss, prsacc, tmpac1, soltyp, maxit, noiter, epsht1, &
       &                   naxn, zelev, nfmesh, ncmesh, fmesh, cmesh, nce
-    
-    ! Write block being read to output file
-    WRITE(ounit,'(A)') BlockDescription
-    
-    ! Set default values
-    maxit = 200
-    dtss = 1.0e5_r8k
-    prsacc = 0.005_r8k
-    tmpac1 = 0.005_r8k
-    soltyp = 0
-    noiter = 200
-    epsht1 = 0.001_r8k
-    naxn = 0
-    nfmesh = 0
-    ncmesh = 0
-    nce = 5
+
     idebug = 0
+
+    if (.not. is_export) then
+        ! Write block being read to output file
+        WRITE(ounit,'(A)') BlockDescription
     
-    ! Read $solution
-    READ (iunit, solution, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'solution')
+        ! Set default values
+        maxit = 200
+        dtss = 1.0e5_r8k
+        prsacc = 0.005_r8k
+        tmpac1 = 0.005_r8k
+        soltyp = 0
+        noiter = 200
+        epsht1 = 0.001_r8k
+        naxn = 0
+        nfmesh = 0
+        ncmesh = 0
+        nce = 5
+    
+        ! Read $solution
+        READ (iunit, solution, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'solution')
+    endif
     
     ! Set options based on input
     nkf = 100
@@ -2544,9 +2585,8 @@ MODULE Read_Input_fraptran
     !> @brief
     !> Subroutine to read $power block
     !
-    INTEGER(ipk) :: azang, profile, icount, icnt, k, j, ibu, i, InputStat = 0
-    REAL(r8k) :: ph, pl, doffst, fpowr, CladPower
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: butemp
+    INTEGER(ipk) :: icount, icnt, k, j, ibu, i, InputStat = 0
+!    REAL(r8k) :: ph, pl
     CHARACTER(LEN=3), DIMENSION(2), PARAMETER :: Units = [ 'ft)' ,  'm) ' ]
     CHARACTER(LEN=*), PARAMETER :: BlockDescription = '$power input block'
     
@@ -2554,34 +2594,36 @@ MODULE Read_Input_fraptran
     NAMELIST / power / RodAvePower, AxPowProfile, RadPowProfile, butemp, azpang, pazp, ph, pl, &
       &                doffst, fpowr, powop, tpowf, timop, fpdcay, CladPower, azang, profile, &
       &                NumAxProfiles, ProfileStartTime, modheat
+
+    if (.not. is_export) then
+        ! Write block being read to output file
+        WRITE(ounit,'(A)') BlockDescription
     
-    ! Write block being read to output file
-    WRITE(ounit,'(A)') BlockDescription
+        ! Set default values
+        azpang = 0.0_r8k
+        ph = 0.0_r8k
+        pl = 0.0_r8k
+        doffst = 0.0_r8k
+        fpowr = 1.0_r8k
+        powop = 0.0_r8k
+        tpowf = 0.0_r8k
+        timop = 0.0_r8k
+        fpdcay = 1.0_r8k
+        CladPower = 0.0_r8k
+        NumAxProfiles = 1
+        azang = 0
+        profile = 0
     
-    ! Set default values
-    azpang = 0.0_r8k
-    ph = 0.0_r8k
-    pl = 0.0_r8k
-    doffst = 0.0_r8k
-    fpowr = 1.0_r8k
-    powop = 0.0_r8k
-    tpowf = 0.0_r8k
-    timop = 0.0_r8k
-    fpdcay = 1.0_r8k
-    CladPower = 0.0_r8k
-    NumAxProfiles = 1
-    azang = 0
-    profile = 0
+        ! Allocate variables
+        !ALLOCATE (butemp(1:(naxn*(ntimesteps))))
+        if (.not. allocated(butemp))ALLOCATE (butemp(1:(naxn*(nfmesh+1))))
+        butemp = 0.0_r8k
     
-    ! Allocate variables
-    !ALLOCATE (butemp(1:(naxn*(ntimesteps))))
-    ALLOCATE (butemp(1:(naxn*(nfmesh+1))))
-    butemp = 0.0_r8k
-    
-    ! Read $power block
-    READ (iunit, power, IOSTAT=InputStat)
-    IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'power')
-    
+        ! Read $power block
+        READ (iunit, power, IOSTAT=InputStat)
+        IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'power')
+    endif
+
     ! Moderator heating
     IF (modheat > 1.0_r8k) THEN
         ! Error
@@ -2836,16 +2878,3 @@ MODULE Read_Input_fraptran
     END SUBROUTINE powinp
     !
 END MODULE Read_Input_fraptran
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -74,52 +74,52 @@ MODULE frapc_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: TBulk_V
     END TYPE frapc_var
     ! Integers
-    INTEGER(ipk) :: idx2
-    INTEGER(ipk) :: ncorlp
-    INTEGER(ipk) :: ncirlp
-    INTEGER(ipk) :: nforlp
-    INTEGER(ipk) :: kmxrlp
-    INTEGER(ipk) :: kmxfrp
-    INTEGER(ipk) :: ncool2
-    INTEGER(ipk) :: ndtadv
-    INTEGER(ipk) :: ncard2
-    INTEGER(ipk) :: nrest2
-    INTEGER(ipk) :: ntimes ! Number of output data timesteps provided by T/H Code
+    INTEGER(ipk) , target :: idx2
+    INTEGER(ipk) , target :: ncorlp
+    INTEGER(ipk) , target :: ncirlp
+    INTEGER(ipk) , target :: nforlp
+    INTEGER(ipk) , target :: kmxrlp
+    INTEGER(ipk) , target :: kmxfrp
+    INTEGER(ipk) , target :: ncool2
+    INTEGER(ipk) , target :: ndtadv
+    INTEGER(ipk) , target :: ncard2
+    INTEGER(ipk) , target :: nrest2
+    INTEGER(ipk) , target :: ntimes ! Number of output data timesteps provided by T/H Code
     ! Reals
-    REAL(r8k) :: tprlp                                     ! T/H code plenum gas temperature
-    REAL(r8k) :: t12 = 0                                   ! Start time for FRAPTRAN calculations (s)
-    REAL(r8k) :: t22 = 0                                   ! End time for FRAPTRAN calculations (s)
+    REAL(r8k) , target :: tprlp                                     ! T/H code plenum gas temperature
+    REAL(r8k) , target :: t12 = 0                                   ! Start time for FRAPTRAN calculations (s)
+    REAL(r8k) , target :: t22 = 0                                   ! End time for FRAPTRAN calculations (s)
     ! Logicals
-    LOGICAL :: Allocate_Arrays_FT
-    LOGICAL :: convert_units
-    LOGICAL :: setunits                                    ! Flag to specify whether the Units have been set for the FRAPTRAN files
-    LOGICAL :: first_pass                                  ! Flag to specify whether its the first pass through HtStrCrunchM
-    LOGICAL :: coupled                                     ! Flag to specify whether the program is coupled.  Set by ncool2 flag.
-    LOGICAL :: first_call = .TRUE.                         ! Flag to specify whether its the first pass through HtStrCrunchM
+    LOGICAL , target :: Allocate_Arrays_FT
+    LOGICAL , target :: convert_units
+    LOGICAL , target :: setunits                                    ! Flag to specify whether the Units have been set for the FRAPTRAN files
+    LOGICAL , target :: first_pass                                  ! Flag to specify whether its the first pass through HtStrCrunchM
+    LOGICAL , target :: coupled                                     ! Flag to specify whether the program is coupled.  Set by ncool2 flag.
+    LOGICAL , target :: first_call = .TRUE.                         ! Flag to specify whether its the first pass through HtStrCrunchM
     ! Characters
-    CHARACTER(LEN=80) :: FrapTranFN                        !The name of the fraptran input file
+    CHARACTER(LEN=80) , target :: FrapTranFN                        !The name of the fraptran input file
     !             *** Arrays ***
     ! Integers
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: Iffrp                ! FRAPTRAN cladding failure indicator (0-No, 1-Yes)
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: Iffrp                ! FRAPTRAN cladding failure indicator (0-No, 1-Yes)
     ! Reals
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tmprlp                !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: rmrlp                   !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hgpfrp                  ! FRAPTRAN gas gap conductance (W/m**2-K)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pclrlp                  ! T/H Code coolant pressure (n/m**2)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ElevatThermHydr         !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ElevatFrap              !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: drdfrp                  !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: vrlfrp                  ! FRAPTRAN fuel void fraction due to relocation (unitless)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pgpfrp                  ! FRAPTRAN fuel rod internal gas pressure (n/m**2)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: bufrp                   ! FRAPTRAN fuel burnup (MW-sec/kg)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tEnd                    ! FRAPTRAN End time as determined by T/H Code
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gfInt                   ! FRAPTRAN plot time as determined by T/H Code
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: edInt                   ! FRAPTRAN output time as determined by T/H Code
-    REAL(r8k) :: gsmfrp                                             ! FRAPTRAN gram moles of gas
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: HTC_L                   ! Heat transfer coefficient to the liquid
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: HTC_V                   ! Heat transfer coefficient to the vapor
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: TBulk_L                 ! Bulk coolant temperature of the liquid
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: TBulk_V                 ! Bulk coolant temperature of the vapor
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: tmprlp                !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: rmrlp                   !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hgpfrp                  ! FRAPTRAN gas gap conductance (W/m**2-K)
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pclrlp                  ! T/H Code coolant pressure (n/m**2)
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ElevatThermHydr         !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ElevatFrap              !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: drdfrp                  !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: vrlfrp                  ! FRAPTRAN fuel void fraction due to relocation (unitless)
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pgpfrp                  ! FRAPTRAN fuel rod internal gas pressure (n/m**2)
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: bufrp                   ! FRAPTRAN fuel burnup (MW-sec/kg)
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: tEnd                    ! FRAPTRAN End time as determined by T/H Code
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gfInt                   ! FRAPTRAN plot time as determined by T/H Code
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: edInt                   ! FRAPTRAN output time as determined by T/H Code
+    REAL(r8k) , target :: gsmfrp                                             ! FRAPTRAN gram moles of gas
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: HTC_L                   ! Heat transfer coefficient to the liquid
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: HTC_V                   ! Heat transfer coefficient to the vapor
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: TBulk_L                 ! Bulk coolant temperature of the liquid
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: TBulk_V                 ! Bulk coolant temperature of the vapor
     !
 END MODULE frapc_fraptran
 

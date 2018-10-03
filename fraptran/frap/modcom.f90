@@ -17,7 +17,7 @@ MODULE modcom_h_fraptran
     INTEGER(ipk) :: mtabl2
     INTEGER(ipk) :: mtabl3
     INTEGER(ipk) :: mgaspr
-    REAL(r8k) :: trise
+    REAL(r8k), target :: trise
     !
     END MODULE modcom_h_fraptran
 

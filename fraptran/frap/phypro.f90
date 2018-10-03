@@ -25,15 +25,15 @@ MODULE phypro_h_fraptran
         REAL(r8k) :: deloxy
     END TYPE phypro_var
     !
-    INTEGER(ipk) :: imox
-    REAL(r8k) :: ftmelt
-    REAL(r8k) :: fhefus
-    REAL(r8k) :: ctmelt
-    REAL(r8k) :: chefus
-    REAL(r8k) :: fdelta
-    REAL(r8k) :: bumtp
-    REAL(r8k) :: compmt
-    REAL(r8k) :: deloxy
+    INTEGER(ipk) , target :: imox
+    REAL(r8k) , target :: ftmelt
+    REAL(r8k) , target :: fhefus
+    REAL(r8k) , target :: ctmelt
+    REAL(r8k) , target :: chefus
+    REAL(r8k) , target :: fdelta
+    REAL(r8k) , target :: bumtp
+    REAL(r8k) , target :: compmt
+    REAL(r8k) , target :: deloxy
     !
     !
     END MODULE phypro_h_fraptran

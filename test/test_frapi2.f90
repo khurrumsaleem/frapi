@@ -31,26 +31,44 @@ program frapi_input_file
     character(len=256) :: varname(nvars)
     character(len=256) :: vartype(nvars)
 
-    include "varlist.f90"
+    include "fp_varlist_h.f90"
 
     call get_command_argument(1, frapmode)
     call get_command_argument(2, filename)
 
     select case (frapmode)
-        case ('frapcon')
-            call read_frapcon_file(filename)
-        case ('fraptran')
-            call read_fraptran_file(filename)
-    end select
 
-    call frod % make(nr=nr, na=na, ngasr=ngasr, nce=nce, &
-        frapmode=frapmode, mechan = mechan, ngasmod = ngasmod, &
-        icm = icm, icor = icor, iplant = iplant, &
-        imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
-        moxtype = moxtype, idxgas = idxgas, &
-        iq = iq, ivardm=ivardm, &
-        ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
-        verbose=.false., flag_iapws=.false.)
+        case ('frapcon')
+
+            call read_frapcon_file(filename)
+
+            call frod % make(nr=nr, na=na, ngasr=ngasr, nce=nce, &
+                 frapmode=frapmode, mechan = mechan, ngasmod = ngasmod, &
+                 icm = icm, icor = icor, iplant = iplant, &
+                 imox = imox, igascal = igascal, zr2vintage = zr2vintage, &
+                 moxtype = moxtype, idxgas = idxgas, &
+                 iq = iq, ivardm=ivardm, &
+                 ifixedcoolt=ifixedcoolt, ifixedcoolp=ifixedcoolp, ifixedtsurf=ifixedtsurf, &
+                 verbose=.false., flag_iapws=.false.)
+
+        case ('fraptran')
+
+            call read_fraptran_file(filename)
+
+            call frod % make(nr=nr, na=naxn, nce=nce, relocmodel=relocmodel, &
+                 coolant=coolant,bheat=bheat,mheat=mheat,verbose=.false., frapmode=frapmode, &
+                 reflood=reflood,internal=internal,metal=metal,deformation=deformation,&
+                 inst=inst,geomet=geomet,nvol1=nvol1,lowpl=lowpl,pressu=pressu,massfl=massfl,&
+                 coreav=coreav,chf=chf,filmbo=filmbo,coldwa=coldwa,axpow=axpow,&
+                 bowing=bowing,spefbz=spefbz,geometry=geometry,nbundl=nbundl,refloodtime=time,&
+                 radiat=radiat,ruptur=ruptur,liquid=liquid,inlet=inlet,reflo=reflo,&
+                 pressure=pressure,collaps=collaps,frapt4=frapt4,geom=geom,temp=temp,&
+                 tape2=tape2,nvol2=nvol2,press=press,zone=zone,upppl=upppl,&
+                 jfb=jfb,nucbo=nucbo,unitin=unitin,unitout=unitout,res=res,&
+                 pow=pow,gasflo=gasflo,idoxid=idoxid,cathca=cathca,baker=baker,&
+                 noball=noball,cenvoi=cenvoi,soltyp=soltyp)
+
+    end select
 
     write(*,*) 'Successfuly finished!'
 

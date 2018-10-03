@@ -1,4 +1,5 @@
-    character(len=3)  :: coolant, heat, reflood, internal, metal, deformation, inst, radiation
+    character(len=3)  :: coolant, mheat, bheat, reflood, internal, metal, deformation, radiation
+    character(len=10) :: inst
     character(len=12) :: relocmodel
 
     integer :: tape1, axpow, nvol2, azang, geom, spefbz, inp, &

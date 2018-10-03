@@ -16,6 +16,8 @@ MODULE variables_fraptran
     USE scalr_h_fraptran
     IMPLICIT NONE
     !
+    logical :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
+    !
     REAL(r8k) :: maxfueltemp = 0.0_r8k
     !
     REAL(r8k) :: maxcladtemp = 0.0_r8k
@@ -116,59 +118,59 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: qcold
     END TYPE Variables_var
     !
-    INTEGER(ipk) :: ntimesteps
-    INTEGER(ipk) :: naxialnodes
-    INTEGER(ipk) :: nradialnodes
+    INTEGER(ipk) , target :: ntimesteps
+    INTEGER(ipk) , target :: naxialnodes
+    INTEGER(ipk) , target :: nradialnodes
     ! Integers
-    INTEGER(ipk) :: iplant
-    INTEGER(ipk) :: gammait
-    INTEGER(ipk) :: maxidx
-    INTEGER(ipk) :: nthermex
+    INTEGER(ipk) , target :: iplant
+    INTEGER(ipk) , target :: gammait
+    INTEGER(ipk) , target :: maxidx
+    INTEGER(ipk) , target :: nthermex
     ! Reals
-    REAL(r8k) :: e
-    REAL(r8k) :: pois
-    REAL(r8k) :: modheat
-    REAL(r8k) :: DefaultTemp
-    REAL(r8k) :: dtmpcl
-    REAL(r8k) :: tref
+    REAL(r8k) , target :: e
+    REAL(r8k) , target :: pois
+    REAL(r8k) , target :: modheat
+    REAL(r8k) , target :: DefaultTemp
+    REAL(r8k) , target :: dtmpcl
+    REAL(r8k) , target :: tref
     ! Logicals
-    LOGICAL :: printrodburst
-    LOGICAL :: printballoon
+    LOGICAL , target :: printrodburst
+    LOGICAL , target :: printballoon
     ! Characters
     ! Moderator heating model
-    CHARACTER(LEN=15) :: ModHeatModel
+    CHARACTER(LEN=15) , target :: ModHeatModel
     ! **Arrays**
     ! Timestep
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pbh1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pbh2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hlqcl
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ts
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pbh1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pbh2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hlqcl
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ts
     ! Axial Nodes
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: htco
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: tem
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gadoln
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: oldepeff
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: oldeps
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: htco
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: tem
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gadoln
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: oldepeff
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: oldeps
     ! 2-D Arrays
     ! Used in prntot
-    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: iok
+    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE , target :: iok
     !
-    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: iokold
+    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE , target :: iokold
     !
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: FrapconTemp
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: FrapconTemp
     ! 20,20. Comdeck qconb
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: qcold
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: qcold
     ! Fixed Arrays
     ! Dimension = 3
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nm
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: nm
     ! comdeck frpsto. DIMENSION = 40000
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: afrap
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: afrap
     ! 1. Comdeck matprc. Used only in restart files. Unclear If Real or INTEGER
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: amatpc
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: amatpc
     ! Comdeck indx. Not used.
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ispace
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ispace
     ! Dimension = 21. Comdeck lacmdl
-    CHARACTER(LEN=8), DIMENSION(:), ALLOCATABLE :: emflag
+    CHARACTER(LEN=8), DIMENSION(:), ALLOCATABLE , target :: emflag
     !comdeck thcntl
     TYPE thcntl_var
         !
@@ -188,20 +190,20 @@ MODULE variables_fraptran
         LOGICAL :: unit
     END TYPE thcntl_var
     !
-    INTEGER(ipk) :: ncards
+    INTEGER(ipk) , target :: ncards
     !
-    INTEGER(ipk) :: NRestart
-    INTEGER(ipk) :: defsize
+    INTEGER(ipk) , target :: NRestart
+    INTEGER(ipk) , target :: defsize
     ! Indicates type of coolant option to use. Default ncool=1. If ncool=7, coupled with T/H Code
-    INTEGER(ipk) :: ncool
+    INTEGER(ipk) , target :: ncool
     !
-    INTEGER(ipk) :: ndtad
+    INTEGER(ipk) , target :: ndtad
     !
-    REAL(r8k) :: t1
+    REAL(r8k) , target :: t1
     !
-    REAL(r8k) :: t2
+    REAL(r8k) , target :: t2
     !
-    LOGICAL :: unit
+    LOGICAL , target :: unit
     !comdeck materials
     TYPE material_var
         INTEGER(ipk) :: nomat                               ! # of materials
@@ -212,17 +214,17 @@ MODULE variables_fraptran
         INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: iheattablen
     END TYPE material_var
     ! # of materials
-    INTEGER(ipk) :: nomat
+    INTEGER(ipk) , target :: nomat
     ! 100
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: imaterials
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: imaterials
     !
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: imatflag
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: imatflag
     !
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: imatflag1
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: imatflag1
     !
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: iDatapairs
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: iDatapairs
     !
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: iheattablen
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: iheattablen
     ! The parameters below are used to identify code specifics for output information.
     ! Namely, the problem end time, print & graphics intervals
     TYPE Code_var
@@ -272,18 +274,18 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: OldCldPlasStrn
     END TYPE store6_var
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: SEDPNNLold
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: oldEffStrainPNNL
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: SEDEPRIold
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: EPStrain1old
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: EPStrain2old
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: EPStrain3old
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: StressHoopOld
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: StressRadialOld
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: StressAxialOld
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: CladEffStressOld
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: hsolold
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: OldCldPlasStrn
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: SEDPNNLold
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: oldEffStrainPNNL
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: SEDEPRIold
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: EPStrain1old
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: EPStrain2old
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: EPStrain3old
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: StressHoopOld
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: StressRadialOld
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: StressAxialOld
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: CladEffStressOld
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: hsolold
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: OldCldPlasStrn
     !
     !
     !
@@ -300,14 +302,14 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: zelev          ! User specified axial node spacing
     END TYPE numcom_var
     !
-    INTEGER(ipk) :: idebug
-    INTEGER(ipk) :: ncmesh
-    INTEGER(ipk) :: nfmesh
-    INTEGER(ipk) :: nsc
-    INTEGER(ipk) :: nsf
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: cmesh
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: fmesh
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: zelev
+    INTEGER(ipk) , target :: idebug
+    INTEGER(ipk) , target :: ncmesh
+    INTEGER(ipk) , target :: nfmesh
+    INTEGER(ipk) , target :: nsc
+    INTEGER(ipk) , target :: nsf
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: cmesh
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: fmesh
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: zelev
     !
     !
     !
@@ -329,13 +331,13 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: pazp
     END TYPE powrd_var
     !
-    INTEGER(ipk) :: nprofile
-    INTEGER(ipk) :: NumAxProfiles
-    REAL(r8k) :: apowrd
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ProfileStartTime
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: RodAvePower
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: AxPowProfile
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: pazp
+    INTEGER(ipk) , target :: nprofile
+    INTEGER(ipk) , target :: NumAxProfiles
+    REAL(r8k) , target :: apowrd
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ProfileStartTime
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: RodAvePower
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: AxPowProfile
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: pazp
     !
     !>@brief
     !> This module replaces the powcom common block_fraptran.
@@ -347,9 +349,9 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: CladdingPower
     END TYPE powcom_var
     !
-    INTEGER(ipk) :: nprad
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: RadPowProfile
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: CladdingPower
+    INTEGER(ipk) , target :: nprad
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: RadPowProfile
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: CladdingPower
     !
     !
     !
@@ -372,14 +374,14 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: aprntb
     END TYPE prntb_var
     !
-    INTEGER(ipk) :: itcntd
-    REAL(r8k) :: crfpr
-    REAL(r8k) :: zqchpr
-    REAL(r8k) :: reflpr
-    REAL(r8k) :: fldrpr
-    REAL(r8k) :: TimeIncrement
-    REAL(r8k) :: tplenb
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: aprntb
+    INTEGER(ipk) , target :: itcntd
+    REAL(r8k) , target :: crfpr
+    REAL(r8k) , target :: zqchpr
+    REAL(r8k) , target :: reflpr
+    REAL(r8k) , target :: fldrpr
+    REAL(r8k) , target :: TimeIncrement
+    REAL(r8k) , target :: tplenb
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: aprntb
     !
     !
     !
@@ -406,26 +408,26 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: GasAx
     END TYPE presb_var
     !
-    INTEGER(ipk) :: Kswell
-    INTEGER(ipk) :: Ifail
-    REAL(r8k) :: vplenc
-    REAL(r8k) :: tplen
-    REAL(r8k) :: VolAveGasTemp
-    REAL(r8k) :: pctop
-    REAL(r8k) :: dvdtp
-    REAL(r8k) :: vplenb
-    REAL(r8k) :: gfloa1
-    REAL(r8k) :: roughf
-    REAL(r8k) :: roughc
-    REAL(r8k) :: swllfr
-    REAL(r8k) :: TotalVoidVol
+    INTEGER(ipk) , target :: Kswell
+    INTEGER(ipk) , target :: Ifail
+    REAL(r8k) , target :: vplenc
+    REAL(r8k) , target :: tplen
+    REAL(r8k) , target :: VolAveGasTemp
+    REAL(r8k) , target :: pctop
+    REAL(r8k) , target :: dvdtp
+    REAL(r8k) , target :: vplenb
+    REAL(r8k) , target :: gfloa1
+    REAL(r8k) , target :: roughf
+    REAL(r8k) , target :: roughc
+    REAL(r8k) , target :: swllfr
+    REAL(r8k) , target :: TotalVoidVol
     ! Arrays
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: ies
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pswll0
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: roi
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: vs0
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: flowg
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: GasAx
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: ies
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pswll0
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: roi
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: vs0
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: flowg
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: GasAx
     !
     !
     !
@@ -442,23 +444,23 @@ MODULE variables_fraptran
     END TYPE Oxidation_var
     !
     ! User specified cladding type
-    INTEGER(ipk) :: CladType
+    INTEGER(ipk) , target :: CladType
     ! User option to model initial oxide as protective(0) or non-protective(1)
-    INTEGER(ipk) :: ProtectiveOxide
+    INTEGER(ipk) , target :: ProtectiveOxide
     ! # of pairs for user supplied plenum temperature
-    INTEGER(ipk) :: npair
+    INTEGER(ipk) , target :: npair
     ! User option for something. Not described in FRAPTRAN-1.4 manual
-    INTEGER(ipk) :: nIDoxide
+    INTEGER(ipk) , target :: nIDoxide
     ! Cladding hydrogen concentration for axial node k (ppm)
-    REAL(r8k) :: cexh2l
+    REAL(r8k) , target :: cexh2l
     ! External plenum volume
-    REAL(r8k) :: explenumv
+    REAL(r8k) , target :: explenumv
     ! User specified cladding hydrogen concentration for each axial node (ppm)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: cexh2a
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: cexh2a
     ! Temperature drop across the oxide layer
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: deltox
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: deltox
     ! User option for exterior plenum temperature
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: explenumt
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: explenumt
     !
     !
     !
@@ -475,16 +477,16 @@ MODULE variables_fraptran
         INTEGER(ipk) :: Iflagn
     END TYPE inpdat_var
     !
-    INTEGER(ipk) :: maxit
-    INTEGER(ipk) :: IndexFinTemp
-    INTEGER(ipk) :: indxpr
-    INTEGER(ipk) :: IndexGeom
-    INTEGER(ipk) :: IndexThermCon
-    INTEGER(ipk) :: IndexThermConAdv
-    INTEGER(ipk) :: IndexBC
-    INTEGER(ipk) :: noiter
-    INTEGER(ipk) :: Iflago
-    INTEGER(ipk) :: Iflagn
+    INTEGER(ipk) , target :: maxit
+    INTEGER(ipk) , target :: IndexFinTemp
+    INTEGER(ipk) , target :: indxpr
+    INTEGER(ipk) , target :: IndexGeom
+    INTEGER(ipk) , target :: IndexThermCon
+    INTEGER(ipk) , target :: IndexThermConAdv
+    INTEGER(ipk) , target :: IndexBC
+    INTEGER(ipk) , target :: noiter
+    INTEGER(ipk) , target :: Iflago
+    INTEGER(ipk) , target :: Iflagn
     !
     !
     !
@@ -494,10 +496,10 @@ MODULE variables_fraptran
         REAL(r8k) :: DebugTimeStop
     END TYPE debug_var
     !
-    REAL(r8k) :: Time
-    REAL(r8k) :: DebugTime
-    REAL(r8k) :: DebugTimeStop
-    LOGICAL :: Ndebug ! Flag for specifying if debug information should be written
+    REAL(r8k) , target :: Time
+    REAL(r8k) , target :: DebugTime
+    REAL(r8k) , target :: DebugTimeStop
+    LOGICAL , target :: Ndebug ! Flag for specifying if debug information should be written
     !
     !
     !
@@ -508,10 +510,10 @@ MODULE variables_fraptran
         INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nunopt  !14
     END TYPE carcom_var
     !
-    INTEGER(ipk) :: ierr
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: ibnopt
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nopt
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: nunopt
+    INTEGER(ipk) , target :: ierr
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: ibnopt
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: nopt
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: nunopt
     !
     !
     !
@@ -521,9 +523,9 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: dtplta    ! Plot interval vs time pairs
     END TYPE iocom_var
     !
-    INTEGER(ipk) :: npltn     !
-    REAL(r8k) :: tplot        !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: dtplta    ! 40
+    INTEGER(ipk) , target :: npltn     !
+    REAL(r8k) , target :: tplot        !
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: dtplta    ! 40
     !
     !
     !
@@ -533,7 +535,7 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: fdial
     END TYPE dialb_var
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: fdial
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: fdial
     !
     !
     !
@@ -548,14 +550,14 @@ MODULE variables_fraptran
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: radpel
     END TYPE intcom_var
     !
-    INTEGER(ipk) :: nepp0
-    REAL(r8k) :: cladid
-    REAL(r8k) :: cladod
-    REAL(r8k) :: cladtk
-    REAL(r8k) :: rf
-    REAL(r8k) :: FuelPelDiam
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: eppinp
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: radpel
+    INTEGER(ipk) , target :: nepp0
+    REAL(r8k) , target :: cladid
+    REAL(r8k) , target :: cladod
+    REAL(r8k) , target :: cladtk
+    REAL(r8k) , target :: rf
+    REAL(r8k) , target :: FuelPelDiam
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: eppinp
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: radpel
     !
     TYPE Output_var
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: efuelref

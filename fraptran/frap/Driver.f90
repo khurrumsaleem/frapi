@@ -26,19 +26,19 @@ module fraptran2
     USE CoolantProperties_fraptran, ONLY : tc1, tc2
     USE htcb_h_fraptran
     USE cnvt_fraptran
-    use ivars_fraptran, only : tp_ivars
 
     implicit none
 
     type, public :: fraptran_driver
 
-        type(tp_ivars) :: ivars
+        include "ft_pointers_h.f90"
 
         contains
 
         procedure :: make => p_make
         procedure :: init => p_init
         procedure :: next => p_next
+        procedure :: deft => p_deft
         procedure :: destroy => p_destroy
         procedure :: restfs => p_restfs
 
@@ -58,6 +58,9 @@ module fraptran2
         integer :: naxn_, nfmesh_, ncmesh_
         real(8) :: dt
         logical :: verbose
+
+        include 'ft_associate_h.f90'
+        is_export = .true.
 
         call Allocate_rods(numrods = 1)
 
@@ -163,11 +166,11 @@ module fraptran2
         ndtad = ndtadv
 
         ! lafrap = total length of afrap array
-        lafrap = afrap(2)
+        !lafrap = afrap(2)
         ! lafrap = 1
-        lmax = lafrap
+        !lmax = lafrap
 
-        ncards = 1
+        !ncards = 1
 
         ! Read the restart array
 !        READ(unit = frtrunit, iostat = InputStat) (afrap(lrest), lrest = 4,lmax)
@@ -186,13 +189,6 @@ module fraptran2
 !        tc2 = t2
 
         ! If ncards = 0 , cold startup
-        ! Read input data and initialize variables
-        IF (ncards == 1 .AND. first_pass) THEN
-            ! read input cards
-!            CALL cardin
-            ! initialize variables
-!            CALL initia
-        END IF
 
     end subroutine p_make
 
@@ -200,16 +196,18 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        ! Read input data and initialize variables
-        IF (ncards == 1 .AND. first_pass) THEN
-            ! read input cards
-            CALL cardin(this % ivars)
-            ! initialize variables
-!            CALL initia
-        END IF
-
+        call cardin
+        call initia
 
     end subroutine p_init
+
+    subroutine p_deft(this)
+
+        class (fraptran_driver), intent(inout) :: this
+
+        include "ft_default_h.f90"
+
+    end subroutine p_deft
 
     subroutine p_next(this, dt)
 

@@ -23,39 +23,39 @@ MODULE FissionGasRelease_h_fraptran
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasavail2                         ! 151,51.
     END TYPE FissionGasRelease_var
     !
-    INTEGER(ipk) :: ngasr
+    INTEGER(ipk) , target :: ngasr
     !
-    INTEGER(ipk) :: TranSwell
+    INTEGER(ipk) , target :: TranSwell
     ! Suboption for fission gas release history (0=off, 1=user-input pairs, 2=FRAPFGR)
-    INTEGER(ipk) :: presfgr
+    INTEGER(ipk) , target :: presfgr
     ! # of pairs of fuel swelling values
-    INTEGER(ipk) :: nFuelSwellPairs
+    INTEGER(ipk) , target :: nFuelSwellPairs
     ! # of pairs of fission gas release values
-    INTEGER(ipk) :: nFGRpairs
+    INTEGER(ipk) , target :: nFGRpairs
     !
-    REAL(r8k) :: GasMoles0
+    REAL(r8k) , target :: GasMoles0
     !
-    REAL(r8k) :: prodxe
+    REAL(r8k) , target :: prodxe
     !
-    REAL(r8k) :: prodkr
+    REAL(r8k) , target :: prodkr
     !
-    REAL(r8k) :: relfract
+    REAL(r8k) , target :: relfract
     !
-    REAL(r8k) :: TranFuelSwell
+    REAL(r8k) , target :: TranFuelSwell
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gsmol0
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gsmol0
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: relfraca
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: relfraca
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: FuelGasSwell
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: FuelGasSwell
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: ansr
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ansr
     !
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: fmgp
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: fmgp
     !
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasavail1
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: gasavail1
     !
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasavail2
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: gasavail2
     !
     END MODULE FissionGasRelease_h_fraptran
 

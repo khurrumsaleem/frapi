@@ -1,5 +1,6 @@
 MODULE Initial_Read_fraptran
     USE Kinds_fraptran
+    USE variables_fraptran, ONLY : is_export
     IMPLICIT NONE
     !>@brief
     !> Module Initial_Read performs an initial reading of the input file to determine array sizes_fraptran
@@ -9,9 +10,15 @@ MODULE Initial_Read_fraptran
     !>@date
     !> 5/5/2016
     
-    PRIVATE
-    PUBLIC :: preread
-    
+!    PRIVATE
+!    PUBLIC :: preread
+
+    INTEGER(ipk), target :: NRestart, ncards, IndexFC2Print, IndexGrainBndSep
+    REAL(r8k), target :: ProblemEndTime, ProblemStartTime, gbse
+    INTEGER(ipk), target ::soltyp, maxit, noiter, naxn, nfmesh, ncmesh, nce, iunit
+    REAL(r8k), target :: dtss, prsacc, tmpac1, epsht1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: dtmaxa, zelev, fmesh, cmesh
+
     CONTAINS
     
     SUBROUTINE preread (iofile)
@@ -105,14 +112,19 @@ MODULE Initial_Read_fraptran
     !> 5/5/2016
     INTEGER(ipk) :: InputStat = 0
     INTEGER(ipk) :: input_unit
-    INTEGER(ipk) :: NRestart, ncards, IndexFC2Print, IndexGrainBndSep, defsize
-    REAL(r8k) :: ProblemEndTime, ProblemStartTime, gbse
+    integer(ipk) :: defsize
+!    INTEGER(ipk) :: NRestart, ncards, IndexFC2Print, IndexGrainBndSep, defsize
+!    REAL(r8k) :: ProblemEndTime, ProblemStartTime, gbse
     
     ! Define $begin
     NAMELIST / begin / NRestart, ncards, IndexFC2Print, IndexGrainBndSep, ProblemEndTime, ProblemStartTime, gbse, defsize
-    
-    ! Read $begin
-    READ (unit = input_unit, nml = begin, IOSTAT = InputStat)
+
+    if (.not. is_export) then
+        ! Read $begin
+        READ (unit = input_unit, nml = begin, IOSTAT = InputStat)
+    else
+        defsize = 10
+    endif
     
     END SUBROUTINE begin_pre
     !
@@ -127,39 +139,42 @@ MODULE Initial_Read_fraptran
     !> Ken Geelhood, PNNL
     !>@date
     !> 5/5/2016
-    INTEGER(ipk) ::soltyp, maxit, noiter, naxn, nfmesh, ncmesh, nce, iunit, defsize, InputStat = 0
-    REAL(r8k) :: dtss, prsacc, tmpac1, epsht1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: dtmaxa, zelev, fmesh, cmesh
-    
+    INTEGER(ipk) :: iunit, naxn, nfmesh, ncmesh, defsize, InputStat = 0
+!    INTEGER(ipk) ::soltyp, maxit, noiter, naxn, nfmesh, ncmesh, nce, iunit, defsize, InputStat = 0
+!    REAL(r8k) :: dtss, prsacc, tmpac1, epsht1
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: dtmaxa, zelev, fmesh, cmesh
+
     ! Define $solution
     NAMELIST / solution / dtmaxa, dtss, prsacc, tmpac1, soltyp, maxit, noiter, epsht1, &
       &                   naxn, zelev, nfmesh, ncmesh, fmesh, cmesh, nce
+
+    if (.not. is_export) then
+
+        ALLOCATE (dtmaxa(1:defsize))
+        ALLOCATE (zelev(1:defsize))
+        ALLOCATE (fmesh(1:defsize))
+        ALLOCATE (cmesh(1:defsize))
+
+        ! Set default values
+        maxit = 200
+        dtss = 1.0e5_r8k
+        prsacc = 0.005_r8k
+        tmpac1 = 0.005_r8k
+        soltyp = 0
+        noiter = 200
+        epsht1 = 0.001_r8k
+        naxn = 0
+        nfmesh = 0
+        ncmesh = 0
+        nce = 5
+        dtmaxa(:) = 0.0_r8k
+        zelev(:) = 0.0_r8k
+        fmesh(:) = 0.0_r8k
+        cmesh(:) = 0.0_r8k
     
-    !
-    ALLOCATE (dtmaxa(1:defsize))
-    ALLOCATE (zelev(1:defsize))
-    ALLOCATE (fmesh(1:defsize))
-    ALLOCATE (cmesh(1:defsize))
-    
-    ! Set default values
-    maxit = 200
-    dtss = 1.0e5_r8k
-    prsacc = 0.005_r8k
-    tmpac1 = 0.005_r8k
-    soltyp = 0
-    noiter = 200
-    epsht1 = 0.001_r8k
-    naxn = 0
-    nfmesh = 0
-    ncmesh = 0
-    nce = 5
-    dtmaxa(:) = 0.0_r8k
-    zelev(:) = 0.0_r8k
-    fmesh(:) = 0.0_r8k
-    cmesh(:) = 0.0_r8k
-    
-    ! Read $solution
-    READ (iunit, solution, IOSTAT=InputStat)
+        ! Read $solution
+        READ (iunit, solution, IOSTAT=InputStat)
+    endif
     
     IF (naxn == 0) naxn = countarray(zelev,defsize)
     IF (nfmesh == 0) nfmesh = countarray(fmesh,defsize)
@@ -198,17 +213,4 @@ MODULE Initial_Read_fraptran
     END FUNCTION countarray
     
 END MODULE Initial_Read_fraptran
-
-
-
-
-
-
-
-
-
-
-
-
-
 

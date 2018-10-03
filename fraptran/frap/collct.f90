@@ -111,62 +111,62 @@ Module collct_h_fraptran
         REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tplbt1
     END TYPE collct_var
     !
-    INTEGER(ipk) :: ntapou
-    INTEGER(ipk) :: la1max
-    INTEGER(ipk) :: MaximumIterations
-    INTEGER(ipk) :: n1
-    INTEGER(ipk) :: la1fil
-    INTEGER(ipk) :: ntplot
-    INTEGER(ipk) :: ntabl1
-    INTEGER(ipk) :: ntabl2
-    INTEGER(ipk) :: ntabl3
-    INTEGER(ipk) :: lexcb
-    INTEGER(ipk) :: lprntb
-    INTEGER(ipk) :: lflect
-    INTEGER(ipk) :: ldialb
-    INTEGER(ipk) :: lhtcb
-    INTEGER(ipk) :: lresr1
-    INTEGER(ipk) :: lresr2
-    INTEGER(ipk) :: lsclr1
-    INTEGER(ipk) :: lsclr2
-    INTEGER(ipk) :: lsclr3
-    INTEGER(ipk) :: lcolct
-    INTEGER(ipk) :: lcoold
-    INTEGER(ipk) :: lcombk
-    INTEGER(ipk) :: lresi2
-    INTEGER(ipk) :: lresi3
-    INTEGER(ipk) :: lafrap
-    INTEGER(ipk) :: npramp
-    INTEGER(ipk) :: itswt
-    INTEGER(ipk) :: lmatpc
-    INTEGER(ipk) :: nswmd
-    INTEGER(ipk) :: n3
-    INTEGER(ipk) :: ndap1
-    INTEGER(ipk) :: IterationCount
-    INTEGER(ipk) :: ntco
-    INTEGER(ipk) :: kdbug
-    INTEGER(ipk) :: lblona
-    INTEGER(ipk) :: lphypr
-    INTEGER(ipk) :: lthyd
-    INTEGER(ipk) :: prestmp
-    REAL(r8k) :: dtp
-    REAL(r8k) :: z
-    REAL(r8k) :: gum
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: Ifstor
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: ihData
-    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: icglob
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: acolct
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: table1
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: table2
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: table3
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gasphs
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: gasths
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: gbse
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pelprm
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: pinput
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: potput
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tpln
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: tplbt1
+    INTEGER(ipk) , target :: ntapou
+    INTEGER(ipk) , target :: la1max
+    INTEGER(ipk) , target :: MaximumIterations
+    INTEGER(ipk) , target :: n1
+    INTEGER(ipk) , target :: la1fil
+    INTEGER(ipk) , target :: ntplot
+    INTEGER(ipk) , target :: ntabl1
+    INTEGER(ipk) , target :: ntabl2
+    INTEGER(ipk) , target :: ntabl3
+    INTEGER(ipk) , target :: lexcb
+    INTEGER(ipk) , target :: lprntb
+    INTEGER(ipk) , target :: lflect
+    INTEGER(ipk) , target :: ldialb
+    INTEGER(ipk) , target :: lhtcb
+    INTEGER(ipk) , target :: lresr1
+    INTEGER(ipk) , target :: lresr2
+    INTEGER(ipk) , target :: lsclr1
+    INTEGER(ipk) , target :: lsclr2
+    INTEGER(ipk) , target :: lsclr3
+    INTEGER(ipk) , target :: lcolct
+    INTEGER(ipk) , target :: lcoold
+    INTEGER(ipk) , target :: lcombk
+    INTEGER(ipk) , target :: lresi2
+    INTEGER(ipk) , target :: lresi3
+    INTEGER(ipk) , target :: lafrap
+    INTEGER(ipk) , target :: npramp
+    INTEGER(ipk) , target :: itswt
+    INTEGER(ipk) , target :: lmatpc
+    INTEGER(ipk) , target :: nswmd
+    INTEGER(ipk) , target :: n3
+    INTEGER(ipk) , target :: ndap1
+    INTEGER(ipk) , target :: IterationCount
+    INTEGER(ipk) , target :: ntco
+    INTEGER(ipk) , target :: kdbug
+    INTEGER(ipk) , target :: lblona
+    INTEGER(ipk) , target :: lphypr
+    INTEGER(ipk) , target :: lthyd
+    INTEGER(ipk) , target :: prestmp
+    REAL(r8k) , target :: dtp
+    REAL(r8k) , target :: z
+    REAL(r8k) , target :: gum
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: Ifstor
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE , target :: ihData
+    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE , target :: icglob
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: acolct
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: table1
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: table2
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: table3
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gasphs
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: gasths
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gbse
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pelprm
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: pinput
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: potput
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: tpln
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: tplbt1
     !
     END MODULE collct_h_fraptran
 
