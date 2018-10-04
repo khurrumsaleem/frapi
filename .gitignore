@@ -23,5 +23,5 @@ work/
 *.pyc
 *.txt
 *.bin
-*.6
+fort.*
 *.temp

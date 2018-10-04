@@ -6,6 +6,7 @@ module fpn_reader
 
     integer, parameter :: ifile = 1012
     integer :: ierror
+    integer :: ntimesteps, naxialnodes, nradialnodes
 
     integer :: na, ngasr, nr, nce, im, naxim, mechan, graphna, graphnr, icm, icor, idxgas, iplant, & 
              & iquit, ivardm, imox, jdlpr, igas, nopt, nplot, nread, nrestr, nsp, ntape, nunits,   &
@@ -301,50 +302,245 @@ module fpn_reader
           &                doffst, fpowr, powop, tpowf, timop, fpdcay, CladPower, azang, profile, &
           &                NumAxProfiles, ProfileStartTime, modheat
 
-        !include "ft_default_h.f90"
-
         defsize = 400
         ngases = 8
+        coolant = 'OFF'
+        mheat = 'OFF'
+        bheat = 'OFF'
+        reflood = 'OFF'
+        internal = 'OFF'
+        metal = 'OFF'
+        deformation = 'OFF'
+        inst = 'OFF'
+        radiation = 'OFF'
+        relocmodel = 'FRAPCON-3.3'
+        jchf = 0
+        jfb = 0
+        jtr = 0
+        nbhtc = 0
+        upppl = 0
+        zad = 0.0d0
+        zs = 0.0d0
+        fltgap = 0.0d0
+        fltgap2 = 0.0d0
+        geomet = 0
+        tape1 = 0
+        nvol1 = 0
+        lowpl = 0
+        pressu = 0
+        massfl = 0
+        coreav = 0
+        chf = 0
+        filmbo = 0
+        nucbo = 0
+        coldwa = 0
+        axpow = 0
+        bowing = 0
+        spefbz = 0
+        geometry = 0
+        nbundl = 0
+        time = 0
+        radiat = 0
+        ruptur = 0
+        liquid = 0
+        inlet = 0
+        reflo = 0
+        pressure = 0
+        collaps = 0
+        frapt4 = 0
+        geom = 0
+        temp = 0
+        tape2 = 0
+        nvol2 = 0
+        press = 0
+        zone = 0
+        dhe = 0.0d0
+        dhy = 0.0d0
+        achn = 0.0d0
+        ffch = 0.0d0
+        bowthr = 0
+        hydiam = 0.0d0
+        flxsec = 0.0d0
+        emptm = 1.0d20
+        refdtm = 1.0d20
+        hrad = 0.0d0
+        rshrd = 0.0d0
+        pitch = 0.0d0
+        pdrato = 1.32d0
+        rnbnt = 1.0d0
+        CladType = 4
+        RodLength = 0.0d0
+        RodDiameter = 0.0d0
+        rshd = 0.0d0
+        dishd = 0.0d0
+        pelh = 0.0d0
+        dishv0 = 0.0d0
+        FuelPelDiam = 0.0d0
+        roughf = 2.0d0
+        frden = 0.0d0
+        bup = 0.0d0
+        frpo2 = 0.0d0
+        fotmtl = 2.0d0
+        tsntrk = 1883.0d0
+        fgrns = 10.0d0
+        gapthk = 0.0d0
+        coldw = 0.0d0
+        roughc = 0.5d0
+        cfluxa = 0.0d0
+        tflux = 0.0d0
+        cldwdc = 0.0d0
+        splbp = 0.0d0
+        coldbp = 0.0d0
+        spdbp = 0.0d0
+        volbp = 0.0d0
+        GasMoles0 = 0.0d0
+        tgas0 = 0.0d0
+        totnb = 289.0d0
+        ncolbp = 1
+        OpenPorosityFraction = 0.0d0
+        gsms = 0.0d0
+        unitin = 0
+        unitout = 0
+        trest = 0.0d0
+        inp = 0
+        res = 0
+        pow = 0
+        nsym = 0
+        naz = 0
+        cathca = 0
+        iStoicGrad = 0
+        baker = 0 
+        ProtectiveOxide = 0
+        zvoid1 = 0.0d0
+        zvoid2 = 0.0d0
+        rvoid = 0.0d0
+        dofset = 0.0d0
+        dofang = 0.0d0
+        gasflo = 0
+        grass = 0
+        prescri = 0
+        prestmp = 0
+        idoxid = 0
+        odoxid = 0
+        noball = 0
+        cenvoi = 0
+        rtheta = 0
+        TranSwell = 0
+        presfgr = 0
+        PlenumTemp = 0
+        nthermex = 0
+        nIDoxide = 0
+        BuOxide = 0.0d0
+        explenumv = 0.0d0
+        frcoef = 0.015d0
+        mechan = 2
+        irupt = 1
+        ruptstrain = 1.0d0
+        irefine = 1
+        refine = 3.0d0
+        trise = 10.0d0
+        tref = 77.0d0
+        maxit = 200
+        dtss = 1.0d5
+        prsacc = 0.005d0
+        tmpac1 = 0.005d0
+        soltyp = 0
+        noiter = 200
+        epsht1 = 0.001d0
+        naxn = 0
+        nfmesh = 0
+        ncmesh = 0
+        nce = 5
+        ph = 0.0d0
+        pl = 0.0d0
+        doffst = 0.0d0
+        fpowr = 1.0d0
+        powop = 0.0d0
+        tpowf = 0.0d0
+        timop = 0.0d0
+        fpdcay = 1.0d0
+        CladPower = 0.0d0
+        NumAxProfiles = 1
+        azang = 0
+        profile = 0
 
         open(ifile, file=filename, status='unknown', form='formatted')
 
         read(ifile, begin, iostat=ierror)
         call read_error(ierror, 'begin')
 
+        ntimesteps = defsize
+
         allocate(gfrac(1:ngases))
-        allocate(dtmaxa(1:defsize))
-        allocate(zelev(1:defsize))
-        allocate(fmesh(1:defsize))
-        allocate(cmesh(1:defsize))
-        allocate(hbh(1:defsize))
-        allocate(hupta(1:defsize))
-        allocate(hinta(1:defsize))
-        allocate(gbh(1:defsize))
-        allocate(tem(1:defsize))
-        allocate(explenumt(1:2*defsize))
-        allocate(pbh2(1:defsize))
-        allocate(rodavepower(1:defsize))
-        allocate(dtpoa(1:defsize+2))
+        allocate(dtmaxa(1:ntimesteps))
+        allocate(hbh(1:ntimesteps))
+        allocate(hupta(1:ntimesteps))
+        allocate(hinta(1:ntimesteps))
+        allocate(gbh(1:ntimesteps))
+        allocate(explenumt(1:2*ntimesteps))
+        allocate(pbh2(1:ntimesteps))
+        allocate(rodavepower(1:ntimesteps))
+        allocate(dtpoa(1:ntimesteps+2))
+        allocate(ngastmp(1:2))
+        allocate(ncs(1))
 
         gfrac(1) = 1.0d0
         gfrac(2:ngases) = 0.0d0
-        tem(:) = 0
         explenumt(1) = 77.0d0
         explenumt(2) = 0.0d0
 
         read(ifile, solution, iostat=ierror)
         call read_error(ierror, 'solution')
 
-        allocate(butemp(1:(naxn*(nfmesh+1))))
-        allocate(htca(1:defsize, 1:naxn))
-        allocate(tblka(1:defsize, 1:naxn))
-        allocate(gadoln(1:naxn))
-        allocate(htclev(1:naxn))
-        allocate(htco(1:naxn))
-        allocate(axpowprofile(1:2*naxn,1:defsize))
+        naxialnodes = naxn + 25
+        nradialnodes = nfmesh + ncmesh + 1
+
+        allocate(zelev                (1:naxialnodes))
+        allocate(butemp               (1:(naxialnodes*nradialnodes)))
+        allocate(gadoln               (1:naxialnodes))
+        allocate(htclev               (1:naxialnodes))
+        allocate(htco                 (1:naxialnodes))
+        allocate(gbse                 (1:5) )
+        allocate(scd                  (1) )
+        allocate(radpel               (1:2*naxialnodes) )
+        allocate(azpang               (1:naxialnodes) )
+        allocate(ExtentOfBow          (1:naxialnodes) )
+        allocate(fluxz                (1:2*naxialnodes) )
+        allocate(nodchf               (1:naxialnodes+1) )
+        allocate(swd                  (1) )
+        allocate(oxideod              (1:naxialnodes) )
+        allocate(cexh2a               (1:naxialnodes) )
+        allocate(pazp                 (1:2*nradialnodes,1:naxialnodes) )
+        allocate(oxideid              (1:naxialnodes) )
+        allocate(spl                  (1) )
+        allocate(eppinp               (1:2*naxialnodes) )
+        allocate(techf                (1:naxialnodes) )
+        allocate(tschf                (1:naxialnodes) )
+        allocate(gappr0               (1) )
+        allocate(vplen                (1) )
+        allocate(fmesh                (1:nradialnodes))
+        allocate(cmesh                (1:nradialnodes))
+        allocate(tem                  (1:naxialnodes))
+        
+        allocate(htca                 (1:ntimesteps, 1:naxialnodes))
+        allocate(tblka                (1:ntimesteps, 1:naxialnodes))
+        allocate(axpowprofile         (1:2*naxialnodes,1:ntimesteps))
+        allocate(RadPowProfile        (1:2*naxialnodes*ntimesteps) )
+        allocate(gasths               (1:2*ntimesteps,1:2) )
+        allocate(fldrat               (1:ntimesteps) )
+        allocate(gasphs               (1:2*ntimesteps) )
+        allocate(dtplta               (1:ntimesteps+2) )
+        allocate(ProfileStartTime     (1:ntimesteps) )
+        allocate(FuelGasSwell         (1:2*ntimesteps) )
+        allocate(temptm               (1:ntimesteps) )
+        allocate(relfraca             (1:2*ntimesteps) )
+        allocate(prestm               (1:ntimesteps) )
+        allocate(pbh1                 (1:ntimesteps) )
+        allocate(hlqcl                (1:ntimesteps) )
 
         gadoln(:) = -1.0d0
         htco(:) = 0
+        tem(:) = 0
 
         rewind(ifile)
         read(ifile, design, iostat=ierror)

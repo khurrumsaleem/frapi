@@ -14,6 +14,7 @@ MODULE variables_fraptran
     USE phypro_h_fraptran
     USE resti_h_fraptran
     USE scalr_h_fraptran
+
     IMPLICIT NONE
     !
     logical :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
@@ -702,6 +703,8 @@ MODULE variables_fraptran
     ! Allocate the arrays
     ALLOCATE (CladdingPower(1:naxialnodes))
     ALLOCATE (RadPowProfile(1:size1))
+    ALLOCATE (radtemp(1:naxialnodes,1:ntimesteps))
+    ALLOCATE (fuelrad(1:naxialnodes,1:ntimesteps))
     
     ! Set default values
     nprad = 0
@@ -908,6 +911,7 @@ MODULE variables_fraptran
     ALLOCATE (radpow(1:naxialnodes,1:nradialnodes))
     ALLOCATE (radsrc(1:naxialnodes,1:nradialnodes))
     ALLOCATE (radsrco(1:naxialnodes,1:nradialnodes))
+    ALLOCATE (butemp(1:naxialnodes*nradialnodes))
     
     ! Set the default values
     Ifaila = 0

@@ -15,10 +15,10 @@ program frapi_input_file
     logical :: is_save
 
     integer, parameter :: ivars_array = 37, ivars_value = 4, nvars = 41
-    character(len=256) :: filename, string, frapmode
+    character(len=256) :: filename, string, frapmode, restart_file_name
     character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
-    integer :: i, itime, starttime
+    integer :: i, j, itime, starttime
 
     real(8) :: qtot
 
@@ -35,6 +35,7 @@ program frapi_input_file
 
     call get_command_argument(1, frapmode)
     call get_command_argument(2, filename)
+    call get_command_argument(3, restart_file_name)
 
     select case (frapmode)
 
@@ -55,7 +56,7 @@ program frapi_input_file
 
             call read_fraptran_file(filename)
 
-            call frod % make(nr=nr, na=naxn, nce=nce, relocmodel=relocmodel, &
+            call frod % make(nr=nfmesh, na=naxn, nce=ncmesh, relocmodel=relocmodel, &
                  coolant=coolant,bheat=bheat,mheat=mheat,verbose=.false., frapmode=frapmode, &
                  reflood=reflood,internal=internal,metal=metal,deformation=deformation,&
                  inst=inst,geomet=geomet,nvol1=nvol1,lowpl=lowpl,pressu=pressu,massfl=massfl,&
@@ -68,9 +69,184 @@ program frapi_input_file
                  pow=pow,gasflo=gasflo,idoxid=idoxid,cathca=cathca,baker=baker,&
                  noball=noball,cenvoi=cenvoi,soltyp=soltyp)
 
+            call frod % set_ch_0('restart file', restart_file_name)
+
+            call frod % set_r8_0('splbp', splbp)
+            call frod % set_r8_0('tpowf', tpowf)
+            call frod % set_r8_0('ruptstrain', ruptstrain)
+            call frod % set_r8_0('frcoef', frcoef)
+            call frod % set_r8_0('epsht1', epsht1)
+            call frod % set_r8_0('CladPower', CladPower)
+            call frod % set_i4_0('azang', azang)
+            call frod % set_r8_0('pitch', pitch)
+            call frod % set_r8_0('bowthr', bowthr)
+            call frod % set_i4_0('iStoicGrad', iStoicGrad)
+            call frod % set_i4_0('prestmp', prestmp)
+            call frod % set_r8_0('dofang', dofang)
+            call frod % set_r8_0('coldbp', coldbp)
+            call frod % set_i4_0('nbhtc', nbhtc)
+            call frod % set_i4_0('rtheta', rtheta)
+            call frod % set_r8_0('frden', frden)
+            call frod % set_r8_0('RodDiameter', RodDiameter)
+            call frod % set_i4_0('prescri', prescri)
+            call frod % set_i4_0('mechan', mechan)
+            call frod % set_i4_0('nfmesh', nfmesh)
+            call frod % set_r8_0('refdtm', refdtm)
+            call frod % set_r8_0('totnb', totnb)
+            call frod % set_r8_0('powop', powop)
+            call frod % set_r8_0('flxsec', flxsec)
+            call frod % set_i4_0('NumAxProfiles', NumAxProfiles)
+            call frod % set_i4_0('radiat', radiat)
+            call frod % set_r8_0('ffch', ffch)
+            call frod % set_r8_0('fpdcay', fpdcay)
+            call frod % set_r8_0('roughc', roughc)
+            call frod % set_r8_0('roughf', roughf)
+            call frod % set_r8_0('prsacc', prsacc)
+            call frod % set_r8_0('fpowr', fpowr)
+            call frod % set_i4_0('maxit', maxit)
+            call frod % set_r8_0('tref', tref)
+            call frod % set_i4_0('tape1', tape1)
+            call frod % set_i4_0('jtr', jtr)
+            call frod % set_r8_0('pelh', pelh)
+            call frod % set_r8_0('pdrato', pdrato)
+            call frod % set_i4_0('NRestart', NRestart)
+            call frod % set_i4_0('irupt', irupt)
+            call frod % set_r8_0('tgas0', tgas0)
+            call frod % set_r8_0('tsntrk', tsntrk)
+            call frod % set_i4_0('ncards', ncards)
+            call frod % set_i4_0('CladType', CladType)
+            call frod % set_r8_0('spdbp', spdbp)
+            call frod % set_i4_0('odoxid', odoxid)
+            call frod % set_r8_0('achn', achn)
+            call frod % set_i4_0('nchn', nchn)
+            call frod % set_r8_0('tflux', tflux)
+            call frod % set_i4_0('TranSwell', TranSwell)
+            call frod % set_r8_0('RodLength', RodLength)
+            call frod % set_i4_0('noiter', noiter)
+            call frod % set_i4_0('nthermex', nthermex)
+            call frod % set_i4_0('ncmesh', ncmesh)
+            call frod % set_r8_0('OpenPorosityFraction', OpenPorosityFraction)
+            call frod % set_r8_0('zad', zad)
+            call frod % set_r8_0('rshrd', rshrd)
+            call frod % set_i4_0('IndexFC2Print', IndexFC2Print)
+            call frod % set_r8_0('doffst', doffst)
+            call frod % set_i4_0('irefine', irefine)
+            call frod % set_r8_0('emptm', emptm)
+            call frod % set_i4_0('ProtectiveOxide', ProtectiveOxide)
+            call frod % set_r8_0('trise', trise)
+            call frod % set_r8_0('fltgap2', fltgap2)
+            call frod % set_r8_0('hydiam', hydiam)
+            call frod % set_r8_0('dishd', dishd)
+            call frod % set_r8_0('ph', ph)
+            call frod % set_r8_0('hrad', hrad)
+            call frod % set_r8_0('dtss', dtss)
+            call frod % set_r8_0('bup', bup)
+            call frod % set_r8_0('cldwdc', cldwdc)
+            call frod % set_r8_0('timop', timop)
+            call frod % set_i4_0('nIDoxide', nIDoxide)
+            call frod % set_i4_0('IndexGrainBndSep', IndexGrainBndSep)
+            call frod % set_r8_0('cfluxa', cfluxa)
+            call frod % set_r8_0('rvoid', rvoid)
+            call frod % set_r8_0('dofset', dofset)
+            call frod % set_i4_0('grass', grass)
+            call frod % set_r8_0('pl', pl)
+            call frod % set_i4_0('ncolbp', ncolbp)
+            call frod % set_r8_0('fltgap', fltgap)
+            call frod % set_i4_0('presfgr', presfgr)
+            call frod % set_r8_0('frpo2', frpo2)
+            call frod % set_r8_0('trest', trest)
+            call frod % set_i4_0('inp', inp)
+            call frod % set_r8_0('fgrns', fgrns)
+            call frod % set_r8_0('refine', refine)
+            call frod % set_r8_0('modheat', modheat)
+            call frod % set_r8_0('tmpac1', tmpac1)
+            call frod % set_r8_0('coldw', coldw)
+            call frod % set_r8_0('dhe', dhe)
+            call frod % set_r8_0('explenumv', explenumv)
+            call frod % set_r8_0('dhy', dhy)
+            call frod % set_i4_0('naz', naz)
+            call frod % set_i4_0('jchf', jchf)
+            call frod % set_r8_0('volbp', volbp)
+            call frod % set_r8_0('rshd', rshd)
+            call frod % set_i4_0('profile', profile)
+            call frod % set_r8_0('fotmtl', fotmtl)
+            call frod % set_r8_0('gsms', gsms)
+            call frod % set_r8_0('dishv0', dishv0)           
+            call frod % set_i4_0('nsym', nsym)
+            call frod % set_r8_0('rnbnt', rnbnt)
+            call frod % set_r8_0('zvoid2', zvoid2)
+            call frod % set_r8_0('gapthk', gapthk)
+            call frod % set_r8_0('zvoid1', zvoid1)
+            call frod % set_r8_0('zs', zs)
+            call frod % set_r8_0('FuelPelDiam', FuelPelDiam)
+
+            call frod % set_r8_1('scd', scd)
+            call frod % set_r8_1('azpang', azpang)
+            call frod % set_r8_1('htclev', htclev)
+            call frod % set_r8_1('ExtentOfBow', ExtentOfBow)
+            call frod % set_r8_1('vplen', vplen)
+            call frod % set_r8_1('gadoln', gadoln)
+            call frod % set_r8_1('gfrac', gfrac)
+            call frod % set_r8_1('gbse', gbse)
+            call frod % set_r8_1('fluxz', fluxz)
+            call frod % set_r8_1('nodchf', nodchf)
+            call frod % set_i4_1('ngastmp', ngastmp)
+            call frod % set_r8_1('swd', swd)
+            call frod % set_r8_1('oxideod', oxideod)
+            call frod % set_i4_1('htco', htco)
+            call frod % set_r8_1('cexh2a', cexh2a)
+            call frod % set_r8_2('pazp', pazp)
+            call frod % set_r8_1('radpel', radpel)
+            call frod % set_r8_1('gappr0', gappr0)
+            call frod % set_r8_1('butemp', butemp)
+            call frod % set_r8_1('oxideid', oxideid)
+            call frod % set_r8_1('spl', spl)
+            call frod % set_r8_1('eppinp', eppinp)
+            call frod % set_r8_1('techf', techf)
+            call frod % set_i4_1('ncs', ncs)
+            call frod % set_r8_1('tschf', tschf)
+            call frod % set_r8_1('zelev', zelev)
+            call frod % set_r8_1('fmesh', fmesh)
+            call frod % set_r8_1('cmesh', cmesh)
+            call frod % set_i4_1('tem', tem)
+
+            do i = 1, 1
+
+                call frod % set_r8_0('dtmaxa', dtmaxa(i))
+                call frod % set_r8_0('hbh', hbh(i))
+                call frod % set_r8_0('hupta', hupta(i))
+                call frod % set_r8_0('hinta', hinta(i))
+                call frod % set_r8_0('gbh', gbh(i))
+                call frod % set_r8_0('explenumt', explenumt(i))
+                call frod % set_r8_0('pbh2', pbh2(i))
+                call frod % set_r8_0('dtpoa', dtpoa(i))
+                call frod % set_r8_0('RodAvePower', RodAvePower(i))
+                call frod % set_r8_1('htca', htca(i,:))
+                call frod % set_r8_1('tblka', tblka(i,:))
+                call frod % set_r8_0('dtplta', dtplta(i))
+                call frod % set_r8_1('gasths', gasths(i,:))
+                call frod % set_r8_0('FuelGasSwell', FuelGasSwell(i))
+                call frod % set_r8_0('temptm', temptm(i))
+                call frod % set_r8_0('relfraca', relfraca(i))
+                call frod % set_r8_0('prestm', prestm(i))
+                call frod % set_r8_0('fldrat', fldrat(i))
+                call frod % set_r8_0('gasphs', gasphs(i))
+                call frod % set_r8_1('AxPowProfile', AxPowProfile(i,:))
+                call frod % set_r8_0('ProfileStartTime', ProfileStartTime(i))
+                call frod % set_r8_0('pbh1', pbh1(i))
+                call frod % set_r8_0('hlqcl', hlqcl(i))
+                call frod % set_r8_1('radtemp', (/( radpowprofile(2*j-1 + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
+                call frod % set_r8_1('fuelrad', (/( radpowprofile(2*j   + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
+
+                if (i == 1) call frod % init()
+
+            enddo
+
+! not in list: 'ProblemEndTime', 'ts', 'tape2nvol2', 'ProblemStartTime', 'PlenumTemp', 'BuOxide', 'time'
+
     end select
 
-    write(*,*) 'Successfuly finished!'
+    write(*,*) 'Successfuly done!'
 
     stop
 

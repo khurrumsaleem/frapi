@@ -364,6 +364,7 @@ MODULE scalr_h_fraptran
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ascal2
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ascal1
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: gadolin
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: butemp
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: pchn
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: burad
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: radpow

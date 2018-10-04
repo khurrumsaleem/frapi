@@ -23,13 +23,17 @@ module frapi
         procedure :: get_array => frod_get_r8_1    ! Get variable array
         !--------------------------------------------------------------------
 
-        procedure :: set_r8_0  => frod_set_r8_0     ! set real variable
-        procedure :: set_r8_1  => frod_set_r8_1     ! set real array of dimension 1
+        procedure :: set_ch_0  => frod_set_ch_0     ! set variable of type character and rank 0
+        procedure :: set_i4_0  => frod_set_i4_0     ! set variable of type integer and rank 0
+        procedure :: set_i4_1  => frod_set_i4_1     ! set variable of type integer and rank 1
+        procedure :: set_r8_0  => frod_set_r8_0     ! set variable of type real and rank 0
+        procedure :: set_r8_1  => frod_set_r8_1     ! set variable of type real and rank 1
+        procedure :: set_r8_2  => frod_set_r8_2     ! set variable of type real and rank 2
 
-        procedure :: get_r8_0  => frod_get_r8_0     ! get real variable
-        procedure :: get_r8_1  => frod_get_r8_1     ! get real array of dimension 1
-        procedure :: get_r8_2  => frod_get_r8_2     ! get real array of dimension 2
-        procedure :: get_i4_0  => frod_get_i4_0     ! get integer variable
+        procedure :: get_i4_0  => frod_get_i4_0     ! get variable of type integer and rank 0
+        procedure :: get_r8_0  => frod_get_r8_0     ! get variable of type real and rank 0
+        procedure :: get_r8_1  => frod_get_r8_1     ! get variable of type real and rank 1
+        procedure :: get_r8_2  => frod_get_r8_2     ! get variable of type real and rank 2
 
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
@@ -39,6 +43,7 @@ module frapi
     end type frod_type
 
     ! TEMPORARY VARIABLES
+    character(len=20) :: frapmode_
     integer :: i, j, n, m
     real(8) :: a, b, c, volume
     real(8), allocatable :: weight(:)
@@ -59,47 +64,35 @@ contains
 
         class (frod_type), intent(inout) :: this
 
-        include "fp_options_h.f90"
+        include "fi_optstatement_h.f90"
 
         integer :: nr_ = 17
         integer :: na_ = 10
         integer :: ngasr_ = 45
         integer :: nce_ = 5
         logical :: verbose_ = .false. 
-        character(len=20) :: frapmode_ = 'frapcon'
+
+        frapmode_ = 'frapcon'
 
         n  = na
         m  = nr
 
-        if( present(nr      ) ) nr_      = nr
-        if( present(na      ) ) na_      = na
-        if( present(ngasr   ) ) ngasr_   = ngasr
-        if( present(nce     ) ) nce_     = nce
-        if( present(verbose ) ) verbose_ = verbose
-        if( present(frapmode) ) frapmode_= frapmode
+        if( present(nr          ) ) nr_      = nr
+        if( present(na          ) ) na_      = na
+        if( present(ngasr       ) ) ngasr_   = ngasr
+        if( present(nce         ) ) nce_     = nce
+        if( present(verbose     ) ) verbose_ = verbose
+        if( present(frapmode    ) ) frapmode_= frapmode
 
         select case (frapmode_)
+
         case ('frapcon')
 
             call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
-            call this % dfcon % deft()
+            include "fi_optassignment_h.f90"
 
-            if( present(mechan      ) ) this % dfcon  % mechan      = mechan
-            if( present(ngasmod     ) ) this % dfcon  % ngasmod     = ngasmod
-            if( present(icm         ) ) this % dfcon  % icm         = icm
-            if( present(icor        ) ) this % dfcon  % icor        = icor
-            if( present(iplant      ) ) this % dfcon  % iplant      = iplant
-            if( present(imox        ) ) this % dfcon  % imox        = imox
-            if( present(igascal     ) ) this % dfcon  % igascal     = igascal
-            if( present(zr2vintage  ) ) this % dfcon  % zr2vintage  = zr2vintage
-            if( present(moxtype     ) ) this % dfcon  % moxtype     = moxtype
-            if( present(idxgas      ) ) this % dfcon  % idxgas      = idxgas
-            if( present(iq          ) ) this % dfcon  % iq          = iq
-            if( present(ivardm      ) ) this % dfcon  % ivardm      = ivardm
-            if( present(ifixedcoolt ) ) this % dfcon  % ifixedcoolt = ifixedcoolt
-            if( present(ifixedcoolp ) ) this % dfcon  % ifixedcoolp = ifixedcoolp
-            if( present(ifixedtsurf ) ) this % dfcon  % ifixedtsurf = ifixedtsurf
+            call this % dfcon % deft()
 
             call this % dfcon % dump()
 
@@ -107,60 +100,23 @@ contains
 
             call this % dftran % make(na_, nr_, nce_, verbose_)
 
+            include "fi_optassignment_h.f90"
+
             call this % dftran % deft()
 
-            if( present(coolant     ) ) this % dftran % coolant     = coolant
-            if( present(bheat       ) ) this % dftran % bheat       = bheat
-            if( present(mheat       ) ) this % dftran % mheat       = mheat
-            if( present(reflood     ) ) this % dftran % reflood     = reflood
-            if( present(internal    ) ) this % dftran % internal    = internal
-            if( present(metal       ) ) this % dftran % metal       = metal
-            if( present(deformation ) ) this % dftran % deformation = deformation
-            if( present(inst        ) ) this % dftran % inst        = inst
-            if( present(geomet      ) ) this % dftran % geomet      = geomet
-            if( present(nvol1       ) ) this % dftran % nvol1       = nvol1
-            if( present(lowpl       ) ) this % dftran % lowpl       = lowpl
-            if( present(pressu      ) ) this % dftran % pressu      = pressu
-            if( present(massfl      ) ) this % dftran % massfl      = massfl
-            if( present(coreav      ) ) this % dftran % coreav      = coreav
-            if( present(chf         ) ) this % dftran % chf         = chf
-            if( present(filmbo      ) ) this % dftran % filmbo      = filmbo
-            if( present(coldwa      ) ) this % dftran % coldwa      = coldwa
-            if( present(axpow       ) ) this % dftran % axpow       = axpow
-            if( present(bowing      ) ) this % dftran % bowing      = bowing
-            if( present(spefbz      ) ) this % dftran % spefbz      = spefbz
-            if( present(geometry    ) ) this % dftran % geometry    = geometry
-            if( present(nbundl      ) ) this % dftran % nbundl      = nbundl
-            if( present(refloodtime ) ) this % dftran % refloodtime = refloodtime
-            if( present(radiat      ) ) this % dftran % radiat      = radiat
-            if( present(ruptur      ) ) this % dftran % ruptur      = ruptur
-            if( present(liquid      ) ) this % dftran % liquid      = liquid
-            if( present(inlet       ) ) this % dftran % inlet       = inlet
-            if( present(reflo       ) ) this % dftran % reflo       = reflo
-            if( present(pressure    ) ) this % dftran % pressure    = pressure
-            if( present(collaps     ) ) this % dftran % collaps     = collaps
-            if( present(frapt4      ) ) this % dftran % frapt4      = frapt4
-            if( present(geom        ) ) this % dftran % geom        = geom
-            if( present(temp        ) ) this % dftran % temp        = temp
-            if( present(tape2       ) ) this % dftran % tape2       = tape2
-            if( present(nvol2       ) ) this % dftran % nvol2       = nvol2
-            if( present(press       ) ) this % dftran % press       = press
-            if( present(zone        ) ) this % dftran % zone        = zone
-            if( present(upppl       ) ) this % dftran % upppl       = upppl
-            if( present(jfb         ) ) this % dftran % jfb         = jfb
-            if( present(nucbo       ) ) this % dftran % nucbo       = nucbo
-            if( present(unitin      ) ) this % dftran % unitin      = unitin
-            if( present(unitout     ) ) this % dftran % unitout     = unitout
-            if( present(res         ) ) this % dftran % res         = res
-            if( present(pow         ) ) this % dftran % pow         = pow
-            if( present(gasflo      ) ) this % dftran % gasflo      = gasflo
-            if( present(idoxid      ) ) this % dftran % idoxid      = idoxid
-            if( present(cathca      ) ) this % dftran % cathca      = cathca
-            if( present(baker       ) ) this % dftran % baker       = baker
-            if( present(noball      ) ) this % dftran % noball      = noball
-            if( present(cenvoi      ) ) this % dftran % cenvoi      = cenvoi
-            if( present(soltyp      ) ) this % dftran % soltyp      = soltyp
-            if( present(relocmodel  ) ) this % dftran % relocmodel  = relocmodel
+        case ('frapi')
+
+            call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
+
+            call this % dftran % make(na_, nr_, nce_, verbose_)
+
+            include "fi_optassignment_h.f90"
+
+            call this % dfcon % deft()
+
+            call this % dfcon % dump()
+
+            call this % dftran % deft()
 
         case default
             write(*,*) "ERROR: 'mode' must be 'frapcon' or 'fraptran' "
@@ -180,11 +136,36 @@ contains
 
         class (frod_type), intent(inout) :: this
 
+        select case (frapmode_)
+        case ('frapcon')
+            call frod_init_frapcon_(this)
+        case ('fraptran')
+            call frod_init_fraptran_(this)
+        case ('frapi')
+            call frod_init_frapcon_(this)
+            call frod_init_fraptran_(this)
+        end select
+
+    end subroutine frod_init
+
+    subroutine frod_init_frapcon_(this)
+
+        class (frod_type), intent(inout) :: this
+
         call this % dfcon % load()
         call this % dfcon % proc() ! processing and checking of input variables
         call this % dfcon % init() ! make the very first time step
 
-    end subroutine frod_init
+    end subroutine frod_init_frapcon_
+
+    subroutine frod_init_fraptran_(this)
+
+        class (frod_type), intent(inout) :: this
+
+        call this % dftran % openrf() ! open restart file
+        call this % dftran % init()   ! init variables, including reading of the restart file
+
+    end subroutine frod_init_fraptran_
 
     subroutine frod_next(this, dt)
 
@@ -224,6 +205,141 @@ contains
         call this % dfcon % dump()
 
     end subroutine frod_accept
+
+    subroutine frod_set_ch_0(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key, var
+        integer      :: it
+
+        select case (key)
+        case ("restart file")
+            this % dftran % restart_file_name = trim(var)
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_set_ch_0
+
+    subroutine frod_set_i4_0(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key
+        integer      :: it
+        integer(4)   :: var
+
+        select case(key)
+        case("azang")
+            this % dftran % azang = var
+        case("iStoicGrad")
+            this % dftran % iStoicGrad = var
+        case("prestmp")
+            this % dftran % prestmp = var
+        case("nbhtc")
+            this % dftran % nbhtc = var
+        case("rtheta")
+            this % dftran % rtheta = var
+        case("prescri")
+            this % dftran % prescri = var
+        case("mechan")
+            this % dftran % mechan = var
+        case("nfmesh")
+            this % dftran % nfmesh = var
+        case("NumAxProfiles")
+            this % dftran % NumAxProfiles = var
+        case("radiat")
+            this % dftran % radiat = var
+        case("maxit")
+            this % dftran % maxit = var
+        case("tape1")
+            this % dftran % tape1 = var
+        case("jtr")
+            this % dftran % jtr = var
+        case("NRestart")
+            this % dftran % NRestart = var
+        case("irupt")
+            this % dftran % irupt = var
+        case("ncards")
+            this % dftran % ncards = var
+        case("CladType")
+            this % dftran % CladType = var
+        case("odoxid")
+            this % dftran % odoxid = var
+        case("nchn")
+            this % dftran % nchn = var
+        case("TranSwell")
+            this % dftran % TranSwell = var
+        case("noiter")
+            this % dftran % noiter = var
+        case("nthermex")
+            this % dftran % nthermex = var
+        case("ncmesh")
+            this % dftran % ncmesh = var
+        case("naxn")
+            this % dftran % naxn = var
+        case("IndexFC2Print")
+            this % dftran % IndexFC2Print = var
+        case("irefine")
+            this % dftran % irefine = var
+        case("ProtectiveOxide")
+            this % dftran % ProtectiveOxide = var
+        case("nIDoxide")
+            this % dftran % nIDoxide = var
+        case("nce")
+            this % dftran % nce = var
+        case("IndexGrainBndSep")
+            this % dftran % IndexGrainBndSep = var
+        case("grass")
+            this % dftran % grass = var
+        case("ncolbp")
+            this % dftran % ncolbp = var
+        case("presfgr")
+            this % dftran % presfgr = var
+        case("inp")
+            this % dftran % inp = var
+        case("naz")
+            this % dftran % naz = var
+        case("jchf")
+            this % dftran % jchf = var
+        case("profile")
+            this % dftran % profile = var
+        case("nsym")
+            this % dftran % nsym = var
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_set_i4_0
+
+
+    subroutine frod_set_i4_1(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key
+        integer      :: it
+        integer(4)   :: var(:)
+
+        select case (key)
+        case("tem")
+            this % dftran % tem(:) = var(:)
+        case("ngastmp")
+            this % dftran % ngastmp(:) = var(:)
+        case("htco")
+            this % dftran % htco(:) = var(:)
+        case("ncs")
+            this % dftran % ncs(:) = var(:)
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_set_i4_1
+
 
     subroutine frod_set_r8_0(this, key, var)
 
@@ -378,6 +494,188 @@ contains
         case("total gap conductance, W|(m^2*K)") ! YU JIANKAI
             this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
             this % dfcon % r__hgapt_flag   = .true.
+        case("splbp")
+            this % dftran % splbp = var
+        case("tpowf")
+            this % dftran % tpowf = var
+        case("ruptstrain")
+            this % dftran % ruptstrain = var
+        case("frcoef")
+            this % dftran % frcoef = var
+        case("epsht1")
+            this % dftran % epsht1 = var
+        case("CladPower")
+            this % dftran % CladPower = var
+        case("pitch")
+            this % dftran % pitch = var
+        case("bowthr")
+            this % dftran % bowthr = var
+        case("dofang")
+            this % dftran % dofang = var
+        case("coldbp")
+            this % dftran % coldbp = var
+        case("frden")
+            this % dftran % frden = var
+        case("RodDiameter")
+            this % dftran % RodDiameter = var
+        case("refdtm")
+            this % dftran % refdtm = var
+        case("totnb")
+            this % dftran % totnb = var
+        case("powop")
+            this % dftran % powop = var
+        case("flxsec")
+            this % dftran % flxsec = var
+        case("ffch")
+            this % dftran % ffch = var
+        case("fpdcay")
+            this % dftran % fpdcay = var
+        case("roughc")
+            this % dftran % roughc = var
+        case("roughf")
+            this % dftran % roughf = var
+        case("prsacc")
+            this % dftran % prsacc = var
+        case("fpowr")
+            this % dftran % fpowr = var
+        case("tref")
+            this % dftran % tref = var
+        case("pelh")
+            this % dftran % pelh = var
+        case("pdrato")
+            this % dftran % pdrato = var
+        case("tgas0")
+            this % dftran % tgas0 = var
+        case("tsntrk")
+            this % dftran % tsntrk = var
+        case("spdbp")
+            this % dftran % spdbp = var
+        case("achn")
+            this % dftran % achn = var
+        case("tflux")
+            this % dftran % tflux = var
+        case("RodLength")
+            this % dftran % RodLength = var
+        case("OpenPorosityFraction")
+            this % dftran % OpenPorosityFraction = var
+        case("zad")
+            this % dftran % zad = var
+        case("rshrd")
+            this % dftran % rshrd = var
+        case("doffst")
+            this % dftran % doffst = var
+        case("emptm")
+            this % dftran % emptm = var
+        case("trise")
+            this % dftran % trise = var
+        case("fltgap2")
+            this % dftran % fltgap2 = var
+        case("hydiam")
+            this % dftran % hydiam = var
+        case("dishd")
+            this % dftran % dishd = var
+        case("ph")
+            this % dftran % ph = var
+        case("hrad")
+            this % dftran % hrad = var
+        case("dtss")
+            this % dftran % dtss = var
+        case("bup")
+            this % dftran % bup = var
+        case("cldwdc")
+            this % dftran % cldwdc = var
+        case("timop")
+            this % dftran % timop = var
+        case("cfluxa")
+            this % dftran % cfluxa = var
+        case("rvoid")
+            this % dftran % rvoid = var
+        case("dofset")
+            this % dftran % dofset = var
+        case("pl")
+            this % dftran % pl = var
+        case("fltgap")
+            this % dftran % fltgap = var
+        case("frpo2")
+            this % dftran % frpo2 = var
+        case("trest")
+            this % dftran % trest = var
+        case("fgrns")
+            this % dftran % fgrns = var
+        case("refine")
+            this % dftran % refine = var
+        case("modheat")
+            this % dftran % modheat = var
+        case("tmpac1")
+            this % dftran % tmpac1 = var
+        case("coldw")
+            this % dftran % coldw = var
+        case("dhe")
+            this % dftran % dhe = var
+        case("explenumv")
+            this % dftran % explenumv = var
+        case("dhy")
+            this % dftran % dhy = var
+        case("volbp")
+            this % dftran % volbp = var
+        case("rshd")
+            this % dftran % rshd = var
+        case("fotmtl")
+            this % dftran % fotmtl = var
+        case("gsms")
+            this % dftran % gsms = var
+        case("dishv0")
+            this % dftran % dishv0 = var
+        case("rnbnt")
+            this % dftran % rnbnt = var
+        case("zvoid2")
+            this % dftran % zvoid2 = var
+        case("gapthk")
+            this % dftran % gapthk = var
+        case("zvoid1")
+            this % dftran % zvoid1 = var
+        case("zs")
+            this % dftran % zs = var
+        case("FuelPelDiam")
+            this % dftran % FuelPelDiam = var
+        case("dtmaxa")
+            this % dftran % dtmaxa(it) = var
+        case("hbh")
+            this % dftran % hbh(it) = var
+        case("hupta")
+            this % dftran % hupta(it) = var
+        case("hinta")
+            this % dftran % hinta(it) = var
+        case("gbh")
+            this % dftran % gbh(it) = var
+        case("explenumt")
+            this % dftran % explenumt(it) = var
+        case("pbh2")
+            this % dftran % pbh2(it) = var
+        case("dtpoa")
+            this % dftran % dtpoa(it) = var
+        case("RodAvePower")
+            this % dftran % RodAvePower(it) = var
+        case("dtplta")
+            this % dftran % dtplta(it) = var
+        case("FuelGasSwell")
+            this % dftran % FuelGasSwell(it) = var
+        case("temptm")
+            this % dftran % temptm(it) = var
+        case("relfraca")
+            this % dftran % relfraca(it) = var
+        case("prestm")
+            this % dftran % prestm(it) = var
+        case("fldrat")
+            this % dftran % fldrat(it) = var
+        case("gasphs")
+            this % dftran % gasphs(it) = var
+        case("ProfileStartTime")
+            this % dftran % ProfileStartTime(it) = var
+        case("pbh1")
+            this % dftran % pbh1(it) = var
+        case("hlqcl")
+            this % dftran % hlqcl(it) = var
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -410,6 +708,7 @@ contains
         case("outer cladding diameter, cm")
             this % dfcon % r__dco(1:n) = var(:) * cmtoin
 
+        ! Must be removed in the future ---------------------------------------------------------
         case("FRAPCON FORMAT: linear power, W|cm")
             this % dfcon % r__qmpy(it) = sum(var) / cmtoft * & 
             sum(this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n)) &
@@ -422,7 +721,7 @@ contains
             this % dfcon % r__p2(it) = var(1) * MPatoPSI
             this % dfcon % r__coolantpressure(it,1:n+1) = var(:) * MPatoPSI
             this % dfcon % r__pcoolant(1:n+1) = var(:) * MPatoPSI
-
+        ! ----------------------------------------------------------------------------------------
 
         case("linear power, W|cm")
             call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
@@ -454,13 +753,90 @@ contains
             this % dfcon % r__crudmult(:)  = var(:)
         case("neutron flux, 1|(cm^2*s)")
             this % dfcon % r__flux(:)  = var(:)
-
+        case("scd")
+            this % dftran % scd(:) = var(:)
+        case("azpang")
+            this % dftran % azpang(:) = var(:)
+        case("fmesh")
+            this % dftran % fmesh(:) = var(:)
+        case("htclev")
+            this % dftran % htclev(:) = var(:)
+        case("ExtentOfBow")
+            this % dftran % ExtentOfBow(:) = var(:)
+        case("vplen")
+            this % dftran % vplen(:) = var(:)
+        case("gadoln")
+            this % dftran % gadoln(:) = var(:)
+        case("gfrac")
+            this % dftran % gfrac(:) = var(:)
+        case("gbse")
+            this % dftran % gbse(:) = var(:)
+        case("fluxz")
+            this % dftran % fluxz(:) = var(:)
+        case("nodchf")
+            this % dftran % nodchf(:) = var(:)
+        case("swd")
+            this % dftran % swd(:) = var(:)
+        case("oxideod")
+            this % dftran % oxideod(:) = var(:)
+        case("cexh2a")
+            this % dftran % cexh2a(:) = var(:)
+        case("radpel")
+            this % dftran % radpel(:) = var(:)
+        case("cmesh")
+            this % dftran % cmesh(:) = var(:)
+        case("gappr0")
+            this % dftran % gappr0(:) = var(:)
+        case("butemp")
+            this % dftran % butemp(:) = var(:)
+        case("oxideid")
+            this % dftran % oxideid(:) = var(:)
+        case("spl")
+            this % dftran % spl(:) = var(:)
+        case("eppinp")
+            this % dftran % eppinp(:) = var(:)
+        case("techf")
+            this % dftran % techf(:) = var(:)
+        case("tschf")
+            this % dftran % tschf(:) = var(:)
+        case("zelev")
+            this % dftran % zelev(:) = var(:)
+        case("htca")
+            this % dftran % htca(it,:) = var(:)
+        case("tblka")
+            this % dftran % tblka(it,:) = var(:)
+        case("gasths")
+            this % dftran % gasths(it,:) = var(:)
+        case("radtemp")
+            this % dftran % radtemp(:,it) = var(:)
+        case("fuelrad")
+            this % dftran % fuelrad(:,it) = var(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
         end select
 
     end subroutine frod_set_r8_1
+
+
+    subroutine frod_set_r8_2(this, key, var)
+
+        class (frod_type), intent(inout) :: this
+
+        character(*) :: key
+        integer      :: it
+        real(8)      :: var(:,:)
+
+        select case (key)
+        case("pazp")
+            this % dftran % pazp(:,:) = var(:,:)
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_set_r8_2
+
 
     subroutine frod_get_i4_0(this, key, var)
 
@@ -695,8 +1071,8 @@ contains
 
         class (frod_type), intent(inout) :: this
 
-        call this % dfcon  % restfs()
-        call this % dftran % restfs()
+        !call this % dfcon  % restfs()
+        !call this % dftran % restfs()
 
     end subroutine p_frapc2t
 

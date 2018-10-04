@@ -1,6 +1,7 @@
 MODULE Read_Input_fraptran
     USE Kinds_fraptran
     USE ErrorMsg_fraptran, ONLY : namelist_read_error
+    use scalr_h_fraptran, only : butemp
     IMPLICIT NONE
     !>@brief
     !> This module contains the subroutines used to read the input file_fraptran.
@@ -29,13 +30,15 @@ MODULE Read_Input_fraptran
                             unitout, res, pow, gasflo, baker, noball, &
                             cenvoi, soltyp, temp, azang, profile, nsym, grass, &
                             prescri, idoxid, odoxid, cathca, rtheta, &
-                            PlenumTemp, tape1, inp, IndexGrainBndSep
+                            PlenumTemp, tape1, inp
+    integer(ipk), target :: IndexGrainBndSep
 
     real(r8k), target :: doffst, fpowr, cladpower, ffch, emptm, fltgap2, &
                          RodDiameter, RodLength, gapthk, gsms, rodfabtemp, fdens, sumg, &
                          buoxide, fastfluence, ph, pl
 
-    real(r8k), dimension(:), allocatable, target :: butemp, gfrac
+    real(r8k), target :: gfrac(8)
+    !real(r8k), dimension(:), allocatable, target :: butemp !wtf??? : ALLOCATE (butemp(1:(naxn*(ntimesteps))))
 
     CONTAINS
     !
@@ -120,7 +123,6 @@ MODULE Read_Input_fraptran
     !
     WRITE(ounit,507)
 507 FORMAT(/' Solution control block input completed'//)
-    
     !
     ! $design block
     !
@@ -1230,8 +1232,6 @@ MODULE Read_Input_fraptran
       &                 totnb, ncs, ncolbp, OpenPorosityFraction
 
     GasMoles0 = 0.0_r8k
-
-    if (.not. allocated(gfrac)) allocate(gfrac(ngases))
 
     if (.not. is_export) then
         ! Write block being read to output file
@@ -2616,7 +2616,6 @@ MODULE Read_Input_fraptran
     
         ! Allocate variables
         !ALLOCATE (butemp(1:(naxn*(ntimesteps))))
-        if (.not. allocated(butemp))ALLOCATE (butemp(1:(naxn*(nfmesh+1))))
         butemp = 0.0_r8k
     
         ! Read $power block
@@ -2705,8 +2704,8 @@ MODULE Read_Input_fraptran
     ! Load 2-D radial power profile-related arrays for later use in cominp_fraptran
     nradq = nprad / naxn
     IF (nradq > 0) THEN
-        ALLOCATE (radtemp(1:naxialnodes,1:nradq))
-        ALLOCATE (fuelrad(1:naxialnodes,1:nradq))
+        !ALLOCATE (radtemp(1:naxialnodes,1:nradq))
+        !ALLOCATE (fuelrad(1:naxialnodes,1:nradq))
         radtemp = 0.0_r8k
         fuelrad = 0.0_r8k
     END IF

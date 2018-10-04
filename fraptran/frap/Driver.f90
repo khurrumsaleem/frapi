@@ -29,6 +29,8 @@ module fraptran2
 
     implicit none
 
+    character (len=200), target :: restart_file_name
+
     type, public :: fraptran_driver
 
         include "ft_pointers_h.f90"
@@ -40,7 +42,7 @@ module fraptran2
         procedure :: next => p_next
         procedure :: deft => p_deft
         procedure :: destroy => p_destroy
-        procedure :: restfs => p_restfs
+        procedure :: openrf => p_openrf
 
     end type fraptran_driver
 
@@ -52,14 +54,13 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        INTEGER(ipk) :: IndexGrainBndSep, k, i, InputStat = 0
+        INTEGER(ipk) :: k, i, InputStat = 0
         INTEGER(ipk) :: radial, axial, ntimepairs
         INTEGER(ipk) :: lmax, lrest, l1
         integer :: naxn_, nfmesh_, ncmesh_
         real(8) :: dt
         logical :: verbose
 
-        include 'ft_associate_h.f90'
         is_export = .true.
 
         call Allocate_rods(numrods = 1)
@@ -77,10 +78,9 @@ module fraptran2
         radial = pre_nr
         axial = pre_na
         ntimepairs = 1  !# of time history pairs from T/H Code
-        IF (first_call) THEN
-            CALL Allocate_Variables (ntimepairs, radial, axial)
-            CALL Allocate_Gas
-        END IF
+
+        call Allocate_Variables (ntimepairs, radial, axial)
+        call Allocate_Gas
 
         n1 = 1
         n2 = 1
@@ -143,11 +143,13 @@ module fraptran2
         gbse(4) = 1.0_r8k
         gbse(5) = 0.0_r8k
 
+        call init()
+
         ! Initialize FE model (Only useable when not coupled)
-        IF (.NOT. coupled) THEN
-            CALL init()
-            CALL default_values()
-        ENDIF
+!        IF (.NOT. coupled) THEN
+!            CALL init()
+!            CALL default_values()
+!        ENDIF
 
         ncard2 = ncards
         t12 = 0.d0
@@ -155,7 +157,7 @@ module fraptran2
         nrest2 = NRestart !????
 
         ! Echo input file to output file
-        CALL Input_Echo
+        !CALL Input_Echo
 
         t22 = dt
         tmax = dt
@@ -190,6 +192,8 @@ module fraptran2
 
         ! If ncards = 0 , cold startup
 
+        include 'ft_associate_h.f90'
+
     end subroutine p_make
 
     subroutine p_init(this)
@@ -205,7 +209,8 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        include "ft_default_h.f90"
+        call default_values()
+!        include "ft_default_h.f90"
 
     end subroutine p_deft
 
@@ -236,13 +241,18 @@ module fraptran2
 
     end subroutine p_destroy
 
-    subroutine p_restfs(this)
+    subroutine p_openrf(this)
 
         class (fraptran_driver), intent(inout) :: this
 
-        call this % restfs
+        logical :: is_open
 
-    end subroutine p_restfs
+        inquire (unit = fcunit, opened = is_open)
+        if (is_open) close (unit = fcunit)
+        open (unit = fcunit, file = restart_file_name)
+        close (fcunit)
+
+    end subroutine p_openrf
 
     subroutine FRAPTRAN_1_5a
         USE Kinds_fraptran
