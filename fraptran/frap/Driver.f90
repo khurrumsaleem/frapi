@@ -4,7 +4,7 @@ module fraptran2
     USE variables_fraptran
     USE setup_fraptran, ONLY : Main, Input_Echo
     USE TH_Link_fraptran
-    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Rod
+    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Rod, FRAPTRAN_Vars
     USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
     USE frapc_fraptran
@@ -29,7 +29,7 @@ module fraptran2
 
     implicit none
 
-    character (len=200), target :: restart_file_name
+    character (len=200), target :: namerf
 
     type, public :: fraptran_driver
 
@@ -41,8 +41,9 @@ module fraptran2
         procedure :: init => p_init
         procedure :: next => p_next
         procedure :: deft => p_deft
+        procedure :: load => p_load
+        procedure :: dump => p_dump
         procedure :: destroy => p_destroy
-        procedure :: openrf => p_openrf
 
     end type fraptran_driver
 
@@ -196,12 +197,39 @@ module fraptran2
 
     end subroutine p_make
 
+
+    subroutine p_load(this)
+
+        class (fraptran_driver), intent(inout) :: this
+
+        call fraptran_rod(1) % update()
+
+    end subroutine p_load
+
+
+    subroutine p_dump(this)
+
+        class (fraptran_driver), intent(inout) :: this
+
+        call fraptran_rod(1) % remember()
+
+    end subroutine p_dump
+
+
     subroutine p_init(this)
 
         class (fraptran_driver), intent(inout) :: this
 
+        logical :: is_open
+
+        inquire (unit = fcunit, opened = is_open)
+        if (is_open) close (unit = fcunit)
+        open (unit = fcunit, file = this % namerf)
+
         call cardin
         call initia
+
+        close (fcunit)
 
     end subroutine p_init
 
@@ -210,7 +238,6 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
         call default_values()
-!        include "ft_default_h.f90"
 
     end subroutine p_deft
 
@@ -219,6 +246,8 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
         real(8) :: dt
+
+        time = 0.d0
 
         CALL setup6
 
@@ -240,19 +269,6 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
     end subroutine p_destroy
-
-    subroutine p_openrf(this)
-
-        class (fraptran_driver), intent(inout) :: this
-
-        logical :: is_open
-
-        inquire (unit = fcunit, opened = is_open)
-        if (is_open) close (unit = fcunit)
-        open (unit = fcunit, file = restart_file_name)
-        close (fcunit)
-
-    end subroutine p_openrf
 
     subroutine FRAPTRAN_1_5a
         USE Kinds_fraptran

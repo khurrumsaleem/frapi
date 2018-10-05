@@ -9,6 +9,7 @@
     Character   (LEN=80)                                  :: r__title                                 
     CHARACTER   (LEN=10)                                  :: r__PrintType                             
     CHARACTER   (LEN=12)                                  :: r__RelocModel                            
+    CHARACTER   (LEN=200)                                 :: r__namerf                     
     INTEGER     (ipk)                                     :: r__irefab                                
     INTEGER     (ipk)                                     :: r__nrefab1                               
     INTEGER     (ipk)                                     :: r__nrefab2                               

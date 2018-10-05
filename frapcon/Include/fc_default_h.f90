@@ -164,3 +164,4 @@
         this % TgasFab             = 77.d0                       !
         this % rprm1               = 3.45d0                      !
         this % ctmax               = 386.33d0                    !
+        this % namerf              = 'rf.txt'                    !

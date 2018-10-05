@@ -1,4 +1,4 @@
-    character(len=200)                , pointer :: restart_file_name    ! 
+    character(len=200)                , pointer :: namerf               ! 
     character(len=3)                  , pointer :: reflood              ! 
     character(len=12)                 , pointer :: relocmodel           ! 
     character(len=3)                  , pointer :: deformation          ! 

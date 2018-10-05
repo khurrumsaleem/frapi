@@ -9,6 +9,7 @@
     Character   (LEN=80) ,                    POINTER :: title                                   ! Stores the title card information
     CHARACTER   (LEN=10) ,                    POINTER :: PrintType                               ! Identifier to print axial node loop or summary printout
     CHARACTER   (LEN=12) ,                    POINTER :: RelocModel                              ! Specifies fuel relocation model
+    character   (len=200),                    POINTER :: namerf                                  ! Restart file name for fraptran running
     INTEGER     (ipk)    ,                    POINTER :: irefab                                  ! Timestep to start using refabricated values (Default = 10,000)
     INTEGER     (ipk)    ,                    POINTER :: nrefab1                                 ! Lower axial node for refabrication
     INTEGER     (ipk)    ,                    POINTER :: nrefab2                                 ! Upper axial node for refabrication

@@ -28,7 +28,7 @@ module fpn_reader
                                         & go, p2, ProblemTime, qend, qf, qmpy, rc, thkcld, thkgap,    &
                                         & tw, x, xt, cladt, p1, crudmult, tcoolant, zcool, pcoolant
 
-    include "fp_ivars_h.f90"
+    include "fi_ivars_h.f90"
 
     contains
 
@@ -495,6 +495,8 @@ module fpn_reader
         naxialnodes = naxn + 25
         nradialnodes = nfmesh + ncmesh + 1
 
+        !write(*,*) ntimesteps, naxialnodes, nradialnodes
+
         allocate(zelev                (1:naxialnodes))
         allocate(butemp               (1:(naxialnodes*nradialnodes)))
         allocate(gadoln               (1:naxialnodes))
@@ -521,7 +523,7 @@ module fpn_reader
         allocate(fmesh                (1:nradialnodes))
         allocate(cmesh                (1:nradialnodes))
         allocate(tem                  (1:naxialnodes))
-        
+
         allocate(htca                 (1:ntimesteps, 1:naxialnodes))
         allocate(tblka                (1:ntimesteps, 1:naxialnodes))
         allocate(axpowprofile         (1:2*naxialnodes,1:ntimesteps))

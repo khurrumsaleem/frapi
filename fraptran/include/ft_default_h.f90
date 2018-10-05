@@ -8,6 +8,7 @@ this % deformation = 'OFF'
 this % inst = 'OFF'
 this % radiation = 'OFF'
 this % relocmodel = 'FRAPCON-3.3'
+this % namerf = 'rf.txt'
 this % jchf = 0
 this % jfb = 0
 this % jtr = 0

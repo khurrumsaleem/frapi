@@ -39,11 +39,12 @@ module frapcon4
     implicit none
 
     logical :: DoFrapconAllocation = .true.
+    character (len=200), target :: namerf
 
     type, public :: frapcon_driver
 
-        include "fp_pointers_h.f90"
-        include "fp_replicants_h.f90"
+        include "fc_pointers_h.f90"
+        include "fc_replicants_h.f90"
 
         logical :: DoRodRefabrication = .false.
         logical :: Verbose = .false.
@@ -103,8 +104,8 @@ contains
             DoFrapconAllocation = .false.
         endif
 
-        include 'fp_associate_h.f90'
-        include 'fp_allocate_h.f90'
+        include 'fc_associate_h.f90'
+        include 'fc_allocate_h.f90'
 
         ! WTF ???
 !        if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')
@@ -121,7 +122,7 @@ contains
 
         open(ifile, file=filename, status='unknown', form='unformatted')
 
-        include 'fp_save_state_h.f90'
+        include 'fc_save_state_h.f90'
 
         close(ifile)
 
@@ -137,7 +138,7 @@ contains
 
         open(ifile, file=filename, status='unknown', form='unformatted')
 
-        include 'fp_load_state_h.f90'
+        include 'fc_load_state_h.f90'
 
         close(ifile)
 
@@ -147,7 +148,7 @@ contains
 
         class (frapcon_driver), intent(inout) :: this
 
-        include 'fp_dump_h.f90'
+        include 'fc_dump_h.f90'
 
     end subroutine driver_dump
 
@@ -155,7 +156,7 @@ contains
 
         class (frapcon_driver), intent(in) :: this
 
-        include 'fp_load_h.f90'
+        include 'fc_load_h.f90'
 
     end subroutine driver_load
 
@@ -745,7 +746,7 @@ contains
 
         class (frapcon_driver), intent(inout) :: this
 
-        include "fp_deallocate_h.f90"
+        include "fc_deallocate_h.f90"
 
         !if (.not. this % verbose) close(ounit, status='delete')
 
@@ -1405,8 +1406,16 @@ contains
     end subroutine FRAPCON_4_0_Patch_1
 
     subroutine driver_restfs(this)
+
         class (frapcon_driver), intent(out) :: this
+
+        logical :: is_open
+
+        inquire (unit = ftunit, opened = is_open)
+        if (is_open) close (unit = ftunit)
+        open (unit = ftunit, file = namerf)
         call restfs
+        close (ftunit)
     end subroutine driver_restfs
 
 end module frapcon4

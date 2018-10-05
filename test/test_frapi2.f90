@@ -31,7 +31,7 @@ program frapi_input_file
     character(len=256) :: varname(nvars)
     character(len=256) :: vartype(nvars)
 
-    include "fp_varlist_h.f90"
+    include "fi_varlist_h.f90"
 
     call get_command_argument(1, frapmode)
     call get_command_argument(2, filename)
@@ -231,7 +231,7 @@ program frapi_input_file
                 call frod % set_r8_0('prestm', prestm(i))
                 call frod % set_r8_0('fldrat', fldrat(i))
                 call frod % set_r8_0('gasphs', gasphs(i))
-                call frod % set_r8_1('AxPowProfile', AxPowProfile(i,:))
+                call frod % set_r8_1('axpowprofile', AxPowProfile(:,i))
                 call frod % set_r8_0('ProfileStartTime', ProfileStartTime(i))
                 call frod % set_r8_0('pbh1', pbh1(i))
                 call frod % set_r8_0('hlqcl', hlqcl(i))
