@@ -270,81 +270,81 @@ contains
 
         select case(key)
         case("azang")
-            this % dftran %  azang = var
+            this % dftran % r__azang = var
         case("iStoicGrad")
-            this % dftran % iStoicGrad = var
+            this % dftran % r__iStoicGrad = var
         case("prestmp")
-            this % dftran % prestmp = var
+            this % dftran % r__prestmp = var
         case("nbhtc")
-            this % dftran % nbhtc = var
+            this % dftran % r__nbhtc = var
         case("rtheta")
-            this % dftran % rtheta = var
+            this % dftran % r__rtheta = var
         case("prescri")
-            this % dftran % prescri = var
+            this % dftran % r__prescri = var
         case("mechan")
-            this % dftran % mechan = var
+            this % dftran % r__mechan = var
         case("nfmesh")
-            this % dftran % nfmesh = var
+            this % dftran % r__nfmesh = var
         case("NumAxProfiles")
-            this % dftran % NumAxProfiles = var
+            this % dftran % r__NumAxProfiles = var
         case("radiat")
-            this % dftran % radiat = var
+            this % dftran % r__radiat = var
         case("maxit")
-            this % dftran % maxit = var
+            this % dftran % r__maxit = var
         case("tape1")
-            this % dftran % tape1 = var
+            this % dftran % r__tape1 = var
         case("jtr")
-            this % dftran % jtr = var
+            this % dftran % r__jtr = var
         case("NRestart")
-            this % dftran % NRestart = var
+            this % dftran % r__nrestart = var
         case("irupt")
-            this % dftran % irupt = var
+            this % dftran % r__irupt = var
         case("ncards")
-            this % dftran % ncards = var
+            this % dftran % r__ncards = var
         case("CladType")
-            this % dftran % CladType = var
+            this % dftran % r__CladType = var
         case("odoxid")
-            this % dftran % odoxid = var
+            this % dftran % r__odoxid = var
         case("nchn")
-            this % dftran % nchn = var
+            this % dftran % r__nchn = var
         case("TranSwell")
-            this % dftran % TranSwell = var
+            this % dftran % r__TranSwell = var
         case("noiter")
-            this % dftran % noiter = var
+            this % dftran % r__noiter = var
         case("nthermex")
-            this % dftran % nthermex = var
+            this % dftran % r__nthermex = var
         case("ncmesh")
-            this % dftran % ncmesh = var
+            this % dftran % r__ncmesh = var
         case("naxn")
-            this % dftran % naxn = var
+            this % dftran % r__naxn = var
         case("IndexFC2Print")
-            this % dftran % IndexFC2Print = var
+            this % dftran % r__IndexFC2Print = var
         case("irefine")
-            this % dftran % irefine = var
+            this % dftran % r__irefine = var
         case("ProtectiveOxide")
-            this % dftran % ProtectiveOxide = var
+            this % dftran % r__ProtectiveOxide = var
         case("nIDoxide")
-            this % dftran % nIDoxide = var
+            this % dftran % r__nIDoxide = var
         case("nce")
-            this % dftran % nce = var
+            this % dftran % r__nce = var
         case("IndexGrainBndSep")
-            this % dftran % IndexGrainBndSep = var
+            this % dftran % r__IndexGrainBndSep = var
         case("grass")
-            this % dftran % grass = var
+            this % dftran % r__grass = var
         case("ncolbp")
-            this % dftran % ncolbp = var
+            this % dftran % r__ncolbp = var
         case("presfgr")
-            this % dftran % presfgr = var
+            this % dftran % r__presfgr = var
         case("inp")
-            this % dftran % inp = var
+            this % dftran % r__inp = var
         case("naz")
-            this % dftran % naz = var
+            this % dftran % r__naz = var
         case("jchf")
-            this % dftran % jchf = var
+            this % dftran % r__jchf = var
         case("profile")
-            this % dftran % profile = var
+            this % dftran % r__profile = var
         case("nsym")
-            this % dftran % nsym = var
+            this % dftran % r__nsym = var
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -363,13 +363,13 @@ contains
 
         select case (key)
         case("tem")
-            this % dftran % tem(:) = var(:)
+            this % dftran % r__tem(:) = var(:)
         case("ngastmp")
-            this % dftran % ngastmp(:) = var(:)
+            this % dftran % r__ngastmp(:) = var(:)
         case("htco")
-            this % dftran % htco(:) = var(:)
+            this % dftran % r__htco(:) = var(:)
         case("ncs")
-            this % dftran % ncs(:) = var(:)
+            this % dftran % r__ncs(:) = var(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -533,187 +533,187 @@ contains
             this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
             this % dfcon % r__hgapt_flag   = .true.
         case("splbp")
-            this % dftran % splbp = var
+            this % dftran % r__splbp = var
         case("tpowf")
-            this % dftran % tpowf = var
+            this % dftran % r__tpowf = var
         case("ruptstrain")
-            this % dftran % ruptstrain = var
+            this % dftran % r__ruptstrain = var
         case("frcoef")
-            this % dftran % frcoef = var
+            this % dftran % r__frcoef = var
         case("epsht1")
-            this % dftran % epsht1 = var
+            this % dftran % r__epsht1 = var
         case("CladPower")
-            this % dftran % CladPower = var
+            this % dftran % r__CladPower = var
         case("pitch")
-            this % dftran % pitch = var
+            this % dftran % r__pitch = var
         case("bowthr")
-            this % dftran % bowthr = var
+            this % dftran % r__bowthr = var
         case("dofang")
-            this % dftran % dofang = var
+            this % dftran % r__dofang = var
         case("coldbp")
-            this % dftran % coldbp = var
+            this % dftran % r__coldbp = var
         case("frden")
-            this % dftran % frden = var
+            this % dftran % r__frden = var
         case("RodDiameter")
-            this % dftran % RodDiameter = var
+            this % dftran % r__RodDiameter = var
         case("refdtm")
-            this % dftran % refdtm = var
+            this % dftran % r__refdtm = var
         case("totnb")
-            this % dftran % totnb = var
+            this % dftran % r__totnb = var
         case("powop")
-            this % dftran % powop = var
+            this % dftran % r__powop = var
         case("flxsec")
-            this % dftran % flxsec = var
+            this % dftran % r__flxsec = var
         case("ffch")
-            this % dftran % ffch = var
+            this % dftran % r__ffch = var
         case("fpdcay")
-            this % dftran % fpdcay = var
+            this % dftran % r__fpdcay = var
         case("roughc")
-            this % dftran % roughc = var
+            this % dftran % r__roughc = var
         case("roughf")
-            this % dftran % roughf = var
+            this % dftran % r__roughf = var
         case("prsacc")
-            this % dftran % prsacc = var
+            this % dftran % r__prsacc = var
         case("fpowr")
-            this % dftran % fpowr = var
+            this % dftran % r__fpowr = var
         case("tref")
-            this % dftran % tref = var
+            this % dftran % r__tref = var
         case("pelh")
-            this % dftran % pelh = var
+            this % dftran % r__pelh = var
         case("pdrato")
-            this % dftran % pdrato = var
+            this % dftran % r__pdrato = var
         case("tgas0")
-            this % dftran % tgas0 = var
+            this % dftran % r__tgas0 = var
         case("tsntrk")
-            this % dftran % tsntrk = var
+            this % dftran % r__tsntrk = var
         case("spdbp")
-            this % dftran % spdbp = var
+            this % dftran % r__spdbp = var
         case("achn")
-            this % dftran % achn = var
+            this % dftran % r__achn = var
         case("tflux")
-            this % dftran % tflux = var
+            this % dftran % r__tflux = var
         case("RodLength")
-            this % dftran % RodLength = var
+            this % dftran % r__RodLength = var
         case("OpenPorosityFraction")
-            this % dftran % OpenPorosityFraction = var
+            this % dftran % r__OpenPorosityFraction = var
         case("zad")
-            this % dftran % zad = var
+            this % dftran % r__zad = var
         case("rshrd")
-            this % dftran % rshrd = var
+            this % dftran % r__rshrd = var
         case("doffst")
-            this % dftran % doffst = var
+            this % dftran % r__doffst = var
         case("emptm")
-            this % dftran % emptm = var
+            this % dftran % r__emptm = var
         case("trise")
-            this % dftran % trise = var
+            this % dftran % r__trise = var
         case("fltgap2")
-            this % dftran % fltgap2 = var
+            this % dftran % r__fltgap2 = var
         case("hydiam")
-            this % dftran % hydiam = var
+            this % dftran % r__hydiam = var
         case("dishd")
-            this % dftran % dishd = var
+            this % dftran % r__dishd = var
         case("ph")
-            this % dftran % ph = var
+            this % dftran % r__ph = var
         case("hrad")
-            this % dftran % hrad = var
+            this % dftran % r__hrad = var
         case("dtss")
-            this % dftran % dtss = var
+            this % dftran % r__dtss = var
         case("bup")
-            this % dftran % bup = var
+            this % dftran % r__bup = var
         case("cldwdc")
-            this % dftran % cldwdc = var
+            this % dftran % r__cldwdc = var
         case("timop")
-            this % dftran % timop = var
+            this % dftran % r__timop = var
         case("cfluxa")
-            this % dftran % cfluxa = var
+            this % dftran % r__cfluxa = var
         case("rvoid")
-            this % dftran % rvoid = var
+            this % dftran % r__rvoid = var
         case("dofset")
-            this % dftran % dofset = var
+            this % dftran % r__dofset = var
         case("pl")
-            this % dftran % pl = var
+            this % dftran % r__pl = var
         case("fltgap")
-            this % dftran % fltgap = var
+            this % dftran % r__fltgap = var
         case("frpo2")
-            this % dftran % frpo2 = var
+            this % dftran % r__frpo2 = var
         case("trest")
-            this % dftran % trest = var
+            this % dftran % r__trest = var
         case("fgrns")
-            this % dftran % fgrns = var
+            this % dftran % r__fgrns = var
         case("refine")
-            this % dftran % refine = var
+            this % dftran % r__refine = var
         case("modheat")
-            this % dftran % modheat = var
+            this % dftran % r__modheat = var
         case("tmpac1")
-            this % dftran % tmpac1 = var
+            this % dftran % r__tmpac1 = var
         case("coldw")
-            this % dftran % coldw = var
+            this % dftran % r__coldw = var
         case("dhe")
-            this % dftran % dhe = var
+            this % dftran % r__dhe = var
         case("explenumv")
-            this % dftran % explenumv = var
+            this % dftran % r__explenumv = var
         case("dhy")
-            this % dftran % dhy = var
+            this % dftran % r__dhy = var
         case("volbp")
-            this % dftran % volbp = var
+            this % dftran % r__volbp = var
         case("rshd")
-            this % dftran % rshd = var
+            this % dftran % r__rshd = var
         case("fotmtl")
-            this % dftran % fotmtl = var
+            this % dftran % r__fotmtl = var
         case("gsms")
-            this % dftran % gsms = var
+            this % dftran % r__gsms = var
         case("dishv0")
-            this % dftran % dishv0 = var
+            this % dftran % r__dishv0 = var
         case("rnbnt")
-            this % dftran % rnbnt = var
+            this % dftran % r__rnbnt = var
         case("zvoid2")
-            this % dftran % zvoid2 = var
+            this % dftran % r__zvoid2 = var
         case("gapthk")
-            this % dftran % gapthk = var
+            this % dftran % r__gapthk = var
         case("zvoid1")
-            this % dftran % zvoid1 = var
+            this % dftran % r__zvoid1 = var
         case("zs")
-            this % dftran % zs = var
+            this % dftran % r__zs = var
         case("FuelPelDiam")
-            this % dftran % FuelPelDiam = var
+            this % dftran % r__FuelPelDiam = var
         case("dtmaxa")
-            this % dftran % dtmaxa(it_) = var
+            this % dftran % r__dtmaxa(it_) = var
         case("hbh")
-            this % dftran % hbh(it_) = var
+            this % dftran % r__hbh(it_) = var
         case("hupta")
-            this % dftran % hupta(it_) = var
+            this % dftran % r__hupta(it_) = var
         case("hinta")
-            this % dftran % hinta(it_) = var
+            this % dftran % r__hinta(it_) = var
         case("gbh")
-            this % dftran % gbh(it_) = var
+            this % dftran % r__gbh(it_) = var
         case("explenumt")
-            this % dftran % explenumt(it_) = var
+            this % dftran % r__explenumt(it_) = var
         case("pbh2")
-            this % dftran % pbh2(it_) = var
+            this % dftran % r__pbh2(it_) = var
         case("dtpoa")
-            this % dftran % dtpoa(it_) = var
+            this % dftran % r__dtpoa(it_) = var
         case("RodAvePower")
-            this % dftran % RodAvePower(it_) = var
+            this % dftran % r__RodAvePower(it_) = var
         case("dtplta")
-            this % dftran % dtplta(it_) = var
+            this % dftran % r__dtplta(it_) = var
         case("FuelGasSwell")
-            this % dftran % FuelGasSwell(it_) = var
+            this % dftran % r__FuelGasSwell(it_) = var
         case("temptm")
-            this % dftran % temptm(it_) = var
+            this % dftran % r__temptm(it_) = var
         case("relfraca")
-            this % dftran % relfraca(it_) = var
+            this % dftran % r__relfraca(it_) = var
         case("prestm")
-            this % dftran % prestm(it_) = var
+            this % dftran % r__prestm(it_) = var
         case("fldrat")
-            this % dftran % fldrat(it_) = var
+            this % dftran % r__fldrat(it_) = var
         case("gasphs")
-            this % dftran % gasphs(it_) = var
+            this % dftran % r__gasphs(it_) = var
         case("pbh1")
-            this % dftran % pbh1(it_) = var
+            this % dftran % r__pbh1(it_) = var
         case("hlqcl")
-            this % dftran % hlqcl(it_) = var
+            this % dftran % r__hlqcl(it_) = var
 !        case("ProfileStartTime")
-!            this % dftran % ProfileStartTime(it_) = var
+!            this % dftran % r__ProfileStartTime(it_) = var
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -793,65 +793,65 @@ contains
         case("neutron flux, 1|(cm^2*s)")
             this % dfcon % r__flux(:)  = var(:)
         case("scd")
-            this % dftran % scd(:) = var(:)
+            this % dftran % r__scd(:) = var(:)
         case("azpang")
-            this % dftran % azpang(:) = var(:)
+            this % dftran % r__azpang(:) = var(:)
         case("fmesh")
-            this % dftran % fmesh(:) = var(:)
+            this % dftran % r__fmesh(:) = var(:)
         case("htclev")
-            this % dftran % htclev(:) = var(:)
+            this % dftran % r__htclev(:) = var(:)
         case("ExtentOfBow")
-            this % dftran % ExtentOfBow(:) = var(:)
+            this % dftran % r__ExtentOfBow(:) = var(:)
         case("vplen")
-            this % dftran % vplen(:) = var(:)
+            this % dftran % r__vplen(:) = var(:)
         case("gadoln")
-            this % dftran % gadoln(:) = var(:)
+            this % dftran % r__gadoln(:) = var(:)
         case("gfrac")
-            this % dftran % gfrac(:) = var(:)
+            this % dftran % r__gfrac(:) = var(:)
         case("gbse")
-            this % dftran % gbse(:) = var(:)
+            this % dftran % r__gbse(:) = var(:)
         case("fluxz")
-            this % dftran % fluxz(:) = var(:)
+            this % dftran % r__fluxz(:) = var(:)
         case("nodchf")
-            this % dftran % nodchf(:) = var(:)
+            this % dftran % r__nodchf(:) = var(:)
         case("swd")
-            this % dftran % swd(:) = var(:)
+            this % dftran % r__swd(:) = var(:)
         case("oxideod")
-            this % dftran % oxideod(:) = var(:)
+            this % dftran % r__oxideod(:) = var(:)
         case("cexh2a")
-            this % dftran % cexh2a(:) = var(:)
+            this % dftran % r__cexh2a(:) = var(:)
         case("radpel")
-            this % dftran % radpel(:) = var(:)
+            this % dftran % r__radpel(:) = var(:)
         case("cmesh")
-            this % dftran % cmesh(:) = var(:)
+            this % dftran % r__cmesh(:) = var(:)
         case("gappr0")
-            this % dftran % gappr0(:) = var(:)
+            this % dftran % r__gappr0(:) = var(:)
         case("butemp")
-            this % dftran % butemp(:) = var(:)
+            this % dftran % r__butemp(:) = var(:)
         case("oxideid")
-            this % dftran % oxideid(:) = var(:)
+            this % dftran % r__oxideid(:) = var(:)
         case("spl")
-            this % dftran % spl(:) = var(:)
+            this % dftran % r__spl(:) = var(:)
         case("eppinp")
-            this % dftran % eppinp(:) = var(:)
+            this % dftran % r__eppinp(:) = var(:)
         case("techf")
-            this % dftran % techf(:) = var(:)
+            this % dftran % r__techf(:) = var(:)
         case("tschf")
-            this % dftran % tschf(:) = var(:)
+            this % dftran % r__tschf(:) = var(:)
         case("zelev")
-            this % dftran % zelev(:) = var(:)
+            this % dftran % r__zelev(:) = var(:)
         case("htca")
-            this % dftran % htca(it_,:) = var(:)
+            this % dftran % r__htca(it_,:) = var(:)
         case("tblka")
-            this % dftran % tblka(it_,:) = var(:)
+            this % dftran % r__tblka(it_,:) = var(:)
         case("gasths")
-            this % dftran % gasths(it_,:) = var(:)
+            this % dftran % r__gasths(it_,:) = var(:)
         case("radtemp")
-            this % dftran % radtemp(:,it_) = var(:)
+            this % dftran % r__radtemp(:,it_) = var(:)
         case("fuelrad")
-            this % dftran % fuelrad(:,it_) = var(:)
+            this % dftran % r__fuelrad(:,it_) = var(:)
         case("axpowprofile")
-            this % dftran % axpowprofile(:,it_) = var(:)
+            this % dftran % r__axpowprofile(:,it_) = var(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -870,7 +870,7 @@ contains
 
         select case (key)
         case("pazp")
-            this % dftran % pazp(:,:) = var(:,:)
+            this % dftran % r__pazp(:,:) = var(:,:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -1112,25 +1112,25 @@ contains
         class (frod_type), intent(inout) :: this
         integer :: i
         real(8) :: t
-        this % dftran % pbh2(i) = t
-        this % dftran % dtmaxa(i) = t
-        this % dftran % hbh(i) = t
-        this % dftran % hupta(i) = t
-        this % dftran % hinta(i) = t
-        this % dftran % gbh(i) = t
-        this % dftran % explenumt(i) = t
-        this % dftran % pbh2(i) = t
-        this % dftran % dtpoa(i) = t
-        this % dftran % RodAvePower(i) = t
-        this % dftran % dtplta(i) = t
-        this % dftran % FuelGasSwell(i) = t
-        this % dftran % temptm(i) = t
-        this % dftran % relfraca(i) = t
-        this % dftran % prestm(i) = t
-        this % dftran % fldrat(i) = t
-        this % dftran % gasphs(i) = t
-        this % dftran % pbh1(i) = t
-        this % dftran % hlqcl(i) = t
+        this % dftran % r__pbh2(i) = t
+        this % dftran % r__dtmaxa(i) = t
+        this % dftran % r__hbh(i) = t
+        this % dftran % r__hupta(i) = t
+        this % dftran % r__hinta(i) = t
+        this % dftran % r__gbh(i) = t
+        this % dftran % r__explenumt(i) = t
+        this % dftran % r__pbh2(i) = t
+        this % dftran % r__dtpoa(i) = t
+        this % dftran % r__RodAvePower(i) = t
+        this % dftran % r__dtplta(i) = t
+        this % dftran % r__FuelGasSwell(i) = t
+        this % dftran % r__temptm(i) = t
+        this % dftran % r__relfraca(i) = t
+        this % dftran % r__prestm(i) = t
+        this % dftran % r__fldrat(i) = t
+        this % dftran % r__gasphs(i) = t
+        this % dftran % r__pbh1(i) = t
+        this % dftran % r__hlqcl(i) = t
     end subroutine settime
 
 end module frapi

@@ -4,7 +4,7 @@ module fraptran2
     USE variables_fraptran
     USE setup_fraptran, ONLY : Main, Input_Echo
     USE TH_Link_fraptran
-    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Rod, FRAPTRAN_Vars
+    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Vars, fraptran_rod
     USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
     USE frapc_fraptran
@@ -26,6 +26,7 @@ module fraptran2
     USE CoolantProperties_fraptran, ONLY : tc1, tc2
     USE htcb_h_fraptran
     USE cnvt_fraptran
+    use Uncertainty_Vals_fraptran
 
     implicit none
 
@@ -34,6 +35,7 @@ module fraptran2
     type, public :: fraptran_driver
 
         include "ft_pointers_h.f90"
+        include "ft_replicants_h.f90"
 
         contains
 
@@ -59,12 +61,11 @@ module fraptran2
         INTEGER(ipk) :: radial, axial, ntimepairs
         INTEGER(ipk) :: lmax, lrest, l1
         integer :: naxn_, nfmesh_, ncmesh_
+        integer :: size1, total
         real(8) :: dt
         logical :: verbose
 
         is_export = .true.
-
-        call Allocate_rods(numrods = 1)
 
         naxn = naxn_
         nfmesh = nfmesh_
@@ -193,7 +194,11 @@ module fraptran2
 
         ! If ncards = 0 , cold startup
 
+        size1 = 2 * naxialnodes * ntimesteps
+        total = 10 * naxialnodes + 6
+
         include 'ft_associate_h.f90'
+        include 'ft_allocate_h.f90'
 
     end subroutine p_make
 
@@ -202,7 +207,7 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        call fraptran_rod(1) % update()
+        include 'ft_load_h.f90'
 
     end subroutine p_load
 
@@ -211,7 +216,7 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        call fraptran_rod(1) % remember()
+        include 'ft_dump_h.f90'
 
     end subroutine p_dump
 

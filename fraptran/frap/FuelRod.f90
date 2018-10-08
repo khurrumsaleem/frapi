@@ -58,7 +58,7 @@ MODULE FuelRod_Data_fraptran
         PROCEDURE :: Remember
     END TYPE FRAPTRAN_Vars
     
-    TYPE (FRAPTRAN_Vars), DIMENSION(:), ALLOCATABLE, SAVE :: FRAPTRAN_Rod
+    TYPE (FRAPTRAN_Vars), DIMENSION(:), ALLOCATABLE, SAVE, target :: FRAPTRAN_Rod
     
     CONTAINS
     
@@ -75,8 +75,9 @@ MODULE FuelRod_Data_fraptran
         INTEGER(ipk), INTENT(IN) :: numrods
         !
         IF (.NOT. ALLOCATED(FRAPTRAN_Rod)) ALLOCATE (FRAPTRAN_Rod(1:numrods))
-        !
+
         END SUBROUTINE Allocate_rods
+
     
         SUBROUTINE Update (FuelRod)
         USE Kinds_fraptran

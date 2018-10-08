@@ -12,11 +12,11 @@ MODULE modcom_h_fraptran
         REAL(r8k) :: trise
     END TYPE modcom_var
     !
-    INTEGER(ipk) :: mwork
-    INTEGER(ipk) :: mtabl1
-    INTEGER(ipk) :: mtabl2
-    INTEGER(ipk) :: mtabl3
-    INTEGER(ipk) :: mgaspr
+    INTEGER(ipk), target :: mwork
+    INTEGER(ipk), target :: mtabl1
+    INTEGER(ipk), target :: mtabl2
+    INTEGER(ipk), target :: mtabl3
+    INTEGER(ipk), target :: mgaspr
     REAL(r8k), target :: trise
     !
     END MODULE modcom_h_fraptran

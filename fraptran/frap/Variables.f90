@@ -17,15 +17,15 @@ MODULE variables_fraptran
 
     IMPLICIT NONE
     !
-    logical :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
+    logical, target :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
     !
-    REAL(r8k) :: maxfueltemp = 0.0_r8k
+    REAL(r8k), target :: maxfueltemp = 0.0_r8k
     !
-    REAL(r8k) :: maxcladtemp = 0.0_r8k
+    REAL(r8k), target  :: maxcladtemp = 0.0_r8k
     !
-    REAL(r8k) :: maxgaspressure = 0.0_r8k
+    REAL(r8k), target  :: maxgaspressure = 0.0_r8k
     !
-    REAL(r8k) :: maxenthalpy = 0.0_r8k
+    REAL(r8k), target  :: maxenthalpy = 0.0_r8k
     ! axial nodes, radial nodes, and input variable array sizes
     INTEGER(ipk) :: pre_na, pre_nr, pre_nt
     ! # of void volumes
@@ -250,15 +250,15 @@ MODULE variables_fraptran
         INTEGER(ipk) :: jpl
     END TYPE waterprop_var
     !
-    INTEGER(ipk) :: nt
-    INTEGER(ipk) :: np
-    INTEGER(ipk) :: ns
-    INTEGER(ipk) :: ns2
-    INTEGER(ipk) :: klp
-    INTEGER(ipk) :: klp2
-    INTEGER(ipk) :: llp
-    INTEGER(ipk) :: nt5
-    INTEGER(ipk) :: jpl
+    INTEGER(ipk), target :: nt
+    INTEGER(ipk), target :: np
+    INTEGER(ipk), target :: ns
+    INTEGER(ipk), target :: ns2
+    INTEGER(ipk), target :: klp
+    INTEGER(ipk), target :: klp2
+    INTEGER(ipk), target :: llp
+    INTEGER(ipk), target :: nt5
+    INTEGER(ipk), target :: jpl
     ! These are used in the store6 subroutine
     TYPE store6_var
         REAL(r8k), DIMENSION(:), ALLOCATABLE :: SEDPNNLold
@@ -695,7 +695,7 @@ MODULE variables_fraptran
     !>@date
     !> 5/9/2014
     
-    INTEGER(ipk):: size1
+    INTEGER(ipk) :: size1
     
     ! Set size
     size1 = 2 * naxialnodes * ntimesteps
