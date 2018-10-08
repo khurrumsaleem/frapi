@@ -26,7 +26,9 @@ module fraptran2
     USE CoolantProperties_fraptran, ONLY : tc1, tc2
     USE htcb_h_fraptran
     USE cnvt_fraptran
+    use Uncertainties_fraptran, only :  AllocateUncertaintyvars
     use Uncertainty_Vals_fraptran
+    use arrayallocate, only : clone
 
     implicit none
 
@@ -83,6 +85,9 @@ module fraptran2
 
         call Allocate_Variables (ntimepairs, radial, axial)
         call Allocate_Gas
+        call AllocateUncertaintyvars
+        ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
+        ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
 
         n1 = 1
         n2 = 1
@@ -199,6 +204,9 @@ module fraptran2
 
         include 'ft_associate_h.f90'
         include 'ft_allocate_h.f90'
+
+!        write(*,*) 'dtdkta: ', this % dtdkta(1)
+!        stop
 
     end subroutine p_make
 

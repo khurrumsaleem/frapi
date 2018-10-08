@@ -104,6 +104,8 @@ contains
 
             call this % dftran % deft()
 
+            call this % dftran % dump()
+
         case default
             write(*,*) "ERROR: 'mode' must be 'frapcon' or 'fraptran' "
 
@@ -252,7 +254,7 @@ contains
 
         select case (key)
         case ("restart file")
-            this % namerf = trim(var)
+            this % dftran % r__namerf = trim(var)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

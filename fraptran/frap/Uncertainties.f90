@@ -22,7 +22,7 @@ MODULE Uncertainties_fraptran
     !> 5/22/2015
     !
     PRIVATE
-    PUBLIC :: dktout, ReadUncertainty, Uncert_fuelref
+    PUBLIC :: dktout, ReadUncertainty, Uncert_fuelref, AllocateUncertaintyvars
     ! Reference fuel enthalpy from steady-state operation
     REAL(r8k), DIMENSION(:), ALLOCATABLE, SAVE :: Uncert_fuelref
     !

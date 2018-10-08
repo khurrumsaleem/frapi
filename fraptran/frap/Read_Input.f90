@@ -323,7 +323,7 @@ MODULE Read_Input_fraptran
     
     ! Set parameters based on input
     nrefld = 0
-    
+
     ! Radiation option
     IF (radiation == 'ON') THEN
         nradsh = 1
@@ -2330,7 +2330,7 @@ MODULE Read_Input_fraptran
         READ (iunit, solution, IOSTAT=InputStat)
         IF (InputStat /= 0) CALL Namelist_Read_Error (iunit, 'solution')
     endif
-    
+
     ! Set options based on input
     nkf = 100
     nkc = 50
@@ -2403,7 +2403,7 @@ MODULE Read_Input_fraptran
     ELSE
         nunopt(11) = 1
     END IF
-    
+
     ! User-input radial fuel nodes. Values are the radius of each radial node. Start at 0.0.
     ! The last input radius must equal the fuel pellet radius and account for any dimensional changes (e.g. swelling)
     icount = 2
@@ -2739,8 +2739,8 @@ MODULE Read_Input_fraptran
     ! Load 2-D burnup-related arrays for later use in cominp_fraptran
     nbuq = ibu / naxn
     IF (nbuq > 0) THEN
-        ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
-        ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
+        if (.not. allocated(buradv)) ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
+        if (.not. allocated(bufrad)) ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
         buradv = 0.0_r8k
         bufrad = 0.0_r8k
     END IF

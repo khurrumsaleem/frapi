@@ -10,6 +10,8 @@ set(CMAKE_Fortran_FLAGS "-std=f2008 -D -cpp")
 set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=invalid,overflow,underflo -fbacktrace")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 
+file(GLOB array        "array/*.f90")
+
 file(GLOB frapcon_src  "frapcon/Dating/*.f90"
                        "frapcon/frap/*.f90"
                        "frapcon/matpro/*.f90"
@@ -25,9 +27,9 @@ file(GLOB frapi_src     "frapi/*.f90")
 
 include_directories(./frapcon/Include ./fraptran/include ./include)
 
-add_library(frapcon  SHARED ${frapcon_src} )
-add_library(fraptran SHARED ${fraptran_src})
-add_library(frapi    SHARED ${frapi_src}   )
+add_library(frapcon  SHARED ${frapcon_src}  )
+add_library(fraptran SHARED ${fraptran_src} ${array})
+add_library(frapi    SHARED ${frapi_src}    )
 
 target_link_libraries(frapi frapcon fraptran)
 

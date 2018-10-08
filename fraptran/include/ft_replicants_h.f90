@@ -2,12 +2,11 @@ logical                                                                :: r__con
 logical                                                                :: r__printballoon 
 logical                                                                :: r__printrodburst 
 logical                                                                :: r__allocate_arrays_ft 
-logical                                                                :: r__dakota 
 logical                                                                :: r__coupled 
 logical                                                                :: r__ndebug 
-logical                                                                :: r__first_pass 
+logical                                                                :: r__dakota 
 logical                                                                :: r__setunits 
-logical                                                                :: r__is_export 
+logical                                                                :: r__first_pass 
 logical                                                                :: r__first_call 
 logical                                                                :: r__unit 
 character(len=8)                                                       :: r__rupflg 
@@ -85,7 +84,7 @@ integer(ipk)                                                           :: r__itd
 integer(ipk)                                                           :: r__nhbh 
 integer(ipk)                                                           :: r__nfrapconinitialization 
 integer(ipk)                                                           :: r__ncool 
-integer(ipk)                                                           :: r__npair 
+integer(ipk)                                                           :: r__nsrad3 
 integer(ipk)                                                           :: r__indexgrainbndsep 
 integer(ipk)                                                           :: r__nedtsw 
 integer(ipk)                                                           :: r__azang 
@@ -186,7 +185,6 @@ integer(ipk)                                                           :: r__nra
 integer(ipk)                                                           :: r__lprntb 
 integer(ipk)                                                           :: r__mprest 
 integer(ipk)                                                           :: r__dktoutcounter 
-integer(ipk)                                                           :: r__nsrad3 
 integer(ipk)                                                           :: r__nsf 
 integer(ipk)                                                           :: r__ncooli 
 integer(ipk)                                                           :: r__m6fc2 
@@ -278,6 +276,7 @@ integer(ipk)                                                           :: r__npr
 integer(ipk)                                                           :: r__nzmesh 
 integer(ipk)                                                           :: r__nprofile 
 integer(ipk)                                                           :: r__igpnod 
+integer(ipk)                                                           :: r__npair 
 integer(ipk)                                                           :: r__coldwa 
 integer(ipk)                                                           :: r__refloodtime 
 integer(ipk)                                                           :: r__ngbh 
@@ -389,7 +388,7 @@ real(r8k)                                                              :: r__t12
 real(r8k)                                                              :: r__debugtime 
 real(r8k)                                                              :: r__pavg 
 real(r8k)                                                              :: r__aidsht 
-real(r8k)                                                              :: r__zro 
+real(r8k)                                                              :: r__rl 
 real(r8k)                                                              :: r__maxcladtemp 
 real(r8k)                                                              :: r__dtheta 
 real(r8k)                                                              :: r__hsubf 
@@ -449,7 +448,7 @@ real(r8k)                                                              :: r__ctm
 real(r8k)                                                              :: r__htflxa 
 real(r8k)                                                              :: r__pdrato 
 real(r8k)                                                              :: r__templo 
-real(r8k)                                                              :: r__rl 
+real(r8k)                                                              :: r__zro 
 real(r8k)                                                              :: r__drflt 
 real(r8k)                                                              :: r__tgas0 
 real(r8k)                                                              :: r__swllfr 
@@ -741,15 +740,13 @@ real(r8k)                 , dimension(:)        , allocatable          :: r__eff
 real(r8k)                 , dimension(:)        , allocatable          :: r__gapthick0 
 real(r8k)                 , dimension(:)        , allocatable          :: r__oxconcenaci 
 real(r8k)                 , dimension(:)        , allocatable          :: r__gbse 
-real(r8k)                 , dimension(:)        , allocatable          :: r__boundarycondition 
 real(r8k)                 , dimension(:)        , allocatable          :: r__fmgp 
 real(r8k)                 , dimension(:)        , allocatable          :: r__oldcoolprs 
 real(r8k)                 , dimension(:)        , allocatable          :: r__sshgap 
 real(r8k)                 , dimension(:)        , allocatable          :: r__workspacetcmx 
 real(r8k)                 , dimension(:)        , allocatable          :: r__sedpnnlold 
 real(r8k)                 , dimension(:)        , allocatable          :: r__heatflux 
-real(r8k)                 , dimension(:)        , allocatable          :: r__table2 
-real(r8k)                 , dimension(:)        , allocatable          :: r__table3 
+real(r8k)                 , dimension(:)        , allocatable          :: r__boundarycondition 
 real(r8k)                 , dimension(:)        , allocatable          :: r__gadoln 
 real(r8k)                 , dimension(:)        , allocatable          :: r__oxconcenaco 
 real(r8k)                 , dimension(:)        , allocatable          :: r__gfrac 
@@ -1003,7 +1000,6 @@ real(r8k)                 , dimension(:)        , allocatable          :: r__aco
 real(r8k)                 , dimension(:)        , allocatable          :: r__zelev 
 real(r8k)                 , dimension(:)        , allocatable          :: r__gadolin 
 real(r8k)                 , dimension(:)        , allocatable          :: r__htc_l 
-real(r8k)                 , dimension(:)        , allocatable          :: r__table1 
 real(r8k)                 , dimension(:)        , allocatable          :: r__oxipowergen 
 integer(ipk)              , dimension(:,:)      , allocatable          :: r__icglob 
 integer(ipk)              , dimension(:,:)      , allocatable          :: r__nrc 

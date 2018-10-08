@@ -41,7 +41,11 @@ idx
 btuhkw
 sechr
 bhftftowmk
-""".split()[1:-1]
+table1
+table2
+table3
+is_export
+""".split()[1:]
 
 vars = {}
 with open('ft_all_targets.f90', 'r') as f:
@@ -88,16 +92,16 @@ for var in vars:
 
 tplist = [bn_0, ch_0, i4_0, r8_0, bn_1, ch_1, i4_1, r8_1, i4_2, r8_2, i4_3, r8_3]
 
-if True:
+if False:
     txt = ''
-    with open('ft_replicants_h.f90', 'w') as f:
+    with open('../fraptran/include/ft_replicants_h.f90', 'w') as f:
         for tp in tplist:
             for var in tp:
                 txt += '%s :: r__%s \n' % (tp[var], var)
         f.write(txt)
 
     txt = ''
-    with open('ft_load_h.f90', 'w') as f:
+    with open('../fraptran/include/ft_load_h.f90', 'w') as f:
         for tp in tplist:
             for var in tp:
                 a = "this %% %s" % var
@@ -106,7 +110,7 @@ if True:
         f.write(txt)
 
     txt = ''
-    with open('ft_dump_h.f90', 'w') as f:
+    with open('../fraptran/include/ft_dump_h.f90', 'w') as f:
         for tp in tplist:
             for var in tp:
                 a = "this %% %s" % var
@@ -115,14 +119,18 @@ if True:
         f.write(txt)
 
     txt = ''
-    with open('ft_pointers_h.f90', 'w') as f:
+    with open('../fraptran/include/ft_pointers_h.f90', 'w') as f:
         for tp in tplist:
             for var in tp:
-                txt += '%s, pointer :: %s \n' % (tp[var], var)
+                if 'allocatable' in tp[var]: 
+                    tp_ = tp[var].replace(', allocatable','             ')
+                else:
+                    tp_ = tp[var]
+                txt += '%s, pointer :: %s \n' % (tp_, var)
         f.write(txt)
 
     txt = ''
-    with open('ft_associate_h.f90', 'w') as f:
+    with open('../fraptran/include/ft_associate_h.f90', 'w') as f:
         for tp in tplist:
             for var in tp:
                 a = "%s" % var

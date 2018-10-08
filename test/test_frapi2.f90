@@ -70,7 +70,6 @@ program frapi_input_file
                  noball=noball,cenvoi=cenvoi,soltyp=soltyp)
 
             call frod % set_ch_0('restart file', restart_file_name)
-
             call frod % set_r8_0('splbp', splbp)
             call frod % set_r8_0('tpowf', tpowf)
             call frod % set_r8_0('ruptstrain', ruptstrain)
@@ -179,7 +178,6 @@ program frapi_input_file
             call frod % set_r8_0('zvoid1', zvoid1)
             call frod % set_r8_0('zs', zs)
             call frod % set_r8_0('FuelPelDiam', FuelPelDiam)
-
             call frod % set_r8_1('scd', scd)
             call frod % set_r8_1('azpang', azpang)
             call frod % set_r8_1('htclev', htclev)
@@ -232,7 +230,7 @@ program frapi_input_file
                 call frod % set_r8_0('fldrat', fldrat(i))
                 call frod % set_r8_0('gasphs', gasphs(i))
                 call frod % set_r8_1('axpowprofile', AxPowProfile(:,i))
-                call frod % set_r8_0('ProfileStartTime', ProfileStartTime(i))
+!                call frod % set_r8_0('ProfileStartTime', ProfileStartTime(i))
                 call frod % set_r8_0('pbh1', pbh1(i))
                 call frod % set_r8_0('hlqcl', hlqcl(i))
                 call frod % set_r8_1('radtemp', (/( radpowprofile(2*j-1 + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )

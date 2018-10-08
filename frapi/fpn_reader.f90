@@ -524,8 +524,8 @@ module fpn_reader
         allocate(cmesh                (1:nradialnodes))
         allocate(tem                  (1:naxialnodes))
 
-        allocate(htca                 (1:ntimesteps, 1:naxialnodes))
-        allocate(tblka                (1:ntimesteps, 1:naxialnodes))
+        allocate(htca                 (1:2*ntimesteps, 1:naxialnodes))
+        allocate(tblka                (1:2*ntimesteps, 1:naxialnodes))
         allocate(axpowprofile         (1:2*naxialnodes,1:ntimesteps))
         allocate(RadPowProfile        (1:2*naxialnodes*ntimesteps) )
         allocate(gasths               (1:2*ntimesteps,1:2) )
