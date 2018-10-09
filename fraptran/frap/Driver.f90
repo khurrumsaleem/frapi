@@ -120,66 +120,6 @@ module fraptran2
         !ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
         !ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
 
-        n1 = 1
-        n2 = 1
-        n3 = 2
-        n4 = 1
-        ldir = 3
-        ntapou = 2
-        npbh   = 50
-        nhbh   = 25
-        ngbh   = 100
-        nhinta = 50
-        nhupta = 50
-        lcoold = 1952
-        lflect = 630
-        lblona = 73
-        lprntb = 37
-        lexcb  = 110
-        lresr1 = 136
-        lhtcb  = 12
-        ndap1  = 21
-        ntco   = 4
-        ntplot = 1
-        kdbug  = 0
-        ndtmax = 40
-        ncards = 1
-        ngaspr = 0
-        ngastmp = 0
-        nodpln = 6
-        ! Set by IP
-        idx2 = 1
-        tmax = 0.0_r8k
-        ncool2 = 0 !????
-        ! Set defaults
-        ! These variables are arbitrarily set to 1 until DD is removed
-        ldialb = 1
-        lphypr = 1
-        ! End of arbitrarily set variables
-        lresi2 = 68
-        lresi3 = 18
-        lmatpc = 3
-        lsclr1 = 29
-        lsclr2 = 57
-        lsclr3 = 25
-        lcolct = 671
-        TranSwell = 0
-        lthyd = 1516
-        MaximumIterations = 120
-        IndexFC2Print = 0
-        IndexGrainBndSep = 0
-        NRestart = 0
-        TranFuelSwell = 1.0_r8k
-        coldw  = 0.0_r8k
-        ! relfraca = 0.0_r8k
-        FuelGasSwell = 0.0_r8k
-        ! set default values for modeling fission gas release due to fuel grain disintegration.
-        gbse(1) = 0.0_r8k
-        gbse(2) = 5000.0_r8k
-        gbse(3) = 1.0_r8k
-        gbse(4) = 1.0_r8k
-        gbse(5) = 0.0_r8k
-
         call init() ! This is FEA init subroutine
 
 ! Initialize FE model (Only useable when not coupled)
@@ -231,12 +171,58 @@ module fraptran2
 
         include 'ft_associate_h.f90'
 
-        dtmaxa(:) = 0.D+0
-        dtpoa(:)  = 0.D+0
-        dtplta(:) = 0.D+0
-        dtmaxa(1) = 1.D-3 ! time steps
-        dtpoa(1)  = 1.D-3 ! intervals of print out
-        dtplta(1) = 1.D-3 ! intervals of plot out
+        this % coolant = 'OFF'
+        this % mheat = 'OFF'
+        this % bheat = 'OFF'
+        this % reflood = 'OFF'
+        this % internal = 'OFF'
+        this % metal = 'OFF'
+        this % deformation = 'OFF'
+        this % inst = 'OFF'
+        this % radiation = 'OFF'
+        this % relocmodel = 'FRAPCON-3.3'
+        this % geomet = 0
+        this % nvol1 = 0
+        this % lowpl = 0
+        this % pressu = 0
+        this % massfl = 0
+        this % coreav = 0
+        this % chf = 0
+        this % filmbo = 0
+        this % nucbo = 0
+        this % coldwa = 0
+        this % axpow = 0
+        this % bowing = 0
+        this % spefbz = 0
+        this % geometry = 0
+        this % nbundl = 0
+        this % refloodtime = 0
+        this % radiat = 0
+        this % ruptur = 0
+        this % liquid = 0
+        this % inlet = 0
+        this % reflo = 0
+        this % pressure = 0
+        this % collaps = 0
+        this % frapt4 = 0
+        this % geom = 0
+        this % temp = 0
+        this % tape2 = 0
+        this % nvol2 = 0
+        this % unitin = 0
+        this % unitout = 0
+        this % res = 0
+        this % pow = 0
+        this % gasflo = 0
+        this % jfb = 0
+        this % upppl = 0
+        this % zone = 0
+        this % soltyp = 0
+        this % cenvoi = 0
+        this % noball = 0
+        this % baker = 0 
+        this % cathca = 0
+        this % idoxid = 0
 
 !        write(*,*) 'butemp = ', this % butemp(1:6)
 !        write(*,*) 'butemp = ', butemp(1:6)

@@ -101,6 +101,7 @@ contains
             ! Allocate FRAPTRAN variables for given mesh sizes
             ! Link pointers of dftran to FRAPTRAN variables
             ! Allocate dftran's replicants of FRAPTRAN variables
+            ! Set arguments of 'make' by default
             call this % dftran % make(na_, nr_, nce_, verbose_)
 
             ! Read arguments of 'make' and set them to dftran's variables
@@ -210,8 +211,8 @@ contains
         real(8) :: dt, t0
 
         t0 = 0.D0
-        call settime(this,1,dt)
         call settime(this,2,t0)
+        call settime(this,4,t0+dt)
         call this % dftran % load()
         call this % dftran % next(dt)
 
@@ -1108,7 +1109,7 @@ contains
         class (frod_type), intent(inout) :: this
         integer :: i
         real(8) :: t
-        this % dftran % r__pbh2(i) = t
+        this % dftran % r__pbh(i) = t
         this % dftran % r__dtmaxa(i) = t
         this % dftran % r__hbh(i) = t
         this % dftran % r__hupta(i) = t

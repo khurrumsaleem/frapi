@@ -205,7 +205,7 @@ program frapi_input_file
             call frod % set_r8_1('fmesh', fmesh)
             call frod % set_r8_1('cmesh', cmesh)
 
-            do i = 1, 1
+            do i = 1, 2
 
                 call frod % set_r8_0('hbh', hbh(2*i-1))
                 call frod % set_r8_0('hupta', hupta(2*i-1))
@@ -229,9 +229,13 @@ program frapi_input_file
                 call frod % set_r8_1('radtemp', (/( radpowprofile(2*j-1 + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
                 call frod % set_r8_1('fuelrad', (/( radpowprofile(2*j   + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
 
-                if (i == 1) call frod % init()
+                if (i == 1) then
+                    call frod % init()
+                else
+                    call frod % next(dtmaxa(2*i))
+                endif
 
-                !call frod % next(dtmaxa(2*i))
+                call frod % accept()
 
             enddo
 

@@ -386,7 +386,6 @@ MODULE Read_Input_fraptran
             techfi(1:spefbz) = techf(1:spefbz)
         ENDIF
     ENDIF
-    
     ! Heat option
     IF (heat == 'ON') THEN
         DO i = 2, zone
@@ -2654,7 +2653,8 @@ MODULE Read_Input_fraptran
     END DO Count_RodAvePower_Intervals
     ! # of pairs
     nptha = (icount - 1) / 2
-    
+!    write(*,*) rodavepower
+!    write(*,*) nptha
     ! Count the number of axial power profile values
     icount = 1
     

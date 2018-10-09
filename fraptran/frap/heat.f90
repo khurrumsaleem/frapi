@@ -183,6 +183,7 @@ MODULE HeatSolution_fraptran
                 END SELECT
                 !
                 IF (k == 1) THEN ! The power is assumed to be zero at elevation z = 0.0
+                    !write(*,*) sechr, HeatFlux(k), (2.0_r8k * achnl), btuhkw , fecool , AxialPowr(k) , (2.0_r8k * achn)
                     qcool = sechr * HeatFlux(k) / (2.0_r8k * achnl) + btuhkw * fecool * AxialPowr(k) / (2.0_r8k * achn)
                 ELSE
                     qcool = sechr * (HeatFlux(k) + HeatFlux(k-1)) / (2.0_r8k * achnl) + btuhkw * fecool * &
