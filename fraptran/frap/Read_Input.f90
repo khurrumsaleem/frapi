@@ -105,7 +105,7 @@ MODULE Read_Input_fraptran
     !
     ! Initialize input common block variables
     !
-    IF (ncards == 1) CALL cininp
+    IF ( (ncards == 1).and.(.not. is_export) ) CALL cininp
     !
     ! $ioData block
     !
@@ -1093,7 +1093,7 @@ MODULE Read_Input_fraptran
             ndtmax = index1 / 2
         END IF
     END IF
-    
+
     ! Plot time interval
     IF (npltn == 0) THEN
         ndeflt(9) = 1
@@ -1103,6 +1103,7 @@ MODULE Read_Input_fraptran
             ipltn = npdtpo * 2
             DO i = 1, ipltn, 2
                 dtplta(i+1) = dtpoa(i+1)
+                write(*,*) i, dtplta(i), dtpoa(i)
                 dtplta(i) = dtpoa(i) / 10.0_r8k
             ENDDO
             npltn = ipltn / 2
@@ -1908,7 +1909,6 @@ MODULE Read_Input_fraptran
             i = i + 2
         ENDDO
     ENDIF
-    
     ! Determine the # of pairs for user supplied plenum temperature
     i = 2
     DO WHILE (explenumt(i) >= 0.0_r8k)

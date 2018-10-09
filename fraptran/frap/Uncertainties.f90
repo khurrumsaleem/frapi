@@ -42,8 +42,8 @@ MODULE Uncertainties_fraptran
     IMPLICIT NONE
     
     ! Allocate arrays
-    ALLOCATE (dtdkta(1:pre_nt+2))
-    ALLOCATE (dktouts(1,1))
+    if(.not. allocated(dtdkta)) ALLOCATE (dtdkta(1:pre_nt+2))
+    if(.not. allocated(dktouts)) ALLOCATE (dktouts(1,1))
     
     ! Assign Default Values
     sigfuelthermcond = 1.0_r8k

@@ -60,7 +60,6 @@ integer          , optional :: geom        ! Suboption to specify the inner radi
 integer          , optional :: temp        ! Suboption to specify temperature history of flow shroud
 integer          , optional :: tape2       ! Suboption to specify that the heat transfer coefficients, coolant temperature, and pressure are input on tape
 integer          , optional :: nvol2       ! Number of heat transfer coefficient zones stacked on top of each other.
-integer          , optional :: press       ! Suboption to specify coolant pressure.
 integer          , optional :: zone        ! Suboption to specify the elevation of heat transfer coefficient zone 1
 integer          , optional :: upppl       ! Suboption to specify the enthalpy history of coolant at the top of the fuel rod(exit enthalpy)
 integer          , optional :: jfb         ! Is the indicator of the film boiling correlation to be used.

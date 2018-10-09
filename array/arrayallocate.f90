@@ -96,7 +96,8 @@ module arrayallocate
         integer :: shape(n)
         if ( shape(1) == 0 ) then
             write(*,*) 'ERROR: array 2 must be allocated'
-            stop
+            call backtrace
+            call exit (-1)
         endif
     end subroutine checkshape
 

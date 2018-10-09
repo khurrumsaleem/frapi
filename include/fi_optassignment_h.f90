@@ -48,7 +48,6 @@
         if( present(temp        ) ) this % dftran % temp        = temp
         if( present(tape2       ) ) this % dftran % tape2       = tape2
         if( present(nvol2       ) ) this % dftran % nvol2       = nvol2
-        if( present(press       ) ) this % dftran % press       = press
         if( present(zone        ) ) this % dftran % zone        = zone
         if( present(upppl       ) ) this % dftran % upppl       = upppl
         if( present(jfb         ) ) this % dftran % jfb         = jfb

@@ -58,7 +58,7 @@ contains
                coolant, mheat, bheat, reflood, internal, metal, deformation, inst, geomet, &
                nvol1, lowpl, pressu, massfl, coreav, chf, filmbo, coldwa, axpow, bowing, &
                spefbz, geometry, nbundl, refloodtime, radiat, ruptur, liquid, inlet, reflo, &
-               pressure, collaps, frapt4, geom, temp, tape2, nvol2, press, zone, upppl, &
+               pressure, collaps, frapt4, geom, temp, tape2, nvol2, zone, upppl, &
                jfb, nucbo, unitin, unitout, res, pow, gasflo, idoxid, cathca, baker, &
                noball, cenvoi, soltyp)
 
@@ -98,16 +98,22 @@ contains
 
         case ('fraptran')
 
+            ! Allocate FRAPTRAN variables for given mesh sizes
+            ! Link pointers of dftran to FRAPTRAN variables
+            ! Allocate dftran's replicants of FRAPTRAN variables
             call this % dftran % make(na_, nr_, nce_, verbose_)
 
+            ! Read arguments of 'make' and set them to dftran's variables
             include "fi_optassignment_h.f90"
 
+            ! Set dftran's variables (i.e. pointers to FRAPTRAN's variables) by default
             call this % dftran % deft()
 
+            ! Copy the dftran's variables into replicative variables
             call this % dftran % dump()
 
         case default
-            write(*,*) "ERROR: 'mode' must be 'frapcon' or 'fraptran' "
+            write(*,*) "ERROR: option 'mode' must be 'frapcon' or 'fraptran' "
 
         end select
 
@@ -204,8 +210,8 @@ contains
         real(8) :: dt, t0
 
         t0 = 0.D0
+        call settime(this,1,dt)
         call settime(this,2,t0)
-        call settime(this,4,dt)
         call this % dftran % load()
         call this % dftran % next(dt)
 
@@ -301,8 +307,6 @@ contains
             this % dftran % r__nrestart = var
         case("irupt")
             this % dftran % r__irupt = var
-        case("ncards")
-            this % dftran % r__ncards = var
         case("CladType")
             this % dftran % r__CladType = var
         case("odoxid")
@@ -364,12 +368,8 @@ contains
         integer(4)   :: var(:)
 
         select case (key)
-        case("tem")
-            this % dftran % r__tem(:) = var(:)
         case("ngastmp")
             this % dftran % r__ngastmp(:) = var(:)
-        case("htco")
-            this % dftran % r__htco(:) = var(:)
         case("ncs")
             this % dftran % r__ncs(:) = var(:)
         case default
@@ -678,8 +678,6 @@ contains
             this % dftran % r__zs = var
         case("FuelPelDiam")
             this % dftran % r__FuelPelDiam = var
-        case("dtmaxa")
-            this % dftran % r__dtmaxa(it_) = var
         case("hbh")
             this % dftran % r__hbh(it_) = var
         case("hupta")
@@ -692,12 +690,8 @@ contains
             this % dftran % r__explenumt(it_) = var
         case("pbh2")
             this % dftran % r__pbh2(it_) = var
-        case("dtpoa")
-            this % dftran % r__dtpoa(it_) = var
         case("RodAvePower")
             this % dftran % r__RodAvePower(it_) = var
-        case("dtplta")
-            this % dftran % r__dtplta(it_) = var
         case("FuelGasSwell")
             this % dftran % r__FuelGasSwell(it_) = var
         case("temptm")

@@ -64,7 +64,7 @@ program frapi_input_file
                  bowing=bowing,spefbz=spefbz,geometry=geometry,nbundl=nbundl,refloodtime=time,&
                  radiat=radiat,ruptur=ruptur,liquid=liquid,inlet=inlet,reflo=reflo,&
                  pressure=pressure,collaps=collaps,frapt4=frapt4,geom=geom,temp=temp,&
-                 tape2=tape2,nvol2=nvol2,press=press,zone=zone,upppl=upppl,&
+                 tape2=tape2,nvol2=nvol2,zone=zone,upppl=upppl,&
                  jfb=jfb,nucbo=nucbo,unitin=unitin,unitout=unitout,res=res,&
                  pow=pow,gasflo=gasflo,idoxid=idoxid,cathca=cathca,baker=baker,&
                  noball=noball,cenvoi=cenvoi,soltyp=soltyp)
@@ -112,7 +112,6 @@ program frapi_input_file
             call frod % set_i4_0('irupt', irupt)
             call frod % set_r8_0('tgas0', tgas0)
             call frod % set_r8_0('tsntrk', tsntrk)
-            call frod % set_i4_0('ncards', ncards)
             call frod % set_i4_0('CladType', CladType)
             call frod % set_r8_0('spdbp', spdbp)
             call frod % set_i4_0('odoxid', odoxid)
@@ -191,7 +190,6 @@ program frapi_input_file
             call frod % set_i4_1('ngastmp', ngastmp)
             call frod % set_r8_1('swd', swd)
             call frod % set_r8_1('oxideod', oxideod)
-            call frod % set_i4_1('htco', htco)
             call frod % set_r8_1('cexh2a', cexh2a)
             call frod % set_r8_2('pazp', pazp)
             call frod % set_r8_1('radpel', radpel)
@@ -206,41 +204,36 @@ program frapi_input_file
             call frod % set_r8_1('zelev', zelev)
             call frod % set_r8_1('fmesh', fmesh)
             call frod % set_r8_1('cmesh', cmesh)
-            call frod % set_i4_1('tem', tem)
 
             do i = 1, 1
 
-                call frod % set_r8_0('dtmaxa', dtmaxa(i))
-                call frod % set_r8_0('hbh', hbh(i))
-                call frod % set_r8_0('hupta', hupta(i))
-                call frod % set_r8_0('hinta', hinta(i))
-                call frod % set_r8_0('gbh', gbh(i))
-                call frod % set_r8_0('explenumt', explenumt(i))
-                call frod % set_r8_0('pbh2', pbh2(i))
-                call frod % set_r8_0('dtpoa', dtpoa(i))
-                call frod % set_r8_0('RodAvePower', RodAvePower(i))
-                call frod % set_r8_1('htca', htca(i,:))
-                call frod % set_r8_1('tblka', tblka(i,:))
-                call frod % set_r8_0('dtplta', dtplta(i))
-                call frod % set_r8_1('gasths', gasths(i,:))
-                call frod % set_r8_0('FuelGasSwell', FuelGasSwell(i))
-                call frod % set_r8_0('temptm', temptm(i))
-                call frod % set_r8_0('relfraca', relfraca(i))
-                call frod % set_r8_0('prestm', prestm(i))
-                call frod % set_r8_0('fldrat', fldrat(i))
-                call frod % set_r8_0('gasphs', gasphs(i))
-                call frod % set_r8_1('axpowprofile', AxPowProfile(:,i))
-!                call frod % set_r8_0('ProfileStartTime', ProfileStartTime(i))
-                call frod % set_r8_0('pbh1', pbh1(i))
-                call frod % set_r8_0('hlqcl', hlqcl(i))
+                call frod % set_r8_0('hbh', hbh(2*i-1))
+                call frod % set_r8_0('hupta', hupta(2*i-1))
+                call frod % set_r8_0('hinta', hinta(2*i-1))
+                call frod % set_r8_0('gbh', gbh(2*i-1))
+                call frod % set_r8_0('explenumt', explenumt(2*i-1))
+                call frod % set_r8_0('pbh2', pbh2(2*i-1))
+                call frod % set_r8_0('RodAvePower', RodAvePower(2*i-1))
+                call frod % set_r8_1('htca', htca(2*i-1,:))
+                call frod % set_r8_1('tblka', tblka(2*i-1,:))
+                call frod % set_r8_1('gasths', gasths(2*i-1,:))
+                call frod % set_r8_0('FuelGasSwell', FuelGasSwell(2*i-1))
+                call frod % set_r8_0('temptm', temptm(2*i-1))
+                call frod % set_r8_0('relfraca', relfraca(2*i-1))
+                call frod % set_r8_0('prestm', prestm(2*i-1))
+                call frod % set_r8_0('fldrat', fldrat(2*i-1))
+                call frod % set_r8_0('gasphs', gasphs(2*i-1))
+                call frod % set_r8_1('axpowprofile', AxPowProfile(:,2*i-1))
+                call frod % set_r8_0('pbh1', pbh1(2*i-1))
+                call frod % set_r8_0('hlqcl', hlqcl(2*i-1))
                 call frod % set_r8_1('radtemp', (/( radpowprofile(2*j-1 + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
                 call frod % set_r8_1('fuelrad', (/( radpowprofile(2*j   + 2*naxialnodes*(i-1)), j = 1, naxialnodes )/) )
 
                 if (i == 1) call frod % init()
 
-            enddo
+                !call frod % next(dtmaxa(2*i))
 
-! not in list: 'ProblemEndTime', 'ts', 'tape2nvol2', 'ProblemStartTime', 'PlenumTemp', 'BuOxide', 'time'
+            enddo
 
     end select
 

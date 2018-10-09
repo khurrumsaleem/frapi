@@ -463,6 +463,10 @@ module fpn_reader
         NumAxProfiles = 1
         azang = 0
         profile = 0
+        ncards = 1
+        IndexFC2Print = 0
+        IndexGrainBndSep = 0
+        NRestart = 0
 
         open(ifile, file=filename, status='unknown', form='formatted')
 
@@ -472,21 +476,22 @@ module fpn_reader
         ntimesteps = defsize
 
         allocate(gfrac(1:ngases))
-        allocate(dtmaxa(1:ntimesteps))
-        allocate(hbh(1:ntimesteps))
-        allocate(hupta(1:ntimesteps))
-        allocate(hinta(1:ntimesteps))
-        allocate(gbh(1:ntimesteps))
-        allocate(explenumt(1:2*ntimesteps))
-        allocate(pbh2(1:ntimesteps))
-        allocate(rodavepower(1:ntimesteps))
-        allocate(dtpoa(1:ntimesteps+2))
+        allocate(dtmaxa(1:2*ntimesteps))
+        allocate(hbh(1:2*ntimesteps))
+        allocate(hupta(1:2*ntimesteps))
+        allocate(hinta(1:2*ntimesteps))
+        allocate(gbh(1:2*ntimesteps))
+        allocate(explenumt(1:2*ntimesteps+2))
+        allocate(pbh2(1:2*ntimesteps))
+        allocate(rodavepower(1:2*ntimesteps))
+        allocate(dtpoa(1:2*ntimesteps+2))
         allocate(ngastmp(1:2))
         allocate(ncs(1))
 
         gfrac(1) = 1.0d0
         gfrac(2:ngases) = 0.0d0
-        explenumt(1) = 77.0d0
+        explenumt(:) = -1.D0
+        explenumt(1) = 298.15D0
         explenumt(2) = 0.0d0
 
         read(ifile, solution, iostat=ierror)
@@ -523,7 +528,6 @@ module fpn_reader
         allocate(fmesh                (1:nradialnodes))
         allocate(cmesh                (1:nradialnodes))
         allocate(tem                  (1:naxialnodes))
-
         allocate(htca                 (1:2*ntimesteps, 1:naxialnodes))
         allocate(tblka                (1:2*ntimesteps, 1:naxialnodes))
         allocate(axpowprofile         (1:2*naxialnodes,1:ntimesteps))
@@ -540,9 +544,53 @@ module fpn_reader
         allocate(pbh1                 (1:ntimesteps) )
         allocate(hlqcl                (1:ntimesteps) )
 
-        gadoln(:) = -1.0d0
-        htco(:) = 0
-        tem(:) = 0
+        gadoln               = -1.0d0
+        zelev                = 0
+        butemp               = 0
+        gadoln               = 0
+        htclev               = 0
+        htco                 = 0
+        scd                  = 0
+        radpel               = 0
+        azpang               = 0
+        ExtentOfBow          = 0
+        fluxz                = 0
+        nodchf               = 0
+        swd                  = 0
+        oxideod              = 0
+        cexh2a               = 0
+        pazp                 = 0
+        oxideid              = 0
+        spl                  = 0
+        eppinp               = 0
+        techf                = 0
+        tschf                = 0
+        gappr0               = 0
+        vplen                = 0
+        fmesh                = 0
+        cmesh                = 0
+        tem                  = 0
+        htca                 = 0
+        tblka                = 0
+        axpowprofile         = 0
+        RadPowProfile        = 0
+        gasths               = 0
+        fldrat               = 0
+        gasphs               = 0
+        dtplta               = 0
+        ProfileStartTime     = 0
+        FuelGasSwell         = 0
+        temptm               = 0
+        relfraca             = 0
+        prestm               = 0
+        pbh1                 = 0
+        hlqcl                = 0
+        gbse(1)              = 0.0d0
+        gbse(2)              = 5000.0d0
+        gbse(3)              = 1.0d0
+        gbse(4)              = 1.0d0
+        gbse(5)              = 0.0d0
+
 
         rewind(ifile)
         read(ifile, design, iostat=ierror)

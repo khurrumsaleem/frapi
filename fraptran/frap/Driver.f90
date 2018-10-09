@@ -78,16 +78,47 @@ module fraptran2
         pre_na = naxn + 25
         pre_nr = nfmesh + ncmesh + 1
         pre_nt = defsize
-
         radial = pre_nr
         axial = pre_na
         ntimepairs = 1  !# of time history pairs from T/H Code
+        ntimesteps = pre_nt
+        naxialnodes = pre_na
+        nradialnodes = pre_nr
+        size1 = 2 * naxialnodes * ntimesteps
+        total = 10 * naxialnodes + 6
 
-        call Allocate_Variables (ntimepairs, radial, axial)
-        call Allocate_Gas
-        call AllocateUncertaintyvars
-        ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
-        ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
+        include 'ft_v_allocate_h.f90'
+
+        tt     => prop(1)
+        CoolantPress => prop(2)
+        v      => prop(3)
+        ubar   => prop(4)
+        hbar   => prop(5)
+        beta   => prop(6)
+        kappa  => prop(7)
+        csubp  => prop(8)
+        x      => prop(9)
+        psat   => prop(10)
+        vsubf  => prop(11)
+        vsubg  => prop(12)
+        usubf  => prop(13)
+        usubg  => prop(14)
+        hsubf  => prop(15)
+        hsubg  => prop(16)
+        betaf  => prop(17)
+        betag  => prop(18)
+        kappaf => prop(19)
+        kappag => prop(20)
+        csubpf => prop(21)
+        csubpg => prop(22)
+
+        include 'ft_r_allocate_h.f90'
+
+        !call Allocate_Variables (ntimepairs, radial, axial)
+        !call Allocate_Gas
+        !call AllocateUncertaintyvars
+        !ALLOCATE (buradv(1:naxialnodes,1:nradialnodes))
+        !ALLOCATE (bufrad(1:nradialnodes,1:naxialnodes))
 
         n1 = 1
         n2 = 1
@@ -108,7 +139,6 @@ module fraptran2
         lresr1 = 136
         lhtcb  = 12
         ndap1  = 21
-        naxn   = 1
         ntco   = 4
         ntplot = 1
         kdbug  = 0
@@ -150,9 +180,9 @@ module fraptran2
         gbse(4) = 1.0_r8k
         gbse(5) = 0.0_r8k
 
-        call init()
+        call init() ! This is FEA init subroutine
 
-        ! Initialize FE model (Only useable when not coupled)
+! Initialize FE model (Only useable when not coupled)
 !        IF (.NOT. coupled) THEN
 !            CALL init()
 !            CALL default_values()
@@ -199,12 +229,17 @@ module fraptran2
 
         ! If ncards = 0 , cold startup
 
-        size1 = 2 * naxialnodes * ntimesteps
-        total = 10 * naxialnodes + 6
-
         include 'ft_associate_h.f90'
-        include 'ft_allocate_h.f90'
 
+        dtmaxa(:) = 0.D+0
+        dtpoa(:)  = 0.D+0
+        dtplta(:) = 0.D+0
+        dtmaxa(1) = 1.D-3 ! time steps
+        dtpoa(1)  = 1.D-3 ! intervals of print out
+        dtplta(1) = 1.D-3 ! intervals of plot out
+
+!        write(*,*) 'butemp = ', this % butemp(1:6)
+!        write(*,*) 'butemp = ', butemp(1:6)
 !        write(*,*) 'dtdkta: ', this % dtdkta(1)
 !        stop
 
@@ -239,6 +274,8 @@ module fraptran2
         if (is_open) close (unit = fcunit)
         open (unit = fcunit, file = this % namerf)
 
+        !write(*,*) 'naxn = ', naxn
+
         call cardin
         call initia
 
@@ -250,7 +287,11 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
+        ! Default values for the FEA model
         call default_values()
+
+        ! Default values for FRAPTRAN's variables
+        include "ft_default_h.f90"
 
     end subroutine p_deft
 
