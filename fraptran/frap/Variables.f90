@@ -32,6 +32,7 @@ MODULE variables_fraptran
     INTEGER(ipk), PARAMETER :: n_void_volumes = 10_ipk
     ! Indicates which fuel rod is currently being modeled
     INTEGER(ipk) :: idx
+    integer(ipk) :: global_count = 0
     ! Units
     ! Input File. Default = 55
     INTEGER(ipk), PARAMETER :: iunit = 55
@@ -2305,7 +2306,7 @@ MODULE variables_fraptran
     ALLOCATE (iokold(1:5,1:naxialnodes))
     ALLOCATE (FrapconTemp(1:nradialnodes,1:naxialnodes))
     ALLOCATE (qcold(1:20,1:20))
-    
+
     ! Set the default values
     iplant = -4
     gammait = 0

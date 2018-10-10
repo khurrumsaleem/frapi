@@ -342,7 +342,6 @@ MODULE HeatSolution_fraptran
                     !
                     CALL chitox (tk1, tk2, dmw22, dmw11, TimeIncrement, AlphaThk22(k), AlphaThk11(k), &
                       &          drdmw2, drodmw, emeti, w1, w2, iStoicGrad)
-                    !
                     IF (modmw == 1) emeti = 0.0_r8k
                     OxiThk2(k) = dmw22 / 0.0254_r8k
                     OxUptakeID2(k) = w2 * 10.0_r8k
@@ -496,7 +495,6 @@ MODULE HeatSolution_fraptran
                 GOTO 76
                 
 718             CONTINUE
-                
                 ! IF r-theta heat conduction, modify gap thickness for offset fuel pellet
                 IF (ntheta > 1) THEN
                     ! Offset pellet
@@ -511,7 +509,6 @@ MODULE HeatSolution_fraptran
                       &           4.0_r8k * (dofst ** 2 - rci ** 2)) - DefFuRd
                     IF (GapThick(k) < 0.0_r8k) GapThick(k) = gapmin
                 END IF
-
                 ! 2/3/99 bypass non-uniform gap model for all cases
                 ibypass = 1
                 IF (ibypass /= 1 .AND. ndim < 1) THEN
@@ -582,6 +579,7 @@ MODULE HeatSolution_fraptran
                     CALL gaphtc (gasgpi, fulori, pfci, gptemp, ftemp, ctemp, GasPress(k), GasFraction, &
                       &          FastFlux(k), tflux, roucih, roufih, frden, coldw, zroi, fotmtl, &
                       &          CladMaxT(k), modfd, hgap, gadolin(k), bulocal, gapmin, k)
+
                     !
                     IF (naxn <= 20) hgap = fdial(k) * hgap
                     IF (nphgap == 1) WRITE(ounit,933) GapThick(k), gasgpi, frcgap(ngapi), hgap
@@ -878,7 +876,6 @@ MODULE HeatSolution_fraptran
                   &          emeti, AAHT1, BBHT1, GasPress(k), AxBurnup(k), GasFraction, Vreloc(k), &
                   &          frden, tsntrk, cnfsol, cnfliq, fotmtl, NodeSinterTemp(k), nmesh, rhofe, &
                   &          gadolin(k), burad, k, radsrc, deltox(k), coldw, IndexInitTemp, BOSTemp)
-                !
                 Ih(k) = iht
                 !
                 IF (nerr /= 0) CALL error1 (nerr+2,1)

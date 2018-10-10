@@ -17,7 +17,7 @@
     real(8) :: problemendtime, fdens, zvoid2, rvoid, &
              & coldbp, achn, bup, pdrato, sumg, &
              & ruptstrain, tgas0, gapthk, frpo2, openporosityfraction, dofset, &
-             & ts, emptm, trise, coldw, dtss, dhy, pelh, &
+             & emptm, trise, coldw, dtss, dhy, pelh, &
              & rnbnt, fuelpeldiam, gsms, pl, dofang, &
              & hrad, problemstarttime, flxsec, ffch, &
              & fltgap2, rodfabtemp, roddiameter, refdtm, gasmoles0, &
@@ -29,7 +29,7 @@
              & frden, cldwdc, timop, &
              & trest
 
-    real(8), dimension(:), allocatable :: gfrac, butemp, cmesh, explenumt, dtmaxa, zelev, fmesh, &
+    real(8), dimension(:), allocatable :: ts, gfrac, butemp, cmesh, explenumt, dtmaxa, zelev, fmesh, &
                                           hbh, hupta, hinta, gbh, pbh2, htclev, dtpoa, rodavepower, &
                                           dtplta, scd, azpang, radpowprofile, ExtentOfBow, &
                                           gbse, ProfileStartTime, radpel,  &

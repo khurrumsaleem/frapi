@@ -226,6 +226,32 @@ MODULE timestep_fraptran
         OldCoolPrs(k) = CoolPress(k)
         OldPelDis(k) = PelSrfDispl(k)
     ENDDO
+
+    k = 5
+    !write(*,*) 'HeatFlux0(k) = ', HeatFlux0(k)
+    !write(*,*) 'CoolEnthalpy0(k) = ', CoolEnthalpy0(k)
+    !write(*,*) 'CoolDensity0(k) = ', CoolDensity0(k)
+    !write(*,*) 'CldPermStrn0(k) = ', CldPermStrn0(k)
+    !write(*,*) 'GasPress0(k) = ', GasPress0(k)
+    !write(*,*) 'RodOD0(k) = ', RodOD0(k)
+    !write(*,*) 'OldCoolPrs(k)  = ', OldCoolPrs(k) 
+    write(*,*) 'OldCladT(k) = ', global_count, TimeIncrement, OldCladT(k)
+    !write(*,*) 'OldGasPrs(k) = ', OldGasPrs(k)
+    !write(*,*) 'OldPelDis(k) = ', OldPelDis(k)
+    global_count = global_count + 1
+    if (global_count == 10) stop
+    !write(*,*) 'BOSGapIndex(k) = ', BOSGapIndex(k)
+    !write(*,*) 'OldCoolPrs0(k) = ', OldCoolPrs0(k)
+    !write(*,*) 'OldCladT0(k) = ', OldCladT0(k)
+    !write(*,*) 'OldGasPrs0(k)  = ', OldGasPrs0(k) 
+    !write(*,*) 'OldPelDis0(k) = ', OldPelDis0(k)
+    !write(*,*) 'BOSGapIndex0(k) = ', BOSGapIndex0(k)
+    !write(*,*) 'RInterfacPrs0(k) = ', RInterfacPrs0(k)
+    !write(*,*) 'PelletRad0(k)  = ', PelletRad0(k) 
+    !write(*,*) 'CladCollIndx0(k) = ', CladCollIndx0(k)
+    !stop
+
+
     ! calculate strain energy density (SED)
     DO k = 1, naxn
         ! calculate PNNL SED using effective elastic and plastic strain
@@ -840,6 +866,7 @@ MODULE timestep_fraptran
     REAL(r8k), DIMENSION(nmesh) :: temptemp
     REAL(r8k), DIMENSION(naxn) :: molrel
     REAL(r8k), DIMENSION(naxn+1) :: rwa7
+
     if (.not. allocated(Iflag)) allocate(Iflag(ngasr,2))
     !
     nprofile = 1

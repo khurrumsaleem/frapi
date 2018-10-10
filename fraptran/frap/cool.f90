@@ -296,7 +296,8 @@ MODULE Coolant_fraptran
         gum = CoolMassFlx(k)
         hi = CoolEnthalpy(k)
         delth = CoolEnthalpy(k) - hikm1
-90      acond(12,j) = gum
+90      continue
+        acond(12,j) = gum
         acond(13,j) = hi
         IF (ndebug) WRITE(ounit,925) gum, hi
 925     FORMAT(6x,' CoolMassFlx(k) = ',e11.4,' CoolEnthalpy(k) = ', e11.4)
@@ -697,6 +698,7 @@ MODULE Coolant_fraptran
         Time_in = MAX(Time, pbh(2))
         ! Linearly interpolate between user-supplied time values
         ! Note: Pressure is supplied as inlet pressure and assummed constant over all axial nodes (no axial depenency)
+        !write(*,*) pbh(1:4), time_in, npbh
         pri = polate (pbh, Time_in, npbh)
         
         ! Current heat transfer coefficients in up to three coolant zones:

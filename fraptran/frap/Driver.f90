@@ -260,8 +260,6 @@ module fraptran2
         if (is_open) close (unit = fcunit)
         open (unit = fcunit, file = this % namerf)
 
-        !write(*,*) 'naxn = ', naxn
-
         call cardin
         call initia
 
@@ -287,7 +285,12 @@ module fraptran2
 
         real(8) :: dt
 
-        time = 0.d0
+        time = 0.D0
+        tmax = time + dt
+        tend = time + dt
+        t1   = time
+        t2   = time + dt
+        dtp  = dt
 
         CALL setup6
 
@@ -301,6 +304,27 @@ module fraptran2
 
         ! Set variable saying it's no longer the first call to FRAPTRAN
         first_pass = .FALSE.
+
+        pbh(1)           = pbh(3)               
+        dtmaxa(1)        = dtmaxa(3)               
+        hbh(1)           = hbh(3)               
+        hupta(1)         = hupta(3)               
+        hinta(1)         = hinta(3)               
+        gbh(1)           = gbh(3)               
+        explenumt(1)     = explenumt(3)               
+        dtpoa(1)         = dtpoa(3)               
+        RodAvePower(1)   = RodAvePower(3)               
+        dtplta(1)        = dtplta(3)               
+        FuelGasSwell(1)  = FuelGasSwell(3)               
+        temptm(1)        = temptm(3)               
+        relfraca(1)      = relfraca(3)               
+        prestm(1)        = prestm(3)               
+        fldrat(1)        = fldrat(3)               
+        gasphs(1)        = gasphs(3)               
+        hlqcl(1)         = hlqcl(3)               
+        htca(1,:)        = htca(3,:)               
+        tblka(1,:)       = tblka(3,:)               
+        gasths(1,:)      = gasths(3,:)               
 
     end subroutine p_next
 

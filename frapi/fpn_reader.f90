@@ -467,6 +467,8 @@ module fpn_reader
         IndexFC2Print = 0
         IndexGrainBndSep = 0
         NRestart = 0
+        nchn = 1
+        modheat = 2.D-2
 
         open(ifile, file=filename, status='unknown', form='formatted')
 
@@ -483,16 +485,28 @@ module fpn_reader
         allocate(gbh(1:2*ntimesteps))
         allocate(explenumt(1:2*ntimesteps+2))
         allocate(pbh2(1:2*ntimesteps))
+        allocate(ts(1:2*ntimesteps))
         allocate(rodavepower(1:2*ntimesteps))
         allocate(dtpoa(1:2*ntimesteps+2))
         allocate(ngastmp(1:2))
         allocate(ncs(1))
 
-        gfrac(1) = 1.0d0
-        gfrac(2:ngases) = 0.0d0
+        gfrac(1) = 1.D0
+        gfrac(2:ngases) = 0.D0
+        dtmaxa(:) = 0.D0
+        hbh(:) = 0.D0
+        hupta(:) = 0.D0
+        hinta(:) = 0.D0
+        gbh(:) = 0.D0
         explenumt(:) = -1.D0
         explenumt(1) = 298.15D0
-        explenumt(2) = 0.0d0
+        explenumt(2) = 0.D0
+        pbh2(:) = 0.D0
+        rodavepower(:) = 0.D0
+        dtpoa(:) = 0.D0
+        ngastmp(:) = 0
+        ncs(1) = 1
+        ts(:) = 0.D0
 
         read(ifile, solution, iostat=ierror)
         call read_error(ierror, 'solution')
@@ -533,21 +547,20 @@ module fpn_reader
         allocate(axpowprofile         (1:2*naxialnodes,1:ntimesteps))
         allocate(RadPowProfile        (1:2*naxialnodes*ntimesteps) )
         allocate(gasths               (1:2*ntimesteps,1:2) )
-        allocate(fldrat               (1:ntimesteps) )
+        allocate(fldrat               (1:2*ntimesteps) )
         allocate(gasphs               (1:2*ntimesteps) )
         allocate(dtplta               (1:ntimesteps+2) )
         allocate(ProfileStartTime     (1:ntimesteps) )
         allocate(FuelGasSwell         (1:2*ntimesteps) )
-        allocate(temptm               (1:ntimesteps) )
+        allocate(temptm               (1:2*ntimesteps) )
         allocate(relfraca             (1:2*ntimesteps) )
-        allocate(prestm               (1:ntimesteps) )
-        allocate(pbh1                 (1:ntimesteps) )
-        allocate(hlqcl                (1:ntimesteps) )
+        allocate(prestm               (1:2*ntimesteps) )
+        allocate(pbh1                 (1:2*ntimesteps) )
+        allocate(hlqcl                (1:2*ntimesteps) )
 
-        gadoln               = -1.0d0
+        gadoln               = -1.D0
         zelev                = 0
         butemp               = 0
-        gadoln               = 0
         htclev               = 0
         htco                 = 0
         scd                  = 0

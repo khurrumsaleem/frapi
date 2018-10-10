@@ -3,6 +3,7 @@ module frapi
     use conversions_frapcon
     use frapcon4,  only : frapcon_driver
     use fraptran2, only : fraptran_driver
+    use m_if_a_else_b, only : if_a_else_b
 
     implicit none
 
@@ -182,6 +183,11 @@ contains
         class (frod_type), intent(inout) :: this
 
         real(8) :: dt
+
+        if (dt < 1.E-10) then
+            write(*,*) 'ERROR: time step is equal to zero, dt = ', dt
+            stop
+        endif
 
         select case (frapmode_)
         case ('frapcon')
@@ -386,12 +392,12 @@ contains
         class (frod_type), intent(inout) :: this
 
         character(*) :: key
-        integer      :: it, it_
+        integer      :: it, it3
         real(8)      :: var
         real(8)      :: mmtoin = 1.d0/intomm
 
-        it = this % dfcon % r__it
-        it_= it_state(this % is_initdone)
+        it  = this % dfcon % r__it
+        it3 = if_a_else_b(this % is_initdone, 3, 1)
 
         select case(key)
         case("fuel rod pitch, cm")
@@ -680,35 +686,33 @@ contains
         case("FuelPelDiam")
             this % dftran % r__FuelPelDiam = var
         case("hbh")
-            this % dftran % r__hbh(it_) = var
+            this % dftran % r__hbh(it3) = var
         case("hupta")
-            this % dftran % r__hupta(it_) = var
+            this % dftran % r__hupta(it3) = var
         case("hinta")
-            this % dftran % r__hinta(it_) = var
+            this % dftran % r__hinta(it3) = var
         case("gbh")
-            this % dftran % r__gbh(it_) = var
+            this % dftran % r__gbh(it3) = var
         case("explenumt")
-            this % dftran % r__explenumt(it_) = var
-        case("pbh2")
-            this % dftran % r__pbh2(it_) = var
+            this % dftran % r__explenumt(it3) = var
+        case("pbh")
+            this % dftran % r__pbh(it3) = var
         case("RodAvePower")
-            this % dftran % r__RodAvePower(it_) = var
+            this % dftran % r__RodAvePower(it3) = var
         case("FuelGasSwell")
-            this % dftran % r__FuelGasSwell(it_) = var
+            this % dftran % r__FuelGasSwell(it3) = var
         case("temptm")
-            this % dftran % r__temptm(it_) = var
+            this % dftran % r__temptm(it3) = var
         case("relfraca")
-            this % dftran % r__relfraca(it_) = var
+            this % dftran % r__relfraca(it3) = var
         case("prestm")
-            this % dftran % r__prestm(it_) = var
+            this % dftran % r__prestm(it3) = var
         case("fldrat")
-            this % dftran % r__fldrat(it_) = var
+            this % dftran % r__fldrat(it3) = var
         case("gasphs")
-            this % dftran % r__gasphs(it_) = var
-        case("pbh1")
-            this % dftran % r__pbh1(it_) = var
+            this % dftran % r__gasphs(it3) = var
         case("hlqcl")
-            this % dftran % r__hlqcl(it_) = var
+            this % dftran % r__hlqcl(it3) = var
 !        case("ProfileStartTime")
 !            this % dftran % r__ProfileStartTime(it_) = var
         case default
@@ -723,11 +727,11 @@ contains
         class (frod_type), intent(inout) :: this
 
         character(*) :: key
-        integer      :: it, it_
+        integer      :: it
+        integer, parameter :: one = 1, two = 2, three = 3
         real(8)      :: var(:)
 
-        it = this % dfcon % r__it
-        it_= it_state(this % is_initdone)
+        it  = this % dfcon % r__it
 
         select case(key)
         case("thickness of the axial nodes, cm")
@@ -838,17 +842,23 @@ contains
         case("zelev")
             this % dftran % r__zelev(:) = var(:)
         case("htca")
-            this % dftran % r__htca(it_,:) = var(:)
+            it = if_a_else_b(this % is_initdone, three, one)
+            this % dftran % r__htca(it,:) = var(:)
         case("tblka")
-            this % dftran % r__tblka(it_,:) = var(:)
+            it = if_a_else_b(this % is_initdone, three, one)
+            this % dftran % r__tblka(it,:) = var(:)
         case("gasths")
-            this % dftran % r__gasths(it_,:) = var(:)
+            it = if_a_else_b(this % is_initdone, three, one)
+            this % dftran % r__gasths(it,:) = var(:)
         case("radtemp")
-            this % dftran % r__radtemp(:,it_) = var(:)
+            it = if_a_else_b(this % is_initdone, two, one)
+            this % dftran % r__radtemp(:,it) = var(:)
         case("fuelrad")
-            this % dftran % r__fuelrad(:,it_) = var(:)
+            it = if_a_else_b(this % is_initdone, two, one)
+            this % dftran % r__fuelrad(:,it) = var(:)
         case("axpowprofile")
-            this % dftran % r__axpowprofile(:,it_) = var(:)
+            it = if_a_else_b(this % is_initdone, two, one)
+            this % dftran % r__axpowprofile(:,it) = var(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -881,11 +891,10 @@ contains
         class (frod_type), intent(in) :: this
 
         character(*) :: key
-        integer      :: it, it_
+        integer      :: it
         integer      :: var
 
         it = this % dfcon % it
-        it_= it_state(this % is_initdone)
 
         select case(key)
         case('program terminate')
@@ -902,11 +911,10 @@ contains
         class (frod_type), intent(in) :: this
 
         character(*) :: key
-        integer      :: it, it_
+        integer      :: it
         real(8)      :: var
 
         it = this % dfcon % it
-        it_= it_state(this % is_initdone)
 
         select case(key)
         case('average linear power, W|cm')
@@ -941,14 +949,13 @@ contains
         class (frod_type), intent(in) :: this
 
         character(*) :: key
-        integer      :: it, it_
+        integer      :: it
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
         real(8)      :: intoum = intomm * 1.D+3
 
         it = this % dfcon % it
-        it_= it_state(this % is_initdone)
 
         select case(key)
 !        case('axial fuel temperature, C')
@@ -1096,15 +1103,6 @@ contains
 
     end subroutine frod_destroy
 
-    integer function it_state (flag)
-        logical :: flag
-        if (flag) then 
-            it_state = 2
-        else
-            it_state = 1
-        endif
-    end function it_state
-
     subroutine settime(this,i,t)
         class (frod_type), intent(inout) :: this
         integer :: i
@@ -1116,7 +1114,6 @@ contains
         this % dftran % r__hinta(i) = t
         this % dftran % r__gbh(i) = t
         this % dftran % r__explenumt(i) = t
-        this % dftran % r__pbh2(i) = t
         this % dftran % r__dtpoa(i) = t
         this % dftran % r__RodAvePower(i) = t
         this % dftran % r__dtplta(i) = t
@@ -1126,8 +1123,11 @@ contains
         this % dftran % r__prestm(i) = t
         this % dftran % r__fldrat(i) = t
         this % dftran % r__gasphs(i) = t
-        this % dftran % r__pbh1(i) = t
         this % dftran % r__hlqcl(i) = t
+        this % dftran % r__htca(i,:) = t
+        this % dftran % r__tblka(i,:) = t
+        this % dftran % r__gasths(i,:) = t
+
     end subroutine settime
 
 end module frapi
