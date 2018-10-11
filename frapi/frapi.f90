@@ -1052,7 +1052,8 @@ contains
 !        real(8)      :: linteg ! integral of linear function
         real(8)      :: intoum = intomm * 1.D+3
 
-        it = this % dfcon % it
+        if (frapmode_ == 'frapcon')  it = this % dfcon % it
+        if (frapmode_ == 'fraptran') it = 1 !check the value !!!
 
         select case(key)
 !        case('axial fuel temperature, C')
@@ -1158,6 +1159,8 @@ contains
         case('radial meshes, cm')
             var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
             var(:) = var(:) * intocm
+        case('cladavetemp')
+            var(:) = this % dftran % CladAveTemp(:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

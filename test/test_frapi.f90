@@ -11,6 +11,7 @@ program test_frapi
     character(len=256) :: frapmode  ! 'frapcon' or 'fraptran'
     character(len=256) :: ifilename ! input file name
     character(len=256) :: rfilename ! restart file name
+    character(len=256) :: ofilename ! output file name
 
     integer :: i, step
 
@@ -19,6 +20,7 @@ program test_frapi
     call get_command_argument(1, frapmode)
     call get_command_argument(2, ifilename)
     call get_command_argument(3, rfilename)
+    call get_command_argument(4, ofilename)
 
     time = 0.D0
     step = 0
@@ -29,7 +31,7 @@ program test_frapi
 
         case ('fraptran')
 
-            call problem % make_fraptran (ifilename, rfilename, frapmode)
+            call problem % make_fraptran (ifilename, rfilename, ofilename, frapmode)
             call problem % update_fraptran (time)
             call problem % frod % init ()
             call problem % frod % accept ()
@@ -42,6 +44,11 @@ program test_frapi
                 call problem % frod % next (dt)
                 call problem % frod % accept ()
 
+                call problem % ofile % write_r8_0('time, s', time + dt)
+                call problem % ofile % write_i4_0('time step', step)
+                call problem % ofile % write_r8_0('time step  size, s', dt)
+                call problem % save_in_file_fraptran ()
+
                 time = time + dt
                 step = step + 1
 
@@ -51,7 +58,7 @@ program test_frapi
 
     end select
 
-    call problem % frod % destroy ()
+    call problem % finalize ()
 
     write(*,*) 'Successfully done!'
 

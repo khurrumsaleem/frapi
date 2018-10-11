@@ -5,12 +5,14 @@ module m_problem
     use fpc_reader
     use fpt_reader
     use m_interp1d, only : interp1d
+    use odfile, only : t_odfile
 
     implicit none
 
     !include "fi_varlist_h.f90"
 
     type, public :: t_problem
+        type (t_odfile)  :: ofile
         type (t_fuelrod) :: frod
         integer :: nsteps
         real(8) :: finishtime, timestep
@@ -18,30 +20,34 @@ module m_problem
         procedure :: make_fraptran => p_make_fraptran
         procedure :: update_fraptran => p_update_fraptran
         procedure :: timestep_fraptran => p_timestep_fraptran
+        procedure :: save_in_file_fraptran =>  p_save_in_file_fraptran
+        procedure :: finalize => p_finalize
     end type t_problem
 
     contains
 
-    subroutine p_make_fraptran (this, ifile, rfile, frapmode)
+    subroutine p_make_fraptran (this, ifilename, rfilename, ofilename, frapmode)
 
         implicit none
 
         class (t_problem), intent(inout) :: this
 
-        character(len=256) :: ifile, rfile, frapmode
+        character(len=256) :: ifilename, rfilename, ofilename, frapmode
 
         integer :: i, j, itime, starttime
 
         real(8) :: qtot, dt
 
+        call this % ofile % open(ofilename)
+
         ! Read input data from fraptran's input file
-        call read_fraptran_file(ifile)
+        call read_fraptran_file(ifilename)
 
         this % finishtime = maxval( (/( dtmaxa(2*i), i = 1, ntimesteps )/) )
 
         call this % frod % make(nr=nfmesh, na=naxn, nce=ncmesh, verbose=.false., frapmode=frapmode)
 
-        call this % frod % set_ch_0 ('restart file', rfile       )
+        call this % frod % set_ch_0 ('restart file', rfilename   )
         call this % frod % set_ch_0 ('coolant'     , coolant     )
         call this % frod % set_ch_0 ('bheat'       , bheat       )
         call this % frod % set_ch_0 ('mheat'       , mheat       )
@@ -270,6 +276,14 @@ module m_problem
 
     end subroutine p_update_fraptran
 
+    subroutine p_save_in_file_fraptran (this)
+        implicit none
+        class (t_problem), intent(inout) :: this
+        real(8) :: tmp0(naxialnodes)
+        call this % frod  % get_r8_1  ('cladavetemp', tmp0)
+        call this % ofile % write_r8_1('cladavetemp', tmp0(1:naxn))
+    end subroutine p_save_in_file_fraptran
+
     function p_timestep_fraptran(this, time) result (dt)
         implicit none
         class (t_problem), intent(inout) :: this
@@ -281,6 +295,14 @@ module m_problem
         enddo
         dt = dtmaxa(2*i-1)
     end function p_timestep_fraptran
+
+    subroutine p_finalize (this)
+        implicit none
+        class (t_problem), intent(inout) :: this
+        call this % frod % destroy ()
+        call this % ofile % close()
+    end subroutine p_finalize
+
 
     integer function lsize(a)
         implicit none
