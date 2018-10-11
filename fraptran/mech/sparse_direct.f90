@@ -20,16 +20,16 @@ MODULE sparse_direct_fraptran
     ! rowindex  = [ 1, 3, 5, 8, 10, 12]
     ! diagindex = [ 1, 3, 6, 9, 11, 12]
     !
-  INTEGER(ipk) :: ngraph ! The size of the undirected graph of the sparse matrix
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: graph    ! The undirected graph of the sparse matrix
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: igraph   ! The POINTER vector for the undirected graph
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: permu    ! Permutation of the unknowns numbers
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: degree   ! Degree of the unknowns
-  INTEGER(ipk) :: nvalues_dss ! Size of the sparse matrix storage for the DSS
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: hbwidth_dss   ! POINTER vector of DSS storage
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: diagindex_dss ! POINTER vector of DSS storage
-  REAL(r8k), DIMENSION(:), ALLOCATABLE :: values_dss  ! sparse matrix storage for the upper triangle
-  REAL(r8k), DIMENSION(:), ALLOCATABLE :: values_dssl ! sparse matrix storage for the lower triangle
+  INTEGER(ipk), target :: ngraph ! The size of the undirected graph of the sparse matrix
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: graph    ! The undirected graph of the sparse matrix
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: igraph   ! The POINTER vector for the undirected graph
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: permu    ! Permutation of the unknowns numbers
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: degree   ! Degree of the unknowns
+  INTEGER(ipk), target :: nvalues_dss ! Size of the sparse matrix storage for the DSS
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: hbwidth_dss   ! POINTER vector of DSS storage
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: diagindex_dss ! POINTER vector of DSS storage
+  REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: values_dss  ! sparse matrix storage for the upper triangle
+  REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: values_dssl ! sparse matrix storage for the lower triangle
 
   TYPE vertex
      INTEGER(ipk) :: number

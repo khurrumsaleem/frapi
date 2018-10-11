@@ -27,7 +27,8 @@ module m_interp1d
         error = .not. ((xmin <= x).and.(x <= xmax).and.(nx == ny))
         if (error) then
             write (*,*) 'ERROR: interp1d got wrong input data: ', nx, ny, xmin, xmax, x
-            stop
+            call backtrace
+            call exit (-1)
         endif
 
         i = 1
@@ -53,7 +54,8 @@ module m_interp1d
         n = size(xydata)
         if (.not. mod(n,2) == 0 ) then
             write(*,*) 'ERROR: interp1d got wrong input data: ', n
-            stop
+            call backtrace
+            call exit (-1)
         endif
         interp1d_2 = interp1d_1( (/( xydata(2*i),   i = 1, n/2 )/), &
                                  (/( xydata(2*i-1), i = 1, n/2 )/), x)

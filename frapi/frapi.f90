@@ -727,7 +727,7 @@ contains
         class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
-        integer      :: it
+        integer      :: it, k
         integer, parameter :: one = 1, two = 2, three = 3
         real(8)      :: var(:)
 
@@ -843,13 +843,16 @@ contains
             this % dftran % r__zelev(:) = var(:)
         case("htca")
             it = if_a_else_b(this % is_initdone, three, one)
-            this % dftran % r__htca(it,:) = var(:)
+            k = this % dftran % r__zone
+            this % dftran % r__htca(it,1:k) = var(:)
         case("tblka")
             it = if_a_else_b(this % is_initdone, three, one)
-            this % dftran % r__tblka(it,:) = var(:)
+            k = this % dftran % r__zone
+            this % dftran % r__tblka(it,1:k) = var(:)
         case("gasths")
             it = if_a_else_b(this % is_initdone, three, one)
-            this % dftran % r__gasths(it,:) = var(:)
+            k = this % dftran % r__zone
+            this % dftran % r__gasths(it,1:k) = var(:)
         case("radtemp")
             it = if_a_else_b(this % is_initdone, two, one)
             this % dftran % r__radtemp(:,it) = var(:)
@@ -1098,8 +1101,12 @@ contains
 
         class (t_fuelrod), intent(inout) :: this
 
-        call this % dfcon % destroy()
-        call this % dftran % destroy()
+        select case (frapmode_)
+        case ('frapcon')
+            call this % dfcon % destroy()
+        case ('fraptran')
+            call this % dftran % destroy()
+        end select
 
     end subroutine frod_destroy
 

@@ -8,9 +8,9 @@ MODULE materials_frap_fraptran
     !>@brief
     !> Material parameters
 
-  INTEGER(ipk) :: nmat ! Number of materials
+  INTEGER(ipk), target :: nmat ! Number of materials
   INTEGER(ipk), PARAMETER :: MAX_Data = 1000 ! Maximum number of Data pairs
-  REAL(r8k) :: mat_Data(2,MAX_Data) ! Temporary array for material Data
+  REAL(r8k), target :: mat_Data(2,MAX_Data) ! Temporary array for material Data
 
 
   TYPE mat_parameter

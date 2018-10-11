@@ -19,7 +19,7 @@ MODULE cont2d_fraptran
     !       o 1
     !
 
-    INTEGER(ipk) :: ncont2d,ncont2dsurf
+    INTEGER(ipk), target :: ncont2d,ncont2dsurf
     REAL(r8k), PARAMETER :: cont2d_alpha_tol = 0.01_r8k
 
     TYPE cont2dsurf_type
@@ -64,7 +64,7 @@ MODULE cont2d_fraptran
     END TYPE cont2d_type
 
 
-    REAL(r8k) :: cont2d_search
+    REAL(r8k), target :: cont2d_search
     TYPE(cont2d_type), POINTER :: &
         first_cont2d,last_cont2d ! POINTERs to the contact element Database
     TYPE(cont2dsurf_type), POINTER :: &

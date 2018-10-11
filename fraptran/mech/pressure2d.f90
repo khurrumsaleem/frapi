@@ -17,7 +17,7 @@ MODULE pressure2d_fraptran
     ! 2
     !
 
-  INTEGER(ipk) :: npressure2d
+  INTEGER(ipk), target :: npressure2d
 
   TYPE pressure2d_type
      INTEGER(ipk) :: label
@@ -31,7 +31,7 @@ MODULE pressure2d_fraptran
 
   TYPE(pressure2d_type), POINTER :: first_pressure2d,last_pressure2d
 
-  REAL(r8k), PRIVATE :: N(2,2),wgt(2),xi(2)
+  REAL(r8k), target :: N(2,2),wgt(2),xi(2)
 
 CONTAINS
     SUBROUTINE pressure2d_init()

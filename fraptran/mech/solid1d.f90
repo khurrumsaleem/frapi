@@ -25,7 +25,7 @@ MODULE solid1D_fraptran
     !     3     hoop
     !
 
-  INTEGER(ipk) :: nsolid1d
+  INTEGER(ipk), target :: nsolid1d
 
   TYPE solid1d_type
      INTEGER(ipk) :: label ! Element label

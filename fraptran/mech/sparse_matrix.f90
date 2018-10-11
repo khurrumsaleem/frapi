@@ -20,11 +20,11 @@ MODULE sparse_matrix_fraptran
     ! rowindex  = [ 1, 3, 5, 8, 10, 12]
     ! diagindex = [ 1, 3, 6, 9, 11, 12]
     !
-  INTEGER(ipk) :: neq ! Number of equations in linear system
-  INTEGER(ipk) :: nvalues ! Size of the storage array
-  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: columns, rowindex, diagindex ! POINTER vectors
-  REAL(r8k), DIMENSION(:), ALLOCATABLE :: values ! Storage array for the sparse matrix
-  LOGICAL :: linit ! True If the sparse direct solver has been initialized
+  INTEGER(ipk), target :: neq ! Number of equations in linear system
+  INTEGER(ipk), target :: nvalues ! Size of the storage array
+  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: columns, rowindex, diagindex ! POINTER vectors
+  REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: values ! Storage array for the sparse matrix
+  LOGICAL, target :: linit ! True If the sparse direct solver has been initialized
 
   TYPE row_number
      INTEGER(ipk) :: number

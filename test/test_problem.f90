@@ -195,31 +195,36 @@ module m_problem
 
         class (t_problem), intent(inout) :: this
 
+        integer :: n_roda, n_relf, n_expl
         integer :: i, j
         real(8) :: time
 
-        call this % frod % set_r8_1('htca',   (/( interp1d( (/(   htca(i,j), i = 1,    htco(j) )/), time ), j = 1, naxialnodes)/) )
-        call this % frod % set_r8_1('tblka',  (/( interp1d( (/(  tblka(i,j), i = 1,     tem(j) )/), time ), j = 1, naxialnodes)/) )
-        call this % frod % set_r8_1('gasths', (/( interp1d( (/( gasths(i,j), i = 1, ntimesteps )/), time ), j = 1, 2          )/) )
+        call this % frod % set_r8_1('htca',   (/( interp1d( (/(   htca(i,j), i = 1, 2*htco(j) )/), time ), j = 1, zone)/) ) ! htco(j)
+        call this % frod % set_r8_1('tblka',  (/( interp1d( (/(  tblka(i,j), i = 1, 2*tem(j)  )/), time ), j = 1, zone)/) ) ! tem(j)
+        !call this % frod % set_r8_1('gasths', (/( interp1d( (/( gasths(i,j), i = 1, ntimesteps )/), time ), j = 1, 2          )/) )
         
         call this % frod % set_r8_1('axpowprofile', (/( AxPowProfile(j,1), j = 1, 2*naxialnodes )/) )
         
         !call this % frod % set_r8_1('radtemp',      (/( interp1d( radpowprofile(2*j+1 + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
         !call this % frod % set_r8_1('fuelrad',      (/( interp1d( radpowprofile(2*j   + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
 
-        call this % frod % set_r8_0('hbh',          interp1d(         hbh(:), time) ) !    coreav
-        call this % frod % set_r8_0('hupta',        interp1d(       hupta(:), time) ) !     upppl
-        call this % frod % set_r8_0('hinta',        interp1d(       hinta(:), time) ) !     lowpl
-        call this % frod % set_r8_0('gbh',          interp1d(         gbh(:), time) ) !    massfl
-        call this % frod % set_r8_0('FuelGasSwell', interp1d(FuelGasSwell(:), time) ) ! TranSwell
-        call this % frod % set_r8_0('temptm',       interp1d(      temptm(:), time) ) !     inlet
-        call this % frod % set_r8_0('prestm',       interp1d(      prestm(:), time) ) !  pressure
-        call this % frod % set_r8_0('fldrat',       interp1d(      fldrat(:), time) ) !     reflo
-        call this % frod % set_r8_0('gasphs',       interp1d(      gasphs(:), time) ) !   prescri
-        call this % frod % set_r8_0('hlqcl',        interp1d(       hlqcl(:), time) ) !   collaps
-        call this % frod % set_r8_0('RodAvePower',  interp1d( RodAvePower(:), time) ) !   defsize
-        call this % frod % set_r8_0('relfraca',     interp1d(    relfraca(:), time) ) !   defsize
-        call this % frod % set_r8_0('explenumt',    interp1d(   explenumt(:), time) ) !   defsize
+        n_roda = lsize(rodavepower)
+        n_relf = lsize(relfraca)
+        n_expl = lsize(explenumt)
+
+        if (   coreav > 1) call this % frod % set_r8_0('hbh',          interp1d(         hbh(1:   coreav * 2), time) )
+        if (    upppl > 1) call this % frod % set_r8_0('hupta',        interp1d(       hupta(1:    upppl * 2), time) )
+        if (    lowpl > 1) call this % frod % set_r8_0('hinta',        interp1d(       hinta(1:    lowpl * 2), time) )
+        if (   massfl > 1) call this % frod % set_r8_0('gbh',          interp1d(         gbh(1:   massfl * 2), time) )
+        if (TranSwell > 1) call this % frod % set_r8_0('FuelGasSwell', interp1d(FuelGasSwell(1:TranSwell * 2), time) )
+        if (    inlet > 1) call this % frod % set_r8_0('temptm',       interp1d(      temptm(1:    inlet * 2), time) )
+        if ( pressure > 1) call this % frod % set_r8_0('prestm',       interp1d(      prestm(1: pressure * 2), time) )
+        if (    reflo > 1) call this % frod % set_r8_0('fldrat',       interp1d(      fldrat(1:    reflo * 2), time) )
+        if (  prescri > 1) call this % frod % set_r8_0('gasphs',       interp1d(      gasphs(1:  prescri * 2), time) )
+        if (  collaps > 1) call this % frod % set_r8_0('hlqcl',        interp1d(       hlqcl(1:  collaps * 2), time) )
+        if (   n_roda > 1) call this % frod % set_r8_0('RodAvePower',  interp1d( RodAvePower(1:   n_roda * 2), time) )
+        if (   n_relf > 1) call this % frod % set_r8_0('relfraca',     interp1d(    relfraca(1:   n_relf * 2), time) )
+        if (   n_expl > 1) call this % frod % set_r8_0('explenumt',    interp1d(   explenumt(1:   n_expl * 2), time) )
 
         if (coolant == 'on') call this % frod % set_r8_0('pbh', pbh1(1) )
         if (  mheat == 'on') call this % frod % set_r8_0('pbh', pbh2(1) )
@@ -232,10 +237,22 @@ module m_problem
         real(8) :: time, dt
         integer :: i 
         i = 1
-        do while (time <= dtmaxa(2*i))
+        do while ((time > dtmaxa(2*i)).and.(i <= ntimesteps))
             i = i + 1
         enddo
         dt = dtmaxa(2*i-1)
     end function p_timestep_fraptran
+
+    integer function lsize(a)
+        implicit none
+        real(8) :: a(:)
+        integer :: n, i
+        n = size(a)
+        i = 1
+        do while ((a(2*i) < a(2*i+2)).and.(2*i < n))
+            i = i + 1
+        enddo
+        lsize = i
+    end function lsize
 
 end module m_problem

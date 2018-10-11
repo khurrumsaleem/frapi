@@ -23,14 +23,14 @@ MODULE gascav2d_fraptran
     !
     !
 
-  INTEGER(ipk) :: ngascav2d
-  REAL(r8k), PRIVATE :: xi(2,4) ! GP coordinate values in element CS
-  REAL(r8k), PRIVATE :: N(4,4) ! Shape function values at GPs
-  REAL(r8k), PRIVATE :: dNdxi(2,4,4) ! Shape function derivatives in
+  INTEGER(ipk), target :: ngascav2d
+  REAL(r8k), target :: xi(2,4) ! GP coordinate values in element CS
+  REAL(r8k), target :: N(4,4) ! Shape function values at GPs
+  REAL(r8k), target :: dNdxi(2,4,4) ! Shape function derivatives in
                                           ! element CS
-  REAL(r8k), PRIVATE :: wgt(4) ! GP integration weight factors
+  REAL(r8k), target :: wgt(4) ! GP integration weight factors
 
-  REAL(r8k), PRIVATE :: Ns(2,2),wgts(2),xis(2)
+  REAL(r8k), target :: Ns(2,2),wgts(2),xis(2)
 
   TYPE gascav2d_type
      INTEGER(ipk) :: label ! Element label

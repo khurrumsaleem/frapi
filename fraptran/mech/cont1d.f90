@@ -17,7 +17,7 @@ MODULE cont1d_fraptran
     ! o--+  +--o--
     !
 
-    INTEGER(ipk) :: ncont1d ! Number of CONT1D elements
+    INTEGER(ipk), target :: ncont1d ! Number of CONT1D elements
 
     TYPE cont1d_type
         INTEGER(ipk) :: label ! Element label

@@ -12,7 +12,7 @@ program test_frapi
     character(len=256) :: ifilename ! input file name
     character(len=256) :: rfilename ! restart file name
 
-    integer :: i
+    integer :: i, step
 
     real(8) :: time, dt
 
@@ -21,6 +21,7 @@ program test_frapi
     call get_command_argument(3, rfilename)
 
     time = 0.D0
+    step = 0
 
     select case (frapmode)
 
@@ -42,6 +43,9 @@ program test_frapi
                 call problem % frod % accept ()
 
                 time = time + dt
+                step = step + 1
+
+                !write(*,*) step, dt, time
 
             enddo
 

@@ -227,7 +227,7 @@ MODULE timestep_fraptran
         OldPelDis(k) = PelSrfDispl(k)
     ENDDO
 
-    k = 5
+    !k = 5
     !write(*,*) 'HeatFlux0(k) = ', HeatFlux0(k)
     !write(*,*) 'CoolEnthalpy0(k) = ', CoolEnthalpy0(k)
     !write(*,*) 'CoolDensity0(k) = ', CoolDensity0(k)
@@ -235,11 +235,11 @@ MODULE timestep_fraptran
     !write(*,*) 'GasPress0(k) = ', GasPress0(k)
     !write(*,*) 'RodOD0(k) = ', RodOD0(k)
     !write(*,*) 'OldCoolPrs(k)  = ', OldCoolPrs(k) 
-    write(*,*) 'OldCladT(k) = ', global_count, TimeIncrement, OldCladT(k)
+    !write(*,*) 'OldCladT(k) = ', global_count, TimeIncrement, OldCladT(k)
     !write(*,*) 'OldGasPrs(k) = ', OldGasPrs(k)
     !write(*,*) 'OldPelDis(k) = ', OldPelDis(k)
-    global_count = global_count + 1
-    if (global_count == 10) stop
+    !global_count = global_count + 1
+    !if (global_count == 10) stop
     !write(*,*) 'BOSGapIndex(k) = ', BOSGapIndex(k)
     !write(*,*) 'OldCoolPrs0(k) = ', OldCoolPrs0(k)
     !write(*,*) 'OldCladT0(k) = ', OldCladT0(k)

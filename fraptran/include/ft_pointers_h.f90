@@ -1065,3 +1065,217 @@ real(r8k)                 , dimension(:,:)                            , pointer 
 real(r8k)                 , dimension(:,:)                            , pointer :: cldstrn 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: grsv 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: tplna 
+!    INTEGER(ipk) :: &
+!        nline, & ! Line number at the input file
+!        nd, & ! Number of Dimensions
+!        nnodes, & ! Number of nodes
+!        ncoupled, & ! Number of coupled sets
+!        nfixed, & ! Number of fixed DOFs
+!        ndispl, & ! Number of forced displacements
+!        ndof, & ! Number of free DOFs
+!        ngascav, & ! Number of gas cavities
+!        noutput, & ! Number of output
+!        max_node, & ! Maximum node number
+!        max_nnr, & ! Maximum number of Newton-Raphson iterations
+!        max_nln, & ! Maximum number of line searches
+!        units, & ! Units (does not have any effect on FEA)
+!            !   0 = British units (in,Psi)
+!            !   1 = SI units (m,Pa)
+!            !   2 = unknown
+!        nr_iter, & ! Newton-Raphson iteration count
+!        ngroup, & ! Current node group
+!        egroup, & ! Current element group
+!        nwarn, & ! Number of warning events for last iteration
+!        n_array, & ! Size for nodal arrays
+!        balloon, & ! Ballooning model
+!        rupture_mat, & ! Material label for rupture model
+!        rupture_gc ! Gas cavity for rupture model
+!    INTEGER(ipk), PARAMETER :: in_unit = 110
+!    INTEGER(ipk), PARAMETER :: out_unit = 120
+!    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: &
+!        node_labels, & ! Array for node labels
+!        enumber, & ! Number of elements associated to node
+!        int_tmp ! Temporary integer array
+!    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: &
+!        dof_number  ! DOF numbering (0 is a fixed DOF)
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: &
+!        du, & ! Displacement icrement
+!        fres, & ! Force residual
+!        temp, & ! Node temperatures
+!        Real_tmp, & ! Temporary real array for subroutines
+!        values_mm ! Mass matrix storage
+!    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: &
+!        u, & ! Nodal displacements
+!        v, & ! Nodal velocities
+!        a, & ! Nodal accelerations
+!        x0, & ! Initial node coordinates
+!        x, & ! Node coordinates
+!        Fint, & ! Node coordinates
+!        Fext, & ! Node coordinates
+!        Fgrav ! Gravity load
+!    CHARACTER(LEN=8) :: &
+!        dimens, & ! Flag for Dimensions of the calculation
+!                !   AXI = axisymmetric analysis
+!                !   2D = two Dimensional analysis
+!                !   3D  = three Dimensional analysis
+!        analys ! Analysis type
+!            !   STATIC = static analysis (neglect inertial forces)
+!            !   DYNAMIC = dynamic analysis
+!    CHARACTER(LEN=100) :: &
+!        infile, & ! Input file name
+!        outfile, & ! Output file name
+!        title ! Analysis title
+!    CHARACTER(LEN=1000) :: &
+!        line ! Last read line at input file
+!    REAL(r8k) :: &
+!        time, & ! Analysis time
+!        time0, & ! Explicit analysis time
+!        time_End, & ! Time at the End of load step
+!        tref, & ! Reference temperature
+!        dtime, & ! Time step length
+!        dtime0, & ! Initial timestep (given as input)
+!        dtime_min, & ! Minimum time step length
+!        dload, & ! Load step length
+!        grav(3), & ! Gravity load
+!        grav0(3), & ! Explicit gravity load
+!        grav_End(3), & ! Gravity load at the End of load step
+!        max_rn, & ! Maximum relative value for the vector norm of the force residual
+!        max_ple, & ! Maximum allowed plastic strain increment
+!        maxgamma, & ! Maximum effective plastic strain increment
+!        dl_min, & ! Parameters for line search
+!        rn_ratio, & ! Parameters for line search
+!        time_output, & ! Last output time
+!        dtime_output, & ! Output time interval
+!        cp(3), & ! Current calculation point
+!        rupture_eps, & ! Effective plastic strain value for rupture modelling
+!        rupture_p, & ! Pressure of the gas cavity after the rupture
+!        newmark_beta, & ! Parameter for Implicit Newmark time integration
+!        newmark_gamma, & ! Parameter for Implicit Newmark time integration
+!        elastic_strain_energy, &
+!        delta_plastic_strain_energy, &
+!        plastic_strain_energy, &
+!        kinetic_energy, &
+!        potential_energy
+!    LOGICAL :: &
+!        restart, & ! Flag for restart calculation
+!        last_step, & ! Flag for last load step
+!        linear_load, & ! Make a linear interpolation for the loads between load steps
+!        dof_numbering, & ! true If there is a need for DOF numbering
+!        outwrt, & ! true If the out put was written for the current load step
+!        init_fe, & ! true If FE modelling paramers nedd initialization
+!        symmetric_matrix, & ! True If stIffness matrix is symmetric
+!        elastic_matrix, & ! True forces to use elastic tangent stIffness matrix_fraptran
+!        pressure_matrix, & ! Use stIffnes matrix due to pressure loads_fraptran
+!        lprnmat, & ! If true print out tangent stIffness matrix and STOP
+!        lerror, & ! Error state
+!        quiet, & ! If true suppress output to stdout excluding error messages
+!        lrupture ! Rupture modelling for a gas cavity
+!    TYPE(node_type), POINTER :: &
+!        first_node,last_node ! POINTERs to the nodes
+!    TYPE(coupled_set), POINTER :: &
+!        first_coupled_set,last_coupled_set ! POINTERs for coupled DOF sets
+!    TYPE(gascav_type), POINTER :: &
+!        first_gascav,last_gascav ! POINTERs to the gas cavity Data
+!    LOGICAL :: clad_used
+!    TYPE(cont1d_type), POINTER :: first_cont1d,last_cont1d
+!    REAL(r8k) :: cont2d_search
+!    TYPE(cont2d_type), POINTER :: &
+!        first_cont2d,last_cont2d ! POINTERs to the contact element Database
+!    TYPE(cont2dsurf_type), POINTER :: &
+!        first_cont2dsurf,last_cont2dsurf ! POINTERs to 2D contact surfaces
+!    INTEGER(ipk) :: ncont2d,ncont2dsurf
+!  REAL(r8k), PARAMETER :: cont3d_alpha_tol = 0.01_r8k
+!  REAL(r8k) :: cont3d_search
+!  TYPE(cont3dsurf_type), POINTER :: first_cont3dsurf,last_cont3dsurf
+!  TYPE(cont3d_type), POINTER :: first_cont3d, last_cont3d
+!  INTEGER(ipk) :: ncont3dsurf ! Number of 3D contact surface definitions
+!  INTEGER(ipk) :: ncont3d ! Number of CONT3D elements
+!  TYPE(grid_1d_type), POINTER :: first_grid_1d,last_grid_1d
+!
+!    INTEGER(ipk) :: nax
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: elev ! Elevations
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: axsliceheight
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_width
+!    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: ut
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: tempt
+!    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: epsplt
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: epsefft
+!    LOGICAL, DIMENSION(:), ALLOCATABLE :: closedt, stickt
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: dz0t
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: prt
+!    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: flag2d
+!    LOGICAL :: failed_cladding
+!    INTEGER(ipk) :: rupture_model ! 0 = use only effective plastic strain criterion_fraptran
+!                                ! 1 = NUREG 0630 fast ramp correlation
+!                                ! 2 = NUREG 0630 slow ramp correlation
+!    REAL(r8k) :: Prupt,epsrupt,h_rupt
+!    INTEGER(ipk) :: clad_Cladtype
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_OxygenConcenAve
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_EffFastFluStrenCoef
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_EffFastFluStrnHardExp
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_EffColdWkStrenCoef
+!    REAL(r8k), DIMENSION(:), ALLOCATABLE :: clad_EffColdWkStrnHardExp
+!    REAL(r8k) :: clad_frcoef
+!  INTEGER(ipk), target :: ngascav1d
+!
+!  INTEGER(ipk), target :: ngascav2d
+!  REAL(r8k), target :: xi(2,4) ! GP coordinate values in element CS
+!  REAL(r8k), target :: N(4,4) ! Shape function values at GPs
+!  REAL(r8k), target :: dNdxi(2,4,4) ! Shape function derivatives in
+!                                          ! element CS
+!  REAL(r8k), target :: wgt(4) ! GP integration weight factors
+!
+!  REAL(r8k), target :: Ns(2,2),wgts(2),xis(2)
+!
+!  INTEGER(ipk), target :: ngascav3d
+!  REAL(r8k), target :: xi(3,8) = 0.0_r8k ! GP coordinate values in element CS
+!  REAL(r8k), target :: N(8,8) = 0.0_r8k ! Shape function values at GPs
+!  REAL(r8k), target :: dNdxi(3,8,8) = 0.0_r8k ! Shape function derivatives in element CS
+!  REAL(r8k), target :: wgt(8) ! GP integration weight factors
+!
+!  REAL(r8k), target :: Ns(4,4),wgts(4),xis(2,4),dNdxis(2,4,4)
+!
+!  INTEGER(ipk) :: nlines,nsurf ! Number of existing geometric entities
+!  REAL(r8k), DIMENSION(3) :: n_wrk ! Normal for the current work plane
+!
+!  INTEGER(ipk) :: nhex8 ! Number of HEX8 elements
+!  REAL(r8k), PRIVATE :: xi(3,8) ! GP coordinate values in element CS
+!  REAL(r8k), PRIVATE :: N(8,8) ! Shape function values at GPs
+!  REAL(r8k), PRIVATE :: dNdxi(3,8,8) ! Shape function derivatives in
+!                                          ! element CS
+!  REAL(r8k), PRIVATE :: wgt(8) ! GP integration weight factors
+!
+!
+!    LOGICAL, target :: m5_clad_used
+!    LOGICAL, target :: m5_clad_plast
+!    LOGICAL, target :: m5_clad_creep
+!
+!  INTEGER(ipk) :: nmat ! Number of materials
+!  REAL(r8k) :: mat_Data(2,MAX_Data) ! Temporary array for material Data
+!
+!    LOGICAL :: fuel_used
+!    LOGICAL :: fuel_plast
+!    LOGICAL :: fuel_creep
+!
+!  INTEGER(ipk) :: npressure1d
+!
+!  INTEGER(ipk), target :: npressure3d
+!
+!  REAL(r8k), target :: N(4,4),wgt(4),xi(2,4),dNdxi(2,4,4)
+!
+!  INTEGER(ipk), target :: ngraph ! The size of the undirected graph of the sparse matrix
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: graph    ! The undirected graph of the sparse matrix
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: igraph   ! The POINTER vector for the undirected graph
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: permu    ! Permutation of the unknowns numbers
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: degree   ! Degree of the unknowns
+!  INTEGER(ipk), target :: nvalues_dss ! Size of the sparse matrix storage for the DSS
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: hbwidth_dss   ! POINTER vector of DSS storage
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: diagindex_dss ! POINTER vector of DSS storage
+!  REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: values_dss  ! sparse matrix storage for the upper triangle
+!  REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: values_dssl ! sparse matrix storage for the lower triangle
+!
+!  INTEGER(ipk) :: neq ! Number of equations in linear system
+!  INTEGER(ipk) :: nvalues ! Size of the storage array
+!  INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: columns, rowindex, diagindex ! POINTER vectors
+!  REAL(r8k), DIMENSION(:), ALLOCATABLE :: values ! Storage array for the sparse matrix
+!  LOGICAL :: linit ! True If the sparse direct solver has been initialized

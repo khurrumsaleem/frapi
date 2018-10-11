@@ -22,13 +22,13 @@ MODULE gascav3d_fraptran
     !
     !
 
-  INTEGER(ipk) :: ngascav3d
-  REAL(r8k), PRIVATE :: xi(3,8) = 0.0_r8k ! GP coordinate values in element CS
-  REAL(r8k), PRIVATE :: N(8,8) = 0.0_r8k ! Shape function values at GPs
-  REAL(r8k), PRIVATE :: dNdxi(3,8,8) = 0.0_r8k ! Shape function derivatives in element CS
-  REAL(r8k), PRIVATE :: wgt(8) ! GP integration weight factors
+  INTEGER(ipk), target :: ngascav3d
+  REAL(r8k), target :: xi(3,8) = 0.0_r8k ! GP coordinate values in element CS
+  REAL(r8k), target :: N(8,8) = 0.0_r8k ! Shape function values at GPs
+  REAL(r8k), target :: dNdxi(3,8,8) = 0.0_r8k ! Shape function derivatives in element CS
+  REAL(r8k), target :: wgt(8) ! GP integration weight factors
 
-  REAL(r8k), PRIVATE :: Ns(4,4),wgts(4),xis(2,4),dNdxis(2,4,4)
+  REAL(r8k), target :: Ns(4,4),wgts(4),xis(2,4),dNdxis(2,4,4)
 
   TYPE gascav3d_type
      INTEGER(ipk) :: label ! Element label

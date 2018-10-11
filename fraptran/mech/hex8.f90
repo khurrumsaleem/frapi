@@ -33,12 +33,12 @@ MODULE hex8_fraptran
     !     6     13
     !
 
-  INTEGER(ipk) :: nhex8 ! Number of HEX8 elements
-  REAL(r8k), PRIVATE :: xi(3,8) ! GP coordinate values in element CS
-  REAL(r8k), PRIVATE :: N(8,8) ! Shape function values at GPs
-  REAL(r8k), PRIVATE :: dNdxi(3,8,8) ! Shape function derivatives in
+  INTEGER(ipk), target :: nhex8 ! Number of HEX8 elements
+  REAL(r8k), target :: xi(3,8) ! GP coordinate values in element CS
+  REAL(r8k), target :: N(8,8) ! Shape function values at GPs
+  REAL(r8k), target :: dNdxi(3,8,8) ! Shape function derivatives in
                                           ! element CS
-  REAL(r8k), PRIVATE :: wgt(8) ! GP integration weight factors
+  REAL(r8k), target :: wgt(8) ! GP integration weight factors
 
 
   TYPE hex8_type

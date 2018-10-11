@@ -18,7 +18,7 @@ MODULE pressure1d_fraptran
     ! 1
     !
 
-  INTEGER(ipk) :: npressure1d
+  INTEGER(ipk), target :: npressure1d
 
   TYPE pressure1d_type
      INTEGER(ipk) :: label

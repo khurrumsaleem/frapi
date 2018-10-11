@@ -8,7 +8,7 @@ MODULE cladding_fraptran
     !>@brief
     !> Cladding material properties for FEA Model
 
-    LOGICAL :: clad_used
+    LOGICAL, target :: clad_used
     LOGICAL, PARAMETER :: clad_plast = .TRUE.
     LOGICAL, PARAMETER :: clad_creep = .TRUE.
 

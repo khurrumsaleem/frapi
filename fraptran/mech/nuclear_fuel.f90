@@ -5,9 +5,9 @@ MODULE nuclear_fuel_fraptran
     !>@brief
     !> UO2 fuel material properties
 
-    LOGICAL :: fuel_used
-    LOGICAL :: fuel_plast
-    LOGICAL :: fuel_creep
+    LOGICAL, target :: fuel_used
+    LOGICAL, target :: fuel_plast
+    LOGICAL, target :: fuel_creep
 
     CONTAINS
     !

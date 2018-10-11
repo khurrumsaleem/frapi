@@ -19,7 +19,7 @@ MODULE gascav1d_fraptran
     !
     !
 
-  INTEGER(ipk) :: ngascav1d
+  INTEGER(ipk), target :: ngascav1d
 
   TYPE gascav1d_type
      INTEGER(ipk) :: label ! Element label

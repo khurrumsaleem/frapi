@@ -5,9 +5,9 @@ MODULE m5_cladding_fraptran
     !>@brief
     !> M5 cladding material properties
 
-    LOGICAL :: m5_clad_used
-    LOGICAL :: m5_clad_plast
-    LOGICAL :: m5_clad_creep
+    LOGICAL, target :: m5_clad_used
+    LOGICAL, target :: m5_clad_plast
+    LOGICAL, target :: m5_clad_creep
 
     CONTAINS
     !

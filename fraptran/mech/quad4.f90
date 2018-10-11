@@ -37,10 +37,10 @@ MODULE quad4_fraptran
     !     4     shear rz
     !
 
-  INTEGER(ipk) :: nquad4 ! Number of Q4 elements
-  REAL(r8k), PRIVATE :: xi(2,4) ! GP coordinate values in element CS
-  REAL(r8k), PRIVATE :: N(4,4) ! Shape function values at GPs
-  REAL(r8k), PRIVATE :: dNdxi(2,4,4) ! Shape function derivatives in
+  INTEGER(ipk), target :: nquad4 ! Number of Q4 elements
+  REAL(r8k), target :: xi(2,4) ! GP coordinate values in element CS
+  REAL(r8k), target :: N(4,4) ! Shape function values at GPs
+  REAL(r8k), target :: dNdxi(2,4,4) ! Shape function derivatives in
                                           ! element CS
   REAL(r8k), PRIVATE :: wgt(4) ! GP integration weight factors
 

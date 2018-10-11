@@ -42,11 +42,11 @@ MODULE cont3d_fraptran
 
 
   REAL(r8k), PARAMETER :: cont3d_alpha_tol = 0.01_r8k
-  REAL(r8k) :: cont3d_search
+  REAL(r8k), target :: cont3d_search
   TYPE(cont3dsurf_type), POINTER :: first_cont3dsurf,last_cont3dsurf
   TYPE(cont3d_type), POINTER :: first_cont3d, last_cont3d
-  INTEGER(ipk) :: ncont3dsurf ! Number of 3D contact surface definitions
-  INTEGER(ipk) :: ncont3d ! Number of CONT3D elements
+  INTEGER(ipk), target :: ncont3dsurf ! Number of 3D contact surface definitions
+  INTEGER(ipk), target :: ncont3d ! Number of CONT3D elements
 
 CONTAINS
     SUBROUTINE cont3d_init()

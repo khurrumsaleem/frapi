@@ -71,7 +71,7 @@ MODULE common_parameters_fraptran
     ! Variables
     ! =========
 
-    INTEGER(ipk) :: &
+    INTEGER(ipk), target :: &
         nline, & ! Line number at the input file
         nd, & ! Number of Dimensions
         nnodes, & ! Number of nodes
@@ -98,19 +98,19 @@ MODULE common_parameters_fraptran
         rupture_gc ! Gas cavity for rupture model
     INTEGER(ipk), PARAMETER :: in_unit = 110
     INTEGER(ipk), PARAMETER :: out_unit = 120
-    INTEGER(ipk), DIMENSION(:), ALLOCATABLE :: &
+    INTEGER(ipk), DIMENSION(:), ALLOCATABLE, target :: &
         node_labels, & ! Array for node labels
         enumber, & ! Number of elements associated to node
         int_tmp ! Temporary integer array
-    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE :: &
+    INTEGER(ipk), DIMENSION(:,:), ALLOCATABLE, target :: &
         dof_number  ! DOF numbering (0 is a fixed DOF)
-    REAL(r8k), DIMENSION(:), ALLOCATABLE :: &
+    REAL(r8k), DIMENSION(:), ALLOCATABLE, target :: &
         du, & ! Displacement icrement
         fres, & ! Force residual
         temp, & ! Node temperatures
         Real_tmp, & ! Temporary real array for subroutines
         values_mm ! Mass matrix storage
-    REAL(r8k), DIMENSION(:,:), ALLOCATABLE :: &
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE, target :: &
         u, & ! Nodal displacements
         v, & ! Nodal velocities
         a, & ! Nodal accelerations
@@ -119,7 +119,7 @@ MODULE common_parameters_fraptran
         Fint, & ! Node coordinates
         Fext, & ! Node coordinates
         Fgrav ! Gravity load
-    CHARACTER(LEN=8) :: &
+    CHARACTER(LEN=8), target :: &
         dimens, & ! Flag for Dimensions of the calculation
                 !   AXI = axisymmetric analysis
                 !   2D = two Dimensional analysis
@@ -127,13 +127,13 @@ MODULE common_parameters_fraptran
         analys ! Analysis type
             !   STATIC = static analysis (neglect inertial forces)
             !   DYNAMIC = dynamic analysis
-    CHARACTER(LEN=100) :: &
+    CHARACTER(LEN=100), target :: &
         infile, & ! Input file name
         outfile, & ! Output file name
         title ! Analysis title
-    CHARACTER(LEN=1000) :: &
+    CHARACTER(LEN=1000), target :: &
         line ! Last read line at input file
-    REAL(r8k) :: &
+    REAL(r8k), target :: &
         time, & ! Analysis time
         time0, & ! Explicit analysis time
         time_End, & ! Time at the End of load step
@@ -162,7 +162,7 @@ MODULE common_parameters_fraptran
         plastic_strain_energy, &
         kinetic_energy, &
         potential_energy
-    LOGICAL :: &
+    LOGICAL, target :: &
         restart, & ! Flag for restart calculation
         last_step, & ! Flag for last load step
         linear_load, & ! Make a linear interpolation for the loads between load steps

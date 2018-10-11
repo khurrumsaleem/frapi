@@ -35,8 +35,8 @@ MODULE geometry_fraptran
        first_line,last_line ! POINTERs to the linked lists
   TYPE(surf_type), POINTER :: &
        first_surf,last_surf ! POINTERs to the linked lists
-  INTEGER(ipk) :: nlines,nsurf ! Number of existing geometric entities
-  REAL(r8k), DIMENSION(3) :: n_wrk ! Normal for the current work plane
+  INTEGER(ipk), target :: nlines,nsurf ! Number of existing geometric entities
+  REAL(r8k), DIMENSION(3), target :: n_wrk ! Normal for the current work plane
 
 CONTAINS
     SUBROUTINE init_geometry()

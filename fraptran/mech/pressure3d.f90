@@ -21,7 +21,7 @@ MODULE pressure3d_fraptran
   !     N1             N2
   !
 
-  INTEGER(ipk) :: npressure3d
+  INTEGER(ipk), target :: npressure3d
 
   TYPE pressure3d_type
      INTEGER(ipk) :: label
@@ -35,7 +35,7 @@ MODULE pressure3d_fraptran
 
   TYPE(pressure3d_type), POINTER :: first_pressure3d,last_pressure3d
 
-  REAL(r8k), PRIVATE :: N(4,4),wgt(4),xi(2,4),dNdxi(2,4,4)
+  REAL(r8k), target :: N(4,4),wgt(4),xi(2,4),dNdxi(2,4,4)
 
 CONTAINS
     SUBROUTINE pressure3d_init()
