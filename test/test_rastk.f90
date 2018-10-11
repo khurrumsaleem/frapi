@@ -1,6 +1,6 @@
 program rastk_input_file
 
-    use frapi, only : frod_type
+    use frapi, only : t_fuelrod
 
     implicit none
 
@@ -38,7 +38,7 @@ program rastk_input_file
     real(8) :: hdish, dishsd
 
     ! ARRAY OF FUEL RODS
-    type(frod_type), allocatable :: frod(:)
+    type(t_fuelrod), allocatable :: frod(:)
 
     integer(4), allocatable :: z_meshes(:)
     integer(4), allocatable :: n_bu_steps(:)    ! Number of burnup steps over cycle

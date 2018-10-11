@@ -7,7 +7,7 @@ module frapi
 
     implicit none
 
-    type, public :: frod_type
+    type, public :: t_fuelrod
         type( frapcon_driver) :: dfcon              ! Burnup steady-state calculations
         type(fraptran_driver) :: dftran             ! Transient calculations
         logical               :: is_initdone        ! The flag is about whether initialization has been finished or not yet
@@ -41,7 +41,7 @@ module frapi
         procedure :: save      => frod_save         ! Save fuel rod state in a file
         procedure :: load      => frod_load         ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
-    end type frod_type
+    end type t_fuelrod
 
     ! TEMPORARY VARIABLES
     character(len=20) :: frapmode_
@@ -63,7 +63,7 @@ contains
                jfb, nucbo, unitin, unitout, res, pow, gasflo, idoxid, cathca, baker, &
                noball, cenvoi, soltyp)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         include "fi_optstatement_h.f90"
 
@@ -132,7 +132,7 @@ contains
 
     subroutine frod_init(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         select case (frapmode_)
         case ('frapcon')
@@ -146,7 +146,7 @@ contains
 
     subroutine frod_makerf(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         select case (frapmode_)
         case ('frapcon')
@@ -159,7 +159,7 @@ contains
 
     subroutine frod_init_frapcon_(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         call this % dfcon % load()
         call this % dfcon % proc() ! processing and checking of input variables
@@ -169,7 +169,7 @@ contains
 
     subroutine frod_init_fraptran_(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         this % dftran % namerf = this % namerf
         call this % dftran % load()
@@ -180,7 +180,7 @@ contains
 
     subroutine frod_next(this, dt)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         real(8) :: dt
 
@@ -200,7 +200,7 @@ contains
 
     subroutine frod_next_frapcon_(this, dt)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         real(8) :: dt
 
@@ -212,7 +212,7 @@ contains
 
     subroutine frod_next_fraptran_(this, dt)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         real(8) :: dt, t0
 
@@ -227,7 +227,7 @@ contains
 
     subroutine frod_save(this, filename)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: filename
 
@@ -237,7 +237,7 @@ contains
 
     subroutine frod_load(this, filename)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: filename
 
@@ -247,7 +247,7 @@ contains
 
     subroutine frod_accept(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         select case (frapmode_)
         case ('frapcon')
@@ -260,7 +260,7 @@ contains
 
     subroutine frod_set_ch_0(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key, var
         integer      :: it
@@ -277,7 +277,7 @@ contains
 
     subroutine frod_set_i4_0(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
@@ -368,7 +368,7 @@ contains
 
     subroutine frod_set_i4_1(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
@@ -389,7 +389,7 @@ contains
 
     subroutine frod_set_r8_0(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
         integer      :: it, it3
@@ -724,7 +724,7 @@ contains
 
     subroutine frod_set_r8_1(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
@@ -869,7 +869,7 @@ contains
 
     subroutine frod_set_r8_2(this, key, var)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         character(*) :: key
         integer      :: it
@@ -888,7 +888,7 @@ contains
 
     subroutine frod_get_i4_0(this, key, var)
 
-        class (frod_type), intent(in) :: this
+        class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
         integer      :: it
@@ -908,7 +908,7 @@ contains
 
     subroutine frod_get_r8_0(this, key, var)
 
-        class (frod_type), intent(in) :: this
+        class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
         integer      :: it
@@ -946,7 +946,7 @@ contains
 
     subroutine frod_get_r8_1(this, key, var)
 
-        class (frod_type), intent(in) :: this
+        class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
         integer      :: it
@@ -1071,7 +1071,7 @@ contains
 
     subroutine frod_get_r8_2(this, key, var)
 
-        class (frod_type), intent(in) :: this
+        class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
         integer      :: it
@@ -1096,7 +1096,7 @@ contains
 
     subroutine frod_destroy(this)
 
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
 
         call this % dfcon % destroy()
         call this % dftran % destroy()
@@ -1104,7 +1104,7 @@ contains
     end subroutine frod_destroy
 
     subroutine settime(this,i,t)
-        class (frod_type), intent(inout) :: this
+        class (t_fuelrod), intent(inout) :: this
         integer :: i
         real(8) :: t
         this % dftran % r__pbh(i) = t

@@ -34,7 +34,7 @@ names = [
 
 
 def make(filename):
-    call(["../../build/debug/test_frapi", "%s.inp"%filename])
+    call(["../../build/debug/test_frapi_fpc", "%s.inp"%filename])
     call(["../../build/debug/main_frapcon", "%s.inp"%filename])
     call(["../../utils/frapcon2h5.py", "%s.plot"%filename, "%s-frapcon.h5"%filename])
     call(["../../utils/frapi2h5.py", "%s-frapi.txt"%filename, "%s-frapi.h5"%filename])
