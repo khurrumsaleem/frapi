@@ -55,13 +55,7 @@ contains
     subroutine frod_make(this, nr, na, ngasr, nce, frapmode, &
                mechan, ngasmod, icm, icor, iplant, &
                imox, igascal, zr2vintage, moxtype, idxgas, iq, ivardm, &
-               ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws, relocmodel, &
-               coolant, mheat, bheat, reflood, internal, metal, deformation, inst, geomet, &
-               nvol1, lowpl, pressu, massfl, coreav, chf, filmbo, coldwa, axpow, bowing, &
-               spefbz, geometry, nbundl, refloodtime, radiat, ruptur, liquid, inlet, reflo, &
-               pressure, collaps, frapt4, geom, temp, tape2, nvol2, zone, upppl, &
-               jfb, nucbo, unitin, unitout, res, pow, gasflo, idoxid, cathca, baker, &
-               noball, cenvoi, soltyp)
+               ifixedcoolt, ifixedcoolp, ifixedtsurf, verbose, flag_iapws)
 
         class (t_fuelrod), intent(inout) :: this
 
@@ -268,6 +262,24 @@ contains
         select case (key)
         case ("restart file")
             this % dftran % r__namerf = trim(var)
+        case ("coolant")
+            this % dftran % r__coolant     = trim(var)
+        case ("bheat")
+            this % dftran % r__bheat       = trim(var)
+        case ("mheat")
+            this % dftran % r__mheat       = trim(var)
+        case ("reflood")
+            this % dftran % r__reflood     = trim(var)
+        case ("internal")
+            this % dftran % r__internal    = trim(var)
+        case ("metal")
+            this % dftran % r__metal       = trim(var)
+        case ("deformation")
+            this % dftran % r__deformation = trim(var)
+        case ("inst")
+            this % dftran % r__inst        = trim(var)
+        case ("relocmodel")
+            this % dftran % r__relocmodel  = trim(var)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -358,6 +370,88 @@ contains
             this % dftran % r__profile = var
         case("nsym")
             this % dftran % r__nsym = var
+        case("geomet")
+            this % dftran % r__geomet      = var
+        case("nvol1")
+            this % dftran % r__nvol1       = var
+        case("lowpl")
+            this % dftran % r__lowpl       = var
+        case("pressu")
+            this % dftran % r__pressu      = var
+        case("massfl")
+            this % dftran % r__massfl      = var
+        case("coreav")
+            this % dftran % r__coreav      = var
+        case("chf")
+            this % dftran % r__chf         = var
+        case("filmbo")
+            this % dftran % r__filmbo      = var
+        case("coldwa")
+            this % dftran % r__coldwa      = var
+        case("axpow")
+            this % dftran % r__axpow       = var
+        case("bowing")
+            this % dftran % r__bowing      = var
+        case("spefbz")
+            this % dftran % r__spefbz      = var
+        case("geometry")
+            this % dftran % r__geometry    = var
+        case("nbundl")
+            this % dftran % r__nbundl      = var
+        case("refloodtime")
+            this % dftran % r__refloodtime = var
+        case("ruptur")
+            this % dftran % r__ruptur      = var
+        case("liquid")
+            this % dftran % r__liquid      = var
+        case("inlet")
+            this % dftran % r__inlet       = var
+        case("reflo")
+            this % dftran % r__reflo       = var
+        case("pressure")
+            this % dftran % r__pressure    = var
+        case("collaps")
+            this % dftran % r__collaps     = var
+        case("frapt4")
+            this % dftran % r__frapt4      = var
+        case("geom")
+            this % dftran % r__geom        = var
+        case("temp")
+            this % dftran % r__temp        = var
+        case("tape2")
+            this % dftran % r__tape2       = var
+        case("nvol2")
+            this % dftran % r__nvol2       = var
+        case("zone")
+            this % dftran % r__zone        = var
+        case("upppl")
+            this % dftran % r__upppl       = var
+        case("jfb")
+            this % dftran % r__jfb         = var
+        case("nucbo")
+            this % dftran % r__nucbo       = var
+        case("unitin")
+            this % dftran % r__unitin      = var
+        case("unitout")
+            this % dftran % r__unitout     = var
+        case("res")
+            this % dftran % r__res         = var
+        case("pow")
+            this % dftran % r__pow         = var
+        case("gasflo")
+            this % dftran % r__gasflo      = var
+        case("idoxid")
+            this % dftran % r__idoxid      = var
+        case("cathca")
+            this % dftran % r__cathca      = var
+        case("baker")
+            this % dftran % r__baker       = var
+        case("noball")
+            this % dftran % r__noball      = var
+        case("cenvoi")
+            this % dftran % r__cenvoi      = var
+        case("soltyp")
+            this % dftran % r__soltyp      = var
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
