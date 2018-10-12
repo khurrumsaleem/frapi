@@ -9,7 +9,7 @@ module m_problem
 
     implicit none
 
-    !include "fi_varlist_h.f90"
+    character(len=128), dimension(65) :: varname, vartype, varcomment
 
     type, public :: t_problem
         type (t_odfile)  :: ofile
@@ -37,6 +37,8 @@ module m_problem
         integer :: i, j, itime, starttime
 
         real(8) :: qtot, dt
+
+        include "fi_fpt_outvars_h.f90"
 
         call this % ofile % open(ofilename)
 
@@ -279,9 +281,31 @@ module m_problem
     subroutine p_save_in_file_fraptran (this)
         implicit none
         class (t_problem), intent(inout) :: this
+        integer :: i
+        integer :: var_i4_0, var_i4_1(naxialnodes)
+        real(8) :: var_r8_0, var_r8_1(naxialnodes), var_r8_2(nradialnodes, naxialnodes)
         real(8) :: tmp0(naxialnodes)
-        call this % frod  % get_r8_1  ('cladavetemp', tmp0)
-        call this % ofile % write_r8_1('cladavetemp', tmp0(1:naxn))
+        !na = naxn + 25
+        !nr = nfmesh + ncmesh + 1
+        do i = 1, size(varname)
+            select case (vartype(i))
+            case ('i4_0')
+                call this % frod  % get_i4_0  (varname(i), var_i4_0)
+                call this % ofile % write_i4_0(varname(i), varcomment(i), var_i4_0)
+            case ('i4_1')
+                call this % frod  % get_i4_1  (varname(i), var_i4_1)
+                call this % ofile % write_i4_1(varname(i), varcomment(i), var_i4_1 )
+            case ('r8_0')
+                call this % frod  % get_r8_0  (varname(i), var_r8_0)
+                call this % ofile % write_r8_0(varname(i), varcomment(i), var_r8_0)
+            case ('r8_1')
+                call this % frod  % get_r8_1  (varname(i), var_r8_1)
+                call this % ofile % write_r8_1(varname(i), varcomment(i), var_r8_1 )
+            case ('r8_2')
+                call this % frod  % get_r8_2  (varname(i), var_r8_2)
+                call this % ofile % write_r8_2(varname(i), varcomment(i), var_r8_2 )
+            end select
+        enddo
     end subroutine p_save_in_file_fraptran
 
     function p_timestep_fraptran(this, time) result (dt)

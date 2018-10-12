@@ -34,6 +34,7 @@ module frapi
         procedure :: set_r8_2  => frod_set_r8_2     ! set variable of type real and rank 2
 
         procedure :: get_i4_0  => frod_get_i4_0     ! get variable of type integer and rank 0
+        procedure :: get_i4_1  => frod_get_i4_1     ! get variable of type integer and rank 1
         procedure :: get_r8_0  => frod_get_r8_0     ! get variable of type real and rank 0
         procedure :: get_r8_1  => frod_get_r8_1     ! get variable of type real and rank 1
         procedure :: get_r8_2  => frod_get_r8_2     ! get variable of type real and rank 2
@@ -988,20 +989,69 @@ contains
         class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
-        integer      :: it
         integer      :: var
-
-        it = this % dfcon % it
 
         select case(key)
         case('program terminate')
             var = this % dfcon % iquit
+        case('n1')
+            var = this % dftran % n1
+        case('n2')
+            var = this % dftran % n2
+        case('nmesh')
+            var = this % dftran % nmesh
+        case('ncladi')
+            var = this % dftran % ncladi
+        case('igpnod')
+            var = this % dftran % igpnod
+        case('modfd')
+            var = this % dftran % modfd
+        case('naxn')
+            var = this % dftran % naxn
+        case('iterationcount')
+            var = this % dftran % iterationcount
+        case('n3')
+            var = this % dftran % n3
+        case('ifbaln')
+            var = this % dftran % ifbaln
+        case('jmnbal')
+            var = this % dftran % jmnbal
+        case('kntbal')
+            var = this % dftran % kntbal
+        case('nbncal')
+            var = this % dftran % nbncal
+        case('nodprm')
+            var = this % dftran % nodprm
+        case('modfal')
+            var = this % dftran % modfal(1)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
         end select
 
     end subroutine frod_get_i4_0
+
+    subroutine frod_get_i4_1(this, key, var)
+
+        class (t_fuelrod), intent(in) :: this
+
+        character(*) :: key
+        integer      :: var(:)
+
+        select case(key)
+        case('ih')
+            var(:) = this % dftran % ih (:)
+        case('ruptfailindex')
+            var(:) = this % dftran % ruptfailindex (:)
+        case('cladcollapseindex')
+            var(:) = this % dftran % cladcollapseindex (:)
+        case default
+            write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            stop
+        end select
+
+    end subroutine frod_get_i4_1
+
 
     subroutine frod_get_r8_0(this, key, var)
 
@@ -1011,7 +1061,8 @@ contains
         integer      :: it
         real(8)      :: var
 
-        it = this % dfcon % it
+        if (frapmode_ == 'frapcon')  it = this % dfcon % it
+        if (frapmode_ == 'fraptran') it = 1 !check the value !!!
 
         select case(key)
         case('average linear power, W|cm')
@@ -1034,6 +1085,42 @@ contains
             var = this % dfcon % ProblemTime(it) * sectoday
         case('average fuel burnup, MW*d|kg')
             var = this % dfcon % bu * 1.D-3
+        case('delth')
+            var = this % dftran % delth
+        case('dcldh')
+            var = this % dftran % dcldh
+        case('bup')
+            var = this % dftran % bup
+        case('frpo2')
+            var = this % dftran % frpo2
+        case('totalvoidvol')
+            var = this % dftran % totalvoidvol
+        case('chstrs')
+            var = this % dftran % chstrs
+        case('frbal')
+            var = this % dftran % frbal
+        case('pmxbal')
+            var = this % dftran % pmxbal
+        case('r8bal')
+            var = this % dftran % r8bal
+        case('tcebal')
+            var = this % dftran % tcebal
+        case('pdrato')
+            var = this % dftran % pdrato
+        case('rnbnt')
+            var = this % dftran % rnbnt
+        case('totnb')
+            var = this % dftran % totnb
+        case('powave')
+            var = this % dftran % powave (1)
+        case('flwblk')
+            var = this % dftran % flwblk (1)
+        case('tp')
+            var = this % dftran % tp (1)
+        case('flowg')
+            var = this % dftran % flowg (1)
+        case('tmelt')
+            var = this % dftran % tmelt (1)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -1161,6 +1248,62 @@ contains
             var(:) = var(:) * intocm
         case('cladavetemp')
             var(:) = this % dftran % CladAveTemp(:)
+        case('radialbound')
+            var(:) = this % dftran % radialbound (:)
+        case('cldpermaxstrn')
+            var(:) = this % dftran % cldpermaxstrn (:)
+        case('cldpermhoopstrn')
+            var(:) = this % dftran % cldpermhoopstrn (:)
+        case('gaspress')
+            var(:) = this % dftran % gaspress (:)
+        case('axialpowr')
+            var(:) = this % dftran % axialpowr (:)
+        case('heatflux')
+            var(:) = this % dftran % heatflux (:)
+        case('axnodelevat')
+            var(:) = this % dftran % axnodelevat (:)
+        case('crithtflux')
+            var(:) = this % dftran % crithtflux (:)
+        case('coolpress')
+            var(:) = this % dftran % coolpress (:)
+        case('filmcoeffav')
+            var(:) = this % dftran % filmcoeffav (:)
+        case('hgapav')
+            var(:) = this % dftran % hgapav (:)
+        case('eosoxidethick')
+            var(:) = this % dftran % eosoxidethick (:)
+        case('watrmetlenrgy')
+            var(:) = this % dftran % watrmetlenrgy (:)
+        case('axialnodlen')
+            var(:) = this % dftran % axialnodlen (:)
+        case('cldpermstrn')
+            var(:) = this % dftran % cldpermstrn (:)
+        case('qmaxmelt')
+            var(:) = this % dftran % qmaxmelt (:)
+        case('rinterfacgap')
+            var(:) = this % dftran % rinterfacgap (:)
+        case('rinterfacprs')
+            var(:) = this % dftran % rinterfacprs (:)
+        case('cladeffstress')
+            var(:) = this % dftran % cladeffstress (:)
+        case('effstrain')
+            var(:) = this % dftran % effstrain (:)
+        case('einstabilstrain')
+            var(:) = this % dftran % einstabilstrain (:)
+        case('stressatinststrain')
+            var(:) = this % dftran % stressatinststrain (:)
+        case('cladyieldstress')
+            var(:) = this % dftran % cladyieldstress (:)
+        case('farbal')
+            var(:) = this % dftran % farbal (:)
+        case('sdfar')
+            var(:) = this % dftran % sdfar (:)
+        case('zfarbl')
+            var(:) = this % dftran % zfarbl (:)
+        case("sigmah")
+            var(:) = this % dftran % CldStress(:,1)
+        case("sigmaz")
+            var(:) = this % dftran % CldStress(:,2)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -1174,11 +1317,8 @@ contains
         class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
-        integer      :: it
         real(8)      :: var(:,:) ! array (n,)
         real(8)      :: intoum = intomm * 1.D+3
-
-        it = this % dfcon % it
 
         select case(key)
             case('fuel temperature distribution, C') ! YU JIANKAI
@@ -1187,6 +1327,12 @@ contains
                         var(j,i) = tfc(this % dfcon % tmpfuel(m + 2 - j, i))
                     enddo
                 enddo 
+        case('eostemp')
+            var(:,:) = this % dftran % eostemp (:,:)
+        case('eosrad')
+            var(:,:) = this % dftran % eosrad (:,:)
+        case('enrgymeltz')
+            var(:,:) = this % dftran % enrgymeltz (:,:)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop

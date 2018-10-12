@@ -17,7 +17,7 @@ program frapi_input_file
     logical :: is_save
 
     integer, parameter :: ivars_array = 37, ivars_value = 4
-    character(len=256) :: filename, string
+    character(len=256) :: filename, string, comment
     character(len=256) :: varname_array(ivars_array), varname_value(ivars_value)
 
     ! ITERATIONAL VARIABLES
@@ -262,6 +262,7 @@ program frapi_input_file
 
         endif
 
+        comment = ''
 
         if (itime == 1) then
             call frod % next(ProblemTime(itime-1))
@@ -271,16 +272,16 @@ program frapi_input_file
 
         call frod % accept()
 
-        call ofile % write_i4_0('frapi burnup step', itime)
+        call ofile % write_i4_0('frapi time step', comment, itime)
 
         do i = 1, ivars_array
             call frod % get_array(varname_array(i), value)
-            call ofile % write_r8_1(varname_array(i), value)
+            call ofile % write_r8_1(varname_array(i), comment, value)
         enddo
 
         do i = 1, ivars_value
             call frod % get_value(varname_value(i), value(1))
-            call ofile % write_r8_0(varname_value(i), value(1))
+            call ofile % write_r8_0(varname_value(i), comment, value(1))
         enddo
 
         if (.not. is_restart) then

@@ -378,4 +378,8 @@ module fraptran2
         !
         end subroutine FRAPTRAN_1_5a
 
+        subroutine save2file
+            implicit none
+        end subroutine save2file
+
 end module fraptran2
