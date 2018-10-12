@@ -346,6 +346,7 @@ MODULE GadRadPower_frapcon
     SUBROUTINE LoadGadProperties ()
     USE Kinds_frapcon
     USE conversions_frapcon
+    use m_array_allocate, only : array_allocate
     IMPLICIT NONE
     !>@brief
     !> This subroutine loads the Gad radial burnup power profiles
@@ -357,6 +358,7 @@ MODULE GadRadPower_frapcon
     INTEGER(ipk) :: RxType
     !
     ALLOCATE (GadPow(1:2))
+    !call array_allocate(gadpow,1,2)
     ! LWR
     RxType = 1
     GadPow(RxType)%NRadVals = SIZE(Gdrad)

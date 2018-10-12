@@ -28,7 +28,7 @@ module fraptran2
     USE cnvt_fraptran
     use Uncertainties_fraptran, only :  AllocateUncertaintyvars
     use Uncertainty_Vals_fraptran
-    use arrayallocate, only : clone
+    use m_array_clone, only : array_clone
 
     implicit none
 

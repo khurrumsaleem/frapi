@@ -5,6 +5,7 @@ MODULE FEModel_frapcon
     USE FEA_IO_frapcon, ONLY : fileo, write_output
     USE StaticFEA_frapcon
     USE FEA_Mesh_frapcon
+    use m_array_allocate, only : array_allocate
     IMPLICIT NONE
     !>@brief
     !> This module contains the driver for the FE cladding deformation model and the temporary storage arrays_frapcon
@@ -148,6 +149,7 @@ MODULE FEModel_frapcon
             ALLOCATE(elev(na), ut(2,nnodes), tempt(nnodes), epsplt(3,nsolid1d), &
                      epsefft(nsolid1d), closedt(ncont1d), stickt(ncont1d), &
                      dz0t(ncont1d), prt(npressure1d))
+            call array_allocate(elev,1,na)
 
             ! Initialize temporary storage variables
             CALL temp_storage('U')

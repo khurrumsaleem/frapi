@@ -233,8 +233,10 @@ program frapi_input_file
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
+            write(*,*) 'hello-1'
             call frod % init()
             call frod % accept()
+            write(*,*) 'hello-2'
 
             call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
             call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
@@ -272,7 +274,7 @@ program frapi_input_file
 
         call frod % accept()
 
-        call ofile % write_i4_0('frapi time step', comment, itime)
+        call ofile % write_i4_0('frapi time step', 'burnup time step, days', itime)
 
         do i = 1, ivars_array
             call frod % get_array(varname_array(i), value)

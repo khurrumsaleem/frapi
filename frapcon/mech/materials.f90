@@ -5,6 +5,7 @@ MODULE materials_frapcon
     USE cladding_frapcon
     USE m5_cladding_frapcon
     USE nuclear_fuel_frapcon
+    use m_array_allocate, only : array_allocate
     IMPLICIT NONE
     !
     INTEGER(ipk) :: nmat ! Number of materials

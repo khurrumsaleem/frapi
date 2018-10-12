@@ -1,8 +1,8 @@
-module arrayallocate
+module m_array_clone
 
     implicit none
 
-    interface clone
+    interface array_clone
         module procedure clone_ch_1
         module procedure clone_i4_1
         module procedure clone_i4_2
@@ -10,7 +10,7 @@ module arrayallocate
         module procedure clone_r8_1
         module procedure clone_r8_2
         module procedure clone_r8_3
-    end interface clone
+    end interface array_clone
 
     contains
 
@@ -101,4 +101,4 @@ module arrayallocate
         endif
     end subroutine checkshape
 
-end module arrayallocate
+end module m_array_clone

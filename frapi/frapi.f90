@@ -86,9 +86,9 @@ contains
 
             call this % dfcon % make(na_, ngasr_, nr_+1, nce_, verbose_)
 
-            include "fi_optassignment_h.f90"
-
             call this % dfcon % deft()
+
+            include "fi_optassignment_h.f90"
 
             call this % dfcon % dump()
 
@@ -100,11 +100,11 @@ contains
             ! Set arguments of 'make' by default
             call this % dftran % make(na_, nr_, nce_, verbose_)
 
-            ! Read arguments of 'make' and set them to dftran's variables
-            include "fi_optassignment_h.f90"
-
             ! Set dftran's variables (i.e. pointers to FRAPTRAN's variables) by default
             call this % dftran % deft()
+
+            ! Read arguments of 'make' and set them to dftran's variables
+            include "fi_optassignment_h.f90"
 
             ! Copy the dftran's variables into replicative variables
             call this % dftran % dump()

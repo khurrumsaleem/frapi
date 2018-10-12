@@ -31,9 +31,9 @@ file(GLOB test_frapi_src    "test/test_frapi.f90"
 
 include_directories(./frapcon/Include ./fraptran/include ./include)
 
-add_library(frapcon  SHARED ${frapcon_src}  )
-add_library(fraptran SHARED ${fraptran_src} ${math_src})
-add_library(frapi    SHARED ${frapi_src}    )
+add_library(frapcon   SHARED ${frapcon_src} ${math_src})
+add_library(fraptran  SHARED ${fraptran_src} ${math_src})
+add_library(frapi     SHARED ${frapi_src})
 
 target_link_libraries(frapi frapcon fraptran)
 

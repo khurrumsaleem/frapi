@@ -5,20 +5,27 @@ import argparse
 from h5py import *
 
 
-
 def txt2array(d):
     x = []
     lines = d.split('\n')
-    for i in range(0,len(lines),3)[:-1]:
-        key  = lines[i]
-        line = lines[i+2]
-        line = line.split()
-        value = map(float, line)
-        if key == 'frapi burnup step':
-            x.append({key: value})
-        else:
-            x[-1][key] = value
+    for line in lines:
+        mark = line[:2]
+        if mark == '#0':
+            varname = line[3:]
+            values = []
+        elif mark == '#1':
+            comment = line[3:]
+        elif mark == '#2':
+            vartype = line[3:]
+        elif mark == '#3':
+            values += map(float, line[3:].split())
+        elif mark == '#4':
+            if varname == 'frapi time step':
+                x.append({varname: values})
+            else:
+                x[-1][varname] = values
     return x
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="Make *.h5 file from frapcon output")
@@ -35,6 +42,6 @@ if __name__ == '__main__':
     with File(args.ofile) as f:
         for itime, d in enumerate(data):
             group = f.create_group("%06i"%itime)
-            group.attrs['time, day'] = d['time, day']
+            #group.attrs['time, day'] = d['time, day']
             for key in d:
                 group[key] = d[key]
