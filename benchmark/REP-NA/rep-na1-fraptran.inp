@@ -1,7 +1,7 @@
 FILE15='sth2xt', STATUS='old', FORM='UNFORMATTED' *
 * *
 FILE79='out.na1', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST' *
-FILE66='stripf.na1', STATUS='UNKNOWN', FORM='FORMATTED', CARRIAGE CONTROL='LIST' *
+FILE66='rep-na1-fraptran.plot', STATUS='UNKNOWN', FORM='FORMATTED', CARRIAGE CONTROL='LIST' *
 FILE22='restart-na1.txt' , STATUS='old', FORM='FORMATTED' *
 /***********************************************************************
 REP-Na1, for EPRI review (8/26/03)

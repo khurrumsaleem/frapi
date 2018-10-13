@@ -2,7 +2,7 @@
 * GOESOUTS:
 FILE73='REP-NA1-Base.out', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
 FILE22='restart-na1.txt', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
-FILE66='REP-NA1-Base.plot', STATUS='UNKNOWN', FORM='FORMATTED',
+FILE66='rep-na1-frapcon.plot', STATUS='UNKNOWN', FORM='FORMATTED',
 CARRIAGE CONTROL='LIST'
 /**********************************************************************
 Base Irradiation of REP NA-1

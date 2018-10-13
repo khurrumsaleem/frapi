@@ -6,6 +6,7 @@
 
     Dependencies:
         numpy
+        matplotlib 
         hdf5py (requares in order to run tests)
 
     1. Make directories 'cd build/debug' or 'cd build/release'
