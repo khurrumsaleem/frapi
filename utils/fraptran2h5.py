@@ -46,7 +46,7 @@ keylist = {
  108 : ( 'psia MPa Effective Cladding Stress', none ),
  161 : ( 'na na Cladding Eff. Elastic-Plastic Strain', none ),
  111 : ( 'mils mm Structural Radial Gap', none ),
- 112 : ( 'mils mm Thermal Radial Gap', none ),
+ 112 : ( 'rinterfacgap', none ),
  113 : ( 'psia MPa Clad Yield Stress', none ),
  114 : ( 'Pa Pa K coefficient', none ),
  115 : ( 'na na n coefficient', none ),

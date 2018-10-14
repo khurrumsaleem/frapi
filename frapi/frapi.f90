@@ -1,6 +1,7 @@
 module frapi
 
     use conversions_frapcon
+    use conversions_fraptran, only : coneu
     use frapcon4,  only : frapcon_driver
     use fraptran2, only : fraptran_driver
     use m_if_a_else_b, only : if_a_else_b
@@ -1040,11 +1041,11 @@ contains
 
         select case(key)
         case('ih')
-            var(:) = this % dftran % ih (:)
+            var(:) = this % dftran % ih (1:n)
         case('ruptfailindex')
-            var(:) = this % dftran % ruptfailindex (:)
+            var(:) = this % dftran % ruptfailindex (1:n)
         case('cladcollapseindex')
-            var(:) = this % dftran % cladcollapseindex (:)
+            var(:) = this % dftran % cladcollapseindex (1:n)
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
             stop
@@ -1086,15 +1087,15 @@ contains
         case('average fuel burnup, MW*d|kg')
             var = this % dfcon % bu * 1.D-3
         case('delth')
-            var = this % dftran % delth
+            call coneu( this % dftran % delth, var, 24 )
         case('dcldh')
-            var = this % dftran % dcldh
+            call coneu( this % dftran % dcldh, var, 24 )
         case('bup')
             var = this % dftran % bup
         case('frpo2')
             var = this % dftran % frpo2
         case('totalvoidvol')
-            var = this % dftran % totalvoidvol
+            call coneu( this % dftran % totalvoidvol, var, 23 )
         case('chstrs')
             var = this % dftran % chstrs
         case('frbal')
@@ -1247,65 +1248,69 @@ contains
             var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
             var(:) = var(:) * intocm
         case('cladavetemp')
-            var(:) = this % dftran % CladAveTemp(:)
+            call aconeu( this % dftran % CladAveTemp, var, n, 1)
         case('radialbound')
-            var(:) = this % dftran % radialbound (:)
+            !call aconeu( this % dftran % CladAveTemp, var, n, 1)
+            var(:) = this % dftran % radialbound (1:n)
         case('cldpermaxstrn')
-            var(:) = this % dftran % cldpermaxstrn (:)
+            var(:) = this % dftran % cldpermaxstrn (1:n)
         case('cldpermhoopstrn')
-            var(:) = this % dftran % cldpermhoopstrn (:)
+            var(:) = this % dftran % cldpermhoopstrn (1:n)
         case('gaspress')
-            var(:) = this % dftran % gaspress (:)
+            call aconeu( this % dftran % gaspress, var, n, 18)
         case('axialpowr')
-            var(:) = this % dftran % axialpowr (:)
+            var(:) = this % dftran % axialpowr (1:n)
         case('heatflux')
-            var(:) = this % dftran % heatflux (:)
+            var(:) = this % dftran % heatflux (1:n)
         case('axnodelevat')
-            var(:) = this % dftran % axnodelevat (:)
+            var(:) = this % dftran % axnodelevat (1:n)
         case('crithtflux')
-            var(:) = this % dftran % crithtflux (:)
+            var(:) = this % dftran % crithtflux (1:n)
         case('coolpress')
-            var(:) = this % dftran % coolpress (:)
+            var(:) = this % dftran % coolpress(1:n)
         case('filmcoeffav')
-            var(:) = this % dftran % filmcoeffav (:)
+            var(:) = this % dftran % filmcoeffav(1:n)
         case('hgapav')
-            var(:) = this % dftran % hgapav (:)
+            var(:) = this % dftran % hgapav(1:n)
         case('eosoxidethick')
-            var(:) = this % dftran % eosoxidethick (:)
+            var(:) = this % dftran % eosoxidethick(1:n)
         case('watrmetlenrgy')
-            var(:) = this % dftran % watrmetlenrgy (:)
+            var(:) = this % dftran % watrmetlenrgy(1:n)
         case('axialnodlen')
-            var(:) = this % dftran % axialnodlen (:)
+            var(:) = this % dftran % axialnodlen(1:n)
         case('cldpermstrn')
-            var(:) = this % dftran % cldpermstrn (:)
+            var(:) = this % dftran % cldpermstrn(1:n)
         case('qmaxmelt')
-            var(:) = this % dftran % qmaxmelt (:)
+            var(:) = this % dftran % qmaxmelt(1:n)
         case('rinterfacgap')
-            var(:) = this % dftran % rinterfacgap (:)
+            var(:) = this % dftran % rinterfacgap(1:n) * 1.2D+4
         case('rinterfacprs')
-            var(:) = this % dftran % rinterfacprs (:)
+            var(:) = this % dftran % rinterfacprs(1:n)
         case('cladeffstress')
-            var(:) = this % dftran % cladeffstress (:)
+            var(:) = this % dftran % cladeffstress(1:n)
         case('effstrain')
-            var(:) = this % dftran % effstrain (:)
+            var(:) = this % dftran % effstrain(1:n)
         case('einstabilstrain')
-            var(:) = this % dftran % einstabilstrain (:)
+            var(:) = this % dftran % einstabilstrain(1:n)
         case('stressatinststrain')
-            var(:) = this % dftran % stressatinststrain (:)
+            var(:) = this % dftran % stressatinststrain(1:n)
         case('cladyieldstress')
-            var(:) = this % dftran % cladyieldstress (:)
+            var(:) = this % dftran % cladyieldstress(1:n)
         case('farbal')
-            var(:) = this % dftran % farbal (:)
+            var(:) = this % dftran % farbal(1:n)
         case('sdfar')
-            var(:) = this % dftran % sdfar (:)
+            var(:) = this % dftran % sdfar(1:n)
         case('zfarbl')
-            var(:) = this % dftran % zfarbl (:)
+            var(:) = this % dftran % zfarbl(1:n)
         case("sigmah")
             var(:) = this % dftran % CldStress(:,1)
         case("sigmaz")
             var(:) = this % dftran % CldStress(:,2)
+        case('gapthick')
+            var(:) = this % dftran % gapthick (1:n) * 1.2D+4
         case default
             write(*,*) 'ERROR: Variable ', key, ' has not been found'
+            call backtrace
             stop
         end select
 
@@ -1379,5 +1384,14 @@ contains
         this % dftran % r__gasths(i,:) = t
 
     end subroutine settime
+
+    subroutine aconeu(a, b, n, index)
+        implicit none
+        integer :: n, index
+        real(8) :: a(:), b(:)
+        do i = 1, n
+            call coneu(a(i), b(i), index)
+        enddo
+    end subroutine aconeu
 
 end module frapi

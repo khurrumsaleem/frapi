@@ -63,6 +63,7 @@ varname(62) = 'zfarbl'
 varname(63) = 'eostemp'
 varname(64) = 'eosrad'
 varname(65) = 'enrgymeltz'
+varname(66) = 'gapthick'
 
 vartype(1) = 'i4_0'
 vartype(2) = 'i4_0'
@@ -129,6 +130,9 @@ vartype(62) = 'r8_1*' ! dimension is equal to 20
 vartype(63) = 'r8_2'
 vartype(64) = 'r8_2'
 vartype(65) = 'r8_2'
+vartype(66) = 'r8_1'
+
+
 
 varcomment(1) = 'dimension of radial node vectors'
 varcomment(2) = 'dimension of axial node vectors. 1'
@@ -195,3 +199,9 @@ varcomment(62) = 'axial location flow area reduction subnodes  (m)'
 varcomment(63) = 'eos temperature at calculation node j'
 varcomment(64) = 'radius to node j at time t'
 varcomment(65) = 'energy absorbed in melting by l-th half mesh (two half meshes per radial node) (btu/ftom**3)'
+varcomment(66) = 'thermal radial gap, mm'
+
+
+
+
+
