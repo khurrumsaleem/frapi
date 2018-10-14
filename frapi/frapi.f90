@@ -8,6 +8,11 @@ module frapi
 
     implicit none
 
+    real(8), parameter :: intoum = 25.4D+3
+    real(8), parameter :: fttom = 3.28084D0
+    real(8), parameter :: fttomm = 3.28084D+3
+    real(8), parameter :: mmtoin = 1.D0/25.4D0
+
     type, public :: t_fuelrod
         type( frapcon_driver) :: dfcon              ! Burnup steady-state calculations
         type(fraptran_driver) :: dftran             ! Transient calculations
@@ -261,30 +266,34 @@ contains
         character(*) :: key, var
         integer      :: it
 
-        select case (key)
-        case ("restart file")
-            this % dftran % r__namerf = trim(var)
-        case ("coolant")
-            this % dftran % r__coolant     = trim(var)
-        case ("bheat")
-            this % dftran % r__bheat       = trim(var)
-        case ("mheat")
-            this % dftran % r__mheat       = trim(var)
-        case ("reflood")
-            this % dftran % r__reflood     = trim(var)
-        case ("internal")
-            this % dftran % r__internal    = trim(var)
-        case ("metal")
-            this % dftran % r__metal       = trim(var)
-        case ("deformation")
-            this % dftran % r__deformation = trim(var)
-        case ("inst")
-            this % dftran % r__inst        = trim(var)
-        case ("relocmodel")
-            this % dftran % r__relocmodel  = trim(var)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        select case (frapmode_)
+        case ('frapcon')
+            call error_message(key, 'character rank 0 in the frapcon set-list')
+        case ('fraptran') 
+            select case (key)
+            case ("restart file")
+                this % dftran % r__namerf      = trim(var)
+            case ("coolant")
+                this % dftran % r__coolant     = trim(var)
+            case ("bheat")
+                this % dftran % r__bheat       = trim(var)
+            case ("mheat")
+                this % dftran % r__mheat       = trim(var)
+            case ("reflood")
+                this % dftran % r__reflood     = trim(var)
+            case ("internal")
+                this % dftran % r__internal    = trim(var)
+            case ("metal")
+                this % dftran % r__metal       = trim(var)
+            case ("deformation")
+                this % dftran % r__deformation = trim(var)
+            case ("inst")
+                this % dftran % r__inst        = trim(var)
+            case ("relocmodel")
+                this % dftran % r__relocmodel  = trim(var)
+            case default
+                call error_message(key, 'character rank 0 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_ch_0
@@ -297,166 +306,171 @@ contains
         integer      :: it
         integer(4)   :: var
 
-        select case(key)
-        case("azang")
-            this % dftran % r__azang = var
-        case("iStoicGrad")
-            this % dftran % r__iStoicGrad = var
-        case("prestmp")
-            this % dftran % r__prestmp = var
-        case("nbhtc")
-            this % dftran % r__nbhtc = var
-        case("rtheta")
-            this % dftran % r__rtheta = var
-        case("prescri")
-            this % dftran % r__prescri = var
-        case("mechan")
-            this % dftran % r__mechan = var
-        case("nfmesh")
-            this % dftran % r__nfmesh = var
-        case("NumAxProfiles")
-            this % dftran % r__NumAxProfiles = var
-        case("radiat")
-            this % dftran % r__radiat = var
-        case("maxit")
-            this % dftran % r__maxit = var
-        case("tape1")
-            this % dftran % r__tape1 = var
-        case("jtr")
-            this % dftran % r__jtr = var
-        case("NRestart")
-            this % dftran % r__nrestart = var
-        case("irupt")
-            this % dftran % r__irupt = var
-        case("CladType")
-            this % dftran % r__CladType = var
-        case("odoxid")
-            this % dftran % r__odoxid = var
-        case("nchn")
-            this % dftran % r__nchn = var
-        case("TranSwell")
-            this % dftran % r__TranSwell = var
-        case("noiter")
-            this % dftran % r__noiter = var
-        case("nthermex")
-            this % dftran % r__nthermex = var
-        case("ncmesh")
-            this % dftran % r__ncmesh = var
-        case("naxn")
-            this % dftran % r__naxn = var
-        case("IndexFC2Print")
-            this % dftran % r__IndexFC2Print = var
-        case("irefine")
-            this % dftran % r__irefine = var
-        case("ProtectiveOxide")
-            this % dftran % r__ProtectiveOxide = var
-        case("nIDoxide")
-            this % dftran % r__nIDoxide = var
-        case("nce")
-            this % dftran % r__nce = var
-        case("IndexGrainBndSep")
-            this % dftran % r__IndexGrainBndSep = var
-        case("grass")
-            this % dftran % r__grass = var
-        case("ncolbp")
-            this % dftran % r__ncolbp = var
-        case("presfgr")
-            this % dftran % r__presfgr = var
-        case("inp")
-            this % dftran % r__inp = var
-        case("naz")
-            this % dftran % r__naz = var
-        case("jchf")
-            this % dftran % r__jchf = var
-        case("profile")
-            this % dftran % r__profile = var
-        case("nsym")
-            this % dftran % r__nsym = var
-        case("geomet")
-            this % dftran % r__geomet      = var
-        case("nvol1")
-            this % dftran % r__nvol1       = var
-        case("lowpl")
-            this % dftran % r__lowpl       = var
-        case("pressu")
-            this % dftran % r__pressu      = var
-        case("massfl")
-            this % dftran % r__massfl      = var
-        case("coreav")
-            this % dftran % r__coreav      = var
-        case("chf")
-            this % dftran % r__chf         = var
-        case("filmbo")
-            this % dftran % r__filmbo      = var
-        case("coldwa")
-            this % dftran % r__coldwa      = var
-        case("axpow")
-            this % dftran % r__axpow       = var
-        case("bowing")
-            this % dftran % r__bowing      = var
-        case("spefbz")
-            this % dftran % r__spefbz      = var
-        case("geometry")
-            this % dftran % r__geometry    = var
-        case("nbundl")
-            this % dftran % r__nbundl      = var
-        case("refloodtime")
-            this % dftran % r__refloodtime = var
-        case("ruptur")
-            this % dftran % r__ruptur      = var
-        case("liquid")
-            this % dftran % r__liquid      = var
-        case("inlet")
-            this % dftran % r__inlet       = var
-        case("reflo")
-            this % dftran % r__reflo       = var
-        case("pressure")
-            this % dftran % r__pressure    = var
-        case("collaps")
-            this % dftran % r__collaps     = var
-        case("frapt4")
-            this % dftran % r__frapt4      = var
-        case("geom")
-            this % dftran % r__geom        = var
-        case("temp")
-            this % dftran % r__temp        = var
-        case("tape2")
-            this % dftran % r__tape2       = var
-        case("nvol2")
-            this % dftran % r__nvol2       = var
-        case("zone")
-            this % dftran % r__zone        = var
-        case("upppl")
-            this % dftran % r__upppl       = var
-        case("jfb")
-            this % dftran % r__jfb         = var
-        case("nucbo")
-            this % dftran % r__nucbo       = var
-        case("unitin")
-            this % dftran % r__unitin      = var
-        case("unitout")
-            this % dftran % r__unitout     = var
-        case("res")
-            this % dftran % r__res         = var
-        case("pow")
-            this % dftran % r__pow         = var
-        case("gasflo")
-            this % dftran % r__gasflo      = var
-        case("idoxid")
-            this % dftran % r__idoxid      = var
-        case("cathca")
-            this % dftran % r__cathca      = var
-        case("baker")
-            this % dftran % r__baker       = var
-        case("noball")
-            this % dftran % r__noball      = var
-        case("cenvoi")
-            this % dftran % r__cenvoi      = var
-        case("soltyp")
-            this % dftran % r__soltyp      = var
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+
+        select case (frapmode_)
+        case ('frapcon')
+            call error_message (key, 'integer rank 1 in the frapcon set-list')
+        case ('fraptran')
+            select case(key)
+            case("azang")
+                this % dftran % r__azang = var
+            case("iStoicGrad")
+                this % dftran % r__iStoicGrad = var
+            case("prestmp")
+                this % dftran % r__prestmp = var
+            case("nbhtc")
+                this % dftran % r__nbhtc = var
+            case("rtheta")
+                this % dftran % r__rtheta = var
+            case("prescri")
+                this % dftran % r__prescri = var
+            case("mechan")
+                this % dftran % r__mechan = var
+            case("nfmesh")
+                this % dftran % r__nfmesh = var
+            case("NumAxProfiles")
+                this % dftran % r__NumAxProfiles = var
+            case("radiat")
+                this % dftran % r__radiat = var
+            case("maxit")
+                this % dftran % r__maxit = var
+            case("tape1")
+                this % dftran % r__tape1 = var
+            case("jtr")
+                this % dftran % r__jtr = var
+            case("NRestart")
+                this % dftran % r__nrestart = var
+            case("irupt")
+                this % dftran % r__irupt = var
+            case("CladType")
+                this % dftran % r__CladType = var
+            case("odoxid")
+                this % dftran % r__odoxid = var
+            case("nchn")
+                this % dftran % r__nchn = var
+            case("TranSwell")
+                this % dftran % r__TranSwell = var
+            case("noiter")
+                this % dftran % r__noiter = var
+            case("nthermex")
+                this % dftran % r__nthermex = var
+            case("ncmesh")
+                this % dftran % r__ncmesh = var
+            case("naxn")
+                this % dftran % r__naxn = var
+            case("IndexFC2Print")
+                this % dftran % r__IndexFC2Print = var
+            case("irefine")
+                this % dftran % r__irefine = var
+            case("ProtectiveOxide")
+                this % dftran % r__ProtectiveOxide = var
+            case("nIDoxide")
+                this % dftran % r__nIDoxide = var
+            case("nce")
+                this % dftran % r__nce = var
+            case("IndexGrainBndSep")
+                this % dftran % r__IndexGrainBndSep = var
+            case("grass")
+                this % dftran % r__grass = var
+            case("ncolbp")
+                this % dftran % r__ncolbp = var
+            case("presfgr")
+                this % dftran % r__presfgr = var
+            case("inp")
+                this % dftran % r__inp = var
+            case("naz")
+                this % dftran % r__naz = var
+            case("jchf")
+                this % dftran % r__jchf = var
+            case("profile")
+                this % dftran % r__profile = var
+            case("nsym")
+                this % dftran % r__nsym = var
+            case("geomet")
+                this % dftran % r__geomet      = var
+            case("nvol1")
+                this % dftran % r__nvol1       = var
+            case("lowpl")
+                this % dftran % r__lowpl       = var
+            case("pressu")
+                this % dftran % r__pressu      = var
+            case("massfl")
+                this % dftran % r__massfl      = var
+            case("coreav")
+                this % dftran % r__coreav      = var
+            case("chf")
+                this % dftran % r__chf         = var
+            case("filmbo")
+                this % dftran % r__filmbo      = var
+            case("coldwa")
+                this % dftran % r__coldwa      = var
+            case("axpow")
+                this % dftran % r__axpow       = var
+            case("bowing")
+                this % dftran % r__bowing      = var
+            case("spefbz")
+                this % dftran % r__spefbz      = var
+            case("geometry")
+                this % dftran % r__geometry    = var
+            case("nbundl")
+                this % dftran % r__nbundl      = var
+            case("refloodtime")
+                this % dftran % r__refloodtime = var
+            case("ruptur")
+                this % dftran % r__ruptur      = var
+            case("liquid")
+                this % dftran % r__liquid      = var
+            case("inlet")
+                this % dftran % r__inlet       = var
+            case("reflo")
+                this % dftran % r__reflo       = var
+            case("pressure")
+                this % dftran % r__pressure    = var
+            case("collaps")
+                this % dftran % r__collaps     = var
+            case("frapt4")
+                this % dftran % r__frapt4      = var
+            case("geom")
+                this % dftran % r__geom        = var
+            case("temp")
+                this % dftran % r__temp        = var
+            case("tape2")
+                this % dftran % r__tape2       = var
+            case("nvol2")
+                this % dftran % r__nvol2       = var
+            case("zone")
+                this % dftran % r__zone        = var
+            case("upppl")
+                this % dftran % r__upppl       = var
+            case("jfb")
+                this % dftran % r__jfb         = var
+            case("nucbo")
+                this % dftran % r__nucbo       = var
+            case("unitin")
+                this % dftran % r__unitin      = var
+            case("unitout")
+                this % dftran % r__unitout     = var
+            case("res")
+                this % dftran % r__res         = var
+            case("pow")
+                this % dftran % r__pow         = var
+            case("gasflo")
+                this % dftran % r__gasflo      = var
+            case("idoxid")
+                this % dftran % r__idoxid      = var
+            case("cathca")
+                this % dftran % r__cathca      = var
+            case("baker")
+                this % dftran % r__baker       = var
+            case("noball")
+                this % dftran % r__noball      = var
+            case("cenvoi")
+                this % dftran % r__cenvoi      = var
+            case("soltyp")
+                this % dftran % r__soltyp      = var
+            case default
+                call error_message(key, 'integer rank 1 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_i4_0
@@ -470,14 +484,18 @@ contains
         integer      :: it
         integer(4)   :: var(:)
 
-        select case (key)
-        case("ngastmp")
-            this % dftran % r__ngastmp(:) = var(:)
-        case("ncs")
-            this % dftran % r__ncs(:) = var(:)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        select case (frapmode_)
+        case ('frapcon')
+            call error_message(key, 'integer rank 2 in the frapcon set-list')
+        case ('fraptran')
+            select case (key)
+            case("ngastmp")
+                this % dftran % r__ngastmp(:) = var(:)
+            case("ncs")
+                this % dftran % r__ncs(:) = var(:)
+            case default
+                call error_message(key, 'integer rank 2 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_i4_1
@@ -490,330 +508,337 @@ contains
         character(*) :: key
         integer      :: it, it3
         real(8)      :: var
-        real(8)      :: mmtoin = 1.d0/intomm
 
-        it  = this % dfcon % r__it
-        it3 = if_a_else_b(this % is_initdone, 3, 1)
+        select case (frapmode_)
+        
+        case ('frapcon')
+            it  = this % dfcon % r__it
+            select case(key)
+            case("fuel rod pitch, cm")
+                this % dfcon % r__pitch = var * cmtoin
+            case("as-fabricated apparent fuel density, %TD")
+                this % dfcon % r__den = var
+            case("coolant mass flux, kg|(s*m^2)")
+                this % dfcon % r__go(it) = var * ksm2tolbhrft2
+            case("additional fuel densification factor")
+                this % dfcon % r__afdn         = var
+            case("clad texture factor")
+                this % dfcon % r__catexf       = var
+            case("as-fabricated clad hydrogen content, wt.ppm")
+                this % dfcon % r__chorg        = var                       
+            case("clad cold work")
+                this % dfcon % r__cldwks       = var                       
+            case("cold plenum length, m")
+                this % dfcon % r__cpl          = var * mtoin
+            case("constant crud thickness, mm")
+                this % dfcon % r__crdt         = var / miltomm
+            case("crud accumulation rate")
+                this % dfcon % r__crdtr        = var                       
+            case("creep step duration, hr")
+                this % dfcon % r__crephr       = var                       
+            case("fuel open porosity fraction, %TD")
+                this % dfcon % r__deng         = var                       
+            case("spring diameter, mm")
+                this % dfcon % r__dspg         = var * mmtoin              
+            case("spring wire diameter, mm")
+                this % dfcon % r__dspgw        = var * mmtoin              
+            case("number of spring turns")
+                this % dfcon % r__vs           = var
+            case("peak-to-average power ratio")
+                this % dfcon % r__fa           = var                       
+            case("fill gas pressure, Pa")
+                this % dfcon % r__fgpav        = var * PatoPSI             
+            case("fuel oxygen-to-metal ratio")
+                this % dfcon % r__fotmtl       = var                       
+            case("weight ppm H2O in fuel, wt.ppm")
+                this % dfcon % r__ppmh2o       = var                       
+            case("weight ppm N2 in fuel, wt. ppm")
+                this % dfcon % r__ppmn2        = var                       
+            case("expected resintering density increase, kg|m^3")
+                this % dfcon % r__rsntr        = var                       
+            case("fision gas atoms per 100 fissions")
+                this % dfcon % r__sgapf        = var                       
+            case("swelling limit")
+                this % dfcon % r__slim         = var                       
+            case("pellet centering temperature, K")
+                this % dfcon % r__tsint        = tkf(var)                  
+            case("grain size of the fuel, um")
+                this % dfcon % r__grnsize      = var                       
+            case("FEA friction coefficient")
+                this % dfcon % r__frcoef       = var                       
+            case("percent IFBA rods in core, %")
+                this % dfcon % r__ifba         = var                       
+            case("boron-10 enrichment in ZrB2, atom %")
+                this % dfcon % r__b10          = var                       
+            case("ZrB2 thickness, mm")
+                this % dfcon % r__zrb2thick    = var * mmtoin               
+            case("ZrB2 density, %TD")
+                this % dfcon % r__zrb2den      = var
+            case("decay heat multiplier")
+                this % dfcon % r__fpdcay       = var                       
+            case("molar fraction of air")
+                this % dfcon % r__amfair       = var                       
+            case("molar fraction of argon")
+                this % dfcon % r__amfarg       = var                       
+            case("molar fraction of fission gas")
+                this % dfcon % r__amffg        = var                       
+            case("molar fraction of helium")
+                this % dfcon % r__amfhe        = var                       
+            case("molar fraction of hydrogen")
+                this % dfcon % r__amfh2        = var                       
+            case("molar fraction of water")
+                this % dfcon % r__amfh2o       = var                       
+            case("molar fraction of krypton")
+                this % dfcon % r__amfkry       = var                       
+            case("molar fraction of nitrogen")
+                this % dfcon % r__amfn2        = var                       
+            case("molar fraction of xenon")
+                this % dfcon % r__amfxe        = var                       
+            case("Bias on fuel thermal conductivity")
+                this % dfcon % r__sigftc       = var                       
+            case("Bias on fuel thermal expansion")
+                this % dfcon % r__sigftex      = var                       
+            case("Bias on fission gas release")
+                this % dfcon % r__sigfgr       = var                       
+            case("Bias on fuel swelling")
+                this % dfcon % r__sigswell     = var                       
+            case("Bias on cladding creep")
+                this % dfcon % r__sigcreep     = var                       
+            case("Bias on cladding axial growth")
+                this % dfcon % r__siggro       = var                       
+            case("Bias on cladding corrosion")
+                this % dfcon % r__sigcor       = var                       
+            case("Bias on cladding hydrogen pickup")
+                this % dfcon % r__sigh2        = var                       
+            case("fuel pellet Pu-239 content")
+                this % dfcon % r__enrpu39      = var                       
+            case("fuel pellet Pu-240 content")
+                this % dfcon % r__enrpu40      = var                       
+            case("fuel pellet Pu-241 content")
+                this % dfcon % r__enrpu41      = var                       
+            case("fuel pellet Pu-242 content")
+                this % dfcon % r__enrpu42      = var
+            case("pellet height, mm")
+                this % dfcon % r__hplt         = var * mmtoin
+            case("chamfer height, mm")
+                this % dfcon % r__chmfrh       = var * mmtoin
+            case("chamfer width, mm")
+                this % dfcon % r__chmfrw       = var * mmtoin
+            case("dish shoulder width, mm")
+                this % dfcon % r__dishsd       = var * mmtoin
+            case("dish height, mm")
+                this % dfcon % r__hdish        = var * mmtoin
+            case("clad roughness, mm")
+                this % dfcon % r__roughc       = var * mmtoin
+            case("fuel roughness, mm")
+                this % dfcon % r__roughf       = var * mmtoin
+            case("end-node to plenum heat transfer fraction")
+                this % dfcon % r__qend(it)     = var
+            case("rod internal pressure for FEA model, MPa")
+                this % dfcon % r__p1(it)       = var * patoPSI
+            case("inlet coolant temperature, C")
+                this % dfcon % r__tw(it) = tcf(var)
+            case("inlet coolant pressure, MPa")
+                this % dfcon % r__p2(it) = var * MPatoPSI
+            case("fuel enrichment by u-235, %")
+                this % dfcon % r__enrch(:) = var
+            case("cladding thickness, cm")
+                this % dfcon % r__thkcld(:) = var * cmtoin
+            case("gap thickness, cm")
+                this % dfcon % r__thkgap(:) = var * cmtoin
+            case("outer cladding diameter, cm")
+                this % dfcon % r__dco(:) = var * cmtoin
+            case("coolant system pressure, MPa")
+                this % dfcon % r__p2(it) = var * MPatoPSI
+            case("radius of the fuel pellet central annulus, mm")
+                this % dfcon % r__rc(:) = var * mmtoin  
+            case("total gap conductance, W|(m^2*K)")
+                this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
+                this % dfcon % r__hgapt_flag   = .true.
+            case default
+                call error_message (key, 'real rank 0 in the frapcon set-list')
+            end select
 
-        select case(key)
-        case("fuel rod pitch, cm")
-            this % dfcon % r__pitch = var * cmtoin
-        case("as-fabricated apparent fuel density, %TD")
-            this % dfcon % r__den = var
-        case("coolant mass flux, kg|(s*m^2)")
-            this % dfcon % r__go(it) = var * ksm2tolbhrft2
-        case("additional fuel densification factor")
-            this % dfcon % r__afdn         = var
-        case("clad texture factor")
-            this % dfcon % r__catexf       = var
-        case("as-fabricated clad hydrogen content, wt.ppm")
-            this % dfcon % r__chorg        = var                       
-        case("clad cold work")
-            this % dfcon % r__cldwks       = var                       
-        case("cold plenum length, m")
-            this % dfcon % r__cpl          = var * mtoin
-        case("constant crud thickness, mm")
-            this % dfcon % r__crdt         = var / miltomm
-        case("crud accumulation rate")
-            this % dfcon % r__crdtr        = var                       
-        case("creep step duration, hr")
-            this % dfcon % r__crephr       = var                       
-        case("fuel open porosity fraction, %TD")
-            this % dfcon % r__deng         = var                       
-        case("spring diameter, mm")
-            this % dfcon % r__dspg         = var * mmtoin              
-        case("spring wire diameter, mm")
-            this % dfcon % r__dspgw        = var * mmtoin              
-        case("number of spring turns")
-            this % dfcon % r__vs           = var
-        case("peak-to-average power ratio")
-            this % dfcon % r__fa           = var                       
-        case("fill gas pressure, Pa")
-            this % dfcon % r__fgpav        = var * PatoPSI             
-        case("fuel oxygen-to-metal ratio")
-            this % dfcon % r__fotmtl       = var                       
-        case("weight ppm H2O in fuel, wt.ppm")
-            this % dfcon % r__ppmh2o       = var                       
-        case("weight ppm N2 in fuel, wt. ppm")
-            this % dfcon % r__ppmn2        = var                       
-        case("expected resintering density increase, kg|m^3")
-            this % dfcon % r__rsntr        = var                       
-        case("fision gas atoms per 100 fissions")
-            this % dfcon % r__sgapf        = var                       
-        case("swelling limit")
-            this % dfcon % r__slim         = var                       
-        case("pellet centering temperature, K")
-            this % dfcon % r__tsint        = tkf(var)                  
-        case("grain size of the fuel, um")
-            this % dfcon % r__grnsize      = var                       
-        case("FEA friction coefficient")
-            this % dfcon % r__frcoef       = var                       
-        case("percent IFBA rods in core, %")
-            this % dfcon % r__ifba         = var                       
-        case("boron-10 enrichment in ZrB2, atom %")
-            this % dfcon % r__b10          = var                       
-        case("ZrB2 thickness, mm")
-            this % dfcon % r__zrb2thick    = var * mmtoin               
-        case("ZrB2 density, %TD")
-            this % dfcon % r__zrb2den      = var
-        case("decay heat multiplier")
-            this % dfcon % r__fpdcay       = var                       
-        case("molar fraction of air")
-            this % dfcon % r__amfair       = var                       
-        case("molar fraction of argon")
-            this % dfcon % r__amfarg       = var                       
-        case("molar fraction of fission gas")
-            this % dfcon % r__amffg        = var                       
-        case("molar fraction of helium")
-            this % dfcon % r__amfhe        = var                       
-        case("molar fraction of hydrogen")
-            this % dfcon % r__amfh2        = var                       
-        case("molar fraction of water")
-            this % dfcon % r__amfh2o       = var                       
-        case("molar fraction of krypton")
-            this % dfcon % r__amfkry       = var                       
-        case("molar fraction of nitrogen")
-            this % dfcon % r__amfn2        = var                       
-        case("molar fraction of xenon")
-            this % dfcon % r__amfxe        = var                       
-        case("Bias on fuel thermal conductivity")
-            this % dfcon % r__sigftc       = var                       
-        case("Bias on fuel thermal expansion")
-            this % dfcon % r__sigftex      = var                       
-        case("Bias on fission gas release")
-            this % dfcon % r__sigfgr       = var                       
-        case("Bias on fuel swelling")
-            this % dfcon % r__sigswell     = var                       
-        case("Bias on cladding creep")
-            this % dfcon % r__sigcreep     = var                       
-        case("Bias on cladding axial growth")
-            this % dfcon % r__siggro       = var                       
-        case("Bias on cladding corrosion")
-            this % dfcon % r__sigcor       = var                       
-        case("Bias on cladding hydrogen pickup")
-            this % dfcon % r__sigh2        = var                       
-        case("fuel pellet Pu-239 content")
-            this % dfcon % r__enrpu39      = var                       
-        case("fuel pellet Pu-240 content")
-            this % dfcon % r__enrpu40      = var                       
-        case("fuel pellet Pu-241 content")
-            this % dfcon % r__enrpu41      = var                       
-        case("fuel pellet Pu-242 content")
-            this % dfcon % r__enrpu42      = var
-        case("pellet height, mm")
-            this % dfcon % r__hplt         = var * mmtoin
-        case("chamfer height, mm")
-            this % dfcon % r__chmfrh       = var * mmtoin
-        case("chamfer width, mm")
-            this % dfcon % r__chmfrw       = var * mmtoin
-        case("dish shoulder width, mm")
-            this % dfcon % r__dishsd       = var * mmtoin
-        case("dish height, mm")
-            this % dfcon % r__hdish        = var * mmtoin
-        case("clad roughness, mm")
-            this % dfcon % r__roughc       = var * mmtoin
-        case("fuel roughness, mm")
-            this % dfcon % r__roughf       = var * mmtoin
-        case("end-node to plenum heat transfer fraction")
-            this % dfcon % r__qend(it)     = var
-        case("rod internal pressure for FEA model, MPa")
-            this % dfcon % r__p1(it)       = var * patoPSI
-        case("inlet coolant temperature, C")
-            this % dfcon % r__tw(it) = tcf(var)
-        case("inlet coolant pressure, MPa")
-            this % dfcon % r__p2(it) = var * MPatoPSI
-        case("fuel enrichment by u-235, %")
-            this % dfcon % r__enrch(:) = var
-        case("cladding thickness, cm")
-            this % dfcon % r__thkcld(:) = var * cmtoin
-        case("gap thickness, cm")
-            this % dfcon % r__thkgap(:) = var * cmtoin
-        case("outer cladding diameter, cm")
-            this % dfcon % r__dco(:) = var * cmtoin
-        case("coolant system pressure, MPa")
-            this % dfcon % r__p2(it) = var * MPatoPSI
-        case("radius of the fuel pellet central annulus, mm")
-            this % dfcon % r__rc(:) = var * mmtoin  
-        case("total gap conductance, W|(m^2*K)") ! YU JIANKAI
-            this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
-            this % dfcon % r__hgapt_flag   = .true.
-        case("splbp")
-            this % dftran % r__splbp = var
-        case("tpowf")
-            this % dftran % r__tpowf = var
-        case("ruptstrain")
-            this % dftran % r__ruptstrain = var
-        case("frcoef")
-            this % dftran % r__frcoef = var
-        case("epsht1")
-            this % dftran % r__epsht1 = var
-        case("CladPower")
-            this % dftran % r__CladPower = var
-        case("pitch")
-            this % dftran % r__pitch = var
-        case("bowthr")
-            this % dftran % r__bowthr = var
-        case("dofang")
-            this % dftran % r__dofang = var
-        case("coldbp")
-            this % dftran % r__coldbp = var
-        case("frden")
-            this % dftran % r__frden = var
-        case("RodDiameter")
-            this % dftran % r__RodDiameter = var
-        case("refdtm")
-            this % dftran % r__refdtm = var
-        case("totnb")
-            this % dftran % r__totnb = var
-        case("powop")
-            this % dftran % r__powop = var
-        case("flxsec")
-            this % dftran % r__flxsec = var
-        case("ffch")
-            this % dftran % r__ffch = var
-        case("fpdcay")
-            this % dftran % r__fpdcay = var
-        case("roughc")
-            this % dftran % r__roughc = var
-        case("roughf")
-            this % dftran % r__roughf = var
-        case("prsacc")
-            this % dftran % r__prsacc = var
-        case("fpowr")
-            this % dftran % r__fpowr = var
-        case("tref")
-            this % dftran % r__tref = var
-        case("pelh")
-            this % dftran % r__pelh = var
-        case("pdrato")
-            this % dftran % r__pdrato = var
-        case("tgas0")
-            this % dftran % r__tgas0 = var
-        case("tsntrk")
-            this % dftran % r__tsntrk = var
-        case("spdbp")
-            this % dftran % r__spdbp = var
-        case("achn")
-            this % dftran % r__achn = var
-        case("tflux")
-            this % dftran % r__tflux = var
-        case("RodLength")
-            this % dftran % r__RodLength = var
-        case("OpenPorosityFraction")
-            this % dftran % r__OpenPorosityFraction = var
-        case("zad")
-            this % dftran % r__zad = var
-        case("rshrd")
-            this % dftran % r__rshrd = var
-        case("doffst")
-            this % dftran % r__doffst = var
-        case("emptm")
-            this % dftran % r__emptm = var
-        case("trise")
-            this % dftran % r__trise = var
-        case("fltgap2")
-            this % dftran % r__fltgap2 = var
-        case("hydiam")
-            this % dftran % r__hydiam = var
-        case("dishd")
-            this % dftran % r__dishd = var
-        case("ph")
-            this % dftran % r__ph = var
-        case("hrad")
-            this % dftran % r__hrad = var
-        case("dtss")
-            this % dftran % r__dtss = var
-        case("bup")
-            this % dftran % r__bup = var
-        case("cldwdc")
-            this % dftran % r__cldwdc = var
-        case("timop")
-            this % dftran % r__timop = var
-        case("cfluxa")
-            this % dftran % r__cfluxa = var
-        case("rvoid")
-            this % dftran % r__rvoid = var
-        case("dofset")
-            this % dftran % r__dofset = var
-        case("pl")
-            this % dftran % r__pl = var
-        case("fltgap")
-            this % dftran % r__fltgap = var
-        case("frpo2")
-            this % dftran % r__frpo2 = var
-        case("trest")
-            this % dftran % r__trest = var
-        case("fgrns")
-            this % dftran % r__fgrns = var
-        case("refine")
-            this % dftran % r__refine = var
-        case("modheat")
-            this % dftran % r__modheat = var
-        case("tmpac1")
-            this % dftran % r__tmpac1 = var
-        case("coldw")
-            this % dftran % r__coldw = var
-        case("dhe")
-            this % dftran % r__dhe = var
-        case("explenumv")
-            this % dftran % r__explenumv = var
-        case("dhy")
-            this % dftran % r__dhy = var
-        case("volbp")
-            this % dftran % r__volbp = var
-        case("rshd")
-            this % dftran % r__rshd = var
-        case("fotmtl")
-            this % dftran % r__fotmtl = var
-        case("gsms")
-            this % dftran % r__gsms = var
-        case("dishv0")
-            this % dftran % r__dishv0 = var
-        case("rnbnt")
-            this % dftran % r__rnbnt = var
-        case("zvoid2")
-            this % dftran % r__zvoid2 = var
-        case("gapthk")
-            this % dftran % r__gapthk = var
-        case("zvoid1")
-            this % dftran % r__zvoid1 = var
-        case("zs")
-            this % dftran % r__zs = var
-        case("FuelPelDiam")
-            this % dftran % r__FuelPelDiam = var
-        case("hbh")
-            this % dftran % r__hbh(it3) = var
-        case("hupta")
-            this % dftran % r__hupta(it3) = var
-        case("hinta")
-            this % dftran % r__hinta(it3) = var
-        case("gbh")
-            this % dftran % r__gbh(it3) = var
-        case("explenumt")
-            this % dftran % r__explenumt(it3) = var
-        case("pbh")
-            this % dftran % r__pbh(it3) = var
-        case("RodAvePower")
-            this % dftran % r__RodAvePower(it3) = var
-        case("FuelGasSwell")
-            this % dftran % r__FuelGasSwell(it3) = var
-        case("temptm")
-            this % dftran % r__temptm(it3) = var
-        case("relfraca")
-            this % dftran % r__relfraca(it3) = var
-        case("prestm")
-            this % dftran % r__prestm(it3) = var
-        case("fldrat")
-            this % dftran % r__fldrat(it3) = var
-        case("gasphs")
-            this % dftran % r__gasphs(it3) = var
-        case("hlqcl")
-            this % dftran % r__hlqcl(it3) = var
-!        case("ProfileStartTime")
-!            this % dftran % r__ProfileStartTime(it_) = var
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        case ('fraptran')
+            it3 = if_a_else_b(this % is_initdone, 3, 1)
+            select case (key)
+            case("splbp")
+                this % dftran % r__splbp = var
+            case("tpowf")
+                this % dftran % r__tpowf = var
+            case("ruptstrain")
+                this % dftran % r__ruptstrain = var
+            case("frcoef")
+                this % dftran % r__frcoef = var
+            case("epsht1")
+                this % dftran % r__epsht1 = var
+            case("CladPower")
+                this % dftran % r__CladPower = var
+            case("pitch")
+                this % dftran % r__pitch = var
+            case("bowthr")
+                this % dftran % r__bowthr = var
+            case("dofang")
+                this % dftran % r__dofang = var
+            case("coldbp")
+                this % dftran % r__coldbp = var
+            case("frden")
+                this % dftran % r__frden = var
+            case("RodDiameter")
+                this % dftran % r__RodDiameter = var
+            case("refdtm")
+                this % dftran % r__refdtm = var
+            case("totnb")
+                this % dftran % r__totnb = var
+            case("powop")
+                this % dftran % r__powop = var
+            case("flxsec")
+                this % dftran % r__flxsec = var
+            case("ffch")
+                this % dftran % r__ffch = var
+            case("fpdcay")
+                this % dftran % r__fpdcay = var
+            case("roughc")
+                this % dftran % r__roughc = var
+            case("roughf")
+                this % dftran % r__roughf = var
+            case("prsacc")
+                this % dftran % r__prsacc = var
+            case("fpowr")
+                this % dftran % r__fpowr = var
+            case("tref")
+                this % dftran % r__tref = var
+            case("pelh")
+                this % dftran % r__pelh = var
+            case("pdrato")
+                this % dftran % r__pdrato = var
+            case("tgas0")
+                this % dftran % r__tgas0 = var
+            case("tsntrk")
+                this % dftran % r__tsntrk = var
+            case("spdbp")
+                this % dftran % r__spdbp = var
+            case("achn")
+                this % dftran % r__achn = var
+            case("tflux")
+                this % dftran % r__tflux = var
+            case("RodLength")
+                this % dftran % r__RodLength = var
+            case("OpenPorosityFraction")
+                this % dftran % r__OpenPorosityFraction = var
+            case("zad")
+                this % dftran % r__zad = var
+            case("rshrd")
+                this % dftran % r__rshrd = var
+            case("doffst")
+                this % dftran % r__doffst = var
+            case("emptm")
+                this % dftran % r__emptm = var
+            case("trise")
+                this % dftran % r__trise = var
+            case("fltgap2")
+                this % dftran % r__fltgap2 = var
+            case("hydiam")
+                this % dftran % r__hydiam = var
+            case("dishd")
+                this % dftran % r__dishd = var
+            case("ph")
+                this % dftran % r__ph = var
+            case("hrad")
+                this % dftran % r__hrad = var
+            case("dtss")
+                this % dftran % r__dtss = var
+            case("bup")
+                this % dftran % r__bup = var
+            case("cldwdc")
+                this % dftran % r__cldwdc = var
+            case("timop")
+                this % dftran % r__timop = var
+            case("cfluxa")
+                this % dftran % r__cfluxa = var
+            case("rvoid")
+                this % dftran % r__rvoid = var
+            case("dofset")
+                this % dftran % r__dofset = var
+            case("pl")
+                this % dftran % r__pl = var
+            case("fltgap")
+                this % dftran % r__fltgap = var
+            case("frpo2")
+                this % dftran % r__frpo2 = var
+            case("trest")
+                this % dftran % r__trest = var
+            case("fgrns")
+                this % dftran % r__fgrns = var
+            case("refine")
+                this % dftran % r__refine = var
+            case("modheat")
+                this % dftran % r__modheat = var
+            case("tmpac1")
+                this % dftran % r__tmpac1 = var
+            case("coldw")
+                this % dftran % r__coldw = var
+            case("dhe")
+                this % dftran % r__dhe = var
+            case("explenumv")
+                this % dftran % r__explenumv = var
+            case("dhy")
+                this % dftran % r__dhy = var
+            case("volbp")
+                this % dftran % r__volbp = var
+            case("rshd")
+                this % dftran % r__rshd = var
+            case("fotmtl")
+                this % dftran % r__fotmtl = var
+            case("gsms")
+                this % dftran % r__gsms = var
+            case("dishv0")
+                this % dftran % r__dishv0 = var
+            case("rnbnt")
+                this % dftran % r__rnbnt = var
+            case("zvoid2")
+                this % dftran % r__zvoid2 = var
+            case("gapthk")
+                this % dftran % r__gapthk = var
+            case("zvoid1")
+                this % dftran % r__zvoid1 = var
+            case("zs")
+                this % dftran % r__zs = var
+            case("FuelPelDiam")
+                this % dftran % r__FuelPelDiam = var
+            case("hbh")
+                this % dftran % r__hbh(it3) = var
+            case("hupta")
+                this % dftran % r__hupta(it3) = var
+            case("hinta")
+                this % dftran % r__hinta(it3) = var
+            case("gbh")
+                this % dftran % r__gbh(it3) = var
+            case("explenumt")
+                this % dftran % r__explenumt(it3) = var
+            case("pbh")
+                this % dftran % r__pbh(it3) = var
+            case("RodAvePower")
+                this % dftran % r__RodAvePower(it3) = var
+            case("FuelGasSwell")
+                this % dftran % r__FuelGasSwell(it3) = var
+            case("temptm")
+                this % dftran % r__temptm(it3) = var
+            case("relfraca")
+                this % dftran % r__relfraca(it3) = var
+            case("prestm")
+                this % dftran % r__prestm(it3) = var
+            case("fldrat")
+                this % dftran % r__fldrat(it3) = var
+            case("gasphs")
+                this % dftran % r__gasphs(it3) = var
+            case("hlqcl")
+                this % dftran % r__hlqcl(it3) = var
+    !        case("ProfileStartTime")
+    !            this % dftran % r__ProfileStartTime(it_) = var
+            case default
+                call error_message(key, 'real rank 0 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_r8_0
@@ -827,140 +852,148 @@ contains
         integer, parameter :: one = 1, two = 2, three = 3
         real(8)      :: var(:)
 
-        it  = this % dfcon % r__it
+        select case (frapmode_)
 
-        select case(key)
-        case("thickness of the axial nodes, cm")
-            this % dfcon % r__deltaz(1:n) = var(:) * cmtoft
-            this % dfcon % r__x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
-            this % dfcon % r__x(2:n+1)    = (/( sum(this % dfcon % r__deltaz(:i)), i = 1, n )/)
-            this % dfcon % r__deltaz(n+1) = this % dfcon % r__cpl
-            this % dfcon % r__totl        = sum(this % dfcon % r__deltaz(1:n))            ! Total length of active fuel, ft
-            this % dfcon % r__zcool(:)    = this % dfcon % r__x(:)        ! Axial evaluation for coolant temperature distribution, ft
-        case("cladding thickness, cm")
-            this % dfcon % r__thkcld(1:n) = var(:) * cmtoin
-        case("gap thickness, cm")
-            this % dfcon % r__thkgap(1:n) = var(:) * cmtoin
-        case("outer cladding diameter, cm")
-            this % dfcon % r__dco(1:n) = var(:) * cmtoin
+        case ('frapcon')
+            it  = this % dfcon % r__it
+            select case(key)
+            case("thickness of the axial nodes, cm")
+                this % dfcon % r__deltaz(1:n) = var(:) * cmtoft
+                this % dfcon % r__x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
+                this % dfcon % r__x(2:n+1)    = (/( sum(this % dfcon % r__deltaz(:i)), i = 1, n )/)
+                this % dfcon % r__deltaz(n+1) = this % dfcon % r__cpl
+                this % dfcon % r__totl        = sum(this % dfcon % r__deltaz(1:n))            ! Total length of active fuel, ft
+                this % dfcon % r__zcool(:)    = this % dfcon % r__x(:)        ! Axial evaluation for coolant temperature distribution, ft
+            case("cladding thickness, cm")
+                this % dfcon % r__thkcld(1:n) = var(:) * cmtoin
+            case("gap thickness, cm")
+                this % dfcon % r__thkgap(1:n) = var(:) * cmtoin
+            case("outer cladding diameter, cm")
+                this % dfcon % r__dco(1:n) = var(:) * cmtoin
 
-        ! Must be removed in the future ---------------------------------------------------------
-        case("FRAPCON FORMAT: linear power, W|cm")
-            this % dfcon % r__qmpy(it) = sum(var) / cmtoft * & 
-            sum(this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n)) &
-            / pi / intoft * WtoBTUh / this % dfcon % r__totl
-            this % dfcon % r__qf(:) = var(:) / sum(var)
-        case("FRAPCON FORMAT: coolant temperature, C")
-            this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
-            this % dfcon % r__tcoolant(1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
-        case("FRAPCON FORMAT: coolant pressure, MPa")
-            this % dfcon % r__p2(it) = var(1) * MPatoPSI
-            this % dfcon % r__coolantpressure(it,1:n+1) = var(:) * MPatoPSI
-            this % dfcon % r__pcoolant(1:n+1) = var(:) * MPatoPSI
-        ! ----------------------------------------------------------------------------------------
+            ! Must be removed in the future ---------------------------------------------------------
+            case("FRAPCON FORMAT: linear power, W|cm")
+                this % dfcon % r__qmpy(it) = sum(var) / cmtoft * & 
+                sum(this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n)) &
+                / pi / intoft * WtoBTUh / this % dfcon % r__totl
+                this % dfcon % r__qf(:) = var(:) / sum(var)
+            case("FRAPCON FORMAT: coolant temperature, C")
+                this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
+                this % dfcon % r__tcoolant(1:n+1) = (/( tcf(var(i)), i = 1, n+1 )/)
+            case("FRAPCON FORMAT: coolant pressure, MPa")
+                this % dfcon % r__p2(it) = var(1) * MPatoPSI
+                this % dfcon % r__coolantpressure(it,1:n+1) = var(:) * MPatoPSI
+                this % dfcon % r__pcoolant(1:n+1) = var(:) * MPatoPSI
+            ! ----------------------------------------------------------------------------------------
 
-        case("linear power, W|cm")
-            call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
-            a = sum( var(:) * this % dfcon % r__deltaz(1:n) ) / this % dfcon % r__totl /cmtoft ! W/ft
-            b = sum( this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n) ) &
-                / this % dfcon % r__totl / intoft ! 1/ft
-            this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
-            this % dfcon % r__qf(:) = tmp3(:) / sum(tmp3)
-        case("coolant temperature, C")
-            call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
-            this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
-            this % dfcon % r__tcoolant(1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
-        case("coolant pressure, MPa")
-            call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
-            this % dfcon % r__p2(it) = var(1) * MPatoPSI
-            this % dfcon % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
-            this % dfcon % r__pcoolant(1:n+1) = tmp3(:) * MPatoPSI
-        case("input fuel burnup")
-            this % dfcon % r__buin(:)      = var(:) * MWskgUtoMWdMTU
-        case("PuO2 weight percent if MOX fuel, wt%")
-            this % dfcon % r__comp(:)      = var(:)
-        case("Heat flux, W|m^2")
-            this % dfcon % r__qc(:)        = var(:) / Bhft2toWm2
-        case("gadolinia weight, wt%")
-            this % dfcon % r__gadoln(:)    = var(:)
-        case("cladding surface temperature, K")
-            this % dfcon % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
-        case("axial crud thickness multiplier")
-            this % dfcon % r__crudmult(:)  = var(:)
-        case("neutron flux, 1|(cm^2*s)")
-            this % dfcon % r__flux(:)  = var(:)
-        case("scd")
-            this % dftran % r__scd(:) = var(:)
-        case("azpang")
-            this % dftran % r__azpang(:) = var(:)
-        case("fmesh")
-            this % dftran % r__fmesh(:) = var(:)
-        case("htclev")
-            this % dftran % r__htclev(:) = var(:)
-        case("ExtentOfBow")
-            this % dftran % r__ExtentOfBow(:) = var(:)
-        case("vplen")
-            this % dftran % r__vplen(:) = var(:)
-        case("gadoln")
-            this % dftran % r__gadoln(:) = var(:)
-        case("gfrac")
-            this % dftran % r__gfrac(:) = var(:)
-        case("gbse")
-            this % dftran % r__gbse(:) = var(:)
-        case("fluxz")
-            this % dftran % r__fluxz(:) = var(:)
-        case("nodchf")
-            this % dftran % r__nodchf(:) = var(:)
-        case("swd")
-            this % dftran % r__swd(:) = var(:)
-        case("oxideod")
-            this % dftran % r__oxideod(:) = var(:)
-        case("cexh2a")
-            this % dftran % r__cexh2a(:) = var(:)
-        case("radpel")
-            this % dftran % r__radpel(:) = var(:)
-        case("cmesh")
-            this % dftran % r__cmesh(:) = var(:)
-        case("gappr0")
-            this % dftran % r__gappr0(:) = var(:)
-        case("butemp")
-            this % dftran % r__butemp(:) = var(:)
-        case("oxideid")
-            this % dftran % r__oxideid(:) = var(:)
-        case("spl")
-            this % dftran % r__spl(:) = var(:)
-        case("eppinp")
-            this % dftran % r__eppinp(:) = var(:)
-        case("techf")
-            this % dftran % r__techf(:) = var(:)
-        case("tschf")
-            this % dftran % r__tschf(:) = var(:)
-        case("zelev")
-            this % dftran % r__zelev(:) = var(:)
-        case("htca")
-            it = if_a_else_b(this % is_initdone, three, one)
-            k = this % dftran % r__zone
-            this % dftran % r__htca(it,1:k) = var(:)
-        case("tblka")
-            it = if_a_else_b(this % is_initdone, three, one)
-            k = this % dftran % r__zone
-            this % dftran % r__tblka(it,1:k) = var(:)
-        case("gasths")
-            it = if_a_else_b(this % is_initdone, three, one)
-            k = this % dftran % r__zone
-            this % dftran % r__gasths(it,1:k) = var(:)
-        case("radtemp")
-            it = if_a_else_b(this % is_initdone, two, one)
-            this % dftran % r__radtemp(:,it) = var(:)
-        case("fuelrad")
-            it = if_a_else_b(this % is_initdone, two, one)
-            this % dftran % r__fuelrad(:,it) = var(:)
-        case("axpowprofile")
-            it = if_a_else_b(this % is_initdone, two, one)
-            this % dftran % r__axpowprofile(:,it) = var(:)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+            case("linear power, W|cm")
+                call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
+                a = sum( var(:) * this % dfcon % r__deltaz(1:n) ) / this % dfcon % r__totl /cmtoft ! W/ft
+                b = sum( this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n) ) &
+                    / this % dfcon % r__totl / intoft ! 1/ft
+                this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
+                this % dfcon % r__qf(:) = tmp3(:) / sum(tmp3)
+            case("coolant temperature, C")
+                call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
+                this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
+                this % dfcon % r__tcoolant(1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
+            case("coolant pressure, MPa")
+                call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
+                this % dfcon % r__p2(it) = var(1) * MPatoPSI
+                this % dfcon % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
+                this % dfcon % r__pcoolant(1:n+1) = tmp3(:) * MPatoPSI
+            case("input fuel burnup")
+                this % dfcon % r__buin(:)      = var(:) * MWskgUtoMWdMTU
+            case("PuO2 weight percent if MOX fuel, wt%")
+                this % dfcon % r__comp(:)      = var(:)
+            case("Heat flux, W|m^2")
+                this % dfcon % r__qc(:)        = var(:) / Bhft2toWm2
+            case("gadolinia weight, wt%")
+                this % dfcon % r__gadoln(:)    = var(:)
+            case("cladding surface temperature, K")
+                this % dfcon % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
+            case("axial crud thickness multiplier")
+                this % dfcon % r__crudmult(:)  = var(:)
+            case("neutron flux, 1|(cm^2*s)")
+                this % dfcon % r__flux(:)  = var(:)
+            case default
+                call error_message(key, 'real rank 1 in the frapcon set-list')
+            end select
+
+        case ('fraptran')
+            select case (key)
+            case("scd")
+                this % dftran % r__scd(:) = var(:)
+            case("azpang")
+                this % dftran % r__azpang(:) = var(:)
+            case("fmesh")
+                this % dftran % r__fmesh(:) = var(:)
+            case("htclev")
+                this % dftran % r__htclev(:) = var(:)
+            case("ExtentOfBow")
+                this % dftran % r__ExtentOfBow(:) = var(:)
+            case("vplen")
+                this % dftran % r__vplen(:) = var(:)
+            case("gadoln")
+                this % dftran % r__gadoln(:) = var(:)
+            case("gfrac")
+                this % dftran % r__gfrac(:) = var(:)
+            case("gbse")
+                this % dftran % r__gbse(:) = var(:)
+            case("fluxz")
+                this % dftran % r__fluxz(:) = var(:)
+            case("nodchf")
+                this % dftran % r__nodchf(:) = var(:)
+            case("swd")
+                this % dftran % r__swd(:) = var(:)
+            case("oxideod")
+                this % dftran % r__oxideod(:) = var(:)
+            case("cexh2a")
+                this % dftran % r__cexh2a(:) = var(:)
+            case("radpel")
+                this % dftran % r__radpel(:) = var(:)
+            case("cmesh")
+                this % dftran % r__cmesh(:) = var(:)
+            case("gappr0")
+                this % dftran % r__gappr0(:) = var(:)
+            case("butemp")
+                this % dftran % r__butemp(:) = var(:)
+            case("oxideid")
+                this % dftran % r__oxideid(:) = var(:)
+            case("spl")
+                this % dftran % r__spl(:) = var(:)
+            case("eppinp")
+                this % dftran % r__eppinp(:) = var(:)
+            case("techf")
+                this % dftran % r__techf(:) = var(:)
+            case("tschf")
+                this % dftran % r__tschf(:) = var(:)
+            case("zelev")
+                this % dftran % r__zelev(:) = var(:)
+            case("htca")
+                it = if_a_else_b(this % is_initdone, three, one)
+                k = this % dftran % r__zone
+                this % dftran % r__htca(it,1:k) = var(:)
+            case("tblka")
+                it = if_a_else_b(this % is_initdone, three, one)
+                k = this % dftran % r__zone
+                this % dftran % r__tblka(it,1:k) = var(:)
+            case("gasths")
+                it = if_a_else_b(this % is_initdone, three, one)
+                k = this % dftran % r__zone
+                this % dftran % r__gasths(it,1:k) = var(:)
+            case("radtemp")
+                it = if_a_else_b(this % is_initdone, two, one)
+                this % dftran % r__radtemp(:,it) = var(:)
+            case("fuelrad")
+                it = if_a_else_b(this % is_initdone, two, one)
+                this % dftran % r__fuelrad(:,it) = var(:)
+            case("axpowprofile")
+                it = if_a_else_b(this % is_initdone, two, one)
+                this % dftran % r__axpowprofile(:,it) = var(:)
+            case default
+                call error_message(key, 'real rank 1 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_r8_1
@@ -974,12 +1007,16 @@ contains
         integer      :: it
         real(8)      :: var(:,:)
 
-        select case (key)
-        case("pazp")
-            this % dftran % r__pazp(:,:) = var(:,:)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        select case (frapmode_)
+        case ('frapcon')
+            call error_message(key, 'real rank 2 in the frapcon set-list')
+        case ('fraptran')
+            select case (key)
+            case("pazp")
+                this % dftran % r__pazp(:,:) = var(:,:)
+            case default
+                call error_message(key, 'real rank 2 in the fraptran set-list')
+            end select
         end select
 
     end subroutine frod_set_r8_2
@@ -992,42 +1029,49 @@ contains
         character(*) :: key
         integer      :: var
 
-        select case(key)
-        case('program terminate')
-            var = this % dfcon % iquit
-        case('n1')
-            var = this % dftran % n1
-        case('n2')
-            var = this % dftran % n2
-        case('nmesh')
-            var = this % dftran % nmesh
-        case('ncladi')
-            var = this % dftran % ncladi
-        case('igpnod')
-            var = this % dftran % igpnod
-        case('modfd')
-            var = this % dftran % modfd
-        case('naxn')
-            var = this % dftran % naxn
-        case('iterationcount')
-            var = this % dftran % iterationcount
-        case('n3')
-            var = this % dftran % n3
-        case('ifbaln')
-            var = this % dftran % ifbaln
-        case('jmnbal')
-            var = this % dftran % jmnbal
-        case('kntbal')
-            var = this % dftran % kntbal
-        case('nbncal')
-            var = this % dftran % nbncal
-        case('nodprm')
-            var = this % dftran % nodprm
-        case('modfal')
-            var = this % dftran % modfal(1)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        select case (frapmode_)
+        case ('frapcon')
+            select case (key)
+            case('program terminate')
+                var = this % dfcon % iquit
+            case default
+                call error_message(key, 'integer rank 0 in the frapcon get-list')
+            end select
+        case ('fraptran')
+            select case (key)
+            case('n1')
+                var = this % dftran % n1
+            case('n2')
+                var = this % dftran % n2
+            case('nmesh')
+                var = this % dftran % nmesh
+            case('ncladi')
+                var = this % dftran % ncladi
+            case('igpnod')
+                var = this % dftran % igpnod
+            case('modfd')
+                var = this % dftran % modfd
+            case('naxn')
+                var = this % dftran % naxn
+            case('iterationcount')
+                var = this % dftran % iterationcount
+            case('n3')
+                var = this % dftran % n3
+            case('ifbaln')
+                var = this % dftran % ifbaln
+            case('jmnbal')
+                var = this % dftran % jmnbal
+            case('kntbal')
+                var = this % dftran % kntbal
+            case('nbncal')
+                var = this % dftran % nbncal
+            case('nodprm')
+                var = this % dftran % nodprm
+            case('modfal')
+                var = this % dftran % modfal(1)
+            case default
+                call error_message(key, 'integer rank 0 in the fraptran get-list')
+            end select
         end select
 
     end subroutine frod_get_i4_0
@@ -1039,16 +1083,23 @@ contains
         character(*) :: key
         integer      :: var(:)
 
-        select case(key)
-        case('ih')
-            var(:) = this % dftran % ih (1:n)
-        case('ruptfailindex')
-            var(:) = this % dftran % ruptfailindex (1:n)
-        case('cladcollapseindex')
-            var(:) = this % dftran % cladcollapseindex (1:n)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+        select case (frapmode_)
+        case ('frapcon')
+            select case (key)
+            case default
+                call error_message(key, 'integer rank 1 in the frapcon get-list')
+            end select
+        case ('fraptran')
+            select case(key)
+            case('ih')
+                var(:) = this % dftran % ih (1:n)
+            case('ruptfailindex')
+                var(:) = this % dftran % ruptfailindex (1:n)
+            case('cladcollapseindex')
+                var(:) = this % dftran % cladcollapseindex (1:n)
+            case default
+                call error_message(key, 'integer rank 1 in the fraptran get-list')
+            end select
         end select
 
     end subroutine frod_get_i4_1
@@ -1062,69 +1113,78 @@ contains
         integer      :: it
         real(8)      :: var
 
-        if (frapmode_ == 'frapcon')  it = this % dfcon % it
-        if (frapmode_ == 'fraptran') it = 1 !check the value !!!
+        select case (frapmode_)
+        case ('frapcon')
 
-        select case(key)
-        case('average linear power, W|cm')
-            var = this % dfcon % qmpy(it) * BTUhtokW * &
-                 (this % dfcon % dcoBOL * intoft * pi) / this % dfcon % fa * &
-                  1.D+3 * cmtoft
-        case('outlet coolant mass flux, kg|(s*m^2)')
-            var = this % dfcon % go(it) * lbhrft2toksm2
-        case('plenum gas temperature, C')
-            var = tfc(this % dfcon % tplen)
-        case('plenum gas pressure, MPa')
-            var = this % dfcon % press * PSItoMPa
-        case('fission gas release, %')
-            if(this % dfcon % ngasmod == 4) then
-                var = sum(this % dfcon % rb_rod(:,it)) * 100.d0
-            else
-                var = this % dfcon % tfgfr * 100.d0
-            endif
-        case('time, day')
-            var = this % dfcon % ProblemTime(it) * sectoday
-        case('average fuel burnup, MW*d|kg')
-            var = this % dfcon % bu * 1.D-3
-        case('delth')
-            call coneu( this % dftran % delth, var, 24 )
-        case('dcldh')
-            call coneu( this % dftran % dcldh, var, 24 )
-        case('bup')
-            var = this % dftran % bup
-        case('frpo2')
-            var = this % dftran % frpo2
-        case('totalvoidvol')
-            call coneu( this % dftran % totalvoidvol, var, 23 )
-        case('chstrs')
-            var = this % dftran % chstrs
-        case('frbal')
-            var = this % dftran % frbal
-        case('pmxbal')
-            var = this % dftran % pmxbal
-        case('r8bal')
-            var = this % dftran % r8bal
-        case('tcebal')
-            var = this % dftran % tcebal
-        case('pdrato')
-            var = this % dftran % pdrato
-        case('rnbnt')
-            var = this % dftran % rnbnt
-        case('totnb')
-            var = this % dftran % totnb
-        case('powave')
-            var = this % dftran % powave (1)
-        case('flwblk')
-            var = this % dftran % flwblk (1)
-        case('tp')
-            var = this % dftran % tp (1)
-        case('flowg')
-            var = this % dftran % flowg (1)
-        case('tmelt')
-            var = this % dftran % tmelt (1)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+            it = this % dfcon % it
+
+            select case(key)
+            case('average linear power, W|cm')
+                var = this % dfcon % qmpy(it) * BTUhtokW * &
+                     (this % dfcon % dcoBOL * intoft * pi) / this % dfcon % fa * &
+                      1.D+3 * cmtoft
+            case('outlet coolant mass flux, kg|(s*m^2)')
+                var = this % dfcon % go(it) * lbhrft2toksm2
+            case('plenum gas temperature, C')
+                var = tfc(this % dfcon % tplen)
+            case('plenum gas pressure, MPa')
+                var = this % dfcon % press * PSItoMPa
+            case('fission gas release, %')
+                if(this % dfcon % ngasmod == 4) then
+                    var = sum(this % dfcon % rb_rod(:,it)) * 100.d0
+                else
+                    var = this % dfcon % tfgfr * 100.d0
+                endif
+            case('time, day')
+                var = this % dfcon % ProblemTime(it) * sectoday
+            case('average fuel burnup, MW*d|kg')
+                var = this % dfcon % bu * 1.D-3
+            case default
+                call error_message(key, 'real rank 0 in the frapcon get-list')
+            end select
+        case ('fraptran')
+            select case (key)
+            case('delth')
+                var = this % dftran % delth * fttomm
+            case('dcldh')
+                var = this % dftran % dcldh * fttomm
+            case('bup')
+                var = this % dftran % bup
+            case('frpo2')
+                var = this % dftran % frpo2
+            case('totalvoidvol')
+                var = this % dftran % totalvoidvol * fttomm ** 3
+            case('chstrs')
+                var = this % dftran % chstrs
+            case('frbal')
+                var = this % dftran % frbal
+            case('pmxbal')
+                var = this % dftran % pmxbal
+            case('r8bal')
+                var = this % dftran % r8bal
+            case('tcebal')
+                var = this % dftran % tcebal
+            case('pdrato')
+                var = this % dftran % pdrato
+            case('rnbnt')
+                var = this % dftran % rnbnt
+            case('totnb')
+                var = this % dftran % totnb
+            case('powave')
+                call coneu(this % dftran % powave (1), var, 19)
+            case('flwblk')
+                var = this % dftran % flwblk (1)
+            case('tp')
+                var = this % dftran % tp (1)
+            case('flowg')
+                var = this % dftran % flowg (1)
+            case('tmelt')
+                var = this % dftran % tmelt (1)
+            case('plenum gas pressure, mpa')
+                var = this % dftran % gaspress(n+1) * PSItoMPa
+            case default
+                call error_message(key, 'real rank 0 in the fraptran get-list')
+            end select
         end select
 
     end subroutine frod_get_r8_0
@@ -1138,180 +1198,238 @@ contains
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
-        real(8)      :: intoum = intomm * 1.D+3
 
-        if (frapmode_ == 'frapcon')  it = this % dfcon % it
-        if (frapmode_ == 'fraptran') it = 1 !check the value !!!
+        select case (frapmode_)
+        case ('frapcon')
+            it = this % dfcon % it
 
-        select case(key)
-!        case('axial fuel temperature, C')
-!            do i = 1, n
-!                volume = 0
-!                temper = 0
-!                do j = 1, m
-!                    ya = 1.d0
-!                    yb = 1.d0
-!                    ra = this % dfcon % hrad(j+1,i)
-!                    rb = this % dfcon % hrad(j,i)
-!                    h = this % dfcon % x(i+1) - this % dfcon % x(i)
-!                    volume = volume + linteg(ya,yb,ra,rb,h)
-!                    ya = this % dfcon % tmpfuel(j+1,i)
-!                    yb = this % dfcon % tmpfuel(j,i)
-!                    temper = temper + linteg(ya,yb,ra,rb,h)
-!                enddo
-!                var(i) = tfc(temper / volume)
-!            enddo
-        case('fuel volume average temperature, C')
-            var(:) = (/( tfc(this % dfcon % PelAveTemp(i)), i = 1, n )/)
-        case('gap average temperature, C')
-            var(:) = (/( tfc(this % dfcon % GapAveTemp(i)), i = 1, n )/)
-        case('cladding average temperature, C')
-            var(:) = (/( tfc(this % dfcon % CladAveTemp(i)), i = 1, n )/)
-        case('bulk coolant temperature, C')
-            var(:) = 0.5d0 * ( this % dfcon % BulkCoolantTemp(1:n) + this % dfcon % BulkCoolantTemp(2:n+1) )
-            var(:) = (/( tfc(var(i)), i = 1, n )/)
-        case('total gap conductance, W|(m^2*K)')
-            var(:) = this % dfcon % TotalHgap(1:n) * Bhft2FtoWm2K
-        case('oxide thickness, um')
-            var(:) = this % dfcon % EOSZrO2Thk(1:n) * fttomil * miltoum
-        case('thermal gap thickness, um')
-            var(:) = this % dfcon % gapplot(1:n) * miltoum
-        case('mechanical gap thickness, um')
-            var(:) = this % dfcon % FuelCladGap(1:n) * 1.D+3 * miltoum
-        case('gap pressure, MPa')
-            var(:) = this % dfcon % GapPress(1:n) * PSItoMPa
-        case('cladding hoop strain, %')
-            var(:) = this % dfcon % eps(1:n,1) * 100
-        case('cladding axial strain, %')
-            var(:) = this % dfcon % eps(1:n,2) * 100
-        case('cladding radial strain, %')
-            var(:) = this % dfcon % eps(1:n,3) * 100
-        case('cladding permanent hoop strain, %')
-            var(:) = this % dfcon % epp(1:n,1) * 100
-        case('cladding permanent axial strain, %')
-            var(:) = this % dfcon % epp(1:n,2) * 100
-        case('cladding permanent radial strain, %')
-            var(:) = this % dfcon % epp(1:n,3) * 100
-        case('cladding termal hoop strain, %')
-            var(:) = this % dfcon % ThermalStrain(1:n,1) * 100
-        case('cladding termal axial strain, %')
-            var(:) = this % dfcon % ThermalStrain(1:n,2) * 100
-        case('cladding termal radial strain, %')
-            var(:) = this % dfcon % ThermalStrain(1:n,3) * 100
-        case('cladding hoop stress, MPa')
-            var(:) = this % dfcon % sig(1:n,1) * PSItoMPa
-        case('cladding axial stress, MPa')
-            var(:) = this % dfcon % sig(1:n,2) * PSItoMPa
-        case('cladding radial stress, MPa')
-            var(:) = this % dfcon % sig(1:n,3) * PSItoMPa
-        case('cladding inner radius displacement, mm')
-            var(:) = this % dfcon % totinner(1:n) * intomm
-        case('cladding outer radius displacement, mm')
-            var(:) = this % dfcon % totcrl(1:n) * intomm
-        case('cladding creep rate')
-            var(:) = this % dfcon % creapratearray(1:n)
-        case('fuel surface outward displacement, mm')
-            var(:) = this % dfcon % totdef(1:n) * intomm
-        case('fuel thermal expansion, mm')
-            var(:) = this % dfcon % fuelexptot(1:n) * intomm
-        case('fuel swelling, um')
-            var(:) = this % dfcon % fuelswltot(1:n) * intoum
-        case('fuel creep, mm')
-            var(:) = this % dfcon % fuelcreeptot(1:n) * intomm
-        case('fuel densification, mm')
-            var(:) = this % dfcon % fueldentot(1:n) * intomm
-        case('fuel relocation, mm')
-            var(:) = this % dfcon % relocation(1:n) * intomm
-        case('cladding hydrogen concentration, ppm')
-            var(:) = this % dfcon % CladH2Concen(1:n)
-        case('coolant density, kg|m^3')
-            var(:) = 0.5d0*(this % dfcon % rhof(1:n) + this % dfcon % rhof(2:n+1)) * lbft3tokgm3 
-        case('coolant pressure, MPa')
-            var(:) = this % dfcon % coolantpressure(it,1:n) * PSItoMPa
-        case('axial mesh, cm')
-            var(:) = 0.5d0 * (this % dfcon % x(1:n) + this % dfcon % x(2:n+1)) / cmtoft
-        case('gas release fractions')
-            var(:) = this % dfcon % RB_rod(1:11,it)
-        case('centerline temperature, C')
-            var(:) = (/( tfc(this % dfcon % tmpfuel(m+1,i)), i = 1, n )/)
-        case('fuel stored energy, J|kg')
-            var(:) = this % dfcon % StoredEnergy(1:n) * BTUlbtoJkg
-        case('fuel burnup, MW*d|kg')
-            var(:) = this % dfcon % EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
-        case('cladding inner temperature, C')
-            var(:) = (/(tfc(this % dfcon % CladInSurfTemp(i)), i = 1, n )/) 
-        case('cladding outer temperature, C')
-            var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i)), i = 1, n )/)  
-        case('cladding middle temperature, C')
-            var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i) + this % dfcon % CladOutSurfTemp(i))*0.5d0, i = 1, n )/)  
-        case('radial meshes, cm')
-            var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
-            var(:) = var(:) * intocm
-        case('cladavetemp')
-            call aconeu( this % dftran % CladAveTemp, var, n, 1)
-        case('radialbound')
-            !call aconeu( this % dftran % CladAveTemp, var, n, 1)
-            var(:) = this % dftran % radialbound (1:n)
-        case('cldpermaxstrn')
-            var(:) = this % dftran % cldpermaxstrn (1:n)
-        case('cldpermhoopstrn')
-            var(:) = this % dftran % cldpermhoopstrn (1:n)
-        case('gaspress')
-            call aconeu( this % dftran % gaspress, var, n, 18)
-        case('axialpowr')
-            var(:) = this % dftran % axialpowr (1:n)
-        case('heatflux')
-            var(:) = this % dftran % heatflux (1:n)
-        case('axnodelevat')
-            var(:) = this % dftran % axnodelevat (1:n)
-        case('crithtflux')
-            var(:) = this % dftran % crithtflux (1:n)
-        case('coolpress')
-            var(:) = this % dftran % coolpress(1:n)
-        case('filmcoeffav')
-            var(:) = this % dftran % filmcoeffav(1:n)
-        case('hgapav')
-            var(:) = this % dftran % hgapav(1:n)
-        case('eosoxidethick')
-            var(:) = this % dftran % eosoxidethick(1:n)
-        case('watrmetlenrgy')
-            var(:) = this % dftran % watrmetlenrgy(1:n)
-        case('axialnodlen')
-            var(:) = this % dftran % axialnodlen(1:n)
-        case('cldpermstrn')
-            var(:) = this % dftran % cldpermstrn(1:n)
-        case('qmaxmelt')
-            var(:) = this % dftran % qmaxmelt(1:n)
-        case('rinterfacgap')
-            var(:) = this % dftran % rinterfacgap(1:n) * 1.2D+4
-        case('rinterfacprs')
-            var(:) = this % dftran % rinterfacprs(1:n)
-        case('cladeffstress')
-            var(:) = this % dftran % cladeffstress(1:n)
-        case('effstrain')
-            var(:) = this % dftran % effstrain(1:n)
-        case('einstabilstrain')
-            var(:) = this % dftran % einstabilstrain(1:n)
-        case('stressatinststrain')
-            var(:) = this % dftran % stressatinststrain(1:n)
-        case('cladyieldstress')
-            var(:) = this % dftran % cladyieldstress(1:n)
-        case('farbal')
-            var(:) = this % dftran % farbal(1:n)
-        case('sdfar')
-            var(:) = this % dftran % sdfar(1:n)
-        case('zfarbl')
-            var(:) = this % dftran % zfarbl(1:n)
-        case("sigmah")
-            var(:) = this % dftran % CldStress(:,1)
-        case("sigmaz")
-            var(:) = this % dftran % CldStress(:,2)
-        case('gapthick')
-            var(:) = this % dftran % gapthick (1:n) * 1.2D+4
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            call backtrace
-            stop
+            select case(key)
+    !        case('axial fuel temperature, C')
+    !            do i = 1, n
+    !                volume = 0
+    !                temper = 0
+    !                do j = 1, m
+    !                    ya = 1.d0
+    !                    yb = 1.d0
+    !                    ra = this % dfcon % hrad(j+1,i)
+    !                    rb = this % dfcon % hrad(j,i)
+    !                    h = this % dfcon % x(i+1) - this % dfcon % x(i)
+    !                    volume = volume + linteg(ya,yb,ra,rb,h)
+    !                    ya = this % dfcon % tmpfuel(j+1,i)
+    !                    yb = this % dfcon % tmpfuel(j,i)
+    !                    temper = temper + linteg(ya,yb,ra,rb,h)
+    !                enddo
+    !                var(i) = tfc(temper / volume)
+    !            enddo
+            case('fuel volume average temperature, C')
+                var(:) = (/( tfc(this % dfcon % PelAveTemp(i)), i = 1, n )/)
+            case('gap average temperature, C')
+                var(:) = (/( tfc(this % dfcon % GapAveTemp(i)), i = 1, n )/)
+            case('cladding average temperature, C')
+                var(:) = (/( tfc(this % dfcon % CladAveTemp(i)), i = 1, n )/)
+            case('bulk coolant temperature, C')
+                var(:) = 0.5d0 * ( this % dfcon % BulkCoolantTemp(1:n) + this % dfcon % BulkCoolantTemp(2:n+1) )
+                var(:) = (/( tfc(var(i)), i = 1, n )/)
+            case('total gap conductance, W|(m^2*K)')
+                var(:) = this % dfcon % TotalHgap(1:n) * Bhft2FtoWm2K
+            case('oxide thickness, um')
+                var(:) = this % dfcon % EOSZrO2Thk(1:n) * fttomil * miltoum
+            case('thermal gap thickness, um')
+                var(:) = this % dfcon % gapplot(1:n) * miltoum
+            case('mechanical gap thickness, um')
+                var(:) = this % dfcon % FuelCladGap(1:n) * 1.D+3 * miltoum
+            case('gap pressure, MPa')
+                var(:) = this % dfcon % GapPress(1:n) * PSItoMPa
+            case('cladding hoop strain, %')
+                var(:) = this % dfcon  % eps(1:n,1) * 100
+            case('cladding axial strain, %')
+                var(:) = this % dfcon  % eps(1:n,2) * 100
+            case('cladding radial strain, %')
+                var(:) = this % dfcon  % eps(1:n,3) * 100
+            case('cladding permanent hoop strain, %')
+                var(:) = this % dfcon  % epp(1:n,1) * 100
+            case('cladding permanent axial strain, %')
+                var(:) = this % dfcon  % epp(1:n,2) * 100
+            case('cladding permanent radial strain, %')
+                var(:) = this % dfcon  % epp(1:n,3) * 100
+            case('cladding termal hoop strain, %')
+                var(:) = this % dfcon % ThermalStrain(1:n,1) * 100
+            case('cladding termal axial strain, %')
+                var(:) = this % dfcon % ThermalStrain(1:n,2) * 100
+            case('cladding termal radial strain, %')
+                var(:) = this % dfcon % ThermalStrain(1:n,3) * 100
+            case('cladding hoop stress, MPa')
+                var(:) = this % dfcon  % sig(1:n,1) * PSItoMPa
+            case('cladding axial stress, MPa')
+                var(:) = this % dfcon  % sig(1:n,2) * PSItoMPa
+            case('cladding radial stress, MPa')
+                var(:) = this % dfcon  % sig(1:n,3) * PSItoMPa
+            case('cladding inner radius displacement, mm')
+                var(:) = this % dfcon % totinner(1:n) * intomm
+            case('cladding outer radius displacement, mm')
+                var(:) = this % dfcon % totcrl(1:n) * intomm
+            case('cladding creep rate')
+                var(:) = this % dfcon % creapratearray(1:n)
+            case('fuel surface outward displacement, mm')
+                var(:) = this % dfcon % totdef(1:n) * intomm
+            case('fuel thermal expansion, mm')
+                var(:) = this % dfcon % fuelexptot(1:n) * intomm
+            case('fuel swelling, um')
+                var(:) = this % dfcon % fuelswltot(1:n) * intoum
+            case('fuel creep, mm')
+                var(:) = this % dfcon % fuelcreeptot(1:n) * intomm
+            case('fuel densification, mm')
+                var(:) = this % dfcon % fueldentot(1:n) * intomm
+            case('fuel relocation, mm')
+                var(:) = this % dfcon % relocation(1:n) * intomm
+            case('cladding hydrogen concentration, ppm')
+                var(:) = this % dfcon % CladH2Concen(1:n)
+            case('coolant density, kg|m^3')
+                var(:) = 0.5d0*(this % dfcon % rhof(1:n) + this % dfcon % rhof(2:n+1)) * lbft3tokgm3 
+            case('coolant pressure, MPa')
+                var(:) = this % dfcon % coolantpressure(it,1:n) * PSItoMPa
+            case('axial mesh, cm')
+                var(:) = 0.5d0 * (this % dfcon % x(1:n) + this % dfcon % x(2:n+1)) / cmtoft
+            case('gas release fractions')
+                var(:) = this % dfcon % RB_rod(1:11,it)
+            case('centerline temperature, C')
+                var(:) = (/( tfc(this % dfcon % tmpfuel(m+1,i)), i = 1, n )/)
+            case('fuel stored energy, J|kg')
+                var(:) = this % dfcon % StoredEnergy(1:n) * BTUlbtoJkg
+            case('fuel burnup, MW*d|kg')
+                var(:) = this % dfcon % EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
+            case('cladding inner temperature, C')
+                var(:) = (/(tfc(this % dfcon % CladInSurfTemp(i)), i = 1, n )/) 
+            case('cladding outer temperature, C')
+                var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i)), i = 1, n )/)  
+            case('cladding middle temperature, C')
+                var(:) = (/(tfc(this % dfcon % CladOutSurfTemp(i) + this % dfcon % CladOutSurfTemp(i))*0.5d0, i = 1, n )/)  
+            case('radial meshes, cm')
+                var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
+                var(:) = var(:) * intocm
+            case default
+                call error_message(key, 'real rank 1 in the frapcon get-list')
+            end select
+        case('fraptran')
+            select case (key)
+            case('cladding hoop strain, %')
+                var(:) = this % dftran % CldStrn(1:n,1)
+            case('cladding axial strain, %')
+                var(:) = this % dftran % CldStrn(1:n,2)
+            case('cladding radial strain, %')
+                var(:) = this % dftran % CldStrn(1:n,3)
+            case('cladding permanent hoop strain, %')
+                var(:) = this % dftran % CldPlasStrn(1:n,1)
+            case('cladding permanent axial strain, %')
+                var(:) = this % dftran % CldPlasStrn(1:n,2)
+            case('cladding permanent radial strain, %')
+                var(:) = this % dftran % CldPlasStrn(1:n,3)
+            case('cladding elastic hoop strain, %')
+                var(:) = this % dftran % CldElStrn(1:n,1)
+            case('cladding elastic axial strain, %')
+                var(:) = this % dftran % CldElStrn(1:n,2)
+            case('cladding elastic radial strain, %')
+                var(:) = this % dftran % CldElStrn(1:n,3)
+            case('cladding thermal hoop strain, %')
+                var(:) = this % dftran % CldThermStrn(1:n,1)
+            case('cladding thermal axial strain, %')
+                var(:) = this % dftran % CldThermStrn(1:n,2)
+            case('cladding thermal radial strain, %')
+                var(:) = this % dftran % CldThermStrn(1:n,3)
+            case('cladding hoop stress, MPa')
+                var(:) = this % dftran % CldStress(1:n,1) * PSItoMPa
+            case('cladding axial stress, MPa')
+                var(:) = this % dftran % CldStress(1:n,2) * PSItoMPa
+            case('cladding radial stress, MPa')
+                var(:) = this % dftran % CldStress(1:n,3) * PSItoMPa
+            case('cladavetemp')
+                call aconeu( this % dftran % CladAveTemp, var, n, 1)
+            case('radialbound')
+                !call aconeu( this % dftran % CladAveTemp, var, n, 1)
+                var(:) = this % dftran % radialbound (1:n)
+            case('cldpermaxstrn')
+                var(:) = this % dftran % cldpermaxstrn (1:n)
+            case('cldpermhoopstrn')
+                var(:) = this % dftran % cldpermhoopstrn (1:n)
+            case('gaspress')
+                var(:) = this % dftran % gaspress (1:n)
+            case('axialpowr')
+                var(:) = this % dftran % axialpowr (1:n) / fttom
+            case('heatflux')
+                var(:) = this % dftran % heatflux (1:n) !TODO: 12       btu/(s.ft2)         W/m2
+            case('axnodelevat')
+                var(:) = this % dftran % axnodelevat (1:n) * fttomm
+            case('crithtflux')
+                var(:) = this % dftran % crithtflux (1:n) !TODO: 12       btu/(s.ft2)         W/m2
+            case('coolpress')
+                var(:) = this % dftran % coolpress(1:n) * PSItoMPa
+            case('filmcoeffav')
+                var(:) = this % dftran % filmcoeffav(1:n) !TODO: btu/((hr)(ft2)(F))  W/((m2)(K)) (13)
+            case('hgapav')
+                var(:) = this % dftran % hgapav(1:n) * Bhft2FtoWm2K
+            case('eosoxidethick')
+                var(:) = this % dftran % eosoxidethick(1:n) * fttomm
+            case('oxithk2')
+                var(:) = this % dftran % oxithk2(1:n) * fttomm
+            case('watrmetlenrgy')
+                var(:) = this % dftran % watrmetlenrgy(1:n) / fttom
+            case('axialnodlen')
+                var(:) = this % dftran % axialnodlen(1:n)
+            case('cldpermstrn')
+                var(:) = this % dftran % cldpermstrn(1:n)
+            case('qmaxmelt')
+                var(:) = this % dftran % qmaxmelt(1:n)
+            case('rinterfacgap')
+                var(:) = this % dftran % rinterfacgap(1:n) * 1.2D+4 * miltomm
+            case('rinterfacprs')
+                var(:) = this % dftran % rinterfacprs(1:n)
+            case('cladeffstress')
+                var(:) = this % dftran % cladeffstress(1:n)
+            case('effstrain')
+                var(:) = this % dftran % effstrain(1:n)
+            case('einstabilstrain')
+                var(:) = this % dftran % einstabilstrain(1:n)
+            case('stressatinststrain')
+                var(:) = this % dftran % stressatinststrain(1:n)
+            case('cladyieldstress')
+                var(:) = this % dftran % cladyieldstress(1:n) * PSItoMPa
+            case('farbal')
+                var(:) = this % dftran % farbal(1:n)
+            case('sdfar')
+                var(:) = this % dftran % sdfar(1:n)
+            case('zfarbl')
+                var(:) = this % dftran % zfarbl(1:n)
+            case("sigmah")
+                var(:) = this % dftran % CldStress(:,1)
+            case("sigmaz")
+                var(:) = this % dftran % CldStress(:,2)
+            case('gapthick')
+                var(:) = this % dftran % gapthick (1:n) * 1.2D+4 * miltomm
+            case('cladding effective elastic-plastic strain')
+                var(:) = this % dftran % EffStrainPNNL(1:n)
+            case('rmassflux')
+                var(:) = this % dftran % rmassflux(1:n) * lbhrft2toksm2
+            case('pelsrfdispl')
+                var(:) = this % dftran % PelSrfDispl * fttomm
+            case('terfacepres')
+                var(:) = this % dftran % TerfacePres * PSItoMPa
+            case('cooldensity')
+                var(:) = this % dftran % CoolDensity * lbft3tokgm3
+            case('pellet surface hoop strain')
+                var(:) = this % dftran % PelSrfStrn(1:n,1)
+            case('pellet surface axial strain')
+                var(:) = this % dftran % PelSrfStrn(1:n,2)
+            case('CldStrnRat')
+                var(:) = this % dftran % CldStrnRat(1:n,1)
+            case('CladEnrgPerL')
+                var(:) = this % dftran % CladEnrgPerL(1:n) / fttom
+            case('EnergyPerL')
+                var(:) = this % dftran % EnergyPerL(1:n) / fttom
+            case('HFXSum')
+                var(:) = this % dftran % HFXSum(1:n) / fttom
+            case default
+                call error_message(key, 'real rank 1 in the fraptran get-list')
+            end select
         end select
 
     end subroutine frod_get_r8_1
@@ -1323,24 +1441,32 @@ contains
 
         character(*) :: key
         real(8)      :: var(:,:) ! array (n,)
-        real(8)      :: intoum = intomm * 1.D+3
 
-        select case(key)
+        select case (frapmode_)
+        case ('frapcon')
+            select case(key)
             case('fuel temperature distribution, C') ! YU JIANKAI
                 do i = 1, n 
                     do j = 1, m + 1
                         var(j,i) = tfc(this % dfcon % tmpfuel(m + 2 - j, i))
                     enddo
                 enddo 
-        case('eostemp')
-            var(:,:) = this % dftran % eostemp (:,:)
-        case('eosrad')
-            var(:,:) = this % dftran % eosrad (:,:)
-        case('enrgymeltz')
-            var(:,:) = this % dftran % enrgymeltz (:,:)
-        case default
-            write(*,*) 'ERROR: Variable ', key, ' has not been found'
-            stop
+            case default
+                call error_message(key, 'real rank 2 in frapcon get-list')
+            end select
+        case ('fraptran')
+            select case (key)
+            case('eostemp')
+                var(:,:) = this % dftran % eostemp (:,:)
+            case('eosrad')
+                var(:,:) = this % dftran % eosrad (:,:) * fttomm
+            case('enrgymeltz')
+                var(:,:) = this % dftran % enrgymeltz (:,:)
+            case('DeformedRadiusOfMesh')
+                var(:,:) = this % dftran % DeformedRadiusOfMesh (:,:) * fttomm
+            case default
+                call error_message(key, 'real rank 2 in fraptran get-list')
+            end select
         end select
 
     end subroutine frod_get_r8_2
@@ -1394,4 +1520,15 @@ contains
         enddo
     end subroutine aconeu
 
+    subroutine error_message (vname, vtype)
+        implicit none
+        character(*) :: vname, vtype
+        write(*,*) 'ERROR: Could not find variable ', vname, ' of the type ', vtype
+        call backtrace
+        call exit(1) 
+    end subroutine error_message
+
 end module frapi
+
+
+
