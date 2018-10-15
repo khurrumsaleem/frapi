@@ -10,7 +10,7 @@ ProblemStartTime=0.0,
 ProblemEndTime=1.0,
 $end
 $iodata
-unitin=0, unitout=0, inp=1, 
+unitin=0, unitout=1, inp=1, 
 dtpoa(1:)=0.01, 
 dtplta=0.002, 
 trest=1.2528e8,

@@ -9,7 +9,7 @@ module m_problem
 
     implicit none
 
-    character(len=128), dimension(66) :: varname, vartype, varcomment
+    character(len=128), dimension(87) :: varname, vartype
 
     type, public :: t_problem
         type (t_odfile)  :: ofile
@@ -291,19 +291,19 @@ module m_problem
             select case (vartype(i))
             case ('i4_0')
                 call this % frod  % get_i4_0  (varname(i), var_i4_0)
-                call this % ofile % write_i4_0(varname(i), varcomment(i), var_i4_0)
+                call this % ofile % write_i4_0(varname(i), var_i4_0)
             case ('i4_1')
                 call this % frod  % get_i4_1  (varname(i), var_i4_1)
-                call this % ofile % write_i4_1(varname(i), varcomment(i), var_i4_1 )
+                call this % ofile % write_i4_1(varname(i), var_i4_1)
             case ('r8_0')
                 call this % frod  % get_r8_0  (varname(i), var_r8_0)
-                call this % ofile % write_r8_0(varname(i), varcomment(i), var_r8_0)
+                call this % ofile % write_r8_0(varname(i), var_r8_0)
             case ('r8_1')
                 call this % frod  % get_r8_1  (varname(i), var_r8_1)
-                call this % ofile % write_r8_1(varname(i), varcomment(i), var_r8_1 )
+                call this % ofile % write_r8_1(varname(i), var_r8_1)
 !            case ('r8_2')
 !                call this % frod  % get_r8_2  (varname(i), var_r8_2)
-!                call this % ofile % write_r8_2(varname(i), varcomment(i), var_r8_2 )
+!                call this % ofile % write_r8_2(varname(i), var_r8_2)
             end select
         enddo
     end subroutine p_save_in_file_fraptran

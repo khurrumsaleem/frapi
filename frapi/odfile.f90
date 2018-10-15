@@ -34,62 +34,57 @@ module odfile
         close(this % findex)
     end subroutine close_
 
-    subroutine write_i4_0_(this, name, comment, var)
+    subroutine write_i4_0_(this, name, var)
         class (t_odfile), intent(in) :: this
-        character(*) :: name, comment
+        character(*) :: name
         integer :: var
         write(this % findex, '(a,a)') '#0 ', trim(name)
-        write(this % findex, '(a,a)') '#1 ', trim(comment)
         write(this % findex, '(a)') '#2 i4_0'
         write(this % findex, '(a,i10)') '#3 ', var
         write(this % findex, '(a)') '#4 '
     end subroutine write_i4_0_
 
-    subroutine write_i4_1_(this, name, comment, var)
+    subroutine write_i4_1_(this, name, var)
         class (t_odfile), intent(in) :: this
-        character(*) :: name, comment
+        character(*) :: name
         integer :: shape_var(1)
         integer :: var(:)
         shape_var = shape(var)
         write(this % findex, '(a,a)') '#0 ',trim(name)
-        write(this % findex, '(a,a)') '#1 ',trim(comment)
         write(this % findex, '(a,i10)') '#2 i4_1 ', shape_var(1)
         write(this % findex, '(a,10000i10)') '#3 ', var
         write(this % findex, '(a)') '#4 '
     end subroutine write_i4_1_
 
-    subroutine write_r8_0_(this, name, comment, var)
+    subroutine write_r8_0_(this, name, var)
         class (t_odfile), intent(in) :: this
-        character(*) :: name, comment
+        character(*) :: name
         real(8) :: var
         write(this % findex, '(a,a)') '#0 ',trim(name)
-        write(this % findex, '(a,a)') '#1 ',trim(comment)
         write(this % findex, '(a)') '#2 r8_0'
         write(this % findex, '(a, e20.9)') '#3 ', var
         write(this % findex, '(a)') '#4 '
     end subroutine write_r8_0_
 
-    subroutine write_r8_1_(this, name, comment, var)
+    subroutine write_r8_1_(this, name, var)
         class (t_odfile), intent(in) :: this
-        character(*) :: name, comment
+        character(*) :: name
         integer :: shape_var(1)
         real(8) :: var(:)
         shape_var = shape(var)
         write(this % findex, '(a,a)') '#0 ',trim(name)
-        write(this % findex, '(a,a)') '#1 ',trim(comment)
         write(this % findex, '(a,i10)') '#2 r8_1 ', shape_var(1)
         write(this % findex, '(a,10000e20.9)') '#3 ',  var
         write(this % findex, '(a)') '#4 '
     end subroutine write_r8_1_
 
-    subroutine write_r8_2_(this, name, comment, var)
+    subroutine write_r8_2_(this, name, var)
         class (t_odfile), intent(in) :: this
-        character(*) :: name, comment
+        character(*) :: name
         integer :: shape_var(2), i
         real(8) :: var(:,:)
         shape_var = shape(var)
         write(this % findex, '(a,a)') '#0 ',trim(name)
-        write(this % findex, '(a,a)') '#1 ',trim(comment)
         write(this % findex, '(a,2i10)') '#2 r8_2 ', shape_var(1), shape_var(2)
         do i = 1, shape_var(1)
             write(this % findex, '(a, 10000e20.9)') '#3', var(i,:)
