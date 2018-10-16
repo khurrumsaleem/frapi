@@ -6,14 +6,42 @@ from h5py import File
 import matplotlib.pyplot as plt
 from numpy import array
 
-task = 'rep-na1'
+def draw(filename):
+    f0 = File('%s-frapi.h5'%filename)
+    f1 = File('%s-fraptran.h5'%filename)
 
+    dirname = '../../doc/graphics'
+    if not os.path.isdir(dirname): 
+        os.mkdir(dirname)
 
-#call(['../../build/debug/main_frapcon', 'rep-na1-frapcon.inp'])
-#call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
-#call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
-call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
-#call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
+    dirname = '../../doc/graphics/%s'%filename
+    if not os.path.isdir(dirname): 
+        os.mkdir(dirname)
+
+    print "%50s %10s %10s %10s %10s"%('Parameter', 'Units', 'RMS, %', 'MAX, %', 'Result')
+
+    for i, name in enumerate(names):
+        fig, ax = plt.subplots()
+        time0 , data0 = [], []
+        for group in f0.keys():
+            time0.append(f0[group]['frapi time, s'][0])
+            data0.append(f0[group][name][0])
+
+        time1 , data1 = [], []    
+        for group in f1.keys():
+            time1.append(f1[group]['time, s'])
+            data1.append(f1[group][name][0]) 
+
+        ax.plot(time0, data0, '-o', ms=1, lw=2, alpha=0.7, mfc='orange')
+        ax.plot(time1, data1, '-o', ms=1, lw=2, alpha=0.7, mfc='blue')
+        ax.set_xlabel('time, s')
+        ax.set_ylabel(name)
+        ax.legend(['FRAPI', 'FRAPTRAN'])
+        ax.grid()
+
+        plt.savefig('%s/%s.png'%(dirname, name.split(',')[0].replace(' ','_')))
+    f0.close()
+    f1.close()
 
 names = [
 'average fuel rod power, kW|m',
@@ -70,42 +98,15 @@ names = [
 ]
 
 
-def draw(filename):
-    f0 = File('%s-frapi.h5'%filename)
-    f1 = File('%s-fraptran.h5'%filename)
+task = 'rep-na1'
 
-    dirname = '../../doc/graphics'
-    if not os.path.isdir(dirname): 
-        os.mkdir(dirname)
-
-    dirname = '../../doc/graphics/%s'%filename
-    if not os.path.isdir(dirname): 
-        os.mkdir(dirname)
-
-    print "%50s %10s %10s %10s %10s"%('Parameter', 'Units', 'RMS, %', 'MAX, %', 'Result')
-
-    for i, name in enumerate(names):
-        fig, ax = plt.subplots()
-        time0 , data0 = [], []
-        for group in f0.keys():
-            time0.append(f0[group]['frapi time, s'][0])
-            data0.append(f0[group][name][0])
-
-        time1 , data1 = [], []    
-        for group in f1.keys():
-            time1.append(f1[group]['time, s'])
-            data1.append(f1[group][name][0]) 
-
-        ax.plot(time0, data0, '-o', ms=1, lw=2, alpha=0.7, mfc='orange')
-        ax.plot(time1, data1, '-o', ms=1, lw=2, alpha=0.7, mfc='blue')
-        ax.set_xlabel('time, s')
-        ax.set_ylabel(name)
-        ax.legend(['FRAPI', 'FRAPTRAN'])
-        ax.grid()
-
-        plt.savefig('%s/%s.png'%(dirname, name.split(',')[0].replace(' ','_')))
-    f0.close()
-    f1.close()
-
+if True:
+    #call(['../../build/debug/main_frapcon', 'rep-na1-frapcon.inp'])
+    print "FRAPTRAN: "
+    call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
+    print "FRAPI: "
+    call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
+    call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
+    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
 
 draw(task)

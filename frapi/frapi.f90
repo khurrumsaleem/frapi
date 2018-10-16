@@ -1351,19 +1351,19 @@ contains
             case('cldpermhoopstrn')
                 var(:) = this % dftran % cldpermhoopstrn (1:n)
             case('gap pressure, MPa')
-                var(:) = this % dftran % gaspress (1:n)
+                var(:) = this % dftran % gaspress (1:n) * PSItoMPa
             case('axial power, kW|m')
                 var(:) = this % dftran % axialpowr (1:n) / fttom
             case('surface heat flux, W|m^2')
-                var(:) = this % dftran % heatflux (1:n) !TODO: 12       btu/(s.ft2)         W/m2
+                var(:) = this % dftran % heatflux (1:n) * Bhft2toWm2 * 3600.D+0
             case('axial node elevation, mm')
                 var(:) = this % dftran % axnodelevat (1:n) * fttomm
             case('critical heat flux, W|m2')
-                var(:) = this % dftran % crithtflux (1:n) !TODO: 12       btu/(s.ft2)         W/m2
+                var(:) = this % dftran % crithtflux (1:n) * Bhft2toWm2 * 3600.D+0
             case('coolant pressure, MPa')
                 var(:) = this % dftran % coolpress(1:n) * PSItoMPa
             case('surface heat transfer coefficient, W|m^2K')
-                var(:) = this % dftran % filmcoeffav(1:n) !TODO: btu/((hr)(ft2)(F))  W/((m2)(K)) (13)
+                var(:) = this % dftran % filmcoeffav(1:n) * Bhft2FtoWm2K
             case('heat transfer coefficient, W|m^2K')
                 var(:) = this % dftran % hgapav(1:n) * Bhft2FtoWm2K
             case('outer oxide thickness, mm')

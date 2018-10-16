@@ -640,6 +640,7 @@ MODULE deformation_fraptran
     !
     IF (kdbugx == 1) WRITE(ounit,615) IFail1, ies(1)
 615 FORMAT(' RodFailIndex = ',i5,' ies = ',i5)
+
     IF ((IFail1 == 1) .AND. (mechan /= 1)) THEN
         ! cladding has either failed or is undergoing localized ballooning
         IF (ndebug) WRITE(ounit,*) ' DEFORM AFTER 68'

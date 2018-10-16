@@ -363,7 +363,7 @@ MODULE Read_Input_fraptran
 1340    CONTINUE
         IF (pressu >= 1) THEN
             npbh = pressu
-            pbh(1:2*pressu) = pbh1(1:2*pressu)
+            if (.not. is_export) pbh(1:2*pressu) = pbh1(1:2*pressu)
         ENDIF
         IF (massfl >= 1) ngbh = massfl
         IF (coreav >= 1) nhbh = coreav
@@ -405,7 +405,7 @@ MODULE Read_Input_fraptran
         ENDIF
         IF (press >= 1) THEN
             npbh = press
-            pbh(1:2*press) = pbh2(1:2*press)
+            if (.not. is_export) pbh(1:2*press) = pbh2(1:2*press)
         ENDIF
         IF (zone >= 1) nhtcz = zone
         DO l = 2, nhtcz

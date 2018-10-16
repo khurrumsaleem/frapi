@@ -832,6 +832,38 @@ MODULE timestep_fraptran
     USE Initialization_fraptran, ONLY : phyprp
     USE AxialPower_fraptran, ONLY : power
     USE Cs_I_fraptran, ONLY : cesiod
+
+!======================================================================================
+    USE Kinds_fraptran
+    USE variables_fraptran
+    USE setup_fraptran, ONLY : Main, Input_Echo
+    USE TH_Link_fraptran
+    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Vars, fraptran_rod
+    USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
+      &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
+    USE frapc_fraptran
+    USE Dyna_h_fraptran
+    USE collct_h_fraptran
+    USE resti_h_fraptran
+    USE excb_h_fraptran
+    USE scalr_h_fraptran
+    USE FissionGasRelease_h_fraptran
+    USE NCGases_fraptran
+    USE FEA_Setup_fraptran
+    USE ErrorMsg_fraptran, ONLY : namelist_read_error
+    USE frapc_fraptran
+    USE sth2x_fraptran, ONLY : sth2xi
+    USE Initialization_fraptran, ONLY : initia
+    USE Read_Input_fraptran
+    USE ErrorMsg_fraptran, ONLY :errori
+    USE CoolantProperties_fraptran, ONLY : tc1, tc2
+    USE htcb_h_fraptran
+    USE cnvt_fraptran
+    use Uncertainties_fraptran, only :  AllocateUncertaintyvars
+    use Uncertainty_Vals_fraptran
+    use m_array_clone, only : array_clone
+!======================================================================================
+
     IMPLICIT NONE
     !> @brief
     !> This Subroutine computes the value of the fuel rod variables at an advanced time.
@@ -866,6 +898,10 @@ MODULE timestep_fraptran
     REAL(r8k), DIMENSION(nmesh) :: temptemp
     REAL(r8k), DIMENSION(naxn) :: molrel
     REAL(r8k), DIMENSION(naxn+1) :: rwa7
+
+!    include "ft_print_h.f90"
+!    call exit(1)
+!    stop
 
     if (.not. allocated(Iflag)) allocate(Iflag(ngasr,2))
     !
@@ -1185,6 +1221,7 @@ MODULE timestep_fraptran
                 tplna(1:nodpln,2,1) = tpln(1:nodpln,2)
                 qpln(1) = hflux
             END SELECT
+
             ! Determine the plenum temperature calculation to be used for the bottom plenum.
             ! If plenum exists, default model. Plenum temperature is (10F by default) higher than bulk coolant temperature.
             IF (nplnt /= 1) BotPTempCalc = 'Bulk+10'
@@ -1231,6 +1268,7 @@ MODULE timestep_fraptran
             !
             ! Deformation and pressure iterated upon until convergence. Then fuel rod temperature distribution recomputed.
         END SELECT
+
         fitcd = 0.0_r8k
         pitave = 0.0_r8k
         ! If IterationCount=1, extrapolate gap pressure from previous time step
@@ -1310,7 +1348,7 @@ MODULE timestep_fraptran
         !
         ! Call FRACAS-1 (deform)
         CALL deform
-        !
+
         modfal(1) = Ifstor(13)
         flowbk = flwblk(1)
         ! If j Returned as -1, deform could not obtain solution. Time step needs to be reduced.

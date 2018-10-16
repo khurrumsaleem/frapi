@@ -560,6 +560,7 @@ MODULE HeatSolution_fraptran
                 frcsum = 0.0_r8k
                 hgpsum = 0.0_r8k
                 !
+
                 DO ngapi = 1, ngaps
                     frcsum = frcsum + frcgap(ngapi)
                     gasgpi = GapThick(k) + delgap(ngapi)
@@ -579,7 +580,6 @@ MODULE HeatSolution_fraptran
                     CALL gaphtc (gasgpi, fulori, pfci, gptemp, ftemp, ctemp, GasPress(k), GasFraction, &
                       &          FastFlux(k), tflux, roucih, roufih, frden, coldw, zroi, fotmtl, &
                       &          CladMaxT(k), modfd, hgap, gadolin(k), bulocal, gapmin, k)
-
                     !
                     IF (naxn <= 20) hgap = fdial(k) * hgap
                     IF (nphgap == 1) WRITE(ounit,933) GapThick(k), gasgpi, frcgap(ngapi), hgap
@@ -587,7 +587,9 @@ MODULE HeatSolution_fraptran
                     !
                     hgpsum = hgpsum + frcgap(ngapi) * hgap
                 ENDDO
+
                 hgap = hgpsum / frcsum
+
                 ! SSHgap(k) stores start of time step gap conductance.
                 IF (IterationCount == 1) SSHgap(k) = hgap
                 IF (nphgap == 1) WRITE(ounit,948) IterationCount, AxialPowr(k), NSteadyTrans, GapThick(k), SSHgap(k)
@@ -694,6 +696,7 @@ MODULE HeatSolution_fraptran
                 hgapin2(k) = hgapgs
 790             CONTINUE
                 !Use true pellet_fraptran-cladding gap width
+                !if (k == 1) write(*,*) 'filmcoeffav = ', filmcoeffav(1)
                 HGapAV(k) = (GapConductivity / gpthkt) * sechr
                 ! This lower limit for the pellet-cladding gap heat transfer coefficient
                 ! was found to be reached when simulating integral LOCA tests in the

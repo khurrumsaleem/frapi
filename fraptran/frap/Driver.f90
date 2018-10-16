@@ -72,6 +72,7 @@ module fraptran2
         naxn = naxn_
         nfmesh = nfmesh_
         ncmesh = ncmesh_
+        nce = ncmesh
 
         ! Set the # of axial, radial and timesteps to allocate the code's values on.
         defsize = 2
@@ -291,6 +292,7 @@ module fraptran2
         t1   = time
         t2   = time + dt
         dtp  = dt
+        t22  = dt
 
         CALL setup6
 

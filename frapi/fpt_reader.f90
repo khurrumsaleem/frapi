@@ -319,10 +319,10 @@ module fpt_reader
         fluxz                = 0
         nodchf               = 0
         swd                  = 0
-        oxideod              = 0
+        oxideod              = 3.D-6
         cexh2a               = 0
         pazp                 = 0
-        oxideid              = 0
+        oxideid              = 3.D-6
         spl                  = 0
         eppinp               = 0
         techf                = 0
