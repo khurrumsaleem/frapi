@@ -25,6 +25,7 @@ MODULE timestep_fraptran
     USE scalr_h_fraptran
     USE frapc_fraptran
     USE cnvt_fraptran
+
     IMPLICIT NONE
     !> @brief
     !> This subroutine calls the subroutines which compute fuel rod solution for an advanced time
@@ -226,31 +227,6 @@ MODULE timestep_fraptran
         OldCoolPrs(k) = CoolPress(k)
         OldPelDis(k) = PelSrfDispl(k)
     ENDDO
-
-    !k = 5
-    !write(*,*) 'HeatFlux0(k) = ', HeatFlux0(k)
-    !write(*,*) 'CoolEnthalpy0(k) = ', CoolEnthalpy0(k)
-    !write(*,*) 'CoolDensity0(k) = ', CoolDensity0(k)
-    !write(*,*) 'CldPermStrn0(k) = ', CldPermStrn0(k)
-    !write(*,*) 'GasPress0(k) = ', GasPress0(k)
-    !write(*,*) 'RodOD0(k) = ', RodOD0(k)
-    !write(*,*) 'OldCoolPrs(k)  = ', OldCoolPrs(k) 
-    !write(*,*) 'OldCladT(k) = ', global_count, TimeIncrement, OldCladT(k)
-    !write(*,*) 'OldGasPrs(k) = ', OldGasPrs(k)
-    !write(*,*) 'OldPelDis(k) = ', OldPelDis(k)
-    !global_count = global_count + 1
-    !if (global_count == 10) stop
-    !write(*,*) 'BOSGapIndex(k) = ', BOSGapIndex(k)
-    !write(*,*) 'OldCoolPrs0(k) = ', OldCoolPrs0(k)
-    !write(*,*) 'OldCladT0(k) = ', OldCladT0(k)
-    !write(*,*) 'OldGasPrs0(k)  = ', OldGasPrs0(k) 
-    !write(*,*) 'OldPelDis0(k) = ', OldPelDis0(k)
-    !write(*,*) 'BOSGapIndex0(k) = ', BOSGapIndex0(k)
-    !write(*,*) 'RInterfacPrs0(k) = ', RInterfacPrs0(k)
-    !write(*,*) 'PelletRad0(k)  = ', PelletRad0(k) 
-    !write(*,*) 'CladCollIndx0(k) = ', CladCollIndx0(k)
-    !stop
-
 
     ! calculate strain energy density (SED)
     DO k = 1, naxn
@@ -832,37 +808,7 @@ MODULE timestep_fraptran
     USE Initialization_fraptran, ONLY : phyprp
     USE AxialPower_fraptran, ONLY : power
     USE Cs_I_fraptran, ONLY : cesiod
-
-!======================================================================================
-    USE Kinds_fraptran
-    USE variables_fraptran
-    USE setup_fraptran, ONLY : Main, Input_Echo
-    USE TH_Link_fraptran
-    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Vars, fraptran_rod
-    USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
-      &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
-    USE frapc_fraptran
-    USE Dyna_h_fraptran
-    USE collct_h_fraptran
-    USE resti_h_fraptran
-    USE excb_h_fraptran
-    USE scalr_h_fraptran
-    USE FissionGasRelease_h_fraptran
-    USE NCGases_fraptran
-    USE FEA_Setup_fraptran
-    USE ErrorMsg_fraptran, ONLY : namelist_read_error
-    USE frapc_fraptran
-    USE sth2x_fraptran, ONLY : sth2xi
-    USE Initialization_fraptran, ONLY : initia
-    USE Read_Input_fraptran
-    USE ErrorMsg_fraptran, ONLY :errori
-    USE CoolantProperties_fraptran, ONLY : tc1, tc2
-    USE htcb_h_fraptran
-    USE cnvt_fraptran
-    use Uncertainties_fraptran, only :  AllocateUncertaintyvars
-    use Uncertainty_Vals_fraptran
-    use m_array_clone, only : array_clone
-!======================================================================================
+    use m_state, only : printstate
 
     IMPLICIT NONE
     !> @brief
@@ -899,9 +845,7 @@ MODULE timestep_fraptran
     REAL(r8k), DIMENSION(naxn) :: molrel
     REAL(r8k), DIMENSION(naxn+1) :: rwa7
 
-!    include "ft_print_h.f90"
-!    call exit(1)
-!    stop
+    !call printstate(100,'memory.out','exit')
 
     if (.not. allocated(Iflag)) allocate(Iflag(ngasr,2))
     !

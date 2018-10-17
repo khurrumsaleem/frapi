@@ -176,7 +176,7 @@ MODULE setup_fraptran
         nrest2 = 0
         ncool2 = 1
         ! Modified to allow coupling of T/H code. IP
-        ncool2 = 7
+        !ncool2 = 7
         ! Switched from ncool2 = 0 to ncoolw = 1. IP
         IF (ncards == 1) WRITE(ounit,61) ProblemStartTime, ProblemEndTime
 61      FORMAT(//' *** Start time = ',es12.5,' s, End time = ',es12.5,' s  ***' )

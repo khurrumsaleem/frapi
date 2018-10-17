@@ -268,7 +268,13 @@ contains
 
         select case (frapmode_)
         case ('frapcon')
-            call error_message(key, 'character rank 0 in the frapcon set-list')
+            select case (key)
+            case ("restart file")
+                this % dfcon % r__namerf      = trim(var)
+            case default
+                call error_message(key, 'character rank 0 in the frapcon set-list')
+            end select
+
         case ('fraptran') 
             select case (key)
             case ("restart file")
@@ -1175,11 +1181,11 @@ contains
             case('flow blockage, %')
                 var = this % dftran % flwblk (1)
             case('plenum gas temperature, K')
-                var = this % dftran % tp (1)
+                var = tfk(this % dftran % tp (1))
             case('gas flow rate, g*moles/sec')
                 var = this % dftran % flowg (1)
             case('fuel melt temperature, K')
-                var = this % dftran % tmelt (1)
+                var = tfk(this % dftran % tmelt (1))
             case('plenum gas pressure, MPa')
                 var = this % dftran % gaspress(n+1) * PSItoMPa
             case default
@@ -1343,7 +1349,7 @@ contains
             case('cladding radial stress, MPa')
                 var(:) = this % dftran % CldStress(1:n,3) * PSItoMPa
             case('average cladding temperature, K')
-                var(:) = this % dftran % CladAveTemp(1:n)
+                var(:) = (/( tfk(this % dftran % CladAveTemp(i)), i = 1, n)/)
             case('cold state radius, mm')
                 var(:) = this % dftran % radialbound (1:n)
             case('cldpermaxstrn')
@@ -1449,15 +1455,15 @@ contains
             case("c-p or b-j cladding ecr")
                 var(:) = this % dftran % ecr(1:n)
             case('centerline temperature, K')
-                var(:) = this % dftran % eostemp(1,1:n)
+                var(:) = (/( tfk(this % dftran % eostemp(1,i)), i = 1, n )/)
             case('fuel pellet surface temperature, K')
-                var(:) = this % dftran % eostemp(this % dftran % igpnod,1:n)
+                var(:) = (/( tfk(this % dftran % eostemp(this % dftran % igpnod,i)), i = 1, n )/)
             case('cladding inner temperature, K')
-                var(:) = this % dftran % eostemp(this % dftran % ncladi,1:n)
+                var(:) = (/( tfk(this % dftran % eostemp(this % dftran % ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, K")
-                var(:) = this % dftran % eostemp(this % dftran % nmesh,1:n)
+                var(:) = (/( tfk(this % dftran % eostemp(this % dftran % nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, K")
-                var(:) = this % dftran % BulkCoolTemp(1:n)
+                var(:) = (/( tfk(this % dftran % BulkCoolTemp(i)), i = 1, n )/)
 
 
 

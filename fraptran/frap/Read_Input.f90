@@ -1868,7 +1868,13 @@ MODULE Read_Input_fraptran
         ruptstrain = 1.0_r8k
         irefine = 1
         refine = 3.0_r8k
-    
+        internal = 'OFF'
+        metal = 'OFF'
+        deformation = 'OFF'
+        inst = 'OFF'
+        mheat = 'OFF'
+        bheat = 'OFF'
+
         ! Set default temperatures based on input units
         IF (.NOT. unit) THEN
             trise = 10.0_r8k / 1.8_r8k
