@@ -36,11 +36,13 @@ module m_state
     integer :: counter = 0
 
     contains
-    subroutine printstate(i, fname, mode)
+    subroutine printstate(i, fname, mode, is_print)
         implicit none
+        logical :: is_print
         character(*) :: fname, mode
         integer :: i
         counter = counter + 1
+        if (is_print) write(*,*) 'counter', counter
         if (i == counter) then
             open (ifile, file = fname, status = 'unknown', Form = 'formatted')
             include "ft_print_h.f90"

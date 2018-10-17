@@ -3,6 +3,15 @@ import os, sys
 from subprocess import call
 import shutil
 
+def str2float(a):
+    try:
+        a = float(a.strip())
+        b = True
+    except ValueError:
+        b = False
+    return b
+
+
 skiping = """dtpo
 mheat
 t2
@@ -54,4 +63,12 @@ with open('memory-2.out','r') as f:
 for key in d1:
     a, b = d1[key], d2[key]
     if not a == b and not key in skiping:
-        print key, a, b
+        a_ = str2float(a)
+        b_ = str2float(b)
+        if not (a_ and b_):
+            print '%20s %10s %10s' % (key, a, b)
+        else:
+            a = float(a)
+            b = float(b)
+            if ( abs(a - b) > 1E-6 * abs(a) ):
+                print '%20s %16.6E %16.6E' % (key, a, b)

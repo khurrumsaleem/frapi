@@ -163,8 +163,8 @@ contains
         class (t_fuelrod), intent(inout) :: this
 
         call this % dfcon % load()
-        call this % dfcon % proc() ! processing and checking of input variables
-        call this % dfcon % init() ! make the very first time step
+        call this % dfcon % proc()   ! processing and checking of input variables
+        call this % dfcon % init()   ! make the very first time step
 
     end subroutine frod_init_frapcon_
 
@@ -270,6 +270,7 @@ contains
         case ('frapcon')
             select case (key)
             case ("restart file")
+                this % namerf      = trim(var)
                 this % dfcon % r__namerf      = trim(var)
             case default
                 call error_message(key, 'character rank 0 in the frapcon set-list')
@@ -278,6 +279,7 @@ contains
         case ('fraptran') 
             select case (key)
             case ("restart file")
+                this % namerf      = trim(var)
                 this % dftran % r__namerf      = trim(var)
             case ("coolant")
                 this % dftran % r__coolant     = trim(var)
@@ -1551,15 +1553,6 @@ contains
         this % dftran % r__gasths(i,:) = t
 
     end subroutine settime
-
-    subroutine aconeu(a, b, n, index)
-        implicit none
-        integer :: n, index
-        real(8) :: a(:), b(:)
-        do i = 1, n
-            call coneu(a(i), b(i), index)
-        enddo
-    end subroutine aconeu
 
     subroutine error_message (vname, vtype)
         implicit none

@@ -293,6 +293,12 @@ module fraptran2
         t2   = time + dt
         dtp  = dt
         t22  = dt
+        dtmaxa(:) = 0.D+0
+        dtmaxa(1) = dt
+        dtmaxa(2) = time
+        dtmaxa(3) = dt
+        dtmaxa(4) = time + dt
+        timeincrement = dt
 
         CALL setup6
 

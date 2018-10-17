@@ -845,7 +845,7 @@ MODULE timestep_fraptran
     REAL(r8k), DIMENSION(naxn) :: molrel
     REAL(r8k), DIMENSION(naxn+1) :: rwa7
 
-    !call printstate(100,'memory.out','exit')
+    !call printstate(2,'memory.out','exit', .false.) !766
 
     if (.not. allocated(Iflag)) allocate(Iflag(ngasr,2))
     !
