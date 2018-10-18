@@ -1560,7 +1560,7 @@ contains
         implicit none
         character(*) :: vname, vtype
         write(*,*) "ERROR: Could not find variable '", trim(vname), "' of the type ", vtype
-        call backtrace
+        !call backtrace
         call exit(1) 
     end subroutine error_message
 

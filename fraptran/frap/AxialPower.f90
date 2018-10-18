@@ -52,8 +52,9 @@ MODULE AxialPower_fraptran
       &          pkw0, axnodelevat, p2, rf, tm1, timeincrement, p1, powop, powopi, pkwn, pkwn0, &
       &          p1n, p2n, powavn, t0, timop, frac, t1, ta, fpdcay, fp, ts, a1, a2, b1, b2,Gscale, &
       &          powavend, pkwnd, rvoid
-    !
+
     axf = polate (AxPowProfile(1:2*npaxp,nprofile), AxNodElevat, npaxp) * Gscale
+
     IF (nqbow == 1 .AND. ExtentOfBow >= 0.3_r8k) axf = &
       &     axf * (1.0_r8k + 0.01_r8k * (0.94_r8k * ExtentOfBow - 2.84_r8k * ExtentOfBow ** 2))
     framp = 1.0_r8k

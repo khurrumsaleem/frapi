@@ -1,6 +1,7 @@
 program test_frapi
 
     use m_problem,  only : t_problem
+    use m_round,  only : round
     use odfile, only : t_odfile
 
     implicit none
@@ -40,6 +41,10 @@ program test_frapi
 
                 dt = problem % timestep_fraptran (time)
 
+                if (time+dt > problem % finishtime) exit
+
+                !write(*,*) 'frapi: ', step+1, time + dt
+
                 call problem % ofile % write_r8_0('frapi time, s', time)
                 call problem % ofile % write_i4_0('time step', step)
                 call problem % ofile % write_r8_0('time step size, s', dt)
@@ -51,8 +56,6 @@ program test_frapi
 
                 time = time + dt
                 step = step + 1
-
-                !write(*,*) 'frapi: ', step, dt, time
 
             enddo
 

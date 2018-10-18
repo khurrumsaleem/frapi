@@ -734,3 +734,4 @@ this % tmaxc = 5140.0_r8k
 this % tmaxf = 3320.0_r8k
 this % Radiation = 'OFF'
 this % DebugTime = 1.0E20_r8k
+this % ncool = 0

@@ -44,15 +44,17 @@ ntimesteps
 time
 first_pass
 time0
-dktoutcounter""".split()
+dktoutcounter
+npaxp""".split()
 
 
 task = 'rep-na1'
 
-call(['../../build/debug/main_fraptran', '%s-fraptran.inp'%task])
-shutil.move('./memory.out', './memory-1.out')
 call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
 shutil.move('./memory.out', './memory-2.out')
+
+call(['../../build/debug/main_fraptran', '%s-fraptran.inp'%task])
+shutil.move('./memory.out', './memory-1.out')
 
 with open('memory-1.out','r') as f:
     d = [a.split('=') for a in f.read().split('\n')[:-1]]
@@ -73,5 +75,5 @@ for key in d1:
         else:
             a = float(a)
             b = float(b)
-            if ( abs(a - b) > 1E-6 * abs(a) ):
+            if ( abs(a - b) > 1E-2 * abs(a) ):
                 print '%20s %16.6E %16.6E' % (key, a, b)

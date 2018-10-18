@@ -266,6 +266,9 @@ module fraptran2
         call cardin
         call initia
 
+        nptha = 2
+        npaxp = naxn
+
         close (fcunit)
 
     end subroutine p_init
@@ -343,6 +346,7 @@ module fraptran2
         !call this % next(t1-t0)
         !ntstep = 1
         !nsteadytrans = 1
+        call this % next(t1-t0)
         call this % next(t1-t0)
     end subroutine p_next0
 

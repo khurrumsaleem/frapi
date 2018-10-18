@@ -5,6 +5,7 @@ module m_problem
     use fpc_reader
     use fpt_reader
     use m_interp1d, only : interp1d
+    use m_round, only : round
     use odfile, only : t_odfile
 
     implicit none
@@ -45,7 +46,7 @@ module m_problem
         ! Read input data from fraptran's input file
         call read_fraptran_file(ifilename)
 
-        this % finishtime = maxval( (/( dtmaxa(2*i), i = 1, ntimesteps )/) )
+        this % finishtime = ProblemEndTime
 
         call this % frod % make(nr=nfmesh, na=naxn, nce=ncmesh, verbose=.false., frapmode=frapmode)
 
@@ -318,10 +319,16 @@ module m_problem
         real(8) :: time, dt
         integer :: i 
         i = 1
-        do while ((time > dtmaxa(2*i)).and.(i <= ntimesteps))
-            i = i + 1
-        enddo
-        dt = dtmaxa(2*i-1)
+!        dt = dtmaxa(2)
+!        do while ((time >= dtmaxa(2*i)).and.(i <= ntimesteps).and.(dtmaxa(2*i-1) > 0))
+!            dt = dtmaxa(2*i-1)
+!            i = i + 1
+!        enddo
+        if (time <= 0.06) dt = 1.E-4
+        if (time >= 0.06) dt = 1.E-5
+        if (time >= 0.08) dt = 1.E-4
+        if (time >= 0.10) dt = 1.E-3
+
     end function p_timestep_fraptran
 
     subroutine p_finalize (this)

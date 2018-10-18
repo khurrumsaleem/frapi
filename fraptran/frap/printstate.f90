@@ -40,12 +40,13 @@ module m_state
         logical :: is_print
         character(*) :: fname, mode
         integer :: i
-        if (is_print) write(*,*) 'ntstep = ', ntstep
         if (i == ntstep) then
             open (ifile, file = fname, status = 'unknown', Form = 'formatted')
             include "ft_print_h.f90"
             close (ifile)
-            !write(*,*) rodavepower(:10)
+            write(*,*) 'ntstep = ', ntstep, time
+            !write(*,*) rodavepower
+            !write(*,*) axialpowr
             select case (mode)
             case ('exit')
                 stop

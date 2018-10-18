@@ -833,7 +833,7 @@ MODULE timestep_fraptran
       &          thkox0, dmxi1k, woxupt, pfcpa, tmpdot, cflux1, tcldmx, dvsum, tsum, dv, tface, &
       &          cestot, ainsur, timpro, dzpowi, amuran, amurak, delbu, rpmult, rparea, busi, ft2m2, &
       &          delbu1, ftmax, ftemp, amural, tcld0, tcldp, cpint, tfave, rdot, hflux = 0.0_r8k, &
-      &          Gscale, dum1 = 0.0_r8k, dum2 = 0.0_r8k, dum3 = 0.0_r8k, dum4 = 0.0_r8k, powrz = 0.0_r8k
+      &          Gscale=0.0_r8k, dum1 = 0.0_r8k, dum2 = 0.0_r8k, dum3 = 0.0_r8k, dum4 = 0.0_r8k, powrz = 0.0_r8k
     CHARACTER(LEN=7) :: TopPTempCalc, BotPTempCalc
     INTEGER(ipk), ALLOCATABLE, SAVE :: Iflag(:,:)
     INTEGER(ipk) :: nfirst
@@ -974,7 +974,6 @@ MODULE timestep_fraptran
             CALL power (nptha, npaxp, AxNodElevat(k), Time, TimeIncrement, fuelrd, powrz, dum3, dum4, &
               &         dum1, powop, timop, fpdcay, mpdcay, NSteadyTrans, powict, powimx, ntstep, &
               &         ExtentOfBow(k), nqbow, dum2, 1.0_r8k, powgnd, powlnd, rvoid)
-
             powmax = MAX(powrz, powmax)
             totpow = totpow + powrz * AxialNodLen(k)
             ! True rod total power
@@ -994,6 +993,7 @@ MODULE timestep_fraptran
         ! and rod bowing. This is accounted for by scaling rod average power
         ! with Gscale in the next call to subroutine power:
         Gscale = (powgnd + 1.0e-20_r8k) / (ptnd + 1.0e-20_r8k)
+
         pavg   = pavg * Gscale
         ! Update fuel and cladding melt temperatures
         bumtp  = bu(1)
@@ -1847,7 +1847,7 @@ MODULE timestep_fraptran
     IF (dtenfo <= 0.08_r8k) dtenfo = 0.05_r8k
 
     !write(*,*) 'ntstep = ', ntstep, time, timeincrement
-    !call printstate(602,'memory.out','exit', .false.) !766 602
+    !call printstate(760,'memory.out','exit', .false.) !766 602
 
 
     !

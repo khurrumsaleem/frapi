@@ -3,7 +3,7 @@ FILE15='sth2xt', STATUS='old', FORM='UNFORMATTED' *
 FILE79='out.na1', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST' *
 FILE66='rep-na1-fraptran.plot', STATUS='UNKNOWN', FORM='FORMATTED', CARRIAGE CONTROL='LIST' *
 FILE22='restart-na1.txt' , STATUS='old', FORM='FORMATTED' *
-/***********************************************************************
+/*********************************************************************** 
 REP-Na1, for EPRI review (8/26/03)
 $begin
 ProblemStartTime=0.0,
@@ -17,12 +17,12 @@ trest=1.2528e8,
 $end
 $solution
 dtmaxa(1:)=
-0.00010, 0.0000, 
-0.00010, 0.0702, 
-0.00001, 0.0790, 
-0.00001, 0.0815,
-0.00010, 0.0900, 
-0.00100, 0.1500,
+1.D-4, 0.0000D0, 
+1.D-5, 0.0702D0, 
+1.D-5, 0.0790D0, 
+1.D-5, 0.0815D0,
+1.D-3, 0.0900D0, 
+1.D-3, 0.1500D0,
 naxn=11, nfmesh=20, ncmesh=5,
 $end
 $design
@@ -55,21 +55,17 @@ RodAvePower(1:) =
    80. , 0.0950,
     0. , 0.1000,
     0. , 1.0000,
-AxPowProfile(1:,1) = 
+AxPowProfile(1:,1:) = 
  0.728, 0.000,
- 0.884, 0.197,
  0.975, 0.328,
  1.047, 0.459,
- 1.100, 0.591,
  1.136, 0.722,
  1.156, 0.853,
  1.161, 0.984,
  1.148, 1.115,
  1.113, 1.247,
  1.053, 1.378,
- 0.966, 1.509,
  0.857, 1.640,
- 0.744, 1.772,
  0.668, 1.8668,
 $end
 $model
