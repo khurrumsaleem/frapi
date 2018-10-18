@@ -33,7 +33,6 @@ module m_state
     implicit none
 
     integer, parameter :: ifile = 1394
-    integer :: counter = 0
 
     contains
     subroutine printstate(i, fname, mode, is_print)
@@ -41,12 +40,12 @@ module m_state
         logical :: is_print
         character(*) :: fname, mode
         integer :: i
-        counter = counter + 1
-        if (is_print) write(*,*) 'counter', counter
-        if (i == counter) then
+        if (is_print) write(*,*) 'ntstep = ', ntstep
+        if (i == ntstep) then
             open (ifile, file = fname, status = 'unknown', Form = 'formatted')
             include "ft_print_h.f90"
             close (ifile)
+            !write(*,*) rodavepower(:10)
             select case (mode)
             case ('exit')
                 stop

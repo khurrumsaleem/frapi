@@ -236,6 +236,10 @@ module m_problem
         call this % frod % set_r8_1 ('fmesh', fmesh)
         call this % frod % set_r8_1 ('cmesh', cmesh)
 
+        do i = 1, lsize(rodavepower) * 2
+            RodAvePower(2*i-1) = RodAvePower(2*i-1) * fpowr
+        enddo
+
     end subroutine p_make_fraptran
 
     subroutine p_update_fraptran (this, time)

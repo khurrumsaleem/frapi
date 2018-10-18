@@ -14,6 +14,7 @@ def str2float(a):
 
 skiping = """dtpo
 mheat
+bheat
 t2
 printballoon
 tem
@@ -35,14 +36,15 @@ nhupta
 ndtmax
 pbh2
 nptha 
-bheat
 tpo
 ntprs
 dtpoa
 ngbh
 ntimesteps
 time
-time0""".split()
+first_pass
+time0
+dktoutcounter""".split()
 
 
 task = 'rep-na1'
@@ -62,6 +64,7 @@ with open('memory-2.out','r') as f:
 
 for key in d1:
     a, b = d1[key], d2[key]
+    #if key == 'time': print key, a, b
     if not a == b and not key in skiping:
         a_ = str2float(a)
         b_ = str2float(b)

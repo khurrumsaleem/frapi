@@ -41,12 +41,13 @@ module fraptran2
 
         contains
 
-        procedure :: make => p_make
-        procedure :: init => p_init
-        procedure :: next => p_next
-        procedure :: deft => p_deft
-        procedure :: load => p_load
-        procedure :: dump => p_dump
+        procedure :: make    => p_make
+        procedure :: init    => p_init
+        procedure :: next    => p_next
+        procedure :: next0   => p_next0
+        procedure :: deft    => p_deft
+        procedure :: load    => p_load
+        procedure :: dump    => p_dump
         procedure :: destroy => p_destroy
 
     end type fraptran_driver
@@ -256,6 +257,7 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
         logical :: is_open
+        real(8) :: dt0 = 1.D-1
 
         inquire (unit = fcunit, opened = is_open)
         if (is_open) close (unit = fcunit)
@@ -267,6 +269,82 @@ module fraptran2
         close (fcunit)
 
     end subroutine p_init
+
+    subroutine p_next0(this)
+        class (fraptran_driver), intent(inout) :: this
+        integer :: i
+        real(8) :: t0 = 0.D+0
+        real(8) :: t1 = 1.D-1
+        pbh(3)          = pbh(1)                         
+        dtmaxa(3)       = dtmaxa(1)                         
+        hbh(3)          = hbh(1)                         
+        hupta(3)        = hupta(1)                         
+        hinta(3)        = hinta(1)                         
+        gbh(3)          = gbh(1)                         
+        explenumt(3)    = explenumt(1)                         
+        dtpoa(3)        = dtpoa(1)                         
+        RodAvePower(3)  = RodAvePower(1)                         
+        dtplta(3)       = dtplta(1)                         
+        FuelGasSwell(3) = FuelGasSwell(1)                         
+        temptm(3)       = temptm(1)                         
+        relfraca(3)     = relfraca(1)                         
+        prestm(3)       = prestm(1)                         
+        fldrat(3)       = fldrat(1)                         
+        gasphs(3)       = gasphs(1)                         
+        hlqcl(3)        = hlqcl(1)                         
+        htca(3,:)       = htca(1,:)                         
+        tblka(3,:)      = tblka(1,:)                         
+        gasths(3,:)     = gasths(1,:)                         
+        i = 2
+        pbh(i)          = t0  
+        dtmaxa(i)       = t0     
+        hbh(i)          = t0  
+        hupta(i)        = t0    
+        hinta(i)        = t0    
+        gbh(i)          = t0  
+        explenumt(i)    = t0        
+        dtpoa(i)        = t0    
+        RodAvePower(i)  = t0          
+        dtplta(i)       = t0     
+        FuelGasSwell(i) = t0           
+        temptm(i)       = t0     
+        relfraca(i)     = t0       
+        prestm(i)       = t0     
+        fldrat(i)       = t0     
+        gasphs(i)       = t0     
+        hlqcl(i)        = t0    
+        htca(i,:)       = t0     
+        tblka(i,:)      = t0      
+        gasths(i,:)     = t0       
+        i = 4
+        pbh(i)          = t1  
+        dtmaxa(i)       = t1     
+        hbh(i)          = t1  
+        hupta(i)        = t1    
+        hinta(i)        = t1    
+        gbh(i)          = t1  
+        explenumt(i)    = t1        
+        dtpoa(i)        = t1    
+        RodAvePower(i)  = t1          
+        dtplta(i)       = t1     
+        FuelGasSwell(i) = t1           
+        temptm(i)       = t1     
+        relfraca(i)     = t1       
+        prestm(i)       = t1     
+        fldrat(i)       = t1     
+        gasphs(i)       = t1     
+        hlqcl(i)        = t1    
+        htca(i,:)       = t1     
+        tblka(i,:)      = t1      
+        gasths(i,:)     = t1       
+        CALL setup6
+        ntstep = 0
+        nsteadytrans = 1
+        !call this % next(t1-t0)
+        !ntstep = 1
+        !nsteadytrans = 1
+        call this % next(t1-t0)
+    end subroutine p_next0
 
     subroutine p_deft(this)
 
@@ -300,8 +378,8 @@ module fraptran2
         dtmaxa(4) = time + dt
         timeincrement = dt
 
-        CALL setup6
-
+        !CALL setup6
+        !write(*,*) '2: ', IndexTempConverg(1)
         n2 = 1
 
         ! Calculate results for current time step
@@ -335,6 +413,7 @@ module fraptran2
         gasths(1,:)      = gasths(3,:)               
 
     end subroutine p_next
+
 
     subroutine p_destroy(this)
 

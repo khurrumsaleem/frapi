@@ -104,30 +104,34 @@ MODULE Uncertainties_fraptran
     ! it does not matter where in the input file the block was placed. If the block exists
     ! (if the words $uncertainties are in the input file), UncertExists becomes true and it reads the
     ! block. If not, once it reaches the end of the file, it will skip the read.
-    REWIND iunit
-    ReadLoop: DO
-        READ (iunit, '(A)', IOSTAT = InputStat) line
-        IF (InputStat == 0) THEN
-            Value = INDEX(line,'$uncertainties')
-            IF (Value > 0) THEN
-                BACKSPACE iunit
-                ! Make sure the line is not commented out
-                Value = INDEX(line(1:2),'!')
-                IF (Value == 0) UncertExists = .TRUE.
+    if(.not. is_export) then
+        REWIND iunit
+        ReadLoop: DO
+            READ (iunit, '(A)', IOSTAT = InputStat) line
+            IF (InputStat == 0) THEN
+                Value = INDEX(line,'$uncertainties')
+                IF (Value > 0) THEN
+                    BACKSPACE iunit
+                    ! Make sure the line is not commented out
+                    Value = INDEX(line(1:2),'!')
+                    IF (Value == 0) UncertExists = .TRUE.
+                    EXIT ReadLoop
+                END IF
+            ELSE IF (InputStat < 0) THEN
+                ! End of File or Record
+                UncertExists = .FALSE.
                 EXIT ReadLoop
+            ELSE
+                ! Error
+                UncertExists = .FALSE.
+                WRITE (0,*) 'Syntax error in namelist $uncertainties part of line, inputstat = ', inputstat
+                WRITE (ounit,*) 'Syntax error in namelist $uncertainties part of line, inputstat =', inputstat
+                STOP
             END IF
-        ELSE IF (InputStat < 0) THEN
-            ! End of File or Record
-            UncertExists = .FALSE.
-            EXIT ReadLoop
-        ELSE
-            ! Error
-            UncertExists = .FALSE.
-            WRITE (0,*) 'Syntax error in namelist $uncertainties part of line'
-            WRITE (ounit,*) 'Syntax error in namelist $uncertainties part of line'
-            STOP
-        END IF
-    END DO ReadLoop
+        END DO ReadLoop
+    else
+        UncertExists = .false.
+    endif
     !
     IF (UncertExists) THEN
         !

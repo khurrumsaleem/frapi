@@ -40,19 +40,19 @@ program test_frapi
 
                 dt = problem % timestep_fraptran (time)
 
-                call problem % update_fraptran (time + dt)
-                call problem % frod % next (dt)
-                call problem % frod % accept ()
-
-                call problem % ofile % write_r8_0('frapi time, s', time + dt)
+                call problem % ofile % write_r8_0('frapi time, s', time)
                 call problem % ofile % write_i4_0('time step', step)
                 call problem % ofile % write_r8_0('time step size, s', dt)
                 call problem % save_in_file_fraptran ()
 
+                call problem % update_fraptran (time + dt)
+                call problem % frod % next (dt)
+                call problem % frod % accept ()
+
                 time = time + dt
                 step = step + 1
 
-                !write(*,*) step, dt, time
+                !write(*,*) 'frapi: ', step, dt, time
 
             enddo
 

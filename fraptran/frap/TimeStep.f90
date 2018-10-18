@@ -420,7 +420,6 @@ MODULE timestep_fraptran
 790     FORMAT(/'Run terminated due to exceeding clad melting temperature',1x,f7.1,' EOSTemp(nmesh,k) = '/5(5(2x,e11.4)/))
         RETURN
     END IF
-    
     ! Check to see if restart should be written
     IF ((nswinw == 2) .AND. (MOD(ntstep,nrestp) == 0) .AND. (Time >= (tmax - 1.0e-6_r8k))) CALL restrw
     
@@ -440,7 +439,7 @@ MODULE timestep_fraptran
     ! Output file
     tp(1) = tplna(1,2,1)
     CALL prntot
-    
+
     ! Update new print time for output file
     SELECT CASE (coupled)
     CASE (.FALSE.)
@@ -844,8 +843,6 @@ MODULE timestep_fraptran
     REAL(r8k), DIMENSION(nmesh) :: temptemp
     REAL(r8k), DIMENSION(naxn) :: molrel
     REAL(r8k), DIMENSION(naxn+1) :: rwa7
-
-    !call printstate(2,'memory.out','exit', .false.) !766
 
     if (.not. allocated(Iflag)) allocate(Iflag(ngasr,2))
     !
@@ -1848,6 +1845,11 @@ MODULE timestep_fraptran
     IF (dtenfo > 0.15_r8k .AND. dtenfo <=  0.3_r8k) dtenfo = 0.2_r8k
     IF (dtenfo > 0.08_r8k .AND. dtenfo <= 0.15_r8k) dtenfo = 0.1_r8k
     IF (dtenfo <= 0.08_r8k) dtenfo = 0.05_r8k
+
+    !write(*,*) 'ntstep = ', ntstep, time, timeincrement
+    !call printstate(602,'memory.out','exit', .false.) !766 602
+
+
     !
     END SUBROUTINE comput
     !

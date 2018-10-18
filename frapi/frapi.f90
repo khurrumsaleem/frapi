@@ -162,6 +162,8 @@ contains
 
         class (t_fuelrod), intent(inout) :: this
 
+        this % dfcon % r__namerf = this % namerf
+
         call this % dfcon % load()
         call this % dfcon % proc()   ! processing and checking of input variables
         call this % dfcon % init()   ! make the very first time step
@@ -172,10 +174,13 @@ contains
 
         class (t_fuelrod), intent(inout) :: this
 
-        this % dftran % namerf = this % namerf
-        call this % dftran % load()
+        this % dftran % r__namerf = this % namerf
+        this % dftran % r__ntstep = 1
+        this % dftran % r__nsteadytrans = 1
+
+        call this % dftran % load()   ! load variables from a temporary memory block
         call this % dftran % init()   ! init variables, including reading of the restart file
-        this % is_initdone = .true.
+        call this % dftran % next0()  ! make very first time step for steady-state
 
     end subroutine frod_init_fraptran_
 
@@ -254,6 +259,7 @@ contains
         case ('frapcon')
             call this % dfcon % dump()
         case ('fraptran')
+            this % is_initdone = .true.
             call this % dftran % dump()
         end select
 
@@ -271,7 +277,7 @@ contains
             select case (key)
             case ("restart file")
                 this % namerf      = trim(var)
-                this % dfcon % r__namerf      = trim(var)
+                !this % dfcon % r__namerf      = trim(var)
             case default
                 call error_message(key, 'character rank 0 in the frapcon set-list')
             end select
@@ -280,7 +286,7 @@ contains
             select case (key)
             case ("restart file")
                 this % namerf      = trim(var)
-                this % dftran % r__namerf      = trim(var)
+                !this % dftran % r__namerf      = trim(var)
             case ("coolant")
                 this % dftran % r__coolant     = trim(var)
             case ("bheat")
@@ -1466,10 +1472,6 @@ contains
                 var(:) = (/( tfk(this % dftran % eostemp(this % dftran % nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, K")
                 var(:) = (/( tfk(this % dftran % BulkCoolTemp(i)), i = 1, n )/)
-
-
-
-
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select
