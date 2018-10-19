@@ -1848,6 +1848,7 @@ MODULE timestep_fraptran
 
     !write(*,*) 'ntstep = ', ntstep, time, timeincrement
     !call printstate(760,'memory.out','exit', .false.) !766 602
+    !if (WatrMetlEnrgy(1) > 0) write(*,*) ntstep, WatrMetlEnrgy(1)
 
 
     !

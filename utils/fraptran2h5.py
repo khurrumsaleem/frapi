@@ -34,7 +34,7 @@ keylist = {
    6 : ( 'plenum gas pressure, MPa', none ),
    7 : ( 'total void volume, mm^3', none ),
 #   8 : ( 'F K Average Fuel Temperature', none ),
-   9 : ( 'water metal reaction energy, kW|m', none ),
+   9 : ( 'total water metal reaction energy, kW|m', none ),
  100 : ( 'cladding total axial strain, %', none ),
  101 : ( 'cladding total hoop strain, %', none ),
  102 : ( 'cladding total radial strain, %', none ),

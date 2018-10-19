@@ -85,7 +85,7 @@ varname(84) = 'structural gap interface pressure, MPa'
 varname(85) = 'coolant density, kg|m^3'
 varname(86) = 'pellet surface axial strain, %'
 varname(87) = 'pellet surface hoop strain, %'
-
+varname(88) = 'total water metal reaction energy, kW|m'                                 
 
 vartype( 1) = 'i4_0'
 vartype( 2) = 'i4_0'
@@ -174,3 +174,4 @@ vartype(84) = 'r8_1'
 vartype(85) = 'r8_1'
 vartype(86) = 'r8_1'
 vartype(87) = 'r8_1'
+vartype(88) = 'r8_0'

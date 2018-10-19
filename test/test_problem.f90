@@ -10,7 +10,7 @@ module m_problem
 
     implicit none
 
-    character(len=128), dimension(87) :: varname, vartype
+    character(len=128), dimension(88) :: varname, vartype
     real(8), allocatable :: timesteps(:,:)
 
     type, public :: t_problem
@@ -321,9 +321,9 @@ module m_problem
             case ('r8_1')
                 call this % frod  % get_r8_1  (varname(i), var_r8_1)
                 call this % ofile % write_r8_1(varname(i), var_r8_1)
-!            case ('r8_2')
-!                call this % frod  % get_r8_2  (varname(i), var_r8_2)
-!                call this % ofile % write_r8_2(varname(i), var_r8_2)
+            case ('r8_2')
+                !call this % frod  % get_r8_2  (varname(i), var_r8_2)
+                !call this % ofile % write_r8_2(varname(i), var_r8_2)
             end select
         enddo
     end subroutine p_save_in_file_fraptran

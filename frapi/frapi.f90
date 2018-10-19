@@ -1196,6 +1196,8 @@ contains
                 var = tfk(this % dftran % tmelt (1))
             case('plenum gas pressure, MPa')
                 var = this % dftran % gaspress(n+1) * PSItoMPa
+            case('total water metal reaction energy, kW|m')
+                var = sum(this % dftran % watrmetlenrgy(1:n)) / fttom
             case default
                 call error_message(key, 'real rank 0 in the fraptran get-list')
             end select
@@ -1485,12 +1487,14 @@ contains
         class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
+        integer :: na, nr
         real(8)      :: var(:,:) ! array (n,)
 
         select case (frapmode_)
         case ('frapcon')
             select case(key)
             case('fuel temperature distribution, C') ! YU JIANKAI
+                !tfc = (tf - 32.0_r8k) / 1.8_r8k
                 do i = 1, n 
                     do j = 1, m + 1
                         var(j,i) = tfc(this % dfcon % tmpfuel(m + 2 - j, i))
@@ -1500,15 +1504,17 @@ contains
                 call error_message(key, 'real rank 2 in frapcon get-list')
             end select
         case ('fraptran')
+            nr = this % dftran % nradialnodes
+            na = this % dftran % naxn
             select case (key)
             case('eos temperature, K')
-                var(:,:) = this % dftran % eostemp (:,:)
+                var(:,:) = (this % dftran % eostemp (1:nr, 1:na) + 4.5967D+2) / 1.8D+0
             case('eos radius, mm')
-                var(:,:) = this % dftran % eosrad (:,:) * fttomm
+                var(:,:) = this % dftran % eosrad (1:nr, 1:na) * fttomm
             case('energy absorbed in melting')
-                var(:,:) = this % dftran % enrgymeltz (:,:)
+                var(:,:) = this % dftran % enrgymeltz (1:nr,1:na)
             case('DeformedRadiusOfMesh')
-                var(:,:) = this % dftran % DeformedRadiusOfMesh (:,:) * fttomm
+                var(:,:) = this % dftran % DeformedRadiusOfMesh (1:m,1:n) * fttomm
             case default
                 call error_message(key, 'real rank 2 in fraptran get-list')
             end select

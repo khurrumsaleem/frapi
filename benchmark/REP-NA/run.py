@@ -50,7 +50,6 @@ names = [
 'plenum gas temperature, K',
 'plenum gas pressure, MPa',
 'total void volume, mm^3',
-'water metal reaction energy, kW|m',
 'cladding total axial strain, %',
 'cladding total hoop strain, %',
 'cladding total radial strain, %',
@@ -68,7 +67,7 @@ names = [
 'cladding instability strain, %',
 'coolant quality',
 'heat transfer coefficient, W|m^2K',
-'water metal reaction energy, kW|m',
+#'total water metal reaction energy, kW|m',
 #'outer oxide thickness, mm',
 #'inner oxide thickness, mm',
 'surface heat transfer coefficient, W|m^2K',
@@ -102,11 +101,11 @@ task = 'rep-na1'
 
 if True:
     #call(['../../build/debug/main_frapcon', 'rep-na1-frapcon.inp'])
-#    print "FRAPTRAN: "
-#    call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
+    print "FRAPTRAN: "
+    call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
     print "FRAPI: "
     call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
-#    call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
-#    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
+    call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
+    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
 
-#draw(task)
+draw(task)
