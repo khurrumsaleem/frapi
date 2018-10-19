@@ -155,7 +155,6 @@ module m_problem
         call this % frod % set_r8_0 ('RodLength', RodLength)
         call this % frod % set_i4_0 ('noiter', noiter)
         call this % frod % set_i4_0 ('nthermex', nthermex)
-        call this % frod % set_i4_0 ('ncmesh', ncmesh)
         call this % frod % set_r8_0 ('OpenPorosityFraction', OpenPorosityFraction)
         call this % frod % set_r8_0 ('zad', zad)
         call this % frod % set_r8_0 ('rshrd', rshrd)

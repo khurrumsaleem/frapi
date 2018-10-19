@@ -2790,6 +2790,7 @@ MODULE Read_Input_fraptran
     ENDDO
     ! Make sure AxPowProfile(even,n) is increasing
     DO j = 1, NumAxProfiles
+        write(*,*) axpowprofile(:,1)
         IF (npaxp > 1) THEN
             DO i = 2, npaxp
                 IF (AxPowProfile(2*i,j) < AxPowProfile(2*(i-1),j)) THEN

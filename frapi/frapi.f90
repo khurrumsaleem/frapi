@@ -368,10 +368,10 @@ contains
                 this % dftran % r__noiter = var
             case("nthermex")
                 this % dftran % r__nthermex = var
-            case("ncmesh")
-                this % dftran % r__ncmesh = var
-            case("naxn")
-                this % dftran % r__naxn = var
+!            case("ncmesh")
+!                this % dftran % r__ncmesh = var
+!            case("naxn")
+!                this % dftran % r__naxn = var
             case("IndexFC2Print")
                 this % dftran % r__IndexFC2Print = var
             case("irefine")
