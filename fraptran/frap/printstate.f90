@@ -2,9 +2,7 @@ module m_state
 
     USE Kinds_fraptran
     USE variables_fraptran
-    USE setup_fraptran, ONLY : Main, Input_Echo
     USE TH_Link_fraptran
-    USE FuelRod_Data_fraptran, ONLY : Allocate_Rods, FRAPTRAN_Vars, fraptran_rod
     USE variables_fraptran, ONLY : coupled, iunit, ounit, plotunit, frtrunit, h2ounit, fcunit, dakotaunit, nrestart, ncards, &
       &                   title, codeid, defsize, pre_na, pre_nr, Allocate_Variables
     USE frapc_fraptran
@@ -18,10 +16,7 @@ module m_state
     USE FEA_Setup_fraptran
     USE ErrorMsg_fraptran, ONLY : namelist_read_error
     USE frapc_fraptran
-    USE sth2x_fraptran, ONLY : sth2xi
-    USE Initialization_fraptran, ONLY : initia
     USE Read_Input_fraptran
-    USE timestep_fraptran, ONLY : crank6, setup6, comput, store6
     USE ErrorMsg_fraptran, ONLY :errori
     USE CoolantProperties_fraptran, ONLY : tc1, tc2
     USE htcb_h_fraptran
