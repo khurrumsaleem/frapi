@@ -11,6 +11,7 @@ module m_problem
     implicit none
 
     character(len=128), dimension(87) :: varname, vartype
+    real(8), allocatable :: timesteps(:,:)
 
     type, public :: t_problem
         type (t_odfile)  :: ofile
@@ -35,7 +36,7 @@ module m_problem
 
         character(len=256) :: ifilename, rfilename, ofilename, frapmode
 
-        integer :: i, j, itime, starttime
+        integer :: i, j, itime, starttime, n
 
         real(8) :: qtot, dt
 
@@ -241,6 +242,20 @@ module m_problem
             RodAvePower(2*i-1) = RodAvePower(2*i-1) * fpowr
         enddo
 
+        i = 1
+        do while ((dtmaxa(2*i) < dtmaxa(2*i+2)).and.(2*i+2 < size(dtmaxa)))
+            i = i + 1
+        enddo
+        n = i
+        allocate(timesteps(n,2))
+
+        do i = 1, n-1
+            timesteps(i,1) = dtmaxa(2*i+2)
+            timesteps(i,2) = dtmaxa(2*i-1)
+        enddo
+        timesteps(n,1) = problemendtime
+        timesteps(n,2) = dtmaxa(2*n-1)
+
     end subroutine p_make_fraptran
 
     subroutine p_update_fraptran (this, time)
@@ -317,17 +332,13 @@ module m_problem
         implicit none
         class (t_problem), intent(inout) :: this
         real(8) :: time, dt
-        integer :: i 
-        i = 1
-!        dt = dtmaxa(2)
-!        do while ((time >= dtmaxa(2*i)).and.(i <= ntimesteps).and.(dtmaxa(2*i-1) > 0))
-!            dt = dtmaxa(2*i-1)
-!            i = i + 1
-!        enddo
-        if (time <= 0.06) dt = 1.E-4
-        if (time >= 0.06) dt = 1.E-5
-        if (time >= 0.08) dt = 1.E-4
-        if (time >= 0.10) dt = 1.E-3
+        integer :: i, n(2)
+
+        n(:) = shape(timesteps)
+
+        do i = n(1), 1, -1
+            if (time < timesteps(i,1)) dt = timesteps(i,2)
+        enddo
 
     end function p_timestep_fraptran
 
