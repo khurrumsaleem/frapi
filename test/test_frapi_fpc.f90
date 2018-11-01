@@ -264,7 +264,7 @@ program frapi_input_file
 
         endif
 
-        call frod % load ()
+        !call frod % load ()
 
         if (itime == 1) then
             call frod % next(ProblemTime(itime-1))

@@ -51,7 +51,6 @@ program test_frapi
                 call problem % save_in_file_fraptran ()
 
                 call problem % update_fraptran (time + dt)
-                call problem % frod % load ()
                 call problem % frod % next (dt)
                 call problem % frod % save ()
 
