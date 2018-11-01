@@ -12,3 +12,8 @@
    'cladding hoop strain, %' => 'cladding total hoop strain, %'
    'cladding axial strain, %' => 'cladding total axial strain, %'
    'cladding radial strain, %' => 'cladding total radial strain, %'
+
+7. Removed the functions 'frod_set_tp_cool' and 'frod_set_tp_cool_off'. 
+    Instead one should use the function 
+    't_fuelrod % set('ifixedcool', 0)' or
+    't_fuelrod % set('ifixedcool', 1)'

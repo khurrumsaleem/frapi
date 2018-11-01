@@ -336,10 +336,15 @@ contains
         integer      :: it
         integer(4)   :: var
 
-
         select case (frapmode_)
         case ('frapcon')
-            call error_message (key, 'integer rank 1 in the frapcon set-list')
+            select case(key)
+            case("ifixedcool")
+                this % dfcon % ifixedcoolt = var
+                this % dfcon % ifixedcoolp = var
+            case default
+                call error_message (key, 'integer rank 1 in the frapcon set-list')
+            end select
         case ('fraptran')
             select case(key)
             case("azang")
@@ -1339,7 +1344,7 @@ contains
             case('radial meshes, cm')
                 var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
                 var(:) = var(:) * intocm
-			case('fuel surface temperature, C')
+            case('fuel surface temperature, C')
                 var(:) = (/( tfc(this % dfcon % tmpfuel(1,i)), i = 1, n )/)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
@@ -1539,30 +1544,6 @@ contains
         end select
 
     end subroutine frod_get_r8_2
-	
-    subroutine frod_set_tp_cool(this)
-    
-        use Variables, ONLY : ifixedcoolt, ifixedcoolp
-		
-        implicit none 
-
-        class (t_fuelrod), intent(inout) :: this
-        this % dfcon % ifixedcoolt = 1
-        this % dfcon % ifixedcoolp = 1
-    
-    endsubroutine frod_set_tp_cool
-    
-    subroutine frod_set_tp_cool_off(this)
-    
-        use Variables, ONLY : ifixedcoolt, ifixedcoolp
-		
-        implicit none 
-		
-        class (t_fuelrod), intent(inout) :: this
-        this % dfcon % ifixedcoolt = 0
-        this % dfcon % ifixedcoolp = 0        
-    
-    endsubroutine frod_set_tp_cool_off		
 
     subroutine frod_destroy(this)
 
