@@ -1339,6 +1339,8 @@ contains
             case('radial meshes, cm')
                 var(:) = (/(this % dfcon % hrad(m - i + 1, 1), i = 0, m )/) 
                 var(:) = var(:) * intocm
+			case('fuel surface temperature, C')
+                var(:) = (/( tfc(this % dfcon % tmpfuel(1,i)), i = 1, n )/)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
@@ -1537,6 +1539,30 @@ contains
         end select
 
     end subroutine frod_get_r8_2
+	
+    subroutine frod_set_tp_cool(this)
+    
+        use Variables, ONLY : ifixedcoolt, ifixedcoolp
+		
+        implicit none 
+
+        class (t_fuelrod), intent(inout) :: this
+        this % dfcon % ifixedcoolt = 1
+        this % dfcon % ifixedcoolp = 1
+    
+    endsubroutine frod_set_tp_cool
+    
+    subroutine frod_set_tp_cool_off(this)
+    
+        use Variables, ONLY : ifixedcoolt, ifixedcoolp
+		
+        implicit none 
+		
+        class (t_fuelrod), intent(inout) :: this
+        this % dfcon % ifixedcoolt = 0
+        this % dfcon % ifixedcoolp = 0        
+    
+    endsubroutine frod_set_tp_cool_off		
 
     subroutine frod_destroy(this)
 
