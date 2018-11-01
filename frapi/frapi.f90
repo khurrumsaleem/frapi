@@ -22,7 +22,8 @@ module frapi
         procedure :: make      => frod_make         ! Initialize the fuel rod
         procedure :: init      => frod_init         ! Set the initial fuel rod state, t = 0
         procedure :: next      => frod_next         ! Perform the trial time step, dt > 0
-        procedure :: accept    => frod_accept       ! Reject the last time step
+        procedure :: save      => frod_save         ! Save fuel rod state to local memory
+        procedure :: load      => frod_load         ! Load fuel rod state from the local memory
         procedure :: makerf    => frod_makerf       ! Make restart file for futher fraptran running
 
         ! old interface: ---------------------------------------------------
@@ -45,8 +46,8 @@ module frapi
         procedure :: get_r8_1  => frod_get_r8_1     ! get variable of type real and rank 1
         procedure :: get_r8_2  => frod_get_r8_2     ! get variable of type real and rank 2
 
-        procedure :: save      => frod_save         ! Save fuel rod state in a file
-        procedure :: load      => frod_load         ! Load fuel rod state from a file
+        procedure :: save_bin  => frod_save_bin     ! Save fuel rod state in a file
+        procedure :: load_bin  => frod_load_bin     ! Load fuel rod state from a file
         procedure :: destroy   => frod_destroy      ! Deallocate the fuel rod variables
     end type t_fuelrod
 
@@ -191,7 +192,7 @@ contains
         real(8) :: dt
 
         if (dt < 1.E-10) then
-            write(*,*) 'ERROR: time step is equal to zero, dt = ', dt
+            write(*,*) 'ERROR: time step is near to zero, dt = ', dt
             stop
         endif
 
@@ -210,7 +211,7 @@ contains
 
         real(8) :: dt
 
-        call this % dfcon % load()
+        !call this % dfcon % load()
         call this % dfcon % next(dt)
 
     end subroutine frod_next_frapcon_
@@ -223,15 +224,15 @@ contains
         real(8) :: dt, t0
 
         t0 = 0.D0
-        call settime(this,2,t0)
-        call settime(this,4,t0+dt)
-        call this % dftran % load()
+        !call this % dftran % load()
+        call this % dftran % settime(2,t0)
+        call this % dftran % settime(4,t0+dt)
         call this % dftran % next(dt)
 
     end subroutine frod_next_fraptran_
 
 
-    subroutine frod_save(this, filename)
+    subroutine frod_save_bin(this, filename)
 
         class (t_fuelrod), intent(inout) :: this
 
@@ -239,9 +240,9 @@ contains
 
         call this % dfcon % save_state(filename)
 
-    end subroutine frod_save
+    end subroutine frod_save_bin
 
-    subroutine frod_load(this, filename)
+    subroutine frod_load_bin(this, filename)
 
         class (t_fuelrod), intent(inout) :: this
 
@@ -249,9 +250,23 @@ contains
 
         call this % dfcon % load_state(filename)
 
+    end subroutine frod_load_bin
+
+    subroutine frod_load(this)
+
+        class (t_fuelrod), intent(inout) :: this
+
+        select case (frapmode_)
+        case ('frapcon')
+            call this % dfcon % load()
+        case ('fraptran')
+            call this % dftran % load()
+        end select
+
     end subroutine frod_load
 
-    subroutine frod_accept(this)
+
+    subroutine frod_save(this)
 
         class (t_fuelrod), intent(inout) :: this
 
@@ -263,7 +278,8 @@ contains
             call this % dftran % dump()
         end select
 
-    end subroutine frod_accept
+    end subroutine frod_save
+
 
     subroutine frod_set_ch_0(this, key, var)
 
@@ -1312,7 +1328,7 @@ contains
                 var(:) = (/( tfc(this % dfcon % tmpfuel(m+1,i)), i = 1, n )/)
             case('fuel stored energy, J|kg')
                 var(:) = this % dfcon % StoredEnergy(1:n) * BTUlbtoJkg
-            case('fuel burnup, MWd|kg')
+            case('fuel burnup, MW*d|kg')
                 var(:) = this % dfcon % EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
             case('cladding inner temperature, C')
                 var(:) = (/(tfc(this % dfcon % CladInSurfTemp(i)), i = 1, n )/) 
@@ -1534,33 +1550,6 @@ contains
         end select
 
     end subroutine frod_destroy
-
-    subroutine settime(this,i,t)
-        class (t_fuelrod), intent(inout) :: this
-        integer :: i
-        real(8) :: t
-        this % dftran % r__pbh(i) = t
-        this % dftran % r__dtmaxa(i) = t
-        this % dftran % r__hbh(i) = t
-        this % dftran % r__hupta(i) = t
-        this % dftran % r__hinta(i) = t
-        this % dftran % r__gbh(i) = t
-        this % dftran % r__explenumt(i) = t
-        this % dftran % r__dtpoa(i) = t
-        this % dftran % r__RodAvePower(i) = t
-        this % dftran % r__dtplta(i) = t
-        this % dftran % r__FuelGasSwell(i) = t
-        this % dftran % r__temptm(i) = t
-        this % dftran % r__relfraca(i) = t
-        this % dftran % r__prestm(i) = t
-        this % dftran % r__fldrat(i) = t
-        this % dftran % r__gasphs(i) = t
-        this % dftran % r__hlqcl(i) = t
-        this % dftran % r__htca(i,:) = t
-        this % dftran % r__tblka(i,:) = t
-        this % dftran % r__gasths(i,:) = t
-
-    end subroutine settime
 
     subroutine error_message (vname, vtype)
         implicit none

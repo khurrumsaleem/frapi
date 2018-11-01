@@ -198,7 +198,7 @@ program rastk_input_file
 
             if (i_cycle > 1) then
                 write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
-                call frod(i_frod) % load(string)
+                call frod(i_frod) % load_bin(string)
             endif
 
         enddo
@@ -236,6 +236,7 @@ program rastk_input_file
                     else
                         ! DO TRIAL TIME STEP
                         dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
+                        call frod(i_frod) % load ()
                         call frod(i_frod) % next(dtime)
                     endif
 
@@ -251,7 +252,7 @@ program rastk_input_file
                     call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
 
                     ! ACCEPT THE LAST TRIAL TIME STEP
-                    if(i_iter == n_iter) call frod(i_frod) % accept()
+                    if(i_iter == n_iter) call frod(i_frod) % save()
                 enddo
 
             enddo
@@ -263,7 +264,7 @@ program rastk_input_file
 
             ! WRITE and READ FUEL ROD STATE FROM A BINARY FILE
             write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
-            call frod(i_frod) % save(string)
+            call frod(i_frod) % save_bin(string)
 
             call frod(i_frod) % destroy()
 

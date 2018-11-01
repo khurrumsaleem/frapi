@@ -16,9 +16,9 @@ names = [
 'gap average temperature, C',
 'cladding average temperature, C',
 'bulk coolant temperature, C',
-'cladding axial strain, %',
-'cladding radial strain, %',
-'cladding hoop strain, %',
+'cladding total axial strain, %',
+'cladding total radial strain, %',
+'cladding total hoop strain, %',
 'cladding axial stress, MPa',
 #'cladding radial stress, MPa', there is not in the frapcon's output *.plot file 
 'cladding hoop stress, MPa',

@@ -37,9 +37,9 @@ program frapi_input_file
     varname_array( 4) = 'thermal gap thickness, um'
     varname_array( 5) = 'mechanical gap thickness, um'
     varname_array( 6) = 'gap pressure, MPa'
-    varname_array( 7) = 'cladding hoop strain, %'
-    varname_array( 8) = 'cladding axial strain, %'
-    varname_array( 9) = 'cladding radial strain, %'
+    varname_array( 7) = 'cladding total hoop strain, %'
+    varname_array( 8) = 'cladding total axial strain, %'
+    varname_array( 9) = 'cladding total radial strain, %'
     varname_array(10) = 'cladding permanent hoop strain, %'
     varname_array(11) = 'cladding permanent axial strain, %'
     varname_array(12) = 'cladding permanent radial strain, %'
@@ -233,10 +233,10 @@ program frapi_input_file
             call frod % set_value("inlet coolant pressure, MPa", p2(itime) * PSItoMPa)
             call frod % set_value("coolant mass flux, kg|(s*m^2)", go(itime)*lbhrft2toksm2)
 
-            write(*,*) 'hello-1'
+            !write(*,*) 'hello-1'
             call frod % init()
-            call frod % accept()
-            write(*,*) 'hello-2'
+            call frod % save()
+            !write(*,*) 'hello-2'
 
             call frod % set_array("FRAPCON FORMAT: linear power, W|cm", linpow)
             call frod % set_array("FRAPCON FORMAT: coolant temperature, C", t_cool)
@@ -260,9 +260,11 @@ program frapi_input_file
 
             write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', itime-1, '.bin'
 
-            call frod % load(string)
+            call frod % load_bin(string)
 
         endif
+
+        call frod % load ()
 
         if (itime == 1) then
             call frod % next(ProblemTime(itime-1))
@@ -270,7 +272,7 @@ program frapi_input_file
             call frod % next(ProblemTime(itime-1) - ProblemTime(itime-2))
         endif
 
-        call frod % accept()
+        call frod % save()
 
         call ofile % write_i4_0('frapi time step', itime)
 
@@ -287,7 +289,7 @@ program frapi_input_file
         if (.not. is_restart) then
 
             write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', itime, '.bin'
-            if (is_save) call frod % save(string)
+            if (is_save) call frod % save_bin(string)
 
         endif
 

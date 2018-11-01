@@ -49,6 +49,7 @@ module fraptran2
         procedure :: load    => p_load
         procedure :: dump    => p_dump
         procedure :: destroy => p_destroy
+        procedure :: settime => p_settime
 
     end type fraptran_driver
 
@@ -424,6 +425,34 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
     end subroutine p_destroy
+
+    subroutine p_settime(this,i,t)
+        class (fraptran_driver), intent(inout) :: this
+        integer :: i
+        real(8) :: t
+        this % pbh(i) = t
+        this % dtmaxa(i) = t
+        this % hbh(i) = t
+        this % hupta(i) = t
+        this % hinta(i) = t
+        this % gbh(i) = t
+        this % explenumt(i) = t
+        this % dtpoa(i) = t
+        this % RodAvePower(i) = t
+        this % dtplta(i) = t
+        this % FuelGasSwell(i) = t
+        this % temptm(i) = t
+        this % relfraca(i) = t
+        this % prestm(i) = t
+        this % fldrat(i) = t
+        this % gasphs(i) = t
+        this % hlqcl(i) = t
+        this % htca(i,:) = t
+        this % tblka(i,:) = t
+        this % gasths(i,:) = t
+
+    end subroutine p_settime
+
 
     subroutine FRAPTRAN_1_5a
         USE Kinds_fraptran

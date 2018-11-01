@@ -1,0 +1,14 @@
+1. 't_fuelrod % save' was replaced on 't_fuelrod % save_bin'
+2. 't_fuelrod % load' was replaced on 't_fuelrod % load_bin'
+3. 't_fuelrod % accept' was replaced on 't_fuelrod % save' (stores fuel rod state in a common memory block)
+4. Introduced the function 't_fuelrod % load' which store fuel rod state in a local memory block
+5. The function 't_fuelrod % next' has been modified such that
+   the old 't_fuelrod % next (dt)' is equivalent to
+
+   t_fuelrod % load ()   ! copy fuel rod state from local memory to common memory block
+   t_fuelrod % next (dt) ! make time step dt
+
+6. Some names of variables have been modified (in 't_fuelrod % get'):
+   'cladding hoop strain, %' => 'cladding total hoop strain, %'
+   'cladding axial strain, %' => 'cladding total axial strain, %'
+   'cladding radial strain, %' => 'cladding total radial strain, %'

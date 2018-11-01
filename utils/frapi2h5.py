@@ -20,7 +20,7 @@ def txt2array(d):
         elif mark == '#3':
             values += map(float, line[3:].split())
         elif mark == '#4':
-            if varname == 'frapi time, s':
+            if varname == 'frapi time step':
                 x.append({varname: values})
             else:
                 x[-1][varname] = values
