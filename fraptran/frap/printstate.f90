@@ -30,25 +30,15 @@ module m_state
     integer, parameter :: ifile = 1394
 
     contains
-    subroutine printstate(i, fname, mode, is_print)
+    subroutine printstate(fname)
         implicit none
         logical :: is_print
-        character(*) :: fname, mode
+        character(*) :: fname
         integer :: i
-        if (i == ntstep) then
-            open (ifile, file = fname, status = 'unknown', Form = 'formatted')
-            include "ft_print_h.f90"
-            close (ifile)
-            write(*,*) 'ntstep = ', ntstep, time
-            !write(*,*) rodavepower
-            !write(*,*) axialpowr
-            select case (mode)
-            case ('exit')
-                stop
-                call exit(1)
-            case ('none')
-                continue
-            end select
-        endif
+
+        open (ifile, file = fname, status = 'unknown', Form = 'formatted')
+        include "ft_print_h.f90"
+        close (ifile)
+
     end subroutine printstate
 end module m_state

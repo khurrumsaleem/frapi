@@ -560,7 +560,6 @@ MODULE HeatSolution_fraptran
                 frcsum = 0.0_r8k
                 hgpsum = 0.0_r8k
                 !
-
                 DO ngapi = 1, ngaps
                     frcsum = frcsum + frcgap(ngapi)
                     gasgpi = GapThick(k) + delgap(ngapi)

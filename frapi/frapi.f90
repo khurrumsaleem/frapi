@@ -189,9 +189,8 @@ contains
 
         real(8) :: dt
 
-        if (dt < 1.E-10) then
+        if (dt < 1.E-20) then
             write(*,*) 'ERROR: time step is near to zero, dt = ', dt
-            stop
         endif
 
         select case (frapmode_)

@@ -678,7 +678,7 @@ MODULE deformation_fraptran
             cdth1 = MatProperty (Material='CLAD', Property='THEXP_RADIAL', Temperature=tavek)
             cath0 = MatProperty (Material='CLAD', Property='THEXP_AXIAL', Temperature=t0k)
             cdth0 = MatProperty (Material='CLAD', Property='THEXP_RADIAL', Temperature=t0k)
-            
+
             epthr = cdth1 - cdth0
             eptha = cath1 - cath0
             ! plastic hoop strain = eph
@@ -922,11 +922,13 @@ MODULE deformation_fraptran
             rmp = (1.0_r8k + CldStrn(k,1)) * rmp0
             rpi = rmp - CladThickness / 2.0_r8k
             EOSRad(igpnod,k) = RadialBound(igpnod) + PelRadDeviat(k) + PelSrfDispl(k)
+            !write(*,*) '1. eosrad = ', EOSRad(ncladi,k)
             !
             DO l = ncladi, nmesh
                 EOSRad(l,k) = rpi + ((RadialBounDO(l,k) - RadialBounDO(ncladi,k)) / &
                   &         (RadialBounDO(nmesh,k) - RadialBounDO(ncladi,k))) * CladThickness
             ENDDO
+            !write(*,*) '2. eosrad = ', EOSRad(ncladi,k)
             !
             IF (ndebug) THEN
                 WRITE(ounit,*) 'EOSRad values for k = ',k
@@ -1162,6 +1164,7 @@ MODULE deformation_fraptran
     ! Find free clad displacement due to internal and external pressures. Compute a gap width.
     nconvg = 1
     !
+
     DO k = 1, naxn
         rci = RadialBoundO(ncladi,k) * ftin
         rco = RadialBoundO(nmesh,k) * ftin
@@ -1190,6 +1193,7 @@ MODULE deformation_fraptran
 903     FORMAT(' FCMI before CLADF, k = ',i2,' GapIndex(k) = ',i2,' OldGapIndex(k) = ',i2/19x, &
           &    ' CladAveTemp(k) = ',e11.4,' tedot = ',e11.4,' deltpr = ',e11.4,' prthr = ',e11.4)
         IF (OldGapIndex(k) == 0 .OR. CladAveTemp(k) < tedot) THEN
+
             CALL cladf (GasPress(k), CoolPress(k), CladAveTemp(k), rcim, rcom, csig, ceps, cepp, &
               &         cep, fs, tempcs, edot1, edot2, edot3, WorkSpaceTCMx(k), tflux, coldw, &
               &         TimeIncrement, nedtsw, nconv, rmp0, CladThickness0, pitch, k, e, pois)

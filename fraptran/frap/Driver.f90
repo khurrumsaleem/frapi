@@ -29,6 +29,7 @@ module fraptran2
     use Uncertainties_fraptran, only :  AllocateUncertaintyvars
     use Uncertainty_Vals_fraptran
     use m_array_clone, only : array_clone
+    use m_state, only : printstate
 
     implicit none
 
@@ -50,6 +51,7 @@ module fraptran2
         procedure :: dump    => p_dump
         procedure :: destroy => p_destroy
         procedure :: settime => p_settime
+        procedure :: printstate => p_printstate
 
     end type fraptran_driver
 
@@ -344,11 +346,12 @@ module fraptran2
         CALL setup6
         ntstep = 0
         nsteadytrans = 1
-        !call this % next(t1-t0)
-        !ntstep = 1
-        !nsteadytrans = 1
         call this % next(t1-t0)
-        call this % next(t1-t0)
+        nsteadytrans = 2
+        t1 = 1.D-10
+        do i = 1, 20
+            call this % next(t1-t0)
+        enddo
     end subroutine p_next0
 
     subroutine p_deft(this)
@@ -383,6 +386,14 @@ module fraptran2
         dtmaxa(4) = time + dt
         timeincrement = dt
 
+        ! convergence critaria
+        prsacc = 0.001
+        tmpac1 = 0.001
+        soltyp = 1
+        maxit = 200
+        noiter = 200
+        epsht1 = 0.001
+
         !CALL setup6
         !write(*,*) '2: ', IndexTempConverg(1)
         n2 = 1
@@ -395,6 +406,8 @@ module fraptran2
 
         ! Set variable saying it's no longer the first call to FRAPTRAN
         first_pass = .FALSE.
+
+        !ntstep = 2
 
         pbh(1)           = pbh(3)               
         dtmaxa(1)        = dtmaxa(3)               
@@ -416,6 +429,10 @@ module fraptran2
         htca(1,:)        = htca(3,:)               
         tblka(1,:)       = tblka(3,:)               
         gasths(1,:)      = gasths(3,:)               
+
+!        if (IterationCount > 1) then
+!            write(*,*) IterationCount
+!        endif
 
     end subroutine p_next
 
@@ -501,5 +518,12 @@ module fraptran2
         subroutine save2file
             implicit none
         end subroutine save2file
+
+        subroutine p_printstate(this, fname)
+            implicit none
+            class (fraptran_driver), intent(inout) :: this
+            character(*) :: fname
+            call printstate(fname)
+        end subroutine p_printstate
 
 end module fraptran2

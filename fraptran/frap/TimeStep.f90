@@ -1849,7 +1849,10 @@ MODULE timestep_fraptran
     !write(*,*) 'ntstep = ', ntstep, time, timeincrement
     !call printstate(760,'memory.out','exit', .false.) !766 602
     !if (WatrMetlEnrgy(1) > 0) write(*,*) ntstep, WatrMetlEnrgy(1)
-
+    !if (ntstep == 1) call printstate('memory-1.out')
+    !if (ntstep == 2) call printstate('memory-2.out')
+    !if (ntstep == 3) call printstate('memory-3.out')
+    !if (ntstep == 4) call printstate('memory-4.out')
 
     !
     END SUBROUTINE comput
