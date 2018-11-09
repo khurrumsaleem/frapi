@@ -1664,7 +1664,7 @@ MODULE deformation_fraptran
         WRITE(ounit,905)
 905     FORMAT(' The cladding average temperature is greater than 1089 K, the temperature at which', &
           &    ' the cladding strain rate becomes excessive. Calculation continuing ')
-        WRITE(0,905)
+!        WRITE(ounit,905)
         nexceedtedot = 1
     ENDIF
     ! If (tc1 > tedot) GOTO 200
@@ -1856,9 +1856,9 @@ MODULE deformation_fraptran
     WRITE(ounit,903)
 903 FORMAT(/'Reduce time step by a factor of 5'/)
     WRITE(ounit,*)'Execution stopped at time = ',Time
-    WRITE(0,901)
-    WRITE(0,903)
-    WRITE(0,*)'Execution stopped at time = ',Time
+!    WRITE(0,901)
+!    WRITE(0,903)
+!    WRITE(0,*)'Execution stopped at time = ',Time
     ERROR STOP 'Due to large plastic deformation, execution stopped in Subroutine: couple'
     ! highly strain rate dependent cladding deformation
     ! compute cladding plastic strains that just close gap assume edot2 = edot3

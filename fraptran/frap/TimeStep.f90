@@ -315,7 +315,7 @@ MODULE timestep_fraptran
                 RuptFailIndex(k) = 1
                 Ifaila = k
                 WRITE(ounit,805) Time, k
-                WRITE(0,805) Time, k
+!                WRITE(0,805) Time, k
 805             FORMAT('***** Cladding Failed at time ',e13.6,' sec when the hoop strain exceeded the failure strain ', &
                   &    'based on uniform elongation at node ',i3,' *****')
                 EXIT Check_Failure_Strain

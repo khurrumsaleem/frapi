@@ -30,15 +30,19 @@ module fraptran2
     use Uncertainty_Vals_fraptran
     use m_array_clone, only : array_clone
     use m_state, only : printstate
+    use m_convergence, only : t_convergence
 
     implicit none
 
     character (len=200), target :: namerf
+    integer, parameter :: srank = 1 !rank of state vector
 
     type, public :: fraptran_driver
 
         include "ft_pointers_h.f90"
         include "ft_replicants_h.f90"
+
+        type(t_convergence) :: convergence
 
         contains
 
@@ -118,6 +122,8 @@ module fraptran2
         csubpg => prop(22)
 
         include 'ft_r_allocate_h.f90'
+
+        call this % convergence % setup(16, naxn)
 
         !call Allocate_Variables (ntimepairs, radial, axial)
         !call Allocate_Gas
@@ -348,10 +354,6 @@ module fraptran2
         nsteadytrans = 1
         call this % next(t1-t0)
         nsteadytrans = 2
-        t1 = 1.D-10
-        do i = 1, 20
-            call this % next(t1-t0)
-        enddo
     end subroutine p_next0
 
     subroutine p_deft(this)
@@ -366,12 +368,9 @@ module fraptran2
 
     end subroutine p_deft
 
-    subroutine p_next(this, dt)
-
-        class (fraptran_driver), intent(inout) :: this
-
+    subroutine set_dt(dt)
+        implicit none
         real(8) :: dt
-
         time = 0.D0
         tmax = time + dt
         tend = time + dt
@@ -385,6 +384,38 @@ module fraptran2
         dtmaxa(3) = dt
         dtmaxa(4) = time + dt
         timeincrement = dt
+    end subroutine set_dt
+
+    function update_error(this) result(error)
+        implicit none
+        class (fraptran_driver), intent(inout) :: this
+        real(8) :: error
+        call this % convergence % update(1, hgapav(1:naxn) )
+        call this % convergence % update(2, cldstrn(1:naxn,1) )
+        call this % convergence % update(3, cldstrn(1:naxn,2) )
+        call this % convergence % update(4, cldstrn(1:naxn,3) )
+        call this % convergence % update(5, cldstress(1:naxn,1) )
+        call this % convergence % update(6, cldstress(1:naxn,2) )
+        call this % convergence % update(7, cldstress(1:naxn,3) )
+        call this % convergence % update(8, gaspress(1:naxn) )
+        call this % convergence % update(9, crithtflux(1:naxn) )
+        call this % convergence % update(10,gapthick(1:naxn) )
+        call this % convergence % update(11,pelsrfstrn(1:naxn,1) )
+        call this % convergence % update(12,pelsrfstrn(1:naxn,2) )
+        call this % convergence % update(13,eostemp(1,1:naxn) )
+        call this % convergence % update(14,eostemp(igpnod,1:naxn) )
+        call this % convergence % update(15,eostemp(ncladi,1:naxn) )
+        call this % convergence % update(16,eostemp(nmesh,1:naxn) )
+        error = maxval(this % convergence % errors)
+    end function update_error
+
+    subroutine p_next(this, dt)
+
+        class (fraptran_driver), intent(inout) :: this
+
+        integer :: count
+        real(8) :: dt, h0 = 1.D-30
+        real(8) :: rtol = 1.D-6, atol = 1.D-10, error
 
         ! convergence critaria
         prsacc = 0.001
@@ -394,48 +425,54 @@ module fraptran2
         noiter = 200
         epsht1 = 0.001
 
-        !CALL setup6
-        !write(*,*) '2: ', IndexTempConverg(1)
         n2 = 1
 
-        ! Calculate results for current time step
-        CALL comput
+        call set_dt(dt)
 
-        ! Store results for current time step
-        CALL store6
+        error = update_error(this)
+        error = 10.
+        count = 0
 
-        ! Set variable saying it's no longer the first call to FRAPTRAN
-        first_pass = .FALSE.
+        do while (error > 1)
 
-        !ntstep = 2
+            call comput
 
-        pbh(1)           = pbh(3)               
-        dtmaxa(1)        = dtmaxa(3)               
-        hbh(1)           = hbh(3)               
-        hupta(1)         = hupta(3)               
-        hinta(1)         = hinta(3)               
-        gbh(1)           = gbh(3)               
-        explenumt(1)     = explenumt(3)               
-        dtpoa(1)         = dtpoa(3)               
-        RodAvePower(1)   = RodAvePower(3)               
-        dtplta(1)        = dtplta(3)               
-        FuelGasSwell(1)  = FuelGasSwell(3)               
-        temptm(1)        = temptm(3)               
-        relfraca(1)      = relfraca(3)               
-        prestm(1)        = prestm(3)               
-        fldrat(1)        = fldrat(3)               
-        gasphs(1)        = gasphs(3)               
-        hlqcl(1)         = hlqcl(3)               
-        htca(1,:)        = htca(3,:)               
-        tblka(1,:)       = tblka(3,:)               
-        gasths(1,:)      = gasths(3,:)               
+            ! Store results for current time step
+            CALL store6
 
-!        if (IterationCount > 1) then
-!            write(*,*) IterationCount
-!        endif
+            ! Set variable saying it's no longer the first call to FRAPTRAN
+            first_pass = .FALSE.
+
+            error = update_error(this)
+
+            pbh(1)           = pbh(3)               
+            dtmaxa(1)        = dtmaxa(3)               
+            hbh(1)           = hbh(3)               
+            hupta(1)         = hupta(3)               
+            hinta(1)         = hinta(3)               
+            gbh(1)           = gbh(3)               
+            explenumt(1)     = explenumt(3)               
+            dtpoa(1)         = dtpoa(3)               
+            RodAvePower(1)   = RodAvePower(3)               
+            dtplta(1)        = dtplta(3)               
+            FuelGasSwell(1)  = FuelGasSwell(3)               
+            temptm(1)        = temptm(3)               
+            relfraca(1)      = relfraca(3)               
+            prestm(1)        = prestm(3)               
+            fldrat(1)        = fldrat(3)               
+            gasphs(1)        = gasphs(3)               
+            hlqcl(1)         = hlqcl(3)               
+            htca(1,:)        = htca(3,:)               
+            tblka(1,:)       = tblka(3,:)               
+            gasths(1,:)      = gasths(3,:)               
+
+            call set_dt(h0)
+
+            count = count + 1
+
+        enddo
 
     end subroutine p_next
-
 
     subroutine p_destroy(this)
 

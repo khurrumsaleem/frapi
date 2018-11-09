@@ -1147,7 +1147,7 @@ MODULE HeatTransferCoefficient_fraptran
                 itn = itn + 1
                 IF (itn == 100) THEN  ! Max # of iterations reached. Force convergence
                     WRITE(ounit,277) twall2, tsur
-                    WRITE(0,277) twall2, tsur
+!                    WRITE(0,277) twall2, tsur
 277                 FORMAT(////,' iteration on cladding surface temperature in qdot for nucleate boiling mode did', &
                       &         'not converge. Program stopped.', /,' twall2 = ',e14.5,' twall1 = ',e12.5)
                     twall2 = 0.5_r8k * (twall2 + tsur)
@@ -1897,7 +1897,7 @@ MODULE HeatTransferCoefficient_fraptran
         !
         ! Wrong value for ih was chosen.  Code exeuction terminating.
         !
-        WRITE(0,901) ih
+!        WRITE(0,901) ih
         WRITE(ounit,901) ih
 901     FORMAT ('Wrong value for ih chosen. Execution terminated in qdot. ih = ',i3)
         ERROR STOP 'Code execution stopped in Subroutine: qdot. Wrong value for ih chosen.'
