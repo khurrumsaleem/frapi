@@ -6,7 +6,7 @@ enable_language (Fortran)
 
 #set(CMAKE_Fortran_COMPILER )
 
-set(CMAKE_Fortran_FLAGS "-std=f2008 -D -cpp")
+set(CMAKE_Fortran_FLAGS "-std=gnu -D -cpp")
 set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=invalid,overflow -fbacktrace -std=gnu")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 
@@ -30,6 +30,8 @@ file(GLOB test_frapi_src    "test/test_frapi.f90"
 #                            "test/test_frapi_fpc.f90")
 
 include_directories(./frapcon/Include ./fraptran/include ./include)
+
+message("-- frapi build type: " ${CMAKE_BUILD_TYPE})
 
 add_library(frapcon   SHARED ${frapcon_src} ${math_src})
 add_library(fraptran  SHARED ${fraptran_src} ${math_src})

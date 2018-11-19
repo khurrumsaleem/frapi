@@ -948,6 +948,8 @@ contains
                 this % dfcon % crudmult(:)  = var(:)
             case("neutron flux, 1|(cm^2*s)")
                 this % dfcon % flux(:)  = var(:)
+            case("fuel enrichment by u-235, %")
+                this % dfcon % enrch(1:n) = var(:)
             case default
                 call error_message(key, 'real rank 1 in the frapcon set-list')
             end select

@@ -3,7 +3,7 @@
         this % jst(1)              = 1                           ! Sequential # of the power shape to be used for each timestep
         this % nplot               = 0                           ! Output options Specifies whether to print plot information for use with Excel package FRAPlot or APT Plot _frapcon(0 = no, 1 = limited, 2 = detailed)
         this % iq                  = 1                           ! Axial power shape indicator (0 = user-input, 1 = chopped cosine)
-        this % jdlpr               = 0                           ! Specifies the output file printing option (-1 = axial summary, 0 = peak-power node, 1 = all axial nodes)
+        this % jdlpr               =-1                           ! Specifies the output file printing option (-1 = axial summary, 0 = peak-power node, 1 = all axial nodes)
         this % nunits              = 1                           ! Signal for units system to be used for input and output: 1 = British units 0 = SI units
         this % ivardm              = 0                           ! Option to specify variable axial node length (1 = ON, 0 = OFF(Default))
         this % nsp                 = 1                           !
@@ -84,7 +84,7 @@
         this % creeptabtemp        = 0.0d0                       ! Temperature input for ncreephist = 3 or 4
         this % creeptabstress      = 0.0d0                       ! Stress input for ncreephist = 4
         this % stopox              = 1.0d+10                     ! Indicator for when to stop the oxide calculation (days).
-        this % nopt                = 0                           ! Specifies the output file print control (0 = each timestep, 1 = input & summary only)
+        this % nopt                = 1                           ! Specifies the output file print control (0 = each timestep, 1 = input & summary only)
         this % nplot               = 0                           ! Specifies whether to print plot information
         this % ntape               = 0                           ! Specifies to write a FRAPCON-to-FRAPTRAN restart tape
         this % calcoxide           = .true.                      ! Flag to specify whether or not to calculate the oxidation reaction
