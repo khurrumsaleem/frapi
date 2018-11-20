@@ -8,6 +8,8 @@ module frapi
 
     implicit none
 
+    integer, parameter :: one = 1, two = 2, three = 3
+
     real(8), parameter :: intoum = 25.4D+3
     real(8), parameter :: fttom = 0.3048D+0
     real(8), parameter :: fttomm = 0.3048D+3 !3.28084D+3
@@ -303,7 +305,9 @@ contains
             case ("coolant")
                 this % dftran % coolant     = trim(var)
             case ("bheat")
+                it = if_a_else_b(this % is_initdone, three, one)
                 this % dftran % bheat       = trim(var)
+                this % dftran % htca(it,:)  = 2.D+6
             case ("mheat")
                 this % dftran % mheat       = trim(var)
             case ("reflood")
@@ -318,6 +322,8 @@ contains
                 this % dftran % inst        = trim(var)
             case ("relocmodel")
                 this % dftran % relocmodel  = trim(var)
+            case ("radiation")
+                this % dftran % radiation   = trim(var)
             case default
                 call error_message(key, 'character rank 0 in the fraptran set-list')
             end select
@@ -340,7 +346,7 @@ contains
                 this % dfcon % ifixedcoolt = var
                 this % dfcon % ifixedcoolp = var
             case default
-                call error_message (key, 'integer rank 1 in the frapcon set-list')
+                call error_message (key, 'integer rank 0 in the frapcon set-list')
             end select
         case ('fraptran')
             select case(key)
@@ -374,7 +380,7 @@ contains
                 this % dftran % nrestart = var
             case("irupt")
                 this % dftran % irupt = var
-            case("CladType")
+            case("cladtype")
                 this % dftran % CladType = var
             case("odoxid")
                 this % dftran % odoxid = var
@@ -500,8 +506,14 @@ contains
                 this % dftran % cenvoi      = var
             case("soltyp")
                 this % dftran % soltyp      = var
+            case("totnb")
+                this % dftran % totnb = var
+            case("ncs")
+                this % dftran % ncs(1) = var
+            case("nplnt")
+                this % dftran % nplnt = var
             case default
-                call error_message(key, 'integer rank 1 in the fraptran set-list')
+                call error_message(key, 'integer rank 0 in the fraptran set-list')
             end select
         end select
 
@@ -518,15 +530,13 @@ contains
 
         select case (frapmode_)
         case ('frapcon')
-            call error_message(key, 'integer rank 2 in the frapcon set-list')
+            call error_message(key, 'integer rank 1 in the frapcon set-list')
         case ('fraptran')
             select case (key)
             case("ngastmp")
                 this % dftran % ngastmp(:) = var(:)
-            case("ncs")
-                this % dftran % ncs(:) = var(:)
             case default
-                call error_message(key, 'integer rank 2 in the fraptran set-list')
+                call error_message(key, 'integer rank 1 in the fraptran set-list')
             end select
         end select
 
@@ -687,8 +697,10 @@ contains
             case("total gap conductance, W|(m^2*K)")
                 this % dfcon % TotalHgap(:) = var * Wm2KtoBhft2F
                 this % dfcon % hgapt_flag   = .true.
+            case("vplen")
+                this % dftran % vplen(1) = var
             case default
-                call error_message (key, 'real rank 0 in the frapcon set-list')
+                call error_message (key, 'real(8) rank 0 in the frapcon set-list')
             end select
 
         case ('fraptran')
@@ -708,6 +720,8 @@ contains
                 this % dftran % CladPower = var
             case("pitch")
                 this % dftran % pitch = var
+            case("fuel rod pitch, cm")
+                this % dftran % pitch = var * cmtom
             case("bowthr")
                 this % dftran % bowthr = var
             case("dofang")
@@ -720,8 +734,6 @@ contains
                 this % dftran % RodDiameter = var
             case("refdtm")
                 this % dftran % refdtm = var
-            case("totnb")
-                this % dftran % totnb = var
             case("powop")
                 this % dftran % powop = var
             case("flxsec")
@@ -756,7 +768,7 @@ contains
                 this % dftran % tflux = var
             case("RodLength")
                 this % dftran % RodLength = var
-            case("OpenPorosityFraction")
+            case("opf")
                 this % dftran % OpenPorosityFraction = var
             case("zad")
                 this % dftran % zad = var
@@ -838,6 +850,8 @@ contains
                 this % dftran % zs = var
             case("FuelPelDiam")
                 this % dftran % FuelPelDiam = var
+            case("fuelpeldiam")
+                this % dftran % FuelPelDiam = var
             case("hbh")
                 this % dftran % hbh(it3) = var
             case("hupta")
@@ -866,10 +880,18 @@ contains
                 this % dftran % gasphs(it3) = var
             case("hlqcl")
                 this % dftran % hlqcl(it3) = var
+            case("spl")
+                this % dftran % spl(1) = var
+            case("scd")
+                this % dftran % scd(1) = var
+            case("swd")
+                this % dftran % swd(1) = var
+            case("gappr0")
+                this % dftran % gappr0(1) = var
     !        case("ProfileStartTime")
     !            this % dftran % ProfileStartTime(it_) = var
             case default
-                call error_message(key, 'real rank 0 in the fraptran set-list')
+                call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
         end select
 
@@ -881,7 +903,6 @@ contains
 
         character(*) :: key
         integer      :: it, k
-        integer, parameter :: one = 1, two = 2, three = 3
         real(8)      :: var(:)
 
         select case (frapmode_)
@@ -956,8 +977,6 @@ contains
 
         case ('fraptran')
             select case (key)
-            case("scd")
-                this % dftran % scd(:) = var(:)
             case("azpang")
                 this % dftran % azpang(:) = var(:)
             case("fmesh")
@@ -966,8 +985,6 @@ contains
                 this % dftran % htclev(:) = var(:)
             case("ExtentOfBow")
                 this % dftran % ExtentOfBow(:) = var(:)
-            case("vplen")
-                this % dftran % vplen(:) = var(:)
             case("gadoln")
                 this % dftran % gadoln(:) = var(:)
             case("gfrac")
@@ -978,8 +995,6 @@ contains
                 this % dftran % fluxz(:) = var(:)
             case("nodchf")
                 this % dftran % nodchf(:) = var(:)
-            case("swd")
-                this % dftran % swd(:) = var(:)
             case("oxideod")
                 this % dftran % oxideod(:) = var(:)
             case("cexh2a")
@@ -988,14 +1003,10 @@ contains
                 this % dftran % radpel(:) = var(:)
             case("cmesh")
                 this % dftran % cmesh(:) = var(:)
-            case("gappr0")
-                this % dftran % gappr0(:) = var(:)
             case("butemp")
                 this % dftran % butemp(:) = var(:)
             case("oxideid")
                 this % dftran % oxideid(:) = var(:)
-            case("spl")
-                this % dftran % spl(:) = var(:)
             case("eppinp")
                 this % dftran % eppinp(:) = var(:)
             case("techf")
