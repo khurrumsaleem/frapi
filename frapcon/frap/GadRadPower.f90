@@ -357,17 +357,19 @@ MODULE GadRadPower_frapcon
     !
     INTEGER(ipk) :: RxType
     !
-    ALLOCATE (GadPow(1:2))
+    if(.not. allocated(gadpow) ) ALLOCATE (GadPow(1:2))
     !call array_allocate(gadpow,1,2)
     ! LWR
     RxType = 1
     GadPow(RxType)%NRadVals = SIZE(Gdrad)
     GadPow(RxType)%NBUVals = SIZE(GdBu)
     GadPow(RxType)%NGdConcVals = SIZE(GdConc)
-    ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
-    ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
-    ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
-    ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
+    if(.not. allocated(gadpow) ) then
+        ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
+        ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
+        ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
+        ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
+    endif
     GadPow(RxType)%Radius = Gdrad
     GadPow(RxType)%Burnup = GdBu
     GadPow(RxType)%GadConc = GdConc
@@ -377,10 +379,12 @@ MODULE GadRadPower_frapcon
     GadPow(RxType)%NRadVals = SIZE(Gdrad)
     GadPow(RxType)%NBUVals = SIZE(GdBu)
     GadPow(RxType)%NGdConcVals = SIZE(GdConc)
-    ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
-    ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
-    ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
-    ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
+    if(.not. allocated(gadpow) ) then
+        ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
+        ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
+        ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
+        ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
+    endif
     GadPow(RxType)%Radius = Gdrad
     GadPow(RxType)%Burnup = GdBu
     GadPow(RxType)%GadConc = GdConc
