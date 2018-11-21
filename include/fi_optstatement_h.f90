@@ -1,4 +1,4 @@
-character(len=20), optional :: frapmode    ! 'frapcon' (default) or 'fraptran' calculations
+character(*), optional :: frapmode    ! 'frapcon' (default) or 'fraptran' calculations
 
 ! FRAPCON optional input variables
 integer,           optional :: nr          ! number of radial segments
