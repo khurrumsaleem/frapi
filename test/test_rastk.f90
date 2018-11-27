@@ -75,6 +75,7 @@ program rastk_input_file
     real(8), allocatable  :: thckgap_FRPCN(:)
     real(8), allocatable  :: thckclad_FRPCN(:)
     real(8), allocatable  :: enrch_FRPCN(:)
+    real(8), allocatable  :: gd_cnt(:)
 
     ! ITERATIONAL VARIABLES
     integer :: i
@@ -140,7 +141,7 @@ program rastk_input_file
     close(i_input_file)
 
     ! ALLOCATE FUEL RODS ARRAY
-    n_frod = 1
+    n_frod = 4
     n_iter = 1
 
     allocate(frod(n_frod))
@@ -163,6 +164,8 @@ program rastk_input_file
     allocate(thckgap_FRPCN(1:na_in))
     allocate(thckclad_FRPCN(1:na_in))
     allocate(enrch_FRPCN(1:na_in))
+    allocate(gd_cnt(1:na_in+1))
+    gd_cnt = 6d0
 
     !-------------------- FUEL RODS INITIALIZATION-----------------------------
 
@@ -183,7 +186,7 @@ program rastk_input_file
         do i_frod = 1, n_frod
 
             call frod(i_frod) % make(nr=n_fuel_rad_in-1, na=na_in, ngasr=45, nce=5, &
-                                     ifixedcoolt = 1, ifixedcoolp = 1, ifixedtsurf = 0, &
+                                     ifixedcoolt = 0, ifixedcoolp = 0, ifixedtsurf = 0, &
                                      iq = 0, ivardm = 1, verbose = .false.)
 
             call frod(i_frod) % set_value("cladding thickness, cm", clad_rad - gap_rad)
@@ -191,23 +194,28 @@ program rastk_input_file
             call frod(i_frod) % set_value("outer cladding diameter, cm", 2 * clad_rad)
             call frod(i_frod) % set_value("fuel rod pitch, cm", pitch_in)
             call frod(i_frod) % set_value("as-fabricated apparent fuel density, %TD", init_den * 10.40d0/10.96d0)
-            call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
+	    if((i_frod .eq. 2) .or. (i_frod .eq. 3)) then
+	    !if(.false.) then
+	        write(*,*) "call frod(i_frod) % set_value(fuel enrichment by u-235, %, 0.711d0)"
+                call frod(i_frod) % set_value("fuel enrichment by u-235, %", 0.711d0)
+                call frod(i_frod) % set_array("gadolinia weight, wt%"      , gd_cnt)
+            else
+                call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
+	    endif
             call frod(i_frod) % set_array("thickness of the axial nodes, cm", thickness_FRPCN)
             call frod(i_frod) % set_value("dish shoulder width, mm", dishsd)
             call frod(i_frod) % set_value("dish height, mm", hdish)
-
-            if (i_cycle > 1) then
-                write(string, '(A,I0.6,A,I0.6,A)') 'burnup_', i_bu_step, '_frod_', i_frod, '.bin'
-                call frod(i_frod) % load_bin(string)
-            endif
+            call frod(i_frod) % init()
+            call frod(i_frod) % save()
 
         enddo
 
         !------------------- RUN TIME STEPS ---------------------------------------
+        open(i_output_file, file=oname, status='unknown')
 
         ! ITERATION OVER TIME
         do i_bu_step = n_bu_steps(i_cycle), n_bu_steps(i_cycle+1)
-
+            write(*,*) "i_bu_step", i_bu_step
             ! ITERATION OVER FUEL RODS
             do i_frod = 1, n_frod
 
@@ -221,8 +229,9 @@ program rastk_input_file
 
                     tcool_FRPCN(:) = ctf_coo_temp(:,i_bu_step)
                     pcool_FRPCN(:) = ctf_coo_pres(:,i_bu_step)
-
+                    call frod(i_frod) % load()
                     ! SETUP THE UPDATED VARIABLES
+                    call frod(i_frod) % set_i4_0("ifixedcool",1)
                     call frod(i_frod) % set_array("linear power, W|cm", power_FRPCN)
                     call frod(i_frod) % set_array("coolant temperature, C", tcool_FRPCN)
                     call frod(i_frod) % set_array("coolant pressure, MPa", pcool_FRPCN)
@@ -232,7 +241,8 @@ program rastk_input_file
 
                     if(i_bu_step == 1) then
                         ! DO INITIAL TIME STEP
-                        call frod(i_frod) % init()
+                        !call frod(i_frod) % init()
+                        call frod(i_frod) % next(0.001d0)
                     else
                         ! DO TRIAL TIME STEP
                         dtime = tmp_time(i_bu_step) - tmp_time(i_bu_step-1)
@@ -246,14 +256,25 @@ program rastk_input_file
                     call frod(i_frod) % get_array('total gap conductance, W|(m^2*K)', fue_dyn_hgap)
                     call frod(i_frod) % get_array('oxide thickness, um', t_oxidelayer)
                     call frod(i_frod) % get_array('mechanical gap thickness, um', t_fuecladgap)
-                    call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
-                    call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
+!                    call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
+!                    call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
                     call frod(i_frod) % get_array('cladding axial stress, MPa', hoop_stress)
                     call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
 
                     ! ACCEPT THE LAST TRIAL TIME STEP
                     if(i_iter == n_iter) call frod(i_frod) % save()
                 enddo
+
+                do i = 1, na_in
+                    write(i_output_file,'(i4,100es13.5)') i, fue_avg_temp(i), coo_avg_temp(i), &
+                    fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), &
+                    hoop_stress(i), zmesh_FRPCN(i)
+                    write(*,'(i4,100es13.5)') i, fue_avg_temp(i), coo_avg_temp(i), &
+                    fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), &
+                    hoop_stress(i), zmesh_FRPCN(i)
+                enddo
+		write(i_output_file,*) " " 
+		write(*,*) " " 
 
             enddo
 
@@ -274,13 +295,13 @@ program rastk_input_file
 
     !----------------------------- SAVE LAST STATE ------------------------------------
 
-    open(i_output_file, file=oname, status='unknown')
+    !open(i_output_file, file=oname, status='unknown')
 
-    do i = 1, na_in
-        write(i_output_file,'(100es13.5)') fue_avg_temp(i), coo_avg_temp(i), &
-        fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), gap_pressure(i), &
-        hoop_strain(i), hoop_stress(i), zmesh_FRPCN(i)
-    enddo
+    !do i = 1, na_in
+    !    write(i_output_file,'(i4,100es13.5)') i, fue_avg_temp(i), coo_avg_temp(i), &
+    !    fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), gap_pressure(i), &
+    !    hoop_strain(i), hoop_stress(i), zmesh_FRPCN(i)
+    !enddo
 
     write(*,*) 'Test done!'
 
