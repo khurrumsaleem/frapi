@@ -1,5 +1,8 @@
 CHANGES HISTORY:
 
+0010. Changed the name of variables: 
+        'thickness of the axial nodes, cm' -> 'axial mesh thickness, cm'
+
 0009. Changed the name of variables: 
         'axial mesh, cm' -> 'axial mesh thickness, cm'
         'gadolinia weight, wt%' -> 'gadolinia weight fraction'

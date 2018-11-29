@@ -234,6 +234,11 @@ contains
         im = 2
         it = 1
 
+        if ( sum(deltaz) <= 0 ) then
+            write(*,*) "ERROR: sum of axial mesh thickness is equal to ", sum(deltaz) / cmtoft
+            stop
+        endif
+
     end subroutine driver_proc
 
     subroutine driver_init(this)

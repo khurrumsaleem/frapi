@@ -152,6 +152,8 @@ contains
             call frod_init_fraptran_(this)
         end select
 
+        this % is_initdone = .true.
+
     end subroutine frod_init
 
 
@@ -200,6 +202,11 @@ contains
 
         if (dt < 1.E-20) then
             write(*,*) 'ERROR: time step is near to zero, dt = ', dt
+        endif
+
+        if (.not. this % is_initdone) then
+            write(*,*) 'ERROR: fuel rod initialization has not been finished!'
+            stop
         endif
 
         select case (frapmode_)
@@ -280,7 +287,7 @@ contains
         case ('frapcon')
             call this % dfcon % dump()
         case ('fraptran')
-            this % is_initdone = .true.
+            this % is_initdone = .true. ! WTF: must be here???
             call this % dftran % dump()
         end select
 
@@ -559,6 +566,19 @@ contains
         case ('frapcon')
             it  = this % dfcon % it
             select case(lower(key))
+            case("axial mesh thickness, cm")
+                this % dfcon % deltaz(1:n) = var * cmtoft
+                this % dfcon % x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
+                this % dfcon % x(2:n+1)    = (/( sum(this % dfcon % deltaz(:i)), i = 1, n )/)
+                this % dfcon % deltaz(n+1) = this % dfcon % cpl
+                this % dfcon % totl        = sum(this % dfcon % deltaz(1:n))            ! Total length of active fuel, ft
+                this % dfcon % zcool(:)    = this % dfcon % x(:)        ! Axial evaluation for coolant temperature distribution, ft
+            case("linear power, w|cm")
+                a = var * sum(this % dfcon % deltaz(1:n) ) / this % dfcon % totl /cmtoft ! W/ft
+                b = sum( this % dfcon % deltaz(1:n) / this % dfcon % dco(1:n) ) &
+                    / this % dfcon % totl / intoft ! 1/ft
+                this % dfcon % qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
+                this % dfcon % qf(:) = 1
             case("fuel rod pitch, cm")
                 this % dfcon % pitch = var * cmtoin
             case("as-fabricated apparent fuel density, %td")
@@ -927,13 +947,6 @@ contains
         case ('frapcon')
             it  = this % dfcon % it
             select case(lower(key))
-            case("thickness of the axial nodes, cm")
-                this % dfcon % deltaz(1:n) = var(:) * cmtoft
-                this % dfcon % x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
-                this % dfcon % x(2:n+1)    = (/( sum(this % dfcon % deltaz(:i)), i = 1, n )/)
-                this % dfcon % deltaz(n+1) = this % dfcon % cpl
-                this % dfcon % totl        = sum(this % dfcon % deltaz(1:n))            ! Total length of active fuel, ft
-                this % dfcon % zcool(:)    = this % dfcon % x(:)        ! Axial evaluation for coolant temperature distribution, ft
             case("axial mesh thickness, cm")
                 this % dfcon % deltaz(1:n) = var(:) * cmtoft
                 this % dfcon % x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
@@ -1324,7 +1337,7 @@ contains
                 var(:) = this % dfcon % gapplot(1:n) * miltoum
             case('mechanical gap thickness, um')
                 var(:) = this % dfcon % FuelCladGap(1:n) * 1.D+3 * miltoum
-            case('gap pressure, paa')
+            case('gap pressure, mpa')
                 var(:) = this % dfcon % GapPress(1:n) * PSItoMPa
             case('cladding total hoop strain, %')
                 var(:) = this % dfcon  % eps(1:n,1) * 100
@@ -1375,6 +1388,8 @@ contains
             case('coolant pressure, mpa')
                 var(:) = this % dfcon % coolantpressure(it,1:n) * PSItoMPa
             case('axial mesh thickness, cm')
+                var(:) = this % dfcon % deltaz(1:n) / cmtoft
+            case('axial mesh elevation, cm')
                 var(:) = 0.5d0 * (this % dfcon % x(1:n) + this % dfcon % x(2:n+1)) / cmtoft
             case('gas release fractions')
                 var(:) = this % dfcon % RB_rod(1:11,it)
