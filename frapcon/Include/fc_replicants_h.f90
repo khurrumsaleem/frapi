@@ -641,4 +641,3 @@
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: r__g2old                                 
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: r__g3old                                 
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: r__g4old                                 
-

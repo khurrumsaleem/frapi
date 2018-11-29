@@ -346,7 +346,6 @@ MODULE GadRadPower_frapcon
     SUBROUTINE LoadGadProperties ()
     USE Kinds_frapcon
     USE conversions_frapcon
-    use m_array_allocate, only : array_allocate
     IMPLICIT NONE
     !>@brief
     !> This subroutine loads the Gad radial burnup power profiles
@@ -357,7 +356,7 @@ MODULE GadRadPower_frapcon
     !
     INTEGER(ipk) :: RxType
     !
-    if(.not. allocated(gadpow) ) ALLOCATE (GadPow(1:2))
+    if(.not. allocated(gadpow) ) ALLOCATE (GadPow(1))
     !call array_allocate(gadpow,1,2)
     ! LWR
     RxType = 1
@@ -375,20 +374,20 @@ MODULE GadRadPower_frapcon
     GadPow(RxType)%GadConc = GdConc
     GadPow(RxType)%Power = gdPPLWR
     ! HWR
-    RxType = 2
-    GadPow(RxType)%NRadVals = SIZE(Gdrad)
-    GadPow(RxType)%NBUVals = SIZE(GdBu)
-    GadPow(RxType)%NGdConcVals = SIZE(GdConc)
-    if(.not. allocated(gadpow) ) then
-        ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
-        ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
-        ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
-        ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
-    endif
-    GadPow(RxType)%Radius = Gdrad
-    GadPow(RxType)%Burnup = GdBu
-    GadPow(RxType)%GadConc = GdConc
-    GadPow(RxType)%Power = gdppHWR
+!    RxType = 2
+!    GadPow(RxType)%NRadVals = SIZE(Gdrad)
+!    GadPow(RxType)%NBUVals = SIZE(GdBu)
+!    GadPow(RxType)%NGdConcVals = SIZE(GdConc)
+!    if(.not. allocated(gadpow) ) then
+!        ALLOCATE(GadPow(RxType)%Radius(1:GadPow(RxType)%NRadVals))
+!        ALLOCATE(GadPow(RxType)%Burnup(1:GadPow(RxType)%NBUVals))
+!        ALLOCATE(GadPow(RxType)%GadConc(1:GadPow(RxType)%NGdConcVals))
+!        ALLOCATE(GadPow(RxType)%Power(1:GadPow(RxType)%NGdConcVals, 1:GadPow(RxType)%NRadVals, 1:GadPow(RxType)%NBUVals))
+!    endif
+!    GadPow(RxType)%Radius = Gdrad
+!    GadPow(RxType)%Burnup = GdBu
+!    GadPow(RxType)%GadConc = GdConc
+!    GadPow(RxType)%Power = gdppHWR
     !
     END SUBROUTINE LoadGadProperties
     !
@@ -430,13 +429,24 @@ MODULE GadRadPower_frapcon
     REAL(r8k), DIMENSION(:), ALLOCATABLE :: dumarray1, dumarray2
     INTEGER(ipk) :: i, j, k
     ! Data tables for UO2/Gd2O3 radial power profiles
+!    IF (rprm1 > 3.0_r8k) THEN
+!        ! LWR
+!        RxType = 1
+!    ELSE
+!        ! HWR
+!        RxType = 2
+!    END IF
+
     IF (rprm1 > 3.0_r8k) THEN
         ! LWR
         RxType = 1
-    ELSE
+        GadPow(RxType)%Power = gdPPLWR
+    else
         ! HWR
-        RxType = 2
-    END IF
+        RxType = 1
+        GadPow(RxType)%Power = gdppHWR
+    endif
+
     ! Allocate dummy arrays
     ALLOCATE (dumarray1(1:GadPow(RxType)%NRadVals), dumarray2(1:GadPow(RxType)%NRadVals))
     ! Find range of Gd2O3 concentration
