@@ -61,7 +61,7 @@ program frapi_input_file
     varname_array(28) = 'cladding hydrogen concentration, ppm'
     varname_array(29) = 'coolant density, kg|m^3'
     varname_array(30) = 'coolant pressure, MPa'
-    varname_array(31) = 'axial mesh, cm'
+    varname_array(31) = 'axial mesh thickness, cm'
     varname_array(32) = 'centerline temperature, C'
     varname_array(33) = 'fuel stored energy, J|kg'
     varname_array(34) = 'fuel burnup, MW*d|kg'

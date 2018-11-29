@@ -1,30 +1,34 @@
-Recent changes of the 't_fuelrod' class:
+CHANGES HISTORY:
 
-1. 'save' was replaced on 'save_bin'
+0009. Changed the name of variables: 
+        'axial mesh, cm' -> 'axial mesh thickness, cm'
+        'gadolinia weight, wt%' -> 'gadolinia weight fraction'
 
-2. 'load' was replaced on 'load_bin'
+0008. The meaning of 'set_xx_x' function has been changed. 
+      Previousely, this function stored the values in a local memory block.
+      In the new version it stores the values to the common memory block.
 
-3. 'accept' was replaced on 'save'. The 'save' function
-    copies fuel rod state from common memory block to local memory block
+0007. Removed the functions 'frod_set_tp_cool' and 'frod_set_tp_cool_off'. 
+      Instead one should use the function 
+      'set_i4_0('ifixedcool', 0)' or
+      'set_i4_0('ifixedcool', 1)'
 
-4. Introduced the function 't_fuelrod % load' which store fuel rod state in a local memory block
+0006. Some names of variables have been modified (in 'get'):
+      'cladding hoop strain, %' => 'cladding total hoop strain, %'
+      'cladding axial strain, %' => 'cladding total axial strain, %'
+      'cladding radial strain, %' => 'cladding total radial strain, %'
 
-5. The function 'next' has been modified such that
-   the old 'next (dt)' is equivalent to
+0005. The function 'next' has been modified such that
+      the old 'next (dt)' is equivalent to
 
-   load ()   ! copy fuel rod state from local memory to common memory block
-   next (dt) ! make time step dt
+      load ()   ! copy fuel rod state from local memory to common memory block
+      next (dt) ! make time step dt
 
-6. Some names of variables have been modified (in 'get'):
-   'cladding hoop strain, %' => 'cladding total hoop strain, %'
-   'cladding axial strain, %' => 'cladding total axial strain, %'
-   'cladding radial strain, %' => 'cladding total radial strain, %'
+0004. Introduced the function 't_fuelrod % load' which store fuel rod state in a local memory block
 
-7. Removed the functions 'frod_set_tp_cool' and 'frod_set_tp_cool_off'. 
-    Instead one should use the function 
-    'set_i4_0('ifixedcool', 0)' or
-    'set_i4_0('ifixedcool', 1)'
+0003. 'accept' has been replaced on 'save'. The 'save' function
+      copies fuel rod state from common memory block to local memory block
 
-8. The meaning of 'set_xx_x' function has been changed. 
-    Previousely, this function stored the values in a local memory block.
-    In the new version it stores the values to the common memory block.
+0002. 'load' has been replaced on 'load_bin'
+
+0001. 'save' has been replaced on 'save_bin'

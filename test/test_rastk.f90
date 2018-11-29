@@ -165,7 +165,8 @@ program rastk_input_file
     allocate(thckclad_FRPCN(1:na_in))
     allocate(enrch_FRPCN(1:na_in))
     allocate(gd_cnt(1:na_in+1))
-    gd_cnt = 6d0
+
+    gd_cnt = 6.D-2
 
     !-------------------- FUEL RODS INITIALIZATION-----------------------------
 
@@ -198,7 +199,7 @@ program rastk_input_file
 	    !if(.false.) then
 	        write(*,*) "call frod(i_frod) % set_value(fuel enrichment by u-235, %, 0.711d0)"
                 call frod(i_frod) % set_value("fuel enrichment by u-235, %", 0.711d0)
-                call frod(i_frod) % set_array("gadolinia weight, wt%"      , gd_cnt)
+                call frod(i_frod) % set_array("gadolinia weight fraction"      , gd_cnt)
             else
                 call frod(i_frod) % set_value("fuel enrichment by u-235, %", init_enrich)
 	    endif
@@ -259,7 +260,7 @@ program rastk_input_file
 !                    call frod(i_frod) % get_array('gap pressure, MPa', gap_pressure)
 !                    call frod(i_frod) % get_array('cladding hoop strain, %', hoop_strain)
                     call frod(i_frod) % get_array('cladding axial stress, MPa', hoop_stress)
-                    call frod(i_frod) % get_array('axial mesh, cm', zmesh_FRPCN)
+                    call frod(i_frod) % get_array('axial mesh thickness, cm', zmesh_FRPCN)
 
                     ! ACCEPT THE LAST TRIAL TIME STEP
                     if(i_iter == n_iter) call frod(i_frod) % save()
@@ -273,8 +274,8 @@ program rastk_input_file
                     fue_dyn_hgap(i), t_oxidelayer(i) , t_fuecladgap(i), &
                     hoop_stress(i), zmesh_FRPCN(i)
                 enddo
-		write(i_output_file,*) " " 
-		write(*,*) " " 
+                write(i_output_file,*) " " 
+                write(*,*) " " 
 
             enddo
 

@@ -985,7 +985,7 @@ contains
                 this % dfcon % comp(:)      = var(:)
             case("heat flux, w|m^2")
                 this % dfcon % qc(:)        = var(:) / Bhft2toWm2
-            case("gadolinia weight, wt%")
+            case("gadolinia weight fraction")
                 this % dfcon % gadoln(:)    = var(:)
             case("cladding surface temperature, k")
                 this % dfcon % cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
@@ -1011,7 +1011,7 @@ contains
                 this % dftran % ExtentOfBow(1:n) = var(:)
             case("gadoln")
                 this % dftran % gadoln(1:n) = var(:)
-            case("gadolinia weight, wt%")
+            case("gadolinia weight fraction")
                 this % dftran % gadoln(1:n) = var(:)
             case("gbse")
                 this % dftran % gbse(1:n) = var(:)
