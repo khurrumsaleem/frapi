@@ -37,12 +37,17 @@ module fraptran2
     character (len=200), target :: namerf
     integer, parameter :: srank = 1 !rank of state vector
 
+    logical :: is_kernel_allocated = .false.
+
     type, public :: fraptran_driver
 
         include "ft_pointers_h.f90"
         include "ft_replicants_h.f90"
 
         type(t_convergence) :: convergence
+
+        real(r8k), allocatable :: axialmesh(:)
+        logical :: is_driver_allocated = .false.
 
         contains
 
@@ -97,6 +102,7 @@ module fraptran2
         total = 10 * naxialnodes + 6
 
         include 'ft_v_allocate_h.f90'
+        allocate(this % axialmesh(naxn))
 
         tt     => prop(1)
         CoolantPress => prop(2)
@@ -235,10 +241,8 @@ module fraptran2
         this % cathca = 0
         this % idoxid = 0
 
-!        write(*,*) 'butemp = ', this % butemp(1:6)
-!        write(*,*) 'butemp = ', butemp(1:6)
-!        write(*,*) 'dtdkta: ', this % dtdkta(1)
-!        stop
+        this % is_driver_allocated = .true.
+        is_kernel_allocated = .true.
 
     end subroutine p_make
 
@@ -266,7 +270,8 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
         logical :: is_open
-        real(8) :: dt0 = 1.D-1
+        integer :: i
+        real(8) :: dt0 = 1.D-1, dz
 
         inquire (unit = fcunit, opened = is_open)
         if (is_open) close (unit = fcunit)
@@ -279,6 +284,9 @@ module fraptran2
         npaxp = naxn
 
         close (fcunit)
+
+        dz = this % rodlength / naxn
+        this % axialmesh(:) = (/(i*dz, i = 1, naxn)/)
 
     end subroutine p_init
 
@@ -477,6 +485,12 @@ module fraptran2
     subroutine p_destroy(this)
 
         class (fraptran_driver), intent(inout) :: this
+
+        if (this % is_driver_allocated) then
+            include "ft_deallocate_h.f90"
+            this % is_driver_allocated = .false.
+            deallocate(this % axialmesh)
+        endif
 
     end subroutine p_destroy
 

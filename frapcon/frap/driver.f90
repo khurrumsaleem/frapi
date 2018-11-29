@@ -40,6 +40,7 @@ module frapcon4
 
     logical :: DoFrapconAllocation = .true.
     character (len=200), target :: namerf
+    logical :: is_kernel_allocated = .false.
 
     type, public :: frapcon_driver
 
@@ -48,6 +49,7 @@ module frapcon4
 
         logical :: DoRodRefabrication = .false.
         logical :: Verbose = .false.
+        logical :: is_driver_allocated = .false.
 
     contains
 
@@ -106,6 +108,9 @@ contains
 
         include 'fc_associate_h.f90'
         include 'fc_allocate_h.f90'
+
+        is_kernel_allocated = .true.
+        this % is_driver_allocated = .true.
 
         ! WTF ???
 !        if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')
@@ -746,7 +751,10 @@ contains
 
         class (frapcon_driver), intent(inout) :: this
 
-        include "fc_deallocate_h.f90"
+        if (this % is_driver_allocated) then
+            include "fc_deallocate_h.f90"
+            this % is_driver_allocated = .false.
+        endif
 
         !if (.not. this % verbose) close(ounit, status='delete')
 

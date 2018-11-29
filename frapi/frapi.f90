@@ -934,6 +934,13 @@ contains
                 this % dfcon % deltaz(n+1) = this % dfcon % cpl
                 this % dfcon % totl        = sum(this % dfcon % deltaz(1:n))            ! Total length of active fuel, ft
                 this % dfcon % zcool(:)    = this % dfcon % x(:)        ! Axial evaluation for coolant temperature distribution, ft
+            case("axial mesh thickness, cm")
+                this % dfcon % deltaz(1:n) = var(:) * cmtoft
+                this % dfcon % x(1)        = 0.d0                        ! Axial evaluation for linear power distribution, ft
+                this % dfcon % x(2:n+1)    = (/( sum(this % dfcon % deltaz(:i)), i = 1, n )/)
+                this % dfcon % deltaz(n+1) = this % dfcon % cpl
+                this % dfcon % totl        = sum(this % dfcon % deltaz(1:n))            ! Total length of active fuel, ft
+                this % dfcon % zcool(:)    = this % dfcon % x(:)        ! Axial evaluation for coolant temperature distribution, ft
             case("cladding thickness, cm")
                 this % dfcon % thkcld(1:n) = var(:) * cmtoin
             case("gap thickness, cm")
@@ -1004,6 +1011,8 @@ contains
                 this % dftran % ExtentOfBow(1:n) = var(:)
             case("gadoln")
                 this % dftran % gadoln(1:n) = var(:)
+            case("gadolinia weight, wt%")
+                this % dftran % gadoln(1:n) = var(:)
             case("gbse")
                 this % dftran % gbse(1:n) = var(:)
             !case("gfrac")
@@ -1032,6 +1041,8 @@ contains
                 this % dftran % tschf(1:n) = var(:)
             case("zelev")
                 this % dftran % zelev(1:n) = var(:)
+            case("fuel enrichment by u-235, %")
+                continue
             case("htca")
                 it = if_a_else_b(this % is_initdone, three, one)
                 k = this % dftran % zone
@@ -1053,6 +1064,15 @@ contains
             case("axpowprofile")
                 it = if_a_else_b(this % is_initdone, two, one)
                 this % dftran % axpowprofile(:,it) = var(:)
+            case("linear power, W|cm")
+                it = if_a_else_b(this % is_initdone, two, one)
+                do i = 1, n
+                    this % dftran % axpowprofile(2*i-1,it) = var(i)
+                    this % dftran % axpowprofile(2*i  ,it) = this % dftran % axialmesh(i)
+                enddo
+            case("axial mesh thickness, cm")
+                this % dftran % axialmesh(:) = var(:)
+
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1287,6 +1307,8 @@ contains
     !            enddo
             case('fuel volume average temperature, c')
                 var(:) = (/( tfc(this % dfcon % PelAveTemp(i)), i = 1, n )/)
+            case('pellet average temperature, c')
+                var(:) = (/( tfc(this % dfcon % PelAveTemp(i)), i = 1, n )/)
             case('gap average temperature, c')
                 var(:) = (/( tfc(this % dfcon % GapAveTemp(i)), i = 1, n )/)
             case('cladding average temperature, c')
@@ -1352,11 +1374,13 @@ contains
                 var(:) = 0.5d0*(this % dfcon % rhof(1:n) + this % dfcon % rhof(2:n+1)) * lbft3tokgm3 
             case('coolant pressure, mpa')
                 var(:) = this % dfcon % coolantpressure(it,1:n) * PSItoMPa
-            case('axial mesh, cm')
+            case('axial mesh thickness, cm')
                 var(:) = 0.5d0 * (this % dfcon % x(1:n) + this % dfcon % x(2:n+1)) / cmtoft
             case('gas release fractions')
                 var(:) = this % dfcon % RB_rod(1:11,it)
             case('centerline temperature, c')
+                var(:) = (/( tfc(this % dfcon % tmpfuel(m+1,i)), i = 1, n )/)
+            case('pellet centerline temperature, c')
                 var(:) = (/( tfc(this % dfcon % tmpfuel(m+1,i)), i = 1, n )/)
             case('fuel stored energy, j|kg')
                 var(:) = this % dfcon % StoredEnergy(1:n) * BTUlbtoJkg
@@ -1373,11 +1397,15 @@ contains
                 var(:) = var(:) * intocm
             case('fuel surface temperature, c')
                 var(:) = (/( tfc(this % dfcon % tmpfuel(1,i)), i = 1, n )/)
+            case('pellet surface temperature, c')
+                var(:) = (/( tfc(this % dfcon % tmpfuel(1,i)), i = 1, n )/)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
         case('fraptran')
             select case (key)
+            case("axial mesh thickness, cm")
+                var(:) = this % dftran % axialmesh(1:n)
             case('cladding total hoop strain, %')
                 var(:) = this % dftran % CldStrn(1:n,1)
             case('cladding total axial strain, %')
@@ -1516,14 +1544,20 @@ contains
                 var(:) = this % dftran % ecr(1:n)
             case('centerline temperature, k')
                 var(:) = (/( tfk(this % dftran % eostemp(1,i)), i = 1, n )/)
-            case('fuel pellet surface temperature, k')
+            case('pellet surface temperature, k')
                 var(:) = (/( tfk(this % dftran % eostemp(this % dftran % igpnod,i)), i = 1, n )/)
+            case('pellet centerline temperature, c')
+                var(:) = (/( tfk(this % dftran % eostemp(1,i)), i = 1, n )/) - 273.15D0
+            case('pellet surface temperature, c')
+                var(:) = (/( tfk(this % dftran % eostemp(this % dftran % igpnod,i)), i = 1, n )/) - 273.15D0
             case('cladding inner temperature, k')
                 var(:) = (/( tfk(this % dftran % eostemp(this % dftran % ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, k")
                 var(:) = (/( tfk(this % dftran % eostemp(this % dftran % nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, k")
                 var(:) = (/( tfk(this % dftran % BulkCoolTemp(i)), i = 1, n )/)
+            case("bulk coolant temperature, c")
+                var(:) = (/( tfk(this % dftran % BulkCoolTemp(i)), i = 1, n )/) - 273.15D0
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select
