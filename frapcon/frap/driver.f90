@@ -40,7 +40,7 @@ module frapcon4
 
     logical :: DoFrapconAllocation = .true.
     character (len=200), target :: namerf
-    logical :: is_kernel_allocated = .false.
+    logical, target :: is_kernel_allocated = .false.
 
     type, public :: frapcon_driver
 
@@ -50,6 +50,7 @@ module frapcon4
         logical :: DoRodRefabrication = .false.
         logical :: Verbose = .false.
         logical :: is_driver_allocated = .false.
+        logical, pointer :: is_kernel_allocated
 
     contains
 
@@ -87,6 +88,7 @@ contains
 
         it      = 1
 
+        ivardm = 1
         nt = na
         na = na + 1
         nab = 2
@@ -111,6 +113,7 @@ contains
 
         is_kernel_allocated = .true.
         this % is_driver_allocated = .true.
+        this % is_kernel_allocated => is_kernel_allocated
 
         ! WTF ???
 !        if (.not. this % verbose) open(ounit, file='~frapcon.temp', status='unknown', form='formatted')

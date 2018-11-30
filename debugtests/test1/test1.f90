@@ -9,11 +9,11 @@ program test1
     integer, parameter :: nr = 20   ! number of radial mesh nodes in pellet
     integer, parameter :: nc = 5    ! number of radial mesh nodes in cladding
 
-    real(8), parameter :: dt = 1.D0      ! time step, days
+    real(8), parameter :: dt = 1.D-10      ! time step, days
     real(8), parameter :: tcool = 290.D0 ! inlet coolant temperature, C
     real(8), parameter :: pcool = 15.4D0 ! inlet coolant pressure, MPa
-    real(8), parameter :: fcool = 1.D+3   ! coolant mass flux
-    real(8), parameter :: power = 1.D+2  ! linear power, W/cm
+    real(8), parameter :: fcool = 0.D+3   ! coolant mass flux
+    real(8), parameter :: power = 0.D+2  ! linear power, W/cm
     real(8), parameter :: dz = 10.D0     ! thickness of axial mesh, cm
 
     type(t_fuelrod) :: fuelrod(n_rod)
@@ -36,9 +36,9 @@ program test1
     call fuelrod(i_rod) % set_r8_0("coolant mass flux, kg|(s*m^2)", fcool)
 
     call fuelrod(i_rod) % init()
-    call fuelrod(i_rod) % save ()
 
-    call fuelrod(i_rod) % load ()
+    !call fuelrod(i_rod) % save ()
+    !call fuelrod(i_rod) % load ()
 
     call fuelrod(i_rod) % next(dt)
 

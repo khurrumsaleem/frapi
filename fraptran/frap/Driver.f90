@@ -36,8 +36,7 @@ module fraptran2
 
     character (len=200), target :: namerf
     integer, parameter :: srank = 1 !rank of state vector
-
-    logical :: is_kernel_allocated = .false.
+    logical, target :: is_kernel_allocated = .false.
 
     type, public :: fraptran_driver
 
@@ -48,6 +47,7 @@ module fraptran2
 
         real(r8k), allocatable :: axialmesh(:)
         logical :: is_driver_allocated = .false.
+        logical, pointer :: is_kernel_allocated
 
         contains
 
@@ -103,6 +103,8 @@ module fraptran2
 
         include 'ft_v_allocate_h.f90'
         allocate(this % axialmesh(naxn))
+
+        this % is_kernel_allocated => is_kernel_allocated
 
         tt     => prop(1)
         CoolantPress => prop(2)
