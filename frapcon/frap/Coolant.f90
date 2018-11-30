@@ -259,7 +259,7 @@ MODULE CoolantData_frapcon
         IF (icor == 0) SurfTempOxide(j-1) = MIN(wt + deltfc, tsat + deltjl)
         !
         ! Calculate surface heat transfer coefficient
-        FilmCoefficient(j-1) = qc(j-1) / (SurfTempOxide(j-1) - wt)
+        FilmCoefficient(j-1) = (qc(j-1) + 1.D-20) / (SurfTempOxide(j-1) - wt + 1.D-20)
     END SELECT
     !
     END SUBROUTINE flmdrp

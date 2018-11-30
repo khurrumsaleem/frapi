@@ -9,7 +9,7 @@ program test1
     integer, parameter :: nr = 20   ! number of radial mesh nodes in pellet
     integer, parameter :: nc = 5    ! number of radial mesh nodes in cladding
 
-    real(8), parameter :: dt = 1.D-10      ! time step, days
+    real(8), parameter :: dt = 0.D0      ! time step, days
     real(8), parameter :: tcool = 290.D0 ! inlet coolant temperature, C
     real(8), parameter :: pcool = 15.4D0 ! inlet coolant pressure, MPa
     real(8), parameter :: fcool = 0.D+3   ! coolant mass flux

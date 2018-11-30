@@ -296,6 +296,9 @@ contains
           &          strnyt, strnye, strnie, strnue, stsrpt, strrpe, cyldse, cultse, cbrste, cbrsst, &
           &          ctstrt, cgap, cruf, gap, tcak, u, cdpres, fuelTD, dummy
 
+        ! in order to make a time step with zero power
+        if (this % qmpy(it) < 1.D-10) this % qmpy = 1.D-10
+
         CALL axhef (qf,x)
 
         ProblemTime(it) = ProblemTime(it-1) + d_time * daytosec
@@ -417,6 +420,7 @@ contains
                 ! The following call to turbo calulates the radial form factor
                 ! and radial burnup. It also updates the concentration arrays.
                 qnode(j-1) = qav * qaxnorm(j-1,m)
+
                 CALL turbo
                 !
                 ! Update the physical properties of the fuel and cladding (i.e. Fuel Tmelt, Clad Tmelt)

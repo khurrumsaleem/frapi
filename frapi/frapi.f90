@@ -121,7 +121,7 @@ contains
             call this % dftran % deft()
 
             ! Read arguments of 'make' and set them to dftran's variables
-            include "fi_optassignment_h.f90"
+            ! include "fi_optassignment_h.f90" TODO: check dftran options
 
             ! Copy the dftran's variables into replicative variables
             call this % dftran % copy_k2r()
@@ -165,6 +165,7 @@ contains
         select case (this % frapmode)
         case ('frapcon')
             this % dfcon % namerf = this % namerf
+            call this % dfcon % copy_r2k()
             call this % dfcon % restfs()
         case default
             call error_message_0 ("ERROR: frapcon mode must be used for writing of restart file")
@@ -208,20 +209,20 @@ contains
 
         real(8) :: dt
 
-        if (dt < 1.E-20) then
-            write(*,*) 'ERROR: time step is near to zero, dt = ', dt
-        endif
-
         if (.not. this % is_initdone) then
             call error_message_0 ('ERROR: fuel rod initialization has not been finished!')
         endif
 
-        select case (this % frapmode)
-        case ('frapcon')
-            call frod_next_frapcon_(this, dt)
-        case ('fraptran')
-            call frod_next_fraptran_(this, dt)
-        end select
+        if (dt < 1.E-20) then
+            write(*,*) 'WARNING: time step is near to zero, dt = ', dt
+        else
+            select case (this % frapmode)
+            case ('frapcon')
+                call frod_next_frapcon_(this, dt)
+            case ('fraptran')
+                call frod_next_fraptran_(this, dt)
+            end select
+        endif
 
     end subroutine frod_next
 
@@ -628,7 +629,7 @@ contains
                 b = sum( this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n) ) &
                     / this % dfcon % r__totl / intoft ! 1/ft
                 this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
-                this % dfcon % r__qf(:) = 1
+                this % dfcon % r__qf(:) = 1.D0 / n
             case("fuel rod pitch, cm")
                 this % dfcon % r__pitch = var * cmtoin
             case("as-fabricated apparent fuel density, %td")
@@ -770,6 +771,12 @@ contains
             case("total gap conductance, w|(m^2*k)")
                 this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
                 this % dfcon % r__hgapt_flag   = .true.
+            case("gadolinia weight fraction")
+                this % dfcon % r__gadoln(:) = var
+            case("coolant pressure, mpa")
+                this % dfcon % r__p2(it) = var * MPatoPSI
+                this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
+                this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
             case default
                 call error_message (key, 'real(8) rank 0 in the frapcon set-list')
             end select
@@ -973,10 +980,20 @@ contains
                 this % dftran % r__gasfraction(7) = var
             case("gfrac-h2o")
                 this % dftran % r__gasfraction(8) = var
+            case("gadolinia weight fraction")
+                this % dftran % r__gadoln(1:n) = var
+            case("fuel enrichment by u-235, %")
+                continue
     !        case("ProfileStartTime")
     !            this % dftran % r__ProfileStartTime(it_) = var
             case("vplen")
                 this % dftran % r__vplen(1) = var
+            case("axial mesh thickness, cm")
+                this % dftran % axialmesh(:) = var
+            case("coolant pressure, mpa")
+                continue !TODO: find the pressure variable
+            case("inlet coolant temperature, c")
+                continue !TODO: find the variable
             case default
                 call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
@@ -1024,6 +1041,11 @@ contains
                 this % dfcon % r__p2(it) = var(1) * MPatoPSI
                 this % dfcon % r__coolantpressure(it,1:n+1) = var(:) * MPatoPSI
                 this % dfcon % r__pcoolant(1:n+1) = var(:) * MPatoPSI
+            case("frapcon format: gadolinia weight fraction")
+                this % dfcon % r__gadoln(:) = var(:)
+            case("frapcon format: fuel enrichment by u-235, %")
+                this % dfcon % r__enrch(:) = var(:)
+
             ! ----------------------------------------------------------------------------------------
 
             case("linear power, w|cm")
@@ -1032,7 +1054,7 @@ contains
                 b = sum( this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n) ) &
                     / this % dfcon % r__totl / intoft ! 1/ft
                 this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
-                this % dfcon % r__qf(:) = tmp3(:) / sum(tmp3)
+                this % dfcon % r__qf(:) = (tmp3(:) + 1.D-10) / (sum(tmp3) + 1.D-10)
             case("coolant temperature, c")
                 call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
                 this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
@@ -1058,7 +1080,8 @@ contains
             case("neutron flux, 1|(cm^2*s)")
                 this % dfcon % r__flux(:)  = var(:)
             case("fuel enrichment by u-235, %")
-                this % dfcon % r__enrch(:) = var(:)
+                call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
+                this % dfcon % r__enrch(:) = tmp3(:)
             case default
                 call error_message(key, 'real rank 1 in the frapcon set-list')
             end select
