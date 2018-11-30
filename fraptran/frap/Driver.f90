@@ -40,8 +40,9 @@ module fraptran2
 
     type, public :: fraptran_driver
 
-        include "ft_pointers_h.f90"
-        include "ft_replicants_h.f90"
+        include "ft_k_variables_h.f90" ! kernel variables
+        include "ft_r_variables_h.f90" ! working variables of driver
+        include "ft_b_variables_h.f90" ! backup variables of driver
 
         type(t_convergence) :: convergence
 
@@ -51,15 +52,19 @@ module fraptran2
 
         contains
 
-        procedure :: make    => p_make
-        procedure :: init    => p_init
-        procedure :: next    => p_next
-        procedure :: next0   => p_next0
-        procedure :: deft    => p_deft
-        procedure :: load    => p_load
-        procedure :: dump    => p_dump
-        procedure :: destroy => p_destroy
-        procedure :: settime => p_settime
+        procedure :: make     => p_make
+        procedure :: init     => p_init
+        procedure :: next     => p_next
+        procedure :: next0    => p_next0
+        procedure :: deft     => p_deft
+        procedure :: copy_r2k => p_copy_r2k
+        procedure :: copy_k2r => p_copy_k2r
+        procedure :: copy_r2b => p_copy_r2b
+        procedure :: copy_b2r => p_copy_b2r
+        procedure :: copy_r2f => p_copy_r2f
+        procedure :: copy_f2r => p_copy_f2r
+        procedure :: destroy  => p_destroy
+        procedure :: settime  => p_settime
         procedure :: printstate => p_printstate
 
     end type fraptran_driver
@@ -101,7 +106,7 @@ module fraptran2
         size1 = 2 * naxialnodes * ntimesteps
         total = 10 * naxialnodes + 6
 
-        include 'ft_v_allocate_h.f90'
+        include 'ft_k_allocate_h.f90'
         allocate(this % axialmesh(naxn))
 
         this % is_kernel_allocated => is_kernel_allocated
@@ -130,6 +135,7 @@ module fraptran2
         csubpg => prop(22)
 
         include 'ft_r_allocate_h.f90'
+        include 'ft_b_allocate_h.f90'
 
         call this % convergence % setup(16, naxn)
 
@@ -188,7 +194,7 @@ module fraptran2
 
         ! If ncards = 0 , cold startup
 
-        include 'ft_associate_h.f90'
+        include 'ft_k_associate_h.f90'
 
         this % coolant = 'OFF'
         this % mheat = 'OFF'
@@ -249,22 +255,43 @@ module fraptran2
     end subroutine p_make
 
 
-    subroutine p_load(this)
-
+    subroutine p_copy_r2k(this)
         class (fraptran_driver), intent(inout) :: this
+        include 'ft_copy_r2k_h.f90'
+    end subroutine p_copy_r2k
 
-        include 'ft_load_h.f90'
-
-    end subroutine p_load
-
-
-    subroutine p_dump(this)
-
+    subroutine p_copy_k2r(this)
         class (fraptran_driver), intent(inout) :: this
+        include 'ft_copy_k2r_h.f90'
+    end subroutine p_copy_k2r
 
-        include 'ft_dump_h.f90'
+    subroutine p_copy_r2b(this)
+        class (fraptran_driver), intent(inout) :: this
+        include 'ft_copy_r2b_h.f90'
+    end subroutine p_copy_r2b
 
-    end subroutine p_dump
+    subroutine p_copy_b2r(this)
+        class (fraptran_driver), intent(inout) :: this
+        include 'ft_copy_b2r_h.f90'
+    end subroutine p_copy_b2r
+
+    subroutine p_copy_r2f(this, filename)
+        class (fraptran_driver), intent(inout) :: this
+        character(*) :: filename
+        integer :: ifile = 142
+        open(ifile, file=filename, status='unknown', form='unformatted')
+        include 'ft_copy_r2f_h.f90'
+        close(ifile)
+    end subroutine p_copy_r2f
+
+    subroutine p_copy_f2r(this, filename)
+        class (fraptran_driver), intent(inout) :: this
+        character(*) :: filename
+        integer :: ifile = 142
+        open(ifile, file=filename, status='unknown', form='unformatted')
+        include 'ft_copy_f2r_h.f90'
+        close(ifile)
+    end subroutine p_copy_f2r
 
 
     subroutine p_init(this)
@@ -374,7 +401,7 @@ module fraptran2
         call default_values()
 
         ! Default values for FRAPTRAN's variables
-        include "ft_default_h.f90"
+        include "ft_k_default_h.f90"
 
     end subroutine p_deft
 
@@ -489,7 +516,8 @@ module fraptran2
         class (fraptran_driver), intent(inout) :: this
 
         if (this % is_driver_allocated) then
-            include "ft_deallocate_h.f90"
+            include "ft_r_deallocate_h.f90"
+            include "ft_b_deallocate_h.f90"
             this % is_driver_allocated = .false.
             deallocate(this % axialmesh)
         endif
@@ -567,10 +595,6 @@ module fraptran2
 100     FORMAT (/,'Code execution finished with a problem time of ',f12.4,' seconds',/)
         !
         end subroutine FRAPTRAN_1_5a
-
-        subroutine save2file
-            implicit none
-        end subroutine save2file
 
         subroutine p_printstate(this, fname)
             implicit none

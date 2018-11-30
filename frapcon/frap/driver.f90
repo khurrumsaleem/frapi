@@ -44,8 +44,9 @@ module frapcon4
 
     type, public :: frapcon_driver
 
-        include "fc_pointers_h.f90"
-        include "fc_replicants_h.f90"
+        include "fc_k_variables_h.f90" ! kernel variables
+        include "fc_r_variables_h.f90" ! working driver variables
+        include "fc_b_variables_h.f90" ! backup driver variables
 
         logical :: DoRodRefabrication = .false.
         logical :: Verbose = .false.
@@ -59,10 +60,12 @@ module frapcon4
         procedure :: next => driver_next
         procedure :: init => driver_init
         procedure :: deft => driver_deft
-        procedure :: dump => driver_dump
-        procedure :: load => driver_load
-        procedure :: save_state => driver_save_state
-        procedure :: load_state => driver_load_state
+        procedure :: copy_r2k => driver_copy_r2k
+        procedure :: copy_k2r => driver_copy_k2r
+        procedure :: copy_r2b => driver_copy_r2b
+        procedure :: copy_b2r => driver_copy_b2r
+        procedure :: copy_r2f => driver_copy_r2f
+        procedure :: copy_f2r => driver_copy_f2r
         procedure :: destroy => driver_destroy
         procedure :: restfs => driver_restfs
 
@@ -108,8 +111,9 @@ contains
             DoFrapconAllocation = .false.
         endif
 
-        include 'fc_associate_h.f90'
-        include 'fc_allocate_h.f90'
+        include 'fc_k_associate_h.f90'
+        include 'fc_r_allocate_h.f90'
+        include 'fc_b_allocate_h.f90'
 
         is_kernel_allocated = .true.
         this % is_driver_allocated = .true.
@@ -120,23 +124,7 @@ contains
 
     end subroutine driver_make
 
-    subroutine driver_save_state(this, filename)
-
-        class (frapcon_driver), intent(in) :: this
-
-        character(*) :: filename
-
-        integer :: ifile = 142
-
-        open(ifile, file=filename, status='unknown', form='unformatted')
-
-        include 'fc_save_state_h.f90'
-
-        close(ifile)
-
-    end subroutine driver_save_state
-
-    subroutine driver_load_state(this, filename)
+    subroutine driver_copy_r2f(this, filename)
 
         class (frapcon_driver), intent(inout) :: this
 
@@ -146,37 +134,70 @@ contains
 
         open(ifile, file=filename, status='unknown', form='unformatted')
 
-        include 'fc_load_state_h.f90'
+        include 'fc_copy_r2f_h.f90'
 
         close(ifile)
 
-    end subroutine driver_load_state
+    end subroutine driver_copy_r2f
 
-    subroutine driver_dump(this)
+    subroutine driver_copy_f2r(this, filename)
 
         class (frapcon_driver), intent(inout) :: this
 
-        include 'fc_dump_h.f90'
+        character(*) :: filename
 
-    end subroutine driver_dump
+        integer :: ifile = 142
 
-    subroutine driver_load(this)
+        open(ifile, file=filename, status='unknown', form='unformatted')
 
-        class (frapcon_driver), intent(in) :: this
+        include 'fc_copy_f2r_h.f90'
 
-        include 'fc_load_h.f90'
+        close(ifile)
 
-    end subroutine driver_load
+    end subroutine driver_copy_f2r
+
+    subroutine driver_copy_k2r(this)
+
+        class (frapcon_driver), intent(inout) :: this
+
+        include 'fc_copy_k2r_h.f90'
+
+    end subroutine driver_copy_k2r
+
+    subroutine driver_copy_r2k(this)
+
+        class (frapcon_driver), intent(inout) :: this
+
+        include 'fc_copy_r2k_h.f90'
+
+    end subroutine driver_copy_r2k
+
+    subroutine driver_copy_r2b(this)
+
+        class (frapcon_driver), intent(inout) :: this
+
+        include 'fc_copy_r2b_h.f90'
+
+    end subroutine driver_copy_r2b
+
+    subroutine driver_copy_b2r(this)
+
+        class (frapcon_driver), intent(inout) :: this
+
+        include 'fc_copy_b2r_h.f90'
+
+    end subroutine driver_copy_b2r
+
 
     subroutine driver_deft(this)
 
         implicit none
 
-        class (frapcon_driver), intent(in) :: this
+        class (frapcon_driver), intent(inout) :: this
 
         call Set_Defaults
 
-        include "fc_default_h.f90"
+        include "fc_k_default_h.f90"
 
     end subroutine driver_deft
 
@@ -760,7 +781,8 @@ contains
         class (frapcon_driver), intent(inout) :: this
 
         if (this % is_driver_allocated) then
-            include "fc_deallocate_h.f90"
+            include "fc_r_deallocate_h.f90"
+            include "fc_b_deallocate_h.f90"
             this % is_driver_allocated = .false.
         endif
 

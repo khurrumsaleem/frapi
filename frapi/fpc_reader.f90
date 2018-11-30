@@ -36,6 +36,11 @@ module fpc_reader
 
         open(ifile, file=filename, status='unknown', form='formatted')
 
+        nce = 5
+        na = 4
+        ngasr = 45
+        nr = 10
+
         read(ifile, frpcn,  iostat=ierror)
 
         allocate(buin(1:na+1))

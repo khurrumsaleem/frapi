@@ -110,7 +110,7 @@ program frapi_input_file
     call frod % set_value("fuel rod pitch, cm", pitch * intocm)
     call frod % set_value("as-fabricated apparent fuel density, %TD", den)
     call frod % set_value("fuel enrichment by u-235, %", enrch(1))
-    call frod % set_array("thickness of the axial nodes, cm", (x(2:na+1) - x(1:na)) * ftocm)
+    call frod % set_array("axial mesh thickness, cm", (x(2:na+1) - x(1:na)) * ftocm)
     call frod % set_value("additional fuel densification factor", afdn)
     call frod % set_value("clad texture factor", catexf)
     call frod % set_value("as-fabricated clad hydrogen content, wt.ppm", chorg)
@@ -179,7 +179,7 @@ program frapi_input_file
 
     call frod % set_array("input fuel burnup", buin / MWskgUtoMWdMTU)
     call frod % set_array("PuO2 weight percent if MOX fuel, wt%", comp)
-    call frod % set_array("gadolinia weight, wt%", gadoln)
+    call frod % set_array("gadolinia weight fraction", gadoln)
     call frod % set_array("cladding surface temperature, K", (/( tfk(cladt(i)), i = 1, na )/) )
     call frod % set_array("axial crud thickness multiplier", crudmult)
     call frod % set_array("neutron flux, 1|(cm^2*s)", flux)

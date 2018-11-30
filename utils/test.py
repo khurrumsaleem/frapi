@@ -84,7 +84,7 @@ def draw(filename):
         if errmax < 5 and errrms < 1: 
             res = 'OK'
         else:
-            res = 'ERROR'
+            res = 'FAIL'
         name, units = name.split(',')
         print "%50s %10s %10.1f %10.1f %10s"%(name, units, errrms, errmax, res)
 

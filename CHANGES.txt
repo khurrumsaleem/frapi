@@ -1,5 +1,24 @@
 CHANGES HISTORY:
 
+0011. Changed the 'frapi' memory structure. Every object of 't_fuelrod' class could be run in 
+      two modes: 'frapcon' and 'fraptran'. Therefore, there are two distinct memory spaces that
+      refered to the 'dfcon' module and to the 'dftran' module. Each of these modules contains its own 
+      list of variables which are three times duplicated and wraped into three kinds of memory space.
+      The 'kernel' memory space is common for all fuel rod objects and is used for calculation. 
+      The 'working' memory space corresponds to each fuel rod objects. It is used as a storage of 
+      the fuel rod variables for current state. The 'backup' memory space is for storing of a
+      previous state of fuel rod object. When one calls the 'init' or 'next' subroutines, 1) the 
+      'working' variables are copied into the 'kernel', 2) calculations occur, 3) the 'kernel'
+      variables are copied back into the 'working' variable space.
+
+      In order to exchange the data between different memory spaces, six functions have been developed:
+      copy_k2r : from 'kernel' to 'working'
+      copy_r2k : from 'working' to 'kernel'
+      copy_r2b : from 'working' to 'backup'
+      copy_b2r : from 'backup' to 'working'
+      copy_r2f : from 'working' to a binary file
+      copy_f2r : from a binary file to 'working'
+
 0010. Changed the name of variables: 
         'thickness of the axial nodes, cm' -> 'axial mesh thickness, cm'
 
