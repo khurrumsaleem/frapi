@@ -49,7 +49,7 @@ module m_problem
 
         this % finishtime = ProblemEndTime
 
-        call this % frod % make(nr=nfmesh, na=naxn, nce=ncmesh, verbose=.false., frapmode=frapmode)
+        call this % frod % make(nr=nfmesh, na=naxn-1, nce=ncmesh, verbose=.false., frapmode=frapmode)
 
         call this % frod % set_ch_0 ('restart file', rfilename   )
         call this % frod % set_ch_0 ('coolant'     , coolant     )

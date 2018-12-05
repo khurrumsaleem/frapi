@@ -298,24 +298,30 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        logical :: is_open
+        logical :: is_open, is_exist
         integer :: i
-        real(8) :: dt0 = 1.D-1, dz
+        real(8) :: dt0 = 1.D-1
 
-        inquire (unit = fcunit, opened = is_open)
-        if (is_open) close (unit = fcunit)
-        open (unit = fcunit, file = this % namerf)
+        inquire(file = this % namerf, exist = is_exist)
 
+        ! open restart file prepared by 'frapcon'
+        if (is_exist) then
+            inquire (unit = fcunit, opened = is_open)
+            if (is_open) close (unit = fcunit)
+            open (unit = fcunit, file = this % namerf)
+            inp = 1
+        else
+            inp = 0
+        endif
+
+        ! process input file data
         call cardin
         call initia
 
         nptha = 2
         npaxp = naxn
 
-        close (fcunit)
-
-        dz = this % rodlength / naxn
-        this % axialmesh(:) = (/(i*dz, i = 1, naxn)/)
+        if (is_exist) close (fcunit)
 
     end subroutine p_init
 

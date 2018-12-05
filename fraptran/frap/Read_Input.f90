@@ -1392,7 +1392,6 @@ MODULE Read_Input_fraptran
     
     ! Gas data
     GasMoles0 = gsms
-    
     ! Check to see if gas fractions add to 1. If not, normalize.
     sumg = SUM(GasFraction(1:ngases))
     IF (ABS(sumg - 1.0_r8k) > 0.001_r8k) THEN
@@ -2663,7 +2662,6 @@ MODULE Read_Input_fraptran
 !    write(*,*) nptha
     ! Count the number of axial power profile values
     icount = 1
-    
     Count_AxPowProfile_Vals: DO
         IF ((icount + 1) > UBOUND(AxPowProfile(:,1),1)) EXIT Count_AxPowProfile_Vals
         IF (AxPowProfile(icount,1) == 0.0_r8k .AND. AxPowProfile(icount+1,1) == 0.0_r8k) THEN
@@ -2715,7 +2713,7 @@ MODULE Read_Input_fraptran
         radtemp = 0.0_r8k
         fuelrad = 0.0_r8k
     END IF
-    
+
     icnt = 1
     DO k = 1, naxn
         DO j = 1, nradq
@@ -2812,16 +2810,17 @@ MODULE Read_Input_fraptran
             ENDIF
         ENDDO
     ENDDO
+
     ! Make sure AxPowProfile(2*npaxp)=RodLength
     DO j = 1, NumAxProfiles
-        IF (AxPowProfile(2*npaxp,j) /= rl) THEN
+        IF ( abs(AxPowProfile(2*npaxp,j)-rl) > 1.D-12) THEN
             WRITE(ounit,512) j
 512         FORMAT(' Final axial elevation value in AxPowProfile is not equal to RodLength for shape number: ',i4,/, &
                    ' Execution terminated in Subroutine: numinp')
             ERROR STOP 'Final axial elevation value in AxPowProfile /= RodLength. Terminated in Subroutine: numinp'
         ENDIF
     ENDDO
-    
+
     ! Write out input values
     
     ! Power vs. time history

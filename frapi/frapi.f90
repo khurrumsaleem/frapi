@@ -13,8 +13,10 @@ module frapi
 
     real(8), parameter :: intoum = 25.4D+3
     real(8), parameter :: fttom = 0.3048D+0
-    real(8), parameter :: fttomm = 0.3048D+3 !3.28084D+3
+    real(8), parameter :: fttomm = 0.3048D+3
+    real(8), parameter :: fttocm = 0.3048D+2
     real(8), parameter :: mmtoin = 1.D0/25.4D0
+    real(8), parameter :: cm2m   = 1.D-2
 
     type, public :: t_fuelrod
         type( frapcon_driver) :: dfcon              ! Burnup steady-state calculations
@@ -164,7 +166,6 @@ contains
 
         select case (this % frapmode)
         case ('frapcon')
-            this % dfcon % namerf = this % namerf
             call this % dfcon % copy_r2k()
             call this % dfcon % restfs()
         case default
@@ -177,8 +178,6 @@ contains
     subroutine frod_init_frapcon_(this)
 
         class (t_fuelrod), intent(inout) :: this
-
-        this % dfcon % namerf = this % namerf
 
         call this % dfcon % copy_r2k() ! load variables from driver to kernel
         call this % dfcon % proc()     ! processing and checking of input variables
@@ -193,7 +192,6 @@ contains
 
         call this % dftran % copy_r2k() ! load variables from driver to kernel
 
-        this % dftran % namerf = this % namerf
         this % dftran % ntstep = 1
         this % dftran % nsteadytrans = 1
 
@@ -349,8 +347,7 @@ contains
         case ('frapcon')
             select case (lower(key))
             case ("restart file")
-                this % namerf      = trim(var)
-                !this % dfcon % namerf      = trim(var)
+                this % dfcon % r__namerf      = trim(var)
             case default
                 call error_message(key, 'character rank 0 in the frapcon set-list')
             end select
@@ -358,8 +355,7 @@ contains
         case ('fraptran') 
             select case (lower(key))
             case ("restart file")
-                this % namerf      = trim(var)
-                !this % dftran % r__namerf      = trim(var)
+                this % dftran % r__namerf      = trim(var)
             case ("coolant")
                 this % dftran % r__coolant     = trim(var)
             case ("bheat")
@@ -777,6 +773,10 @@ contains
                 this % dfcon % r__p2(it) = var * MPatoPSI
                 this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
                 this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
+            case("inlet coolant enthalpy, j|kg")
+                continue
+            case("outlet coolant enthalpy, j|kg")
+                continue
             case default
                 call error_message (key, 'real(8) rank 0 in the frapcon set-list')
             end select
@@ -932,13 +932,21 @@ contains
                 this % dftran % r__hbh(it3) = var
             case("hupta")
                 this % dftran % r__hupta(it3) = var
+            case("outlet coolant enthalpy, j|kg")
+                this % dftran % r__hupta(it3) = var
             case("hinta")
                 this % dftran % r__hinta(it3) = var
+            case("inlet coolant enthalpy, j|kg")
+                this % dftran % r__hinta(it3) = var
             case("gbh")
+                this % dftran % r__gbh(it3) = var
+            case("coolant mass flux, kg|(s*m^2)")
                 this % dftran % r__gbh(it3) = var
             case("explenumt")
                 this % dftran % r__explenumt(it3) = var
             case("pbh")
+                this % dftran % r__pbh(it3) = var
+            case("coolant pressure, mpa")
                 this % dftran % r__pbh(it3) = var
             case("rodavepower")
                 this % dftran % r__RodAvePower(it3) = var
@@ -965,20 +973,28 @@ contains
             case("gappr0")
                 this % dftran % r__gappr0(1) = var
             case("gfrac-he")
+                this % dftran % r__gfrac(1) = var
                 this % dftran % r__gasfraction(1) = var
             case("gfrac-ar")
+                this % dftran % r__gfrac(2) = var
                 this % dftran % r__gasfraction(2) = var
             case("gfrac-kr")
+                this % dftran % r__gfrac(3) = var
                 this % dftran % r__gasfraction(3) = var
             case("gfrac-xe")
+                this % dftran % r__gfrac(4) = var
                 this % dftran % r__gasfraction(4) = var
             case("gfrac-h")
+                this % dftran % r__gfrac(5) = var
                 this % dftran % r__gasfraction(5) = var
             case("gfrac-n")
+                this % dftran % r__gfrac(8) = var
                 this % dftran % r__gasfraction(6) = var
             case("gfrac-air")
+                this % dftran % r__gfrac(6) = var
                 this % dftran % r__gasfraction(7) = var
             case("gfrac-h2o")
+                this % dftran % r__gfrac(7) = var
                 this % dftran % r__gasfraction(8) = var
             case("gadolinia weight fraction")
                 this % dftran % r__gadoln(1:n) = var
@@ -990,8 +1006,8 @@ contains
                 this % dftran % r__vplen(1) = var
             case("axial mesh thickness, cm")
                 this % dftran % axialmesh(:) = var
-            case("coolant pressure, mpa")
-                continue !TODO: find the pressure variable
+                this % dftran % axnodelevat(1) = 0.D+0
+                this % dftran % axnodelevat(2:) = (/( var*i, i = 1, n )/)
             case("inlet coolant temperature, c")
                 continue !TODO: find the variable
             case default
@@ -1152,14 +1168,19 @@ contains
                 it = if_a_else_b(this % is_initdone, two, one)
                 this % dftran % r__axpowprofile(:,it) = var(:)
             case("linear power, W|cm")
+                ! 'fraptran' re-interpolates the linear power for the main axial mesh with n central nodes
+                ! User can set 'axpowprofile' for arbitrary axial mesh, however not 
+                ! at the central nodes, but at the last nodes (here n+1 nodes of the main mesh)
+                call linterp(var, this % dftran % axialmesh(:), tmp3, n)
                 it = if_a_else_b(this % is_initdone, two, one)
-                do i = 1, n
-                    this % dftran % r__axpowprofile(2*i-1,it) = var(i)
-                    this % dftran % r__axpowprofile(2*i  ,it) = this % dftran % axialmesh(i)
+                do i = 1, n + 1
+                    this % dftran % r__axpowprofile(2*i-1,it) = tmp3(i)
+                    this % dftran % r__axpowprofile(2*i  ,it) = this % dftran % axnodelevat(i) * cm2m
                 enddo
             case("axial mesh thickness, cm")
                 this % dftran % axialmesh(:) = var(:)
-
+                this % dftran % axnodelevat(1) = 0.D+0
+                this % dftran % axnodelevat(2:) = (/( sum(var(1:i)), i = 1, n )/)
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1492,7 +1513,7 @@ contains
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
         case('fraptran')
-            select case (key)
+            select case (lower(key))
             case("axial mesh thickness, cm")
                 var(:) = this % dftran % axialmesh(1:n)
             case('cladding total hoop strain, %')
