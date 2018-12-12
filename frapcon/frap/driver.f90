@@ -56,10 +56,10 @@ module frapcon4
     contains
 
         procedure :: make => driver_make
-        procedure :: proc => driver_proc
         procedure :: next => driver_next
         procedure :: init => driver_init
         procedure :: deft => driver_deft
+        procedure :: next0=> driver_next0
         procedure :: copy_r2k => driver_copy_r2k
         procedure :: copy_k2r => driver_copy_k2r
         procedure :: copy_r2b => driver_copy_r2b
@@ -75,7 +75,7 @@ contains
 
     subroutine driver_make(this, na_, ngasr_, nr_, nce_, verbose_)
 
-        class (frapcon_driver), intent(out) :: this
+        class (frapcon_driver), intent(inout) :: this
 
         logical :: verbose_
         INTEGER(ipk) :: na_, ngasr_, nr_, nce_
@@ -202,7 +202,7 @@ contains
     end subroutine driver_deft
 
 
-    subroutine driver_proc(this)
+    subroutine driver_init(this)
 
         implicit none
 
@@ -263,9 +263,9 @@ contains
             stop
         endif
 
-    end subroutine driver_proc
+    end subroutine driver_init
 
-    subroutine driver_init(this)
+    subroutine driver_next0(this)
 
         class (frapcon_driver), intent(in) :: this
 
@@ -283,7 +283,7 @@ contains
 
         it = 2
 
-    end subroutine driver_init
+    end subroutine driver_next0
 
     subroutine driver_next(this, d_time)
 
@@ -1449,7 +1449,7 @@ contains
 
     subroutine driver_restfs(this)
 
-        class (frapcon_driver), intent(out) :: this
+        class (frapcon_driver), intent(inout) :: this
 
         logical :: is_open
 

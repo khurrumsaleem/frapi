@@ -1336,6 +1336,7 @@ MODULE timestep_fraptran
                 CentVoidVol(k) = 0.0_r8k
             ENDIF
         ENDDO
+
         TotalGasMoles = GasMoles0
         
         ! Fission gas release modeling

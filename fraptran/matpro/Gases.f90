@@ -389,6 +389,9 @@ MODULE NCGases_fraptran
     IF (Gas%Temp < tvLimitMin .OR. Gas%Temp > tvLimitMax .OR. MAXVAL(GasFraction) <= MinMoles) THEN
         WRITE (0,180) Gas%Temp, GasFraction
         WRITE (ounit,180) Gas%Temp, GasFraction
+        write(*,*) 'gas temperature ', gas % temp , ' must be > ', tvlimitmin
+        write(*,*) 'gas temperature ', gas % temp , ' must be < ', tvlimitmax
+        write(*,*) 'max gas fraction ', MAXVAL(GasFraction), ' must be > ', minmoles
 180     FORMAT (' Error in gthcon. Bad input. Gas%Temp= ',e12.4,' K',/,' Gas Fractions ',7(e12.4,3x))
         STOP
     END IF

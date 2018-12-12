@@ -37,6 +37,7 @@ MODULE conversions_fraptran
     REAL(r8k), PARAMETER :: psift2 = 144.0_r8k           ! ( psi / lb/ft^2 )
     REAL(r8k), PARAMETER :: gtolb = 453.6_r8k            ! ( grams / lb )
     REAL(r8k), PARAMETER :: hgpcnv = 5.67826_r8k         ! Convert gap HTC (Btu/hr*ft^2*F to W/m^2*K)
+    REAL(r8k), PARAMETER :: intom = 1.d0 / 12.d0 * 0.3048d0
     !
     !
     ! ** Energy **

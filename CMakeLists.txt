@@ -21,7 +21,8 @@ file(GLOB frapcon_src  "frapcon/Dating/*.f90"
 file(GLOB fraptran_src "fraptran/envrl/*.f90"
                        "fraptran/frap/*.f90"
                        "fraptran/matpro/*.f90"
-                       "fraptran/mech/*.f90")
+                       "fraptran/mech/*.f90"
+                       "fraptran/utils/*.f90")
 
 file(GLOB frapi_src     "frapi/*.f90")
 

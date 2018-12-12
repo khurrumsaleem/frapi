@@ -279,16 +279,20 @@ MODULE Coolant_fraptran
                 CALL sth2x5 (aasth, prop, it, nogo)
                 !
                 w2nogo = w2o5
-                IF (nogo) GOTO 1111
+                IF (nogo) then
+                    GOTO 1111
+                endif
                 rhkm1 = 1.0_r8k/(dens * v)
             ENDIF
         ENDIF
-        !
+
         CALL transh (hi0km1, CoolEnthalpy0(k), hikm1, gikm1, rhkm1, CoolDensity0(k), dthr, delz, &
           &          qcool, CoolEnthalpy(k), CoolMassFlx(k), aasth, nogo)
-        !
+
         w2nogo = w2o5
-        IF (nogo) GOTO 1111
+        IF (nogo) then
+            GOTO 1111
+        endif
         IF (ndebug) WRITE(ounit,907) k, CoolEnthalpy(k), hup1, CoolMassFlx(k)
 907     FORMAT(6x,'after transh call, k = ',i2,' CoolEnthalpy(k) = ', e11.4,' hup1 = ',e11.4,' CoolMassFlx(k) =',e11.4)
         IF ((nqchn == 7) .AND. (CoolEnthalpy(k) < hup1)) CoolEnthalpy(k) = hup1
@@ -328,19 +332,25 @@ MODULE Coolant_fraptran
         !
         prop(1:22) = 0.0_r8k
         !
-        CoolantPress = pri * psi
-        hbar = hi * spen
+        CoolantPress = pri * psi ! pointer on prop(2)
+        hbar = hi * spen ! WTF?? => may be enthalpy? ! pointer on prop(5)
+
         ! Calculate water properties from pressure and enthalpy
-        prop(23) = acond(28,j)
+        prop(23) = acond(28,j) ! memory indices for saturation state
         !
+        ! here we calculate x and other shit
         CALL sth2x5 (aasth, prop, it, nogo)
         !
         w2nogo = w2o5
-        IF (nogo) GOTO 1111
+        IF (nogo) then
+            GOTO 1111
+        endif
+
         CoolDensity(k) = 1.0_r8k / (dens * v)
         acond(17,j) = tkf(tt)
         acond(18,j) = v * dens
         acond(19,j) = x
+
         IF (ndebug) WRITE(ounit,888) k, pri, hi, acond(17,j), x
 888     FORMAT(' COOL: k = ',i3,' coolant pressure = ',e11.4,' coolant enthalpy = ',e11.4,' coolant temp = ',e11.4, &
           &    ' coolant quality = ',e11.4)
@@ -356,7 +366,10 @@ MODULE Coolant_fraptran
             CALL sth2x2 (aasth, prop, nogo)
             !
             w2nogo = w2o2
-            IF (nogo) GOTO 1111
+                IF (nogo) then
+                    GOTO 1111
+                endif
+
         END IF
         !
         acond(22,j) = hsubf / spen
@@ -931,6 +944,7 @@ MODULE Coolant_fraptran
     rhoAveIn = (rhok + rhokm1) / 2.0_r8k
     IF (ABS(delh) >= 0.01_r8k) THEN
         drhodh = delrho / delh
+        nogo = .false.
     ELSE
         prop(5) = (h0k + 0.01_r8k) * 2326.3_r8k
         CALL sth2x5 (aasth, prop, it, nogo)

@@ -570,7 +570,7 @@ MODULE zrmodels_fraptran
       &          elmod, t, ag, strnyt, strnye, cyldst, cyldse, strnue, cultse, ratio, aka, &
       &          akcw, fcwt, strnut, akphi, ctstrt, ctstrt723, ctstrt973, caxrad, caxstr, &
       &          axfac, cinwid, cdpres, stsrpt, cinrad, strrpe, strnie, cbrsst, cbrste, ctemp_F
-    
+
     ! Cladding fluence
     IF (ctemp > 1255.0_r8k) THEN
         fluence = 0.0_r8k

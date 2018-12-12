@@ -48,7 +48,7 @@ MODULE HeatSolution_fraptran
     REAL(r8k), PARAMETER :: two = 2.0_r8k
     REAL(r8k), DIMENSION(naxn) :: delgap, delpfc, frcgap, hgapin1, hgapin2, hgapout1, hgapout2
     REAL(r8k), DIMENSION(nmesh) :: HeatFlow, rwa1
-    
+
     ! Begin loop which steps up each axial node k. This loop computes temperature distribution at each axial node 
     kthta = 0
     hfluxs = 0.0_r8k

@@ -18,7 +18,7 @@ MODULE HeatTransferCoefficient_fraptran
     USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr, ftin, tfk, tfr
     USE functions_fraptran, ONLY : polate
-    USE variables_fraptran, ONLY : ounit, Time, ndebug, fdial
+    USE variables_fraptran, ONLY : ounit, Time, ndebug, fdial, timeincrement
     USE Dyna_h_fraptran
     USE CoolantProperties_fraptran, ONLY : Prop, aasth, elvrad, nelrad, vfrad1, vfrad2, vfrad3, trad1, trad2, trad3, tshrda, nsrad3
     USE resti_h_fraptran
@@ -713,7 +713,7 @@ MODULE HeatTransferCoefficient_fraptran
     USE Kinds_fraptran
     USE conversions_fraptran, ONLY : pi, sechr, tfk, tfr
     USE functions_fraptran, ONLY : polate
-    USE variables_fraptran, ONLY : ounit, Time, ndebug, Radiation
+    USE variables_fraptran, ONLY : ounit, Time, ndebug, Radiation, timeincrement
     USE CoolantProperties_fraptran, ONLY : Prop, aasth
     USE bcdcom_h_fraptran
     USE emssf_fraptran, ONLY : emssf1
@@ -803,7 +803,7 @@ MODULE HeatTransferCoefficient_fraptran
       &          qcrit, hfbv, tchf, dtchf, qfbv, qcty, cty1, cty2, qtbv, hcmin, qtb, htranb, hpchf, &
       &          qqfb, htbv, rfg, gcdumy, dtmina, fluxn, tmin, qmin, delta, qmindb, prn, re, &
       &          rdtest, dh, tshrd, toxshr, fe, rk, c1, tts,c2, h, tempcm, zroxid, aflow, dr, beta, &
-      &          MassFlowRate, Quality, tkf
+      &          MassFlowRate, Quality, tkf, coef_a, coef_b, coef_c, discr
     REAL(r8k), INTENT(OUT) :: qq
     REAL(r8k), PARAMETER :: dp01 = 0.01_r8k
     REAL(r8k), PARAMETER :: dp023 = 0.023_r8k
@@ -894,6 +894,7 @@ MODULE HeatTransferCoefficient_fraptran
     ! jmc       mode = 11 -- adiabatic heat-up, htc = 0.0
     ! jmc       mode = 12 -- reflood, using flecht heat transfer models
     !
+
     SELECT CASE (ih)
     CASE (1)
         !
@@ -960,52 +961,73 @@ MODULE HeatTransferCoefficient_fraptran
             !
             ! Thom correlation
             !
-            Thom_ConvgLoop: DO
-                !
-                dtf = MAX(0.001_r8k, tsur - tsat)
-                fp1 = EXP(CoolPress / 1260.0_r8k) / 0.072_r8k
-                qnb = ((fp1 * dtf) ** 2)
-                hnb = qnb / (tsur - tbulk)
-                hc = MAX(hnb + hspl, five)
-                twall2 = (b + hc * tbulk) / (hc - a)
-                IF (ABS(twall2 - tsur) < 0.1_r8k) EXIT Thom_ConvgLoop
-                !
-                SELECT CASE (itn)
-                CASE (1)
-                    tin1 = twall2
-                    twgs = twall2
-                    IF (ndebug) WRITE(ounit,12944) itn, twgs, twall2, tin1, tsur, hspl, hnb, qnb
-12944               FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6, ' twall2 = ',e13.6,' tin1 = ',e13.6, &
-                      &    ' tsur = ',e13.6,' hspl =',e13.6,' hnb =',e13.6,' qnb =',e13.6)
-                CASE (2)
-                    tin2 = twall2
-                    tout1 = tin2
-                    twgs = twall2
-                    IF (ndebug) WRITE(ounit,22944) itn, twgs, tin2, tout1
-22944               FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6,' tin2 = ',e13.6,' tout1 = ',e13.6)
-                CASE DEFAULT
-                    ! Exit if convergence has been reached
-                    IF (ABS(tin2 - tin1) < 1.0e-5_r8k) EXIT Thom_ConvgLoop
-                    tout2 = twall2
-                    ! Get improved guess of surface temperature using method of newton
-                    dtidto = (tout2 - tout1) / (tin2 - tin1)
-                    twgs = (tout1 - dtidto * tin1) / (1.0_r8k - dtidto)
-                    tout1 = tout2
-                    tin1 = tin2
-                    tin2 = twgs
-                    IF (ndebug) WRITE(ounit,2944) itn, twgs, tout2, tin2, tout1, tin1, tsur
-2944                FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6,' tout2 = ',e13.6,' tin2 = ',e13.6, &
-                      &    ' tout1 = ',e13.6,' tin1 = ',e13.6,' tsur = ',e13.6)
-                END SELECT
-                tsur = twgs
-                itn = itn + 1
-                IF (itn == 100) THEN ! Max # of iteration reached. Code execution stopped.
-                    WRITE(ounit,2277) twall2, tsur
-2277                FORMAT(////,' Iteration on cladding surface temperature in Thom_ConvgLoop for nucleate boiling mode did', &
-                      &         ' not converge. Program stopped in Subroutine: qdot',/,' twall2 = ',e13.6,' twall1 = ',e13.6)
-                    ERROR STOP ' Code execution stopped in Subroutine: qdot. No convergence found in loop: Thom_ConvgLoop'
-                ENDIF
-            ENDDO Thom_ConvgLoop
+!            Thom_ConvgLoop: DO
+!                !
+!                dtf = MAX(0.001_r8k, tsur - tsat)
+!                fp1 = EXP(CoolPress / 1260.0_r8k) / 0.072_r8k
+!                qnb = ((fp1 * dtf) ** 2)
+!                hnb = qnb / (tsur - tbulk)
+!                hc = MAX(hnb + hspl, five)
+!                twall2 = (b + hc * tbulk) / (hc - a)
+!                IF (ABS(twall2 - tsur) < 0.1_r8k) EXIT Thom_ConvgLoop
+!                !
+!                SELECT CASE (itn)
+!                CASE (1)
+!                    tin1 = twall2
+!                    twgs = twall2
+!                    IF (ndebug) WRITE(ounit,12944) itn, twgs, twall2, tin1, tsur, hspl, hnb, qnb
+!12944               FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6, ' twall2 = ',e13.6,' tin1 = ',e13.6, &
+!                      &    ' tsur = ',e13.6,' hspl =',e13.6,' hnb =',e13.6,' qnb =',e13.6)
+!                CASE (2)
+!                    tin2 = twall2
+!                    tout1 = tin2
+!                    twgs = twall2
+!                    IF (ndebug) WRITE(ounit,22944) itn, twgs, tin2, tout1
+!22944               FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6,' tin2 = ',e13.6,' tout1 = ',e13.6)
+!                CASE DEFAULT
+!                    ! Exit if convergence has been reached
+!                    IF (ABS(tin2 - tin1) < 1.0e-5_r8k) EXIT Thom_ConvgLoop
+!                    tout2 = twall2
+!                    ! Get improved guess of surface temperature using method of newton
+!                    dtidto = (tout2 - tout1) / (tin2 - tin1)
+!                    twgs = (tout1 - dtidto * tin1) / (1.0_r8k - dtidto)
+!                    tout1 = tout2
+!                    tin1 = tin2
+!                    tin2 = twgs
+!                    IF (ndebug) WRITE(ounit,2944) itn, twgs, tout2, tin2, tout1, tin1, tsur
+!2944                FORMAT(' QDOT for mode 2, itn = ',i5,' twgs = ',e13.6,' tout2 = ',e13.6,' tin2 = ',e13.6, &
+!                      &    ' tout1 = ',e13.6,' tin1 = ',e13.6,' tsur = ',e13.6)
+!                END SELECT
+!                tsur = twgs
+!                itn = itn + 1
+!                IF (itn == 100) THEN ! Max # of iteration reached. Code execution stopped.
+!                    WRITE(ounit,2277) twall2, tsur
+!2277                FORMAT(////,' Iteration on cladding surface temperature in Thom_ConvgLoop for nucleate boiling mode did', &
+!                      &         ' not converge. Program stopped in Subroutine: qdot',/,' twall2 = ',e13.6,' twall1 = ',e13.6)
+!                    ERROR STOP ' Code execution stopped in Subroutine: qdot. No convergence found in loop: Thom_ConvgLoop'
+!                ELSE
+!
+!                ENDIF
+!            ENDDO Thom_ConvgLoop
+
+            fp1 = EXP(CoolPress / 1260.0_r8k) / 0.072_r8k
+            coef_b = (2*tsat*fp1**2 + a - hspl) / fp1**2
+            coef_c = (tsat**2 * fp1**2 - hspl * tbulk - b) / fp1**2
+            discr = coef_b**2 - 4 * coef_c
+            if (discr < 0) then
+                write(*,*) "ERROR: can not find tsur for given parameters"
+                write(*,*) a, b, tsat, hspl, tbulk
+                stop
+            else
+                tsur = (coef_b + discr**0.5) / 2
+                hc = hspl + fp1**2 * (tsur - tsat)**2 / (tsur - tbulk)
+                if (hc < 5.d0) then
+                    hc = 5.d0
+                    tsur = (b + hc * tbulk) / (hc - a)
+                endif
+                twall2 = tsur
+                coef_a = tsur
+            endif
             !
             ! Iteration converged
             !

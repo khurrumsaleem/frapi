@@ -358,8 +358,8 @@ MODULE Output_Data_frapcon
      & ' Mass Flux',/,7x,' step',4x,' (hrs)',4x,' (days)',5x,' (kW/m)', &
      & 2x,' (kW/ft)',4x,' (kW/m)',2x,' (kW/ft)',5x,' (mpa)',2x, &
      & ' (psia)',7x,' (K)',5x,' (F)',5x,' (kg/s-m**2)',2x,' (lbm/hr-ft2)',/)
-670 FORMAT (6x,i3,5x,f8.1,3x,f7.2,5x,f7.2,3x,f6.2,7x,f6.2,2x,f7.1,5x,f7.1,2x,f7.1,6x,f8.1,4x,f10.1)
-671 FORMAT (6x,i3,5x,f8.1,3x,f7.2,5x,f7.2,3x,f6.2,6x,f7.2,3x,f6.2,7x,f6.2,2x,f7.1,5x,f7.1,2x,f7.1,6x,f8.1,4x,f10.1)
+670 FORMAT (6x,i3,5x,f8.1,3x,f9.2,5x,f9.2,3x,f9.2,7x,f9.2,2x,f9.1,5x,f9.1,2x,f9.1,6x,f8.1,4x,f10.1)
+671 FORMAT (6x,i3,5x,f8.1,3x,f9.2,5x,f9.2,3x,f9.2,6x,f9.2,3x,f9.2,7x,f9.2,2x,f9.1,5x,f9.1,2x,f9.1,6x,f8.1,4x,f10.1)
 680 FORMAT (//,30x,' the user has specified that the following set',/,30x, &
      & ' of evaluation models will be used in the',/,30x,' analysis', &
      & ' of this fuel rod , = 0 is off , = 1, is on. ',//)

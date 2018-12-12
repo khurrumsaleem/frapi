@@ -17,6 +17,7 @@ module frapi
     real(8), parameter :: fttocm = 0.3048D+2
     real(8), parameter :: mmtoin = 1.D0/25.4D0
     real(8), parameter :: cm2m   = 1.D-2
+    real(8), parameter :: cm_to_ft = 1./0.3048D+2
 
     type, public :: t_fuelrod
         type( frapcon_driver) :: dfcon              ! Burnup steady-state calculations
@@ -62,7 +63,7 @@ module frapi
     integer :: i, j, n, m
     real(8) :: a, b, c, volume
     real(8), allocatable :: weight(:)
-    real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:), tmp3(:)
+    real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:), tmp3(:), tmp4(:)
 
 contains
 
@@ -99,7 +100,7 @@ contains
         if (nce_  <= 0) call stop_error("ERROR: got wrong number of radial nodes in cladding, nce = ", nce_)
         if (ngasr_<= 0) call stop_error("ERROR: got wrong number of radial nodes in pellet, ngasr = ", ngasr_)
 
-        select case (this % frapmode)
+        select case (lower(this % frapmode))
 
         case ('frapcon')
 
@@ -139,6 +140,7 @@ contains
         if(.not. allocated(tmp1))   allocate(tmp1(n))
         if(.not. allocated(tmp2))   allocate(tmp2(m+1))
         if(.not. allocated(tmp3))   allocate(tmp3(n+1))
+        if(.not. allocated(tmp4))   allocate(tmp4(n))
 
         this % is_initdone = .false.
 
@@ -180,8 +182,8 @@ contains
         class (t_fuelrod), intent(inout) :: this
 
         call this % dfcon % copy_r2k() ! load variables from driver to kernel
-        call this % dfcon % proc()     ! processing and checking of input variables
-        call this % dfcon % init()     ! make the very first time step
+        call this % dfcon % init()     ! processing and checking of input variables
+        call this % dfcon % next0()    ! make the very first time step
         call this % dfcon % copy_k2r() ! load variables from kernel to driver
 
     end subroutine frod_init_frapcon_
@@ -210,17 +212,12 @@ contains
         if (.not. this % is_initdone) then
             call error_message_0 ('ERROR: fuel rod initialization has not been finished!')
         endif
-
-        if (dt < 1.E-20) then
-            write(*,*) 'WARNING: time step is near to zero, dt = ', dt
-        else
-            select case (this % frapmode)
-            case ('frapcon')
-                call frod_next_frapcon_(this, dt)
-            case ('fraptran')
-                call frod_next_fraptran_(this, dt)
-            end select
-        endif
+        select case (this % frapmode)
+        case ('frapcon')
+            call frod_next_frapcon_(this, dt)
+        case ('fraptran')
+            call frod_next_fraptran_(this, dt)
+        end select
 
     end subroutine frod_next
 
@@ -231,7 +228,13 @@ contains
         real(8) :: dt
 
         call this % dfcon % copy_r2k()
-        call this % dfcon % next(dt)
+
+        if (dt < 1.E-20) then
+            call this % dfcon % next(1.D-12)
+        else
+            call this % dfcon % next(dt)
+        endif
+
         call this % dfcon % copy_k2r()
 
     end subroutine frod_next_frapcon_
@@ -242,7 +245,7 @@ contains
         class (t_fuelrod), intent(inout) :: this
         character(*), intent(in) :: mode
 
-        select case (mode)
+        select case (lower(mode))
             case ("frapcon")
                 if ((this % dfcon % is_driver_allocated).and.(this % dfcon % is_kernel_allocated)) then
                     this % frapmode = mode
@@ -272,7 +275,13 @@ contains
         call this % dftran % copy_r2k()
         call this % dftran % settime(2,t0)
         call this % dftran % settime(4,t0+dt)
-        call this % dftran % next(dt)
+
+        if (dt < 1.E-20) then
+            call this % dftran % next(1.D-12)
+        else
+            call this % dftran % next(dt)
+        endif
+
         call this % dftran % copy_k2r()
 
     end subroutine frod_next_fraptran_
@@ -582,7 +591,7 @@ contains
         case ('frapcon')
             call error_message(key, 'integer rank 1 in the frapcon set-list')
         case ('fraptran')
-            select case (key)
+            select case (lower(key))
             case("ngastmp")
                 this % dftran % r__ngastmp(:) = var(:)
             case default
@@ -941,13 +950,13 @@ contains
             case("gbh")
                 this % dftran % r__gbh(it3) = var
             case("coolant mass flux, kg|(s*m^2)")
-                this % dftran % r__gbh(it3) = var
+                this % dftran % r__gbh(it3) = var * ksm2tolbhrft2
             case("explenumt")
                 this % dftran % r__explenumt(it3) = var
             case("pbh")
                 this % dftran % r__pbh(it3) = var
-            case("coolant pressure, mpa")
-                this % dftran % r__pbh(it3) = var
+            case("inlet coolant pressure, mpa")
+                this % dftran % r__pbh(it3) = var * MPatoPSI
             case("rodavepower")
                 this % dftran % r__RodAvePower(it3) = var
             case("fuelgasswell")
@@ -1005,11 +1014,13 @@ contains
             case("vplen")
                 this % dftran % r__vplen(1) = var
             case("axial mesh thickness, cm")
-                this % dftran % axialmesh(:) = var
-                this % dftran % axnodelevat(1) = 0.D+0
-                this % dftran % axnodelevat(2:) = (/( var*i, i = 1, n )/)
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case("inlet coolant temperature, c")
                 continue !TODO: find the variable
+            case("linear power, w|cm")
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case default
                 call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
@@ -1020,10 +1031,11 @@ contains
     subroutine frod_set_r8_1(this, key, var)
 
         class (t_fuelrod), intent(inout) :: this
+        real(8), intent(in)      :: var(:)
 
         character(*) :: key
-        integer      :: it, k
-        real(8)      :: var(:)
+        integer      :: it, k, it3
+        real(8)      :: a
 
         select case (this % frapmode)
 
@@ -1103,7 +1115,7 @@ contains
             end select
 
         case ('fraptran')
-            select case (key)
+            select case (lower(key))
             case("azpang")
                 this % dftran % r__azpang(1:n) = var(:)
             case("fmesh")
@@ -1166,21 +1178,28 @@ contains
                 this % dftran % r__fuelrad(:,it) = var(:)
             case("axpowprofile")
                 it = if_a_else_b(this % is_initdone, two, one)
-                this % dftran % r__axpowprofile(:,it) = var(:)
-            case("linear power, W|cm")
+                this % dftran % r__axpowprofile(1:2*(n+1),it) = var(:)
+            case("linear power, w|cm")
                 ! 'fraptran' re-interpolates the linear power for the main axial mesh with n central nodes
                 ! User can set 'axpowprofile' for arbitrary axial mesh, however not 
                 ! at the central nodes, but at the last nodes (here n+1 nodes of the main mesh)
                 call linterp(var, this % dftran % axialmesh(:), tmp3, n)
+                tmp3(:) = (tmp3(:) + 1.D-12) / (sum(tmp3) + 1.D-12)
                 it = if_a_else_b(this % is_initdone, two, one)
                 do i = 1, n + 1
                     this % dftran % r__axpowprofile(2*i-1,it) = tmp3(i)
-                    this % dftran % r__axpowprofile(2*i  ,it) = this % dftran % axnodelevat(i) * cm2m
+                    this % dftran % r__axpowprofile(2*i  ,it) = this % dftran % axnodelevat(i)
                 enddo
+                ! linear power, W/cm -> average linear power, W/cm
+                a = sum( (/( var(i) * this % dftran % axialmesh(i), i = 1, n )/) ) / sum(this % dftran % axialmesh)
+                it3 = if_a_else_b(this % is_initdone, three, one)
+                ! average linear power, W/cm -> average linear power, kW/ft
+                this % dftran % r__RodAvePower(it3) = a * 1.D-3 / cm_to_ft
             case("axial mesh thickness, cm")
                 this % dftran % axialmesh(:) = var(:)
                 this % dftran % axnodelevat(1) = 0.D+0
-                this % dftran % axnodelevat(2:) = (/( sum(var(1:i)), i = 1, n )/)
+                this % dftran % axnodelevat(2:) = (/( sum(var(1:i)), i = 1, n )/) * cm_to_ft
+                this % dftran % r__RodLength = sum(var) * cm_to_ft
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1201,7 +1220,7 @@ contains
         case ('frapcon')
             call error_message(key, 'real rank 2 in the frapcon set-list')
         case ('fraptran')
-            select case (key)
+            select case (lower(key))
             case("pazp")
                 this % dftran % r__pazp(:,:) = var(:,:)
             case default
@@ -1221,14 +1240,14 @@ contains
 
         select case (this % frapmode)
         case ('frapcon')
-            select case (key)
+            select case (lower(key))
             case('program terminate')
                 var = this % dfcon % r__iquit
             case default
                 call error_message(key, 'integer rank 0 in the frapcon get-list')
             end select
         case ('fraptran')
-            select case (key)
+            select case (lower(key))
             case('dimension of radial node vectors')
                 var = this % dftran % r__n1
             case('dimension of axial node vectors')
@@ -1275,7 +1294,7 @@ contains
 
         select case (this % frapmode)
         case ('frapcon')
-            select case (key)
+            select case (lower(key))
             case default
                 call error_message(key, 'integer rank 1 in the frapcon get-list')
             end select
@@ -1333,7 +1352,7 @@ contains
                 call error_message(key, 'real rank 0 in the frapcon get-list')
             end select
         case ('fraptran')
-            select case (key)
+            select case (lower(key))
             case('fuel stack elongation, mm')
                 var = this % dftran % r__delth * fttomm
             case('cladding axial elongation, mm')
@@ -1505,8 +1524,6 @@ contains
             case('radial meshes, cm')
                 var(:) = (/(this % dfcon % r__hrad(m - i + 1, 1), i = 0, m )/) 
                 var(:) = var(:) * intocm
-            case('fuel surface temperature, c')
-                var(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
             case('pellet surface temperature, c')
                 var(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
             case default
@@ -1700,7 +1717,7 @@ contains
         case ('fraptran')
             nr = this % dftran % r__nradialnodes
             na = this % dftran % r__naxn
-            select case (key)
+            select case (lower(key))
             case('eos temperature, k')
                 var(:,:) = (this % dftran % r__eostemp (1:nr, 1:na) + 4.5967D+2) / 1.8D+0
             case('eos radius, mm')

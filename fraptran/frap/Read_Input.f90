@@ -2817,6 +2817,8 @@ MODULE Read_Input_fraptran
             WRITE(ounit,512) j
 512         FORMAT(' Final axial elevation value in AxPowProfile is not equal to RodLength for shape number: ',i4,/, &
                    ' Execution terminated in Subroutine: numinp')
+            write(*,*) 'axial profile elevation: ', (/(AxPowProfile(2*i,1), i =1, npaxp )/)
+            write(*,*) 'fuel rod length: ', rl
             ERROR STOP 'Final axial elevation value in AxPowProfile /= RodLength. Terminated in Subroutine: numinp'
         ENDIF
     ENDDO

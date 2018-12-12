@@ -76,7 +76,7 @@ names = [
 'coolant pressure, MPa',
 'critical heat flux, W|m2',
 'centerline temperature, K',
-'fuel pellet surface temperature, K',
+#'fuel pellet surface temperature, c',
 #'cladding inner temperature, K',
 #'average cladding temperature, K',
 #'cladding outer temperature, K',
@@ -99,14 +99,14 @@ names = [
 
 task = 'rep-na1'
 
-if True:
+if False:
     print "FRAPCON: "
     call(['../../build/debug/main_frapcon', 'rep-na1-frapcon.inp'])
     print "FRAPTRAN: "
     call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
     call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
-#    print "FRAPI: "
-#    call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
-#    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
+    print "FRAPI: "
+    call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
+    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
 
-#draw(task)
+draw(task)
