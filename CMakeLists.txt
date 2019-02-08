@@ -7,7 +7,7 @@ enable_language (Fortran)
 #set(CMAKE_Fortran_COMPILER )
 
 set(CMAKE_Fortran_FLAGS "-std=gnu -D -cpp")
-set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -Wall -fbounds-check -ffpe-trap=zero,invalid,overflow,underflow,denormal -fbacktrace -std=gnu")
+set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -g -pg -Wall -fbounds-check -ffpe-trap=zero,invalid,overflow,underflow,denormal -fbacktrace -std=gnu")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 
 file(GLOB math_src     "math/*.f90")

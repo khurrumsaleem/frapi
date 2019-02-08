@@ -1,0 +1,69 @@
+REP-Na1 FRAPTRAN RIA File
+FILE05='nullfile', STATUS='scratch', FORM='FORMATTED', *
+CARRIAGE CONTROL='LIST' *
+FILE15='sth2xt', STATUS='old', FORM='UNFORMATTED' *
+* *
+FILE79='out.na1', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST' *
+FILE66='stripf.na1', STATUS='UNKNOWN', FORM='FORMATTED', *
+CARRIAGE CONTROL='LIST' *
+FILE22='restart.NA1' , STATUS='old', FORM='FORMATTED' *
+/***********************************************************************
+REP-Na1, for EPRI review (8/26/03)
+$begin
+ProblemStartTime=0.0,
+ProblemEndTime=1.0,
+$end
+$iodata
+unitin=0, unitout=0, inp=1, dtpoa(1)=0.01, dtplta=0.002, trest=1.2528e8,
+$end
+$solution
+dtmaxa(1)=0.0001,0.0, 0.0001,0.0702, 0.00001,0.079,
+0.00001,0.0815,0.0001, 0.09,
+0.001,0.15,
+naxn=11, nfmesh=20, ncmesh=5,
+$end
+$design
+RodLength=1.8668, RodDiameter=0.03119, gapthk=2.6903e-4,vplen=6.784e-5
+ncs=5, spl=0.5, scd=2.62e-2, swd=2.62e-3,
+FuelPelDiam=2.6877e-2, rshd=9.675e-3, dishd=1.008e-3, pelh=4.6752e-2,
+dishv0=2.975e-7,
+frden=0.9525, roughf=2.0,
+coldw=0.5, roughc=0.5, cldwdc=0.04,
+gfrac(1)=0.96154, gfrac(6)=0.03846, gappr0=377.1, tgas0=71.6,
+pitch=4.15e-2, pdrato=1.32,
+$end
+$power
+fpowr=0.864
+RodAvePower = 0.,0., 0.,0.06,160.0,0.066,320.0,0.068,
+640.0,0.07,3400.0,0.075,7200.0,0.079,
+7360.0,0.0797,7200.0,0.0805,3200.0,0.085
+1680.0,0.087,800.0,0.089,560.0,0.09,
+180.0,0.093,80.0,0.095,0.0,0.1,0.0,1.0,
+AxPowProfile = 0.728,0.000,0.884,0.197,0.975,0.328,
+1.047,0.459,1.100,0.591,1.136,0.722,
+1.156,0.853,1.161,0.984,1.148,1.115,
+1.113,1.247,1.053,1.378,0.966,1.509,
+$end
+$model
+internal='on',
+metal='on', cathca=1,
+deformation='on', noball=1,
+nthermex=1
+$end
+$boundary
+heat='on'
+press=2, pbh2(1)=72.52,0.0, 72.52,1.0,
+zone=3, htclev =0.502, 1.224,1.8668
+htco=2, htca(1,1)= 352222.0,0., 352222.0,1.,
+htca(1,2)= 352222.0,0., 352222.0,1.,
+htca(1,3)= 352222.0,0., 352222.0,1.,
+tem=9,
+tblka(1,1)= 536.,0.00,536.,0.08,806.,0.14,752.,0.16,662.,0.2
+626.,0.27,590.,0.40,572.,0.70,554.,1.00
+tblka(1,2)= 536.,0.00,536.,0.08,1382.,0.14,1607.,0.16,1382.,0.2
+1508.,0.27,1427.,0.40,1094.,0.70,896.,1.00
+tblka(1,3)= 536.,0.00,536.,0.08,932.,0.14,1022.,0.16,1121.,0.2
+1112.,0.27,1202.,0.40,1310.,0.70,1247.,1.00
+$end
+$tuning
+$end

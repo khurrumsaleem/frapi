@@ -438,7 +438,7 @@ MODULE timestep_fraptran
     
     ! Output file
     tp(1) = tplna(1,2,1)
-    CALL prntot
+!    CALL prntot
 
     ! Update new print time for output file
     SELECT CASE (coupled)

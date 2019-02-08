@@ -1,0 +1,33 @@
+\begin{frame}{Summary}
+    \scriptsize
+    \center
+
+    \begin{block}{\textbf{1. Fuel Rod Analysis Program Interface (FRAPI)}}
+
+        \begin{itemize}
+            \color{applegreen}
+            \item Access to the FRAPCON and FRAPTRAN functions and variables
+            \item Step-by-step time integration with the restart capability
+            \item Time marching library with time step size control and rejection
+            \color{bittersweet}
+            \item Large memory costs for the fuel rod state storage
+            \item Copy of memory spaces consumes about 40$\%$ of the total computation time
+            \item Transient calculation fails when it comes to the coolant boiling
+        \end{itemize}
+
+    \end{block}
+
+    \begin{block}{\textbf{2. Cross-verification with the original codes}}
+
+        \begin{itemize}
+            \color{applegreen}
+            \item Calculated 5 tests of the IFA-432 benchmark and 1 test of the CABRI benchmark
+            \item Good coincidence with FRAPCON and FRAPTRAN
+            \color{bittersweet}
+            \item More benchmark tests must be considered
+            \item Fix the difference in the heat transfer coefficient (FRAPTRAN)
+        \end{itemize}
+
+    \end{block}
+
+\end{frame}

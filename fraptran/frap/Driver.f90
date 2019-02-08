@@ -31,6 +31,7 @@ module fraptran2
     use m_array_clone, only : array_clone
     use m_state, only : printstate
     use m_convergence, only : t_convergence
+    use sth2x_fraptran, only : sth2x3
 
     implicit none
 
@@ -47,6 +48,7 @@ module fraptran2
         type(t_convergence) :: convergence
 
         real(r8k), allocatable :: axialmesh(:)
+        real(r8k) :: intcool ! inlet coolant temperature, F
         logical :: is_driver_allocated = .false.
         logical, pointer :: is_kernel_allocated
 
@@ -94,7 +96,7 @@ module fraptran2
 
         ! Set the # of axial, radial and timesteps to allocate the code's values on.
         defsize = 2
-        pre_na = naxn + 25
+        pre_na = naxn + 2 !25
         pre_nr = nfmesh + ncmesh + 1
         pre_nt = defsize
         radial = pre_nr
@@ -330,6 +332,14 @@ module fraptran2
         integer :: i
         real(8) :: t0 = 0.D+0
         real(8) :: t1 = 1.D-1
+        real(8) :: tcool, pcool, hcool
+
+        ! calculate inlet coolant enthalpy
+        tcool = this % intcool
+        pcool = pbh(1) / MPatoPSI * 1.D+6
+        call tp2h(tcool, pcool, hcool)
+        hinta(1) = hcool * jkbtup
+
         pbh(3)          = pbh(1)                         
         dtmaxa(3)       = dtmaxa(1)                         
         hbh(3)          = hbh(1)                         
@@ -392,6 +402,7 @@ module fraptran2
         htca(i,:)       = t1     
         tblka(i,:)      = t1      
         gasths(i,:)     = t1       
+
         CALL setup6
         ntstep = 0
         nsteadytrans = 1
@@ -459,6 +470,7 @@ module fraptran2
         integer :: count
         real(8) :: dt, h0 = 1.D-30
         real(8) :: rtol = 1.D-6, atol = 1.D-10, error
+        real(8) :: tcool, pcool, hcool
 
         ! convergence critaria
         prsacc = 0.001
@@ -475,6 +487,12 @@ module fraptran2
         error = update_error(this)
         error = 10.
         count = 0
+
+        ! calculate inlet coolant enthalpy
+        tcool = this % intcool
+        pcool = pbh(3) / MPatoPSI * 1.D+6
+        call tp2h(tcool, pcool, hcool)
+        hinta(3) = hcool * jkbtup
 
         do while (error > 1)
 
@@ -608,5 +626,17 @@ module fraptran2
             character(*) :: fname
             call printstate(fname)
         end subroutine p_printstate
+
+        subroutine tp2h(t,p,h)
+            ! calculate water enthalpy for given temperature t (K) and pressure p (Pa)
+            real(8), intent(in)  :: t, p
+            real(8), intent(out) :: h
+            logical :: err = .false.
+            integer :: it  = 0
+            prop(1) = t
+            prop(2) = p
+            call sth2x3(aasth, prop, it, err)
+            h = prop(5)
+        end subroutine tp2h
 
 end module fraptran2

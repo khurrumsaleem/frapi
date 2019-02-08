@@ -54,7 +54,6 @@ MODULE UntinpData_fraptran
     ! wmkbfh - Watts/meter**2/Kelvin to btu/foot**2/Fahrenheit/hour
     !
     INTEGER(ipk) :: i
-    REAL(r8k), PARAMETER :: jkbtup = 4.302142870e-4_r8k
     REAL(r8k), PARAMETER :: kmspfh = 7.3740276e2_r8k
     REAL(r8k), PARAMETER :: km3pf3 = 6.238562745e-2_r8k
     REAL(r8k), PARAMETER :: msins = 39.37007874_r8k

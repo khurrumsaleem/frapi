@@ -1,7 +1,7 @@
 module frapi
 
     use conversions_frapcon
-    use conversions_fraptran, only : coneu
+    use conversions_fraptran, only : coneu, jkbtup
     use frapcon4,  only : frapcon_driver
     use fraptran2, only : fraptran_driver
     use m_if_a_else_b, only : if_a_else_b
@@ -946,7 +946,7 @@ contains
             case("hinta")
                 this % dftran % r__hinta(it3) = var
             case("inlet coolant enthalpy, j|kg")
-                this % dftran % r__hinta(it3) = var
+                this % dftran % r__hinta(it3) = var * jkbtup
             case("gbh")
                 this % dftran % r__gbh(it3) = var
             case("coolant mass flux, kg|(s*m^2)")
@@ -957,6 +957,8 @@ contains
                 this % dftran % r__pbh(it3) = var
             case("inlet coolant pressure, mpa")
                 this % dftran % r__pbh(it3) = var * MPatoPSI
+            case("inlet coolant temperature, c")
+                this % dftran % intcool = var + 273.15
             case("rodavepower")
                 this % dftran % r__RodAvePower(it3) = var
             case("fuelgasswell")
@@ -1016,8 +1018,6 @@ contains
             case("axial mesh thickness, cm")
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
-            case("inlet coolant temperature, c")
-                continue !TODO: find the variable
             case("linear power, w|cm")
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
@@ -1198,7 +1198,7 @@ contains
             case("axial mesh thickness, cm")
                 this % dftran % axialmesh(:) = var(:)
                 this % dftran % axnodelevat(1) = 0.D+0
-                this % dftran % axnodelevat(2:) = (/( sum(var(1:i)), i = 1, n )/) * cm_to_ft
+                this % dftran % axnodelevat(2:n+1) = (/( sum(var(1:i)), i = 1, n )/) * cm_to_ft
                 this % dftran % r__RodLength = sum(var) * cm_to_ft
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
@@ -1278,6 +1278,12 @@ contains
                 var = this % dftran % r__nodprm
             case('mode of cladding failure')
                 var = this % dftran % r__modfal(1)
+            case("failure indicator")
+                if (sum(this % dftran % r__iffrp (1:n)) == 0) then
+                    var = 0
+                else
+                    var = 1
+                endif
             case default
                 call error_message(key, 'integer rank 0 in the fraptran get-list')
             end select
@@ -1306,6 +1312,8 @@ contains
                 var(:) = this % dftran % r__ruptfailindex (1:n)
             case('buckled cladding indicator')
                 var(:) = this % dftran % r__cladcollapseindex (1:n)
+            case("index failure indicator")
+                var(:) = this % dftran % r__iffrp (1:n)
             case default
                 call error_message(key, 'integer rank 1 in the fraptran get-list')
             end select

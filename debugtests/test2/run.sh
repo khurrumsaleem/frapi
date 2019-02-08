@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ./build
-rm test1
+rm test2
 make
 cd ..
-test1=./build/test1
-$test1 ./data.inp ./data.out
+test2=./build/test2
+$test2 ./data.inp ./data.out

@@ -25,7 +25,8 @@ MODULE conversions_fraptran
     REAL(r8k), PARAMETER :: pi = 3.1415926535897932_r8k              ! Value for pi
     ! Speed of Light
     REAL(r8K), PARAMETER :: speedlight = 2.99792458E8_r8k            ! (m / s)
-    
+    ! J/kg to BTU/pound
+    REAL(r8k), PARAMETER :: jkbtup = 4.302142870e-4_r8k
 
     REAL(r8k), PARAMETER :: ftin = 12.0_r8k              ! ( inch / ft )
     REAL(r8k), PARAMETER :: ftom = 0.3048_r8k            ! ( ft / meter )

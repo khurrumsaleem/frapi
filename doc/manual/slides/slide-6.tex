@@ -1,0 +1,21 @@
+\begin{frame}{FRAPI Designation}
+
+    \centering{\textbf{The new program interface for FRAPCON and FRAPTRAN}}
+
+ \begin{center}
+ \begin{tikzpicture}[node distance=1.5cm, align=center]
+
+  \node (onFRAPI)    [box0]                                   {\textbf{FRAPI}};
+  \node (onCode)     [box3, above of=onFRAPI               ]  {External code};
+  \node (onFRAPCON)  [box1, below of=onFRAPI, xshift=-2.5cm]  {\textbf{FRAPCON 4.0}};
+  \node (onFRAPTRAN) [box2, below of=onFRAPI, xshift= 2.5cm]  {\textbf{FRAPTRAN 2.0}};  
+  \node (on_text_1)  [box1, below of=onFRAPCON, yshift=0.1cm, xshift=0.cm]  {Simulation of \\ steady-state and \\ long-term burnup};
+  \node (on_text_2 ) [box2, below of=onFRAPTRAN, yshift=0.1cm, xshift=0cm]  {Simulation of \\ transient and \\ hypoth. accidents};  
+
+  \draw[<-]      (onFRAPI) -| (onFRAPCON);
+  \draw[<-]      (onFRAPI) -| (onFRAPTRAN);
+  \draw[->]      (onFRAPI) -- (onCode);  
+  \end{tikzpicture}
+  \end{center} 
+
+\end{frame}

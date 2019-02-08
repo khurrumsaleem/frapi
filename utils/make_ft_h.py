@@ -92,7 +92,7 @@ for var in vars:
 
 tplist = [bn_0, ch_0, i4_0, r8_0, bn_1, ch_1, i4_1, r8_1, i4_2, r8_2, i4_3, r8_3]
 
-if False:
+if True:
     txt = ''
     with open('../fraptran/include/ft_replicants_h.f90', 'w') as f:
         for tp in tplist:

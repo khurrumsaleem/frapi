@@ -644,9 +644,9 @@ integer(ipk)              , dimension(:)        , allocatable          :: b__nsw
 integer(ipk)              , dimension(:)        , allocatable          :: b__tem 
 integer(ipk)              , dimension(:)        , allocatable          :: b__imaterials 
 integer(ipk)              , dimension(:)        , allocatable          :: b__modfal 
-integer(ipk)              , dimension(:)        , allocatable          :: b__idumr1 
+integer(ipk)              , dimension(:)        , allocatable          :: b__idumr1                ! is not used
 integer(ipk)              , dimension(:)        , allocatable          :: b__ih 
-integer(ipk)              , dimension(:)        , allocatable          :: b__iffrp 
+integer(ipk)              , dimension(:)        , allocatable          :: b__iffrp                 ! is not used
 integer(ipk)              , dimension(:)        , allocatable          :: b__ihtreg 
 integer(ipk)              , dimension(:)        , allocatable          :: b__indxjk 
 integer(ipk)              , dimension(:)        , allocatable          :: b__ibnopt 
@@ -1065,3 +1065,4 @@ real(r8k)                 , dimension(:,:)      , allocatable          :: b__bos
 real(r8k)                 , dimension(:,:)      , allocatable          :: b__cldstrn 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: b__grsv 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: b__tplna 
+

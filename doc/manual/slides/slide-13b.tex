@@ -1,0 +1,31 @@
+\begin{frame}{Numerical integration}
+
+    \scriptsize
+
+    $T_{stop}=200ms$, time iteration tol. $rtol_1=5\cdot10^{-4}$, internal iteration tol. $rtol_2=10^{-7}$
+
+    \begin{block}{\centering{Notes:}}
+        \begin{itemize}
+            \item Two norms of local error are considered. 
+                  $L_{\infty}$ produces more accurate solution while $L_2$ generates
+                  less number of rejected time steps
+            \item Reference solution was obtained with piece-wise time step history because
+                  very small sizes are needed in vicinity of a failure moment.
+            \item The watched out parameters are cladding/pellet stress, strain and
+                  temperature, gap pressure and heat transfer coefficient
+        \end{itemize}
+    \end{block}
+
+    \begin{center}{}
+        Number of made time steps during simulation\\[1pt]
+        \begin{tabular}{c | c | c }
+            \hline
+            Method              & regular & rejected     \\
+            \hline
+            Fixed               & 299        & 0   \\
+            Simple, $L_2$       & 260        & 64  \\
+            Simple, $L_\infty$  & 198        & 97  \\
+        \end{tabular}
+    \end{center}
+
+\end{frame}

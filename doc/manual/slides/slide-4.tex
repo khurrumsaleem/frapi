@@ -1,0 +1,24 @@
+\begin{frame}{Multiphysics Module}
+
+    \scriptsize
+
+    \begin{block}{Interface functions}
+        \begin{itemize}
+            \item INIT: reading of input data and initialization
+            \item SET/GET: allow the access to the fuel rod variables
+            \item NEXT: run the new time step
+            \item LOAD/SAVE: load and save of the fuel rod state
+            \item FINALIZE: clean memory
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{}
+        FRAPI provides the interface functions for a single fuel rod, while
+        the Multiphysics module provides for all fuel rods in the lattice
+    \end{block}
+
+  \begin{figure}[h]
+    \includegraphics[width=0.8\textwidth]{figs/multiphysics_module}
+  \end{figure}  
+
+\end{frame}

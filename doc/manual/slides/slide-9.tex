@@ -1,0 +1,34 @@
+\begin{frame}{FRAPI Usage Example Scheme}
+  \footnotesize
+  \texttt{
+  \begin{columns}
+  \column{0.48\textwidth}
+  \begin{block}{}
+    {\color{magenta}PROGRAM} MAIN\\
+    {\color{magenta}USE} frapi, {\color{magenta}ONLY}: frodtype\\
+    {\color{magenta}TYPE} (frodtype) FR\\    
+    {\color{gray}!--- Setup mesh size -----}\\
+    {\color{magenta}CALL} FR $\%$ MAKE(<arguments>)\\
+    {\color{gray}!--- Setup initial state ----}\\    
+    {\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, var)\\
+    {\color{magenta}CALL} FR $\%$ INIT \\
+    {\color{magenta}CALL} FR $\%$ GET({\color{orange}"name"}, var)\\
+  \end{block}
+  \column{0.48\textwidth}
+  \begin{block}{}
+    {\color{gray}!--- Burnup/Transient loop --}\\        
+    {\color{magenta}DO} i = 1, N\\
+    {\color{gray}!--- Trial time step --------}\\            
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SAVE{\color{gray} ! optional}\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ SET({\color{orange}"name"}, var)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ NEXT(dtime)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ GET({\color{orange}"name"}, var)\\
+    {\hspace{5mm}\color{magenta}CALL} FR $\%$ LOAD{\color{gray} ! optional}\\
+    {\color{magenta}ENDDO} \\
+    {\color{gray}!--- Finilize ---------------}\\                    
+    {\color{magenta}CALL} FR $\%$ DESTROY()\\            
+    {\color{magenta}END PROGRAM}  MAIN
+  \end{block}
+  \end{columns}
+  }
+\end{frame}

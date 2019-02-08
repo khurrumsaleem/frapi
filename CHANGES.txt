@@ -1,5 +1,10 @@
 CHANGES HISTORY:
 
+0012. The original FRAPTRAN requires enthalpy of inlet coolant instead the temperature.
+      In the updated version the enthalpy is calculated automatically in the 'next0' and 'next'
+      subroutines of the fraptran's driver. The enthalpy is calculated with using the built-in 
+      water properties of FRAPTRAN, i.e. by the 'seth2x3' subroutine.
+
 0011. Changed the 'frapi' memory structure. Every object of 't_fuelrod' class could be run in 
       two modes: 'frapcon' and 'fraptran'. Therefore, there are two distinct memory spaces that
       refered to the 'dfcon' module and to the 'dftran' module. Each of these modules contains its own 

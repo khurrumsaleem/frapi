@@ -1,0 +1,27 @@
+\begin{frame}{FRAPI Cross-verification}
+
+  \scriptsize
+
+ \centering{\textbf{Considered 6 benchmarks from NEA Data Bank} \\ 
+ \textbf{1 CABRI benchmark for FRAPTRAN and 5 IFA benchmarks for FRAPCON}}
+
+ \begin{center}
+ \begin{tikzpicture}[node distance=1.5cm, align=center]
+
+  \node (onIFA)   [box3]                                 {\textbf{IFA}};
+  \node (onCABRI) [box3,  left of=onIFA,   xshift=-2.0cm]  {\textbf{CABRI}};
+  \node (onREP)   [box0, below of=onCABRI,              ]  {\textbf{REP-NA}};
+  \node (onNA)    [box0, below of=onREP,                ]  {\textbf{Rod 1}};
+  \node (on515)   [box0, below of=onIFA,   xshift= 3.0cm]  {\textbf{515}};
+  \node (on515_)  [box0, below of=on515,   xshift= 0.0cm]  {10RA1 10RA2 \\ 10RB1 10RB2};
+  \node (on432)   [box0, below of=onIFA                 ]  {\textbf{432}};
+
+  \draw[->] (onIFA)   -- (on432);
+  \draw[->] (onIFA)   -| (on515);
+  \draw[->] (on515)   -- (on515_);
+  \draw[->] (onCABRI) -- (onREP);
+  \draw[->] (onREP)   -- (onNA);
+  \end{tikzpicture}
+  \end{center} 
+
+\end{frame}
