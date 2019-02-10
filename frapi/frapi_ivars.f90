@@ -30,7 +30,7 @@ module frapi_input_vars
     integer :: tape1, axpow, nvol2, azang, geom, spefbz, inp, &
              & inlet, tape2, res, iiopt, nchn, nidoxide, nsym, press, &
              & geometry, chf, noiter, temp, idebug, coreav, indexgrainbndsep, &
-             & prescri, noball, prestmp, time, jchf, icnt, idoxid, pressu, zone, transwell, &
+             & prescri, noball, prestmp, refloodtime, jchf, icnt, idoxid, pressu, zone, transwell, &
              & nvol1, frapt4, indexfc2print, rtheta, cladtype, lowpl, pressure, gasflo, reflo, &
              & odoxid, collaps, nbundl, coldwa, ruptur, jfb, cathca, soltyp, ncards, &
              & jtr, irefine, profile, ndat, nucbo, ncmesh, unitout, numaxprofiles, radiat, &

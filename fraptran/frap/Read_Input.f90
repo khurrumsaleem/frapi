@@ -2599,6 +2599,15 @@ MODULE Read_Input_fraptran
       &                doffst, fpowr, powop, tpowf, timop, fpdcay, CladPower, azang, profile, &
       &                NumAxProfiles, ProfileStartTime, modheat
 
+!!!!!!!!!!!! temporary lines !!!!!!!!!!!!!!!!!!
+!    do i = 1, 12
+!     rodavepower( (i-1)*4 + 1 ) = 1.0D0
+!     rodavepower( (i-1)*4 + 2 ) = 0.0D0
+!     rodavepower( (i-1)*4 + 3 ) = 1.0D0
+!     rodavepower( (i-1)*4 + 4 ) = 4.13D-3
+!    enddo
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     if (.not. is_export) then
         ! Write block being read to output file
         WRITE(ounit,'(A)') BlockDescription
@@ -2650,7 +2659,6 @@ MODULE Read_Input_fraptran
     
     ! Count the # of rod average power values (Assume that there is a value in the first Power, time block)
     icount = 3
-    
     Count_RodAvePower_Intervals: DO
         IF ((icount + 1) > UBOUND(RodAvePower,1)) EXIT Count_RodAvePower_Intervals
         IF (RodAvePower(icount) == 0.0_r8k .AND. RodAvePower(icount+1) == 0.0_r8k) EXIT Count_RodAvePower_Intervals
@@ -2658,6 +2666,7 @@ MODULE Read_Input_fraptran
     END DO Count_RodAvePower_Intervals
     ! # of pairs
     nptha = (icount - 1) / 2
+
 !    write(*,*) rodavepower
 !    write(*,*) nptha
     ! Count the number of axial power profile values

@@ -1210,7 +1210,6 @@ MODULE sth2x_fraptran
         llp = jp1 - nt5 - 5
         nsize = jp1 + 6 * nt * np
         nuse = nsize
-
         a(:) = Water(:)
     ENDIF
     !

@@ -5,7 +5,7 @@ if(.not. allocated(tEnd                 ) ) allocate( tEnd                      
 if(.not. allocated(gfInt                ) ) allocate( gfInt                      (1:ntimepairs) )
 if(.not. allocated(edInt                ) ) allocate( edInt                      (1:ntimepairs) )
 if(.not. allocated(CladdingPower        ) ) allocate( CladdingPower                      (1:naxialnodes) )
-if(.not. allocated(RadPowProfile        ) ) allocate( RadPowProfile                      (1:size1) )
+if(.not. allocated(RadPowProfile        ) ) allocate( RadPowProfile                      (1:2*nradialnodes*naxialnodes) )
 if(.not. allocated(radtemp              ) ) allocate( radtemp                      (1:naxialnodes,1:ntimesteps) )
 if(.not. allocated(fuelrad              ) ) allocate( fuelrad                      (1:naxialnodes,1:ntimesteps) )
 if(.not. allocated(ndchfi               ) ) allocate( ndchfi                      (1:naxialnodes) )

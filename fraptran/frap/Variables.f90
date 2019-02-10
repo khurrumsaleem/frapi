@@ -703,7 +703,7 @@ MODULE variables_fraptran
     
     ! Allocate the arrays
     ALLOCATE (CladdingPower(1:naxialnodes))
-    ALLOCATE (RadPowProfile(1:size1))
+    ALLOCATE (RadPowProfile(1:2*nradialnodes*naxialnodes))
     ALLOCATE (radtemp(1:naxialnodes,1:ntimesteps))
     ALLOCATE (fuelrad(1:naxialnodes,1:ntimesteps))
     
@@ -1112,10 +1112,10 @@ MODULE variables_fraptran
     
     ! Allocate the arrays
     ALLOCATE (ProfileStartTime(1:ntimesteps))
-    ALLOCATE (RodAvePower(1:ntimesteps))
+    ALLOCATE (RodAvePower(1:2*nradialnodes*naxialnodes))
     ALLOCATE (AxPowProfile(1:2*naxialnodes,1:ntimesteps))
     ALLOCATE (pazp(1:2*nradialnodes, 1:naxialnodes))
-    
+
     ! Set the default values
     nprofile = 0
     NumAxProfiles = 0
@@ -1949,7 +1949,7 @@ MODULE variables_fraptran
     ALLOCATE (pz1(1:naxialnodes))
     ALLOCATE (pz2(1:naxialnodes))
     ALLOCATE (tz1(1:Total))
-    ALLOCATE (aasth(1:17000))
+    ALLOCATE (aasth(1:16140))
 
     ! Set the default values
     aasth = 0.0_r8k

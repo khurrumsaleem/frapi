@@ -335,10 +335,10 @@ module fraptran2
         real(8) :: tcool, pcool, hcool
 
         ! calculate inlet coolant enthalpy
-        tcool = this % intcool
-        pcool = pbh(1) / MPatoPSI * 1.D+6
-        call tp2h(tcool, pcool, hcool)
-        hinta(1) = hcool * jkbtup
+        !tcool = this % intcool
+        !pcool = pbh(1) / MPatoPSI * 1.D+6
+        !call tp2h(tcool, pcool, hcool)
+        !hinta(1) = hcool * jkbtup
 
         pbh(3)          = pbh(1)                         
         dtmaxa(3)       = dtmaxa(1)                         
@@ -489,10 +489,12 @@ module fraptran2
         count = 0
 
         ! calculate inlet coolant enthalpy
-        tcool = this % intcool
-        pcool = pbh(3) / MPatoPSI * 1.D+6
-        call tp2h(tcool, pcool, hcool)
-        hinta(3) = hcool * jkbtup
+        if (coolant == 'on') then
+            tcool = this % intcool
+            pcool = pbh(3) / MPatoPSI * 1.D+6
+            call tp2h(tcool, pcool, hcool)
+            hinta(3) = hcool * jkbtup
+        endif
 
         do while (error > 1)
 
@@ -612,7 +614,7 @@ module fraptran2
         CALL Main
     
         ! Save the rod data in case FRAPTRAN is called again at a later time or for a different rod
-        CALL FRAPTRAN_Rod(Rod_ID)%Remember
+        !CALL FRAPTRAN_Rod(Rod_ID)%Remember <<< for some reasons it does not work
     
         ! Display the end time of the calculation
         WRITE (0, 100) Time

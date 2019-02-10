@@ -75,7 +75,7 @@ module m_problem
         call this % frod % set_i4_0 ("spefbz"      , spefbz      )
         call this % frod % set_i4_0 ("geometry"    , geometry    )
         call this % frod % set_i4_0 ("nbundl"      , nbundl      )
-        call this % frod % set_i4_0 ("refloodtime" , time        )
+        call this % frod % set_i4_0 ("refloodtime" , refloodtime )
         call this % frod % set_i4_0 ("radiat"      , radiat      )
         call this % frod % set_i4_0 ("ruptur"      , ruptur      )
         call this % frod % set_i4_0 ("liquid"      , liquid      )
@@ -277,7 +277,8 @@ module m_problem
         !call this % frod % set_r8_1('gasths', (/( interp1d( (/( gasths(i,j), i = 1, ntimesteps )/), time ), j = 1, 2          )/) )
         
         call this % frod % set_r8_1('axpowprofile', (/( AxPowProfile(j,1), j = 1, 2*(naxn+1) )/) )
-        
+        !call this % frod % set_r8_1('radpowprofile', (/( RadPowProfile(j), j = 1, 2*naxn*nfmesh )/) )        
+
         !call this % frod % set_r8_1('radtemp',      (/( interp1d( radpowprofile(2*j+1 + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
         !call this % frod % set_r8_1('fuelrad',      (/( interp1d( radpowprofile(2*j   + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
 

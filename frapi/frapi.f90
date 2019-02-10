@@ -1179,6 +1179,8 @@ contains
             case("axpowprofile")
                 it = if_a_else_b(this % is_initdone, two, one)
                 this % dftran % r__axpowprofile(1:2*(n+1),it) = var(:)
+            case("radpowprofile")
+                this % dftran % r__radpowprofile(1:2*n*m) = var(:)
             case("linear power, w|cm")
                 ! 'fraptran' re-interpolates the linear power for the main axial mesh with n central nodes
                 ! User can set 'axpowprofile' for arbitrary axial mesh, however not 

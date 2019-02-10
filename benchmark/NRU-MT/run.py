@@ -97,15 +97,14 @@ names = [
 ]
 
 
-task = 'rep-na1'
+task = 'nru-mt1'
 
 if True:
-    print "FRAPCON: "
-    call(['../../build/debug/main_frapcon', 'rep-na1-frapcon.inp'])
-    print "FRAPTRAN: "
-    call(['../../build/debug/main_fraptran', 'rep-na1-fraptran.inp'])
-    call(["../../utils/fraptran2h5.py", "%s-fraptran.plot"%task, "%s-fraptran.h5"%task])
-    print "FRAPI: "
-    call(['../../build/debug/test_frapi', "fraptran", '%s-fraptran.inp'%task, './restart-na1.txt', './%s-out.txt'%task])
-    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
-    draw(task)
+    print "Run FRAPTRAN: "
+    #call(['../../build/debug/main_fraptran', '%s.inp'%task])
+    #call(["../../utils/fraptran2h5.py", "%s.plot"%task, "%s.h5"%task])
+    print "Run FRAPI: "
+    call(['../../build/debug/test_frapi', "fraptran", '%s.inp'%task, '', './%s-out.txt'%task])
+    #call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
+
+#draw(task)

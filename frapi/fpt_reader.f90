@@ -23,7 +23,7 @@ module fpt_reader
         namelist /boundary / coolant, reflood, radiation, heat, jchf, jfb, upppl, hupta, zad, zs, &
           &                  fltgap, fltgap2, geomet, tape1, nvol1, nchn, lowpl, pressu, massfl, &
           &                  coreav, chf, filmbo, coldwa, axpow, bowing, spefbz, geometry, nbundl, &
-          &                  time, radiat, ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, &
+          &                  refloodtime, radiat, ruptur, liquid, inlet, reflo, pressure, collaps, frapt4, &
           &                  geom, temp, tape2,nvol2, press, zone, htco, nodchf, tem, dhe, dhy, achn, &
           &                  hinta, pbh1, gbh, hbh, ffch, bowthr, ExtentOfBow, tschf, techf, hydiam, &
           &                  flxsec, emptm, refdtm, hrad, temptm, fldrat, prestm, hlqcl, rshrd, ts, &
@@ -88,7 +88,7 @@ module fpt_reader
         spefbz = 0
         geometry = 0
         nbundl = 0
-        time = 0
+        refloodtime = 0
         radiat = 0
         ruptur = 0
         liquid = 0
