@@ -67,6 +67,8 @@ program test2
 
     call fuelrod % set_ch_0('restart file', './fuelrod-restart.txt')
 
+    call fuelrod % set_ch_0('coolant', 'on')
+
     call fuelrod % set_r8_0('axial mesh thickness, cm', dz)
     call fuelrod % set_r8_0("linear power, W|cm", power)
     call fuelrod % set_r8_0("inlet coolant temperature, C", tcool)
