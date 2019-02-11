@@ -21,7 +21,9 @@ def draw(filename):
     print "%50s %10s %10s %10s %10s"%('Parameter', 'Units', 'RMS, %', 'MAX, %', 'Result')
 
     for i, name in enumerate(names):
+
         fig, ax = plt.subplots()
+
         time0 , data0 = [], []
         for group in f0.keys():
             time0.append(f0[group]['frapi time, s'][0])
@@ -72,7 +74,7 @@ names = [
 #'inner oxide thickness, mm',
 'surface heat transfer coefficient, W|m^2K',
 'surface heat flux, W|m^2',
-#'coolant mass flux, kg|sm2',
+'coolant mass flux, kg|(s*m^2)',
 'coolant pressure, MPa',
 'critical heat flux, W|m2',
 'centerline temperature, K',
@@ -80,7 +82,7 @@ names = [
 #'cladding inner temperature, K',
 #'average cladding temperature, K',
 #'cladding outer temperature, K',
-#'bulk coolant temperature, K',
+'bulk coolant temperature, K',
 #'pellet surface displacement, mm',
 'gap pressure, MPa',
 'axial power, kW|m',
@@ -100,11 +102,10 @@ names = [
 task = 'nru-mt1'
 
 if True:
-    #print "Run FRAPTRAN: "
-    #call(['../../build/debug/main_fraptran', '%s.inp'%task])
-    #call(["../../utils/fraptran2h5.py", "%s.plot"%task, "%s.h5"%task])
+    print "Run FRAPTRAN: "
+    call(['../../build/debug/main_fraptran', '%s.inp'%task])
+    call(["../../utils/fraptran2h5.py", "%s.plot"%task, "%s-fraptran.h5"%task])
     print "Run FRAPI: "
     call(['../../build/debug/test_frapi', "fraptran", '%s.inp'%task, '', './%s-out.txt'%task])
-    #call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
-
-#draw(task)
+    call(["../../utils/frapi2h5.py", "%s-out.txt"%task, "%s-frapi.h5"%task])
+    draw(task)

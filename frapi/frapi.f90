@@ -1652,7 +1652,7 @@ contains
                 var(:) = this % dftran % r__gapthick (1:n) * 1.2D+4 * miltomm
             case('cladding effective elastic-plastic strain, %')
                 var(:) = this % dftran % r__EffStrainPNNL(1:n)
-            case('coolant mass flux, kg|sm2')
+            case('coolant mass flux, kg|(s*m^2)')
                 var(:) = this % dftran % r__rmassflux(1:n) * lbhrft2toksm2
             case('pellet surface displacement, mm')
                 var(:) = this % dftran % r__PelSrfDispl(1:n) * fttomm

@@ -39,6 +39,7 @@ vartype(38) = 'r_8_0'
 vartype(39) = 'r_8_0'
 vartype(40) = 'r_8_0'
 vartype(41) = 'r_8_0'
+vartype(42) = 'r_8_0'
 
 varname( 1) = 'bulk coolant temperature, C'
 varname( 2) = 'total gap conductance, W|(m^2*K)'
@@ -81,3 +82,4 @@ varname(38) = 'fission gas release, %'
 varname(39) = 'time, day'
 varname(40) = 'average linear power, W|cm'
 varname(41) = 'average fuel burnup, MW*d|kg'
+varname(42) = "coolant mass flux, kg|(s*m^2)"

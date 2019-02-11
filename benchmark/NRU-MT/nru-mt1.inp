@@ -8,7 +8,7 @@ CARRIAGE CONTROL='LIST'
 LOCA rod MT1 British Units Input and SI Units Output
 $begin
 ProblemStartTime = 0.0,
-ProblemEndTime = 56.0,
+ProblemEndTime = 30.0,
 $end
 $iodata
 unitout=1, dtpoa(1)=5.0, dtplta=1.0,

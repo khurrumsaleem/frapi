@@ -67,7 +67,7 @@ keylist = {
  133 : ( 'c-p or b-j cladding ecr', none ),
  134 : ( 'surface heat transfer coefficient, W|m^2K', none), 
  135 : ( 'surface heat flux, W|m^2', none), 
- 136 : ( 'coolant mass flux, kg|sm2', none), 
+ 136 : ( 'coolant mass flux, kg|(s*m^2)', none),
  137 : ( 'coolant pressure, MPa', none), 
  138 : ( 'critical heat flux, W|m2', none), 
  178 : ( 'heat transfer mode', none), 

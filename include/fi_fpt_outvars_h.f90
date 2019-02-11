@@ -89,6 +89,7 @@ varname(88) = 'total water metal reaction energy, kW|m'
 varname(89) = 'cladding inner temperature, K'
 varname(90) = 'cladding outer temperature, K'
 varname(91) = 'bulk coolant temperature, K'
+varname(92) = "coolant mass flux, kg|(s*m^2)"
 
 vartype( 1) = 'i4_0'
 vartype( 2) = 'i4_0'
@@ -181,3 +182,4 @@ vartype(88) = 'r8_0'
 vartype(89) = 'r8_1'
 vartype(90) = 'r8_1'
 vartype(91) = 'r8_1'
+vartype(92) = 'r8_1'

@@ -10,7 +10,7 @@ module m_problem
 
     implicit none
 
-    character(len=128), dimension(91) :: varname, vartype
+    character(len=128), dimension(92) :: varname, vartype
     real(8), allocatable :: timesteps(:,:)
 
     type, public :: t_problem

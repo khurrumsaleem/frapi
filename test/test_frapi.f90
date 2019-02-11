@@ -43,7 +43,7 @@ program test_frapi
 
                 if (time+dt > problem % finishtime) exit
 
-                !write(*,*) 'frapi: ', step+1, time + dt
+!                write(*,*) 'frapi: ', step+1, time + dt
 
                 call problem % ofile % write_i4_0('frapi time step', step)
                 call problem % ofile % write_r8_0('frapi time, s', time)
