@@ -275,9 +275,9 @@ module m_problem
         call this % frod % set_r8_1('htca',   (/( interp1d( (/(   htca(i,j), i = 1, 2*htco(j) )/), time ), j = 1, zone)/) ) ! htco(j)
         call this % frod % set_r8_1('tblka',  (/( interp1d( (/(  tblka(i,j), i = 1, 2*tem(j)  )/), time ), j = 1, zone)/) ) ! tem(j)
         !call this % frod % set_r8_1('gasths', (/( interp1d( (/( gasths(i,j), i = 1, ntimesteps )/), time ), j = 1, 2          )/) )
-        
+
         call this % frod % set_r8_1('axpowprofile', (/( AxPowProfile(j,1), j = 1, 2*(naxn+1) )/) )
-        !call this % frod % set_r8_1('radpowprofile', (/( RadPowProfile(j), j = 1, 2*naxn*nfmesh )/) )        
+        call this % frod % set_r8_1('radpowprofile', (/( RadPowProfile(j), j = 1, 2*naxn*nfmesh )/) )        
 
         !call this % frod % set_r8_1('radtemp',      (/( interp1d( radpowprofile(2*j+1 + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
         !call this % frod % set_r8_1('fuelrad',      (/( interp1d( radpowprofile(2*j   + 2*naxialnodes*(i+1)), j = 1, naxialnodes )/) )
@@ -301,7 +301,7 @@ module m_problem
         if (   n_expl > 1) call this % frod % set_r8_0('explenumt',    interp1d(   explenumt(1:   n_expl * 2), time) )
 
         if (coolant == 'on') call this % frod % set_r8_0('pbh', pbh1(1) )
-        if (  mheat == 'on') call this % frod % set_r8_0('pbh', pbh2(1) )
+        if (  bheat == 'on') call this % frod % set_r8_0('pbh', pbh2(1) )
 
     end subroutine p_update_fraptran
 

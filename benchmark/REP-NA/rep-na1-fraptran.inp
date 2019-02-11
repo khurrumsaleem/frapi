@@ -1,4 +1,4 @@
-FILE15='sth2xt', STATUS='old', FORM='UNFORMATTED' *
+*FILE15='sth2xt', STATUS='old', FORM='UNFORMATTED' *
 * *
 FILE79='out.na1', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST' *
 FILE66='rep-na1-fraptran.plot', STATUS='UNKNOWN', FORM='FORMATTED', CARRIAGE CONTROL='LIST' *
@@ -44,7 +44,6 @@ $end
 $power
 fpowr=0.864,
 
-RodAvePower( 1:  ) =     0.
 RodAvePower( 1: 3) =     0. , 0.0000, 
 RodAvePower( 3: 5) =     0. , 0.0600,
 RodAvePower( 5: 7) =   160. , 0.0660,

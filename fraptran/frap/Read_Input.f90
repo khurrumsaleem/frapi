@@ -2713,7 +2713,7 @@ MODULE Read_Input_fraptran
     END DO Count_RadPowProfile_Vals
     !# of pairs
     nprad = (icount - 1) / 2
-    
+
     ! Load 2-D radial power profile-related arrays for later use in cominp_fraptran
     nradq = nprad / naxn
     IF (nradq > 0) THEN
@@ -2734,7 +2734,7 @@ MODULE Read_Input_fraptran
             icnt = icnt + 2
         ENDDO
     ENDDO
-    
+
     ! Count the # of radial burnup profile values
     icount = 1
     Count_butemp_Vals: DO

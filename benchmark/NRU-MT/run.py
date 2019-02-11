@@ -100,7 +100,7 @@ names = [
 task = 'nru-mt1'
 
 if True:
-    print "Run FRAPTRAN: "
+    #print "Run FRAPTRAN: "
     #call(['../../build/debug/main_fraptran', '%s.inp'%task])
     #call(["../../utils/fraptran2h5.py", "%s.plot"%task, "%s.h5"%task])
     print "Run FRAPI: "

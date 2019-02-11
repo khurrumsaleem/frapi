@@ -363,7 +363,6 @@ module fpt_reader
         call read_error(ierror, 'boundary')
 
         bheat = heat
-        heat = 'on'
 
         rewind(ifile)
         read(ifile, iodata, iostat=ierror)

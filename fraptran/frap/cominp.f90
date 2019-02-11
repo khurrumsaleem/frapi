@@ -1020,6 +1020,7 @@ MODULE Initialization_fraptran
     ENDDO
     SurfHtFlux(naxn+1) = 0.0_r8k
     ! If not reading from FRAPCON restart file, then set the value for fuel relocation (ureloc) based on the burnup
+
     IF (NFrapconInitialization == 0) THEN
         ! Set the burnup values
         DO k = 1, naxn

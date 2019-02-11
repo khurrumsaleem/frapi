@@ -960,7 +960,7 @@ contains
             case("inlet coolant temperature, c")
                 this % dftran % intcool = var + 273.15
             case("rodavepower")
-                this % dftran % r__RodAvePower(it3) = var
+                call assignvar(this % is_initdone, var, this % dftran % r__RodAvePower)
             case("fuelgasswell")
                 this % dftran % r__FuelGasSwell(it3) = var
             case("temptm")
@@ -1225,13 +1225,28 @@ contains
             select case (lower(key))
             case("pazp")
                 this % dftran % r__pazp(:,:) = var(:,:)
+            case("relative power profile")
+! TODO: complete it
+!                this % dftran % radtemp(k,j)
+!                this % dftran % fuelrad(k,j)
+!                icnt = 1
+!                DO k = 1, naxn
+!                    DO j = 1, nradq
+!                        ! Relative radial power profile value
+!                        radtemp(k,j) = RadPowProfile(icnt)
+!                        ! Radius for relative radial power profile value
+!                        fuelrad(k,j) = RadPowProfile(icnt+1)
+!                        ! Increment counter by 2
+!                        icnt = icnt + 2
+!                    ENDDO
+!                ENDDO
+
             case default
                 call error_message(key, 'real rank 2 in the fraptran set-list')
             end select
         end select
 
     end subroutine frod_set_r8_2
-
 
     subroutine frod_get_i4_0(this, key, var)
 
@@ -1780,6 +1795,20 @@ contains
         call backtrace
         stop
     end subroutine stop_error
+
+    subroutine assignvar (condition, a, b)
+        logical, intent(in)  :: condition
+        real(8), intent(in)  :: a
+        real(8), intent(out) :: b(:)
+        if (condition) then
+            b(3) = a
+        else
+            b(1) = a
+            b(2) = 0.d0
+            b(3) = a
+            b(4) = 1.d10
+        endif
+    end subroutine assignvar
 
 end module frapi
 
