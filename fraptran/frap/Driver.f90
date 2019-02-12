@@ -38,6 +38,7 @@ module fraptran2
     character (len=200), target :: namerf
     integer, parameter :: srank = 1 !rank of state vector
     logical, target :: is_kernel_allocated = .false.
+    logical :: is_open
 
     type, public :: fraptran_driver
 
@@ -325,6 +326,9 @@ module fraptran2
 
         if (is_exist) close (fcunit)
 
+        inquire (unit = ounit, opened = is_open)
+        if (is_open) close(ounit, status='delete')
+
     end subroutine p_init
 
     subroutine p_next0(this)
@@ -536,6 +540,9 @@ module fraptran2
             count = count + 1
 
         enddo
+
+        inquire (unit = ounit, opened = is_open)
+        if (is_open) close(ounit, status='delete')
 
     end subroutine p_next
 
