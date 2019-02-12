@@ -1534,8 +1534,6 @@ contains
                 var(:) = this % dfcon % r__RB_rod(1:11,it)
             case('centerline temperature, c')
                 var(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
-            case('pellet centerline temperature, c')
-                var(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
             case('fuel stored energy, j|kg')
                 var(:) = this % dfcon % r__StoredEnergy(1:n) * BTUlbtoJkg
             case('fuel burnup, mw*d|kg')
@@ -1549,8 +1547,14 @@ contains
             case('radial meshes, cm')
                 var(:) = (/(this % dfcon % r__hrad(m - i + 1, 1), i = 0, m )/) 
                 var(:) = var(:) * intocm
+            case('pellet centerline temperature, c')
+                var(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
             case('pellet surface temperature, c')
                 var(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+            case('pellet doppler temperature, c')
+                tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+                var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
@@ -1702,6 +1706,10 @@ contains
                 var(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
             case('pellet surface temperature, c')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
+            case('pellet doppler temperature, c')
+                tmp1(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
+                tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
+                var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case('cladding inner temperature, k')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, k")

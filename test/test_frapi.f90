@@ -23,6 +23,7 @@ program test_frapi
     call get_command_argument(3, rfilename)
     call get_command_argument(4, ofilename)
 
+    dt = 0.d0
     time = 0.D0
     step = 0
 
@@ -36,6 +37,11 @@ program test_frapi
             call problem % update_fraptran (time)
             call problem % frod % init ()
             call problem % frod % save ()
+
+            call problem % ofile % write_i4_0('frapi time step', step)
+            call problem % ofile % write_r8_0('frapi time, s', time)
+            call problem % ofile % write_r8_0('time step size, s', dt)
+            call problem % save_in_file_fraptran ()
 
             do while (time < problem % finishtime)
 

@@ -46,6 +46,7 @@ def draw(filename):
     f1.close()
 
 names = [
+#'time step size, s',
 'average fuel rod power, kW|m',
 'fuel stack elongation, mm',
 'cladding axial elongation, mm',
