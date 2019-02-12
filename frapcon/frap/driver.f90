@@ -41,6 +41,7 @@ module frapcon4
     logical :: DoFrapconAllocation = .true.
     character (len=200), target :: namerf
     logical, target :: is_kernel_allocated = .false.
+    logical :: is_open
 
     type, public :: frapcon_driver
 
@@ -262,6 +263,9 @@ contains
             write(*,*) "ERROR: sum of axial mesh thickness is equal to ", sum(deltaz) / cmtoft
             stop
         endif
+
+        inquire (unit = ounit, opened = is_open)
+        if (is_open) close(ounit, status='delete')
 
     end subroutine driver_init
 
@@ -777,6 +781,9 @@ contains
         pfPu242(1:na-1,0)         = pfPu242(1:na-1,1) 
 
         ProblemTime(it-1)         = ProblemTime(it)
+
+        inquire (unit = ounit, opened = is_open)
+        if (is_open) close(ounit, status='delete')
 
     end subroutine driver_next
 
