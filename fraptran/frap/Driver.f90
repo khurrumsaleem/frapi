@@ -335,7 +335,7 @@ module fraptran2
         real(8) :: tcool, pcool, hcool
 
         ! calculate inlet coolant enthalpy
-        if (coolant == 'ON') then
+        if ((coolant == 'ON').and.(hinta(1) < 1.D-10)) then
             tcool = this % intcool
             pcool = pbh(1) / MPatoPSI * 1.D+6
             call tp2h(tcool, pcool, hcool)
@@ -491,7 +491,7 @@ module fraptran2
         count = 0
 
         ! calculate inlet coolant enthalpy
-        if (coolant == 'ON') then
+        if ((coolant == 'ON').and.(hinta(1) < 1.D-10)) then
             tcool = this % intcool
             pcool = pbh(3) / MPatoPSI * 1.D+6
             call tp2h(tcool, pcool, hcool)

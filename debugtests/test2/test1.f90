@@ -78,7 +78,7 @@ program test2
 
     call fuelrod % init()
 
-    do i = 1, 1000
+    do i = 1, 10
         call fuelrod % set_r8_0("linear power, W|cm", power * (1 + 0*i) )
         call fuelrod % next (1.D-3)
         call fuelrod % get_r8_1('centerline temperature, K', a)
@@ -87,7 +87,7 @@ program test2
 
     call fuelrod % destroy ()
 
-    write(*,*) 'Test done!!'
+    write(*,*) 'Program complete!'
 
 end program test2
 
