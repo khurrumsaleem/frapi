@@ -1431,6 +1431,7 @@ contains
 
         character(*) :: key
         integer      :: it
+        integer      :: ir
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
@@ -1554,7 +1555,28 @@ contains
             case('pellet doppler temperature, c')
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
-                var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
+            case('pellet doppler temperature 1, c')
+                tmp1(:) = 0d0
+                do ir = 2, m+1
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dfcon % r__tmpfuel(ir,i)), i = 1, n )/) - 273.15D0
+                enddo
+                tmp1(:) = tmp1(:) / real(m, 8)
+                !js+tmp1(:) = (/( tfc(this % dfcon % r__PelAveTemp(i)), i = 1, n )/)
+                var(:) = tmp1(:)
+            case('pellet doppler temperature 2, c')
+                tmp1(:) = 0d0
+                do ir = 2, m+1
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dfcon % r__tmpfuel(ir,i)), i = 1, n )/) - 273.15D0
+                enddo
+                tmp1(:) = tmp1(:) / real(m, 8)
+                !js+tmp1(:) = (/( tfc(this % dfcon % r__PelAveTemp(i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+                var(:) = 0.92d0 * tmp1(:) + 0.08d0 * tmp4(:)
+            case('pellet doppler temperature 3, c')
+                tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
@@ -1709,7 +1731,28 @@ contains
             case('pellet doppler temperature, c')
                 tmp1(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
                 tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
-                var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
+            case('pellet doppler temperature 1, c')
+                tmp1(:) = 0d0
+                do ir = 2,this % dftran % r__igpnod
+                   tmp1(:) = tmp1(:) + (/( tfk(this % dftran % r__eostemp(ir,i)), i = 1, n )/) - 273.15D0
+                enddo
+                tmp1(:) = tmp1(:) / real(this % dftran % r__igpnod - 1, 8)
+                !js+tmp1(:) = !TODO: fuel volume average temperature
+                var(:) = tmp1(:)
+            case('pellet doppler temperature 2, c')
+                tmp1(:) = 0d0
+                do ir = 2,this % dftran % r__igpnod
+                   tmp1(:) = tmp1(:) + (/( tfk(this % dftran % r__eostemp(ir,i)), i = 1, n )/) - 273.15D0
+                enddo
+                tmp1(:) = tmp1(:) / real(this % dftran % r__igpnod - 1, 8)
+                !js+tmp1(:) = !TODO: fuel volume average temperature
+                tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
+                var(:) = 0.92d0 * tmp1(:) + 0.08d0 * tmp4(:)
+            case('pellet doppler temperature 3, c')
+                tmp1(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
+                tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case('cladding inner temperature, k')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, k")
