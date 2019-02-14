@@ -25,8 +25,8 @@ program test2
 
     type(t_fuelrod) :: fuelrod             ! fuel rod object
 
-    real(8) :: a(na)                       ! temporary variable
-    integer :: i_rod, i
+    real(8) :: a(na), b(na), c(na)         ! temporary variable
+    integer :: i_rod, i = 0
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !                            FRAPCON Calculation                            !
@@ -52,6 +52,9 @@ program test2
     call fuelrod % makerf()
 
     call fuelrod % get_r8_1('bulk coolant temperature, C', a)
+    call fuelrod % get_r8_1('pellet surface temperature, c', b)
+    call fuelrod % get_r8_1('pellet centerline temperature, c', c)
+    write(*,*) i, maxval(a), maxval(b), maxval(c)
 
     call fuelrod % destroy ()
 
@@ -81,8 +84,10 @@ program test2
     do i = 1, 10
         call fuelrod % set_r8_0("linear power, W|cm", power * (1 + 0*i) )
         call fuelrod % next (1.D-3)
-        call fuelrod % get_r8_1('centerline temperature, K', a)
-        write(*,*) i, maxval(a)
+        call fuelrod % get_r8_1('bulk coolant temperature, C', a)
+        call fuelrod % get_r8_1('pellet surface temperature, c', b)
+        call fuelrod % get_r8_1('pellet centerline temperature, c', c)
+        write(*,*) i, maxval(a), maxval(b), maxval(c)
     enddo
 
     call fuelrod % destroy ()

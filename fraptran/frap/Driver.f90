@@ -557,6 +557,8 @@ module fraptran2
             deallocate(this % axialmesh)
         endif
 
+        call this % convergence % destroy ()
+
     end subroutine p_destroy
 
     subroutine p_settime(this,i,t)

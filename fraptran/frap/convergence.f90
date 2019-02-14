@@ -9,6 +9,7 @@ module m_convergence
 
         procedure :: setup  => p_setup
         procedure :: update => p_update
+        procedure :: destroy=> p_destroy
 
     end type t_convergence
 
@@ -38,5 +39,13 @@ module m_convergence
                           (this % atol + this % rtol * x(:) ) ) / this % ndim**0.5
         this % vstate(i,:) = x(:)
     end subroutine p_update
+
+    subroutine p_destroy(this)
+        implicit none
+        class (t_convergence), intent(inout) :: this
+        deallocate( this % vstate )
+        deallocate( this % errors )
+    end subroutine p_destroy
+
 
 end module m_convergence
