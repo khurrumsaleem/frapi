@@ -1029,7 +1029,7 @@ MODULE HeatTransferCoefficient_fraptran
                 coef_a = tsur
             endif
             !
-            ! Iteration converged
+            ! Iteration converged 
             !
             ts = twall2
             tsur = ts

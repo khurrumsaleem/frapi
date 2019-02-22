@@ -412,7 +412,12 @@ module fraptran2
         CALL setup6
         ntstep = 0
         nsteadytrans = 1
-        call this % next(t1-t0)
+
+        do i = 1, 1000
+!        call this % next(t1-t0)
+        call this % next(1.D-2)
+        enddo
+
         nsteadytrans = 2
     end subroutine p_next0
 
@@ -502,7 +507,7 @@ module fraptran2
             hinta(3) = hcool * jkbtup
         endif
 
-        do while (error > 1)
+!        do while (error > 1)
 
             call comput
 
@@ -539,7 +544,7 @@ module fraptran2
 
             count = count + 1
 
-        enddo
+!        enddo
 
         inquire (unit = ounit, opened = is_open)
         if (is_open) close(ounit, status='delete')

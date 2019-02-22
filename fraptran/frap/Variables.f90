@@ -17,6 +17,8 @@ MODULE variables_fraptran
 
     IMPLICIT NONE
     !
+    INTEGER(ipk) :: count = 0! variable that is used for debugging only
+    !
     logical, target :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
     !
     REAL(r8k), target :: maxfueltemp = 0.0_r8k
