@@ -413,9 +413,9 @@ module fraptran2
         ntstep = 0
         nsteadytrans = 1
 
-        do i = 1, 1000
-!        call this % next(t1-t0)
-        call this % next(1.D-2)
+        ! TODO: must be tested !!!
+        do i = 1, 10
+            call this % next(t1-t0)
         enddo
 
         nsteadytrans = 2

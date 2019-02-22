@@ -776,6 +776,9 @@ contains
             case("total gap conductance, w|(m^2*k)")
                 this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
                 this % dfcon % r__hgapt_flag   = .true.
+            case("total gap conductance, w/(m^2*k)")
+                this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
+                this % dfcon % r__hgapt_flag   = .true.
             case("gadolinia weight fraction")
                 this % dfcon % r__gadoln(:) = var
             case("coolant pressure, mpa")
@@ -1469,6 +1472,8 @@ contains
                 var(:) = 0.5d0 * ( this % dfcon % r__BulkCoolantTemp(1:n) + this % dfcon % r__BulkCoolantTemp(2:n+1) )
                 var(:) = (/( tfc(var(i)), i = 1, n )/)
             case('total gap conductance, w|(m^2*k)')
+                var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
+            case('total gap conductance, w/(m^2*k)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum

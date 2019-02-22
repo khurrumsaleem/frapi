@@ -545,8 +545,7 @@ MODULE Reflood_Conditions_fraptran
     END IF
 1100 acond(16,Nchan) = pressr
     acond(17,Nchan) = temphi
-write(*,*) 'Reflood ???'
-stop
+
     acond(19,Nchan) = zero
     acond(21,Nchan) = tsat
     qcrit = sechr * qcrit

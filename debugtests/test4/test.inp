@@ -1,0 +1,78 @@
+*FILE15='sth2xt', STATUS='UNKNOWN', FORM='FORMATTED'
+*
+* GOESOUTS:
+FILE79='test.out', STATUS='UNKNOWN', CARRIAGE CONTROL='LIST'
+FILE66='test.plot', STATUS='UNKNOWN', FORM='FORMATTED',
+CARRIAGE CONTROL='LIST'
+/**********************************************************************
+LOCA rod MT1 British Units Input and SI Units Output
+$begin
+ProblemStartTime = 0.0,
+ProblemEndTime = 1000.0,
+$end
+$iodata
+unitout=1, dtpoa(1)=5.0, dtplta=1.0,
+$end
+$solution
+dtmaxa(1: 2) = 0.100, 1000.0, 
+prsacc=0.001, tmpac1=0.001, maxit=100, noiter=100, epsht1=2.5,
+naxn=12, nfmesh=15, dtss=1.e5, ncmesh=2
+$end
+$design
+pitch=0.041831, pdrato=1.324, rnbnt=1.0, totnb=11,
+RodLength=12.0, RodDiameter=0.03159,
+rshd=1.125e-2, dishd=110.0e-5, pelh=3.127e-2, dishv0=43.868e-8,
+FuelPelDiam=2.71e-2, roughf=1.0, frden=0.95, bup=0.0, fotmtl=2.0,
+tsntrk=1773.0,
+fgrns=10.0,gadoln=0.0, cldwdc=0.5,
+gapthk=24.6e-5, coldw=0.5, roughc=1.0, cfluxa=0.16e15, tflux=0.2e3,
+ncs=59, spl=0.7513, scd=2.583e-2, swd=4.2494e-3, vplen=48.1e-5,
+gfrac(1)=1.0, gappr0=225.0, tgas0=80.33,
+$end
+$power
+RodAvePower(1: 3) = 0.378,    0.0, 
+RodAvePower(3: 5) = 0.378, 1000.0,
+
+AxPowProfile( 1: 3, 1) = 0.08, 0.000, 
+AxPowProfile( 3: 5, 1) = 0.40, 1.667,
+AxPowProfile( 5: 7, 1) = 0.75, 3.333,
+AxPowProfile( 7: 9, 1) = 1.05, 5.000,
+AxPowProfile( 9:11, 1) = 1.18, 5.833,
+AxPowProfile(11:13, 1) = 1.25, 6.667,
+AxPowProfile(13:15, 1) = 1.22, 7.500,
+AxPowProfile(15:17, 1) = 1.15, 8.330,
+AxPowProfile(17:19, 1) = 0.90, 10.00,
+AxPowProfile(19:21, 1) = 0.60, 11.667,
+AxPowProfile(21:23, 1) = 0.53, 12.00
+
+RadPowProfile(1:48)=
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+1.0,0.0, 1.0,4.130e-3,
+$end
+$model
+internal='on',
+metal='on', baker=1,
+deformation='on',noball=0,
+$end
+$boundary
+coolant='on',
+geomet=1, dhe=0.0389, dhy=0.0389, achn=96.6e-5,
+lowpl=2, 
+hinta(1:)= 1400.0, 0.0, 1400.0, 1000.0,
+pressu=2, 
+pbh1(1:)= 40.0, 0.0, 40.0, 1000.0,
+massfl=2, 
+gbh(1:)= 3105590.0, 0.0, 3105590.0, 1000.0,
+$end
+$tuning
+$end
