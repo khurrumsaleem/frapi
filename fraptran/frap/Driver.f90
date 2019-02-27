@@ -473,6 +473,7 @@ module fraptran2
         call this % convergence % update(15,eostemp(ncladi,1:naxn) )
         call this % convergence % update(16,eostemp(nmesh,1:naxn) )
         error = maxval(this % convergence % errors)
+
     end function update_error
 
     subroutine p_next(this, dt)
@@ -508,7 +509,7 @@ module fraptran2
             hinta(3) = hcool * jkbtup
         endif
 
-!        do while (error > 1)
+        do while (error > 1)
 
             call comput
 
@@ -545,7 +546,12 @@ module fraptran2
 
             count = count + 1
 
-!        enddo
+            if (count == 1000) then
+                write(*,*) 'ERROR: initialization is failed'
+                stop
+            endif
+
+        enddo
 
         inquire (unit = ounit, opened = is_open)
         if (is_open) close(ounit, status='delete')
