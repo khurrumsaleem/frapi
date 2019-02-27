@@ -338,3 +338,4 @@
     ALLOCATE (this % b__tfuelr2(1:nr))
     ALLOCATE (this % b__creeptabtemp(1:ncreeptab))
     ALLOCATE (this % b__creeptabtime(1:ncreeptab))
+    ALLOCATE (this % b__axlinpower(1:na-1))

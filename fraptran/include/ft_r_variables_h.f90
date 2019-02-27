@@ -1001,6 +1001,7 @@ real(r8k)                 , dimension(:)        , allocatable          :: r__zel
 real(r8k)                 , dimension(:)        , allocatable          :: r__gadolin 
 real(r8k)                 , dimension(:)        , allocatable          :: r__htc_l 
 real(r8k)                 , dimension(:)        , allocatable          :: r__oxipowergen 
+real(r8k)                 , dimension(:)        , allocatable          :: r__axlinpower 
 integer(ipk)              , dimension(:,:)      , allocatable          :: r__icglob 
 integer(ipk)              , dimension(:,:)      , allocatable          :: r__nrc 
 integer(ipk)              , dimension(:,:)      , allocatable          :: r__iokold 

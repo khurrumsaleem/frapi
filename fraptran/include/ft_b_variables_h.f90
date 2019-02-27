@@ -1001,6 +1001,7 @@ real(r8k)                 , dimension(:)        , allocatable          :: b__zel
 real(r8k)                 , dimension(:)        , allocatable          :: b__gadolin 
 real(r8k)                 , dimension(:)        , allocatable          :: b__htc_l 
 real(r8k)                 , dimension(:)        , allocatable          :: b__oxipowergen 
+real(r8k)                 , dimension(:)        , allocatable          :: b__axlinpower 
 integer(ipk)              , dimension(:,:)      , allocatable          :: b__icglob 
 integer(ipk)              , dimension(:,:)      , allocatable          :: b__nrc 
 integer(ipk)              , dimension(:,:)      , allocatable          :: b__iokold 
@@ -1065,4 +1066,3 @@ real(r8k)                 , dimension(:,:)      , allocatable          :: b__bos
 real(r8k)                 , dimension(:,:)      , allocatable          :: b__cldstrn 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: b__grsv 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: b__tplna 
-

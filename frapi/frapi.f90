@@ -63,7 +63,6 @@ module frapi
     ! TEMPORARY VARIABLES
     integer :: i, j, n, m
     real(8) :: a, b, c, volume
-    real(8), allocatable :: weight(:)
     real(8), allocatable :: tmp0(:), tmp1(:), tmp2(:), tmp3(:), tmp4(:)
 
 contains
@@ -136,7 +135,6 @@ contains
         end select
 
         ! ALLOCATION OF THE TEMPORARY ARRAYS
-        if(.not. allocated(weight)) allocate(weight(m))
         if(.not. allocated(tmp0))   allocate(tmp0(m))
         if(.not. allocated(tmp1))   allocate(tmp1(n))
         if(.not. allocated(tmp2))   allocate(tmp2(m+1))
@@ -612,7 +610,7 @@ contains
         real(8)      :: var
 
         select case (this % frapmode)
-        
+
         case ('frapcon')
             it  = this % dfcon % r__it
             select case(lower(key))
@@ -636,11 +634,16 @@ contains
                     / this % dfcon % r__totl / intoft ! 1/ft
                 this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
                 this % dfcon % r__qf(:) = 1.D0 / n
+                this % dfcon % r__axlinpower(:) = var
+            case("linear power, w/cm")
+                call this % set_r8_0 ("linear power, w|cm", var)
             case("fuel rod pitch, cm")
                 this % dfcon % r__pitch = var * cmtoin
             case("as-fabricated apparent fuel density, %td")
                 this % dfcon % r__den = var
-            case("coolant mass flux, kg|(s*m^2)")
+            case("coolant mass flow, kg|(s*m^2)")
+                this % dfcon % r__go(it) = var * ksm2tolbhrft2
+            case("inlet coolant mass flow, kg/(s*m^2)")
                 this % dfcon % r__go(it) = var * ksm2tolbhrft2
             case("additional fuel densification factor")
                 this % dfcon % r__afdn         = var
@@ -775,6 +778,9 @@ contains
             case("radius of the fuel pellet central annulus, mm")
                 this % dfcon % r__rc(:) = var * mmtoin  
             case("total gap conductance, w|(m^2*k)")
+                this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
+                this % dfcon % r__hgapt_flag   = .true.
+            case("total gap conductance, w/(m^2*k)")
                 this % dfcon % r__TotalHgap(:) = var * Wm2KtoBhft2F
                 this % dfcon % r__hgapt_flag   = .true.
             case("gadolinia weight fraction")
@@ -961,7 +967,9 @@ contains
                 this % dftran % r__hinta(it3) = var * jkbtup
             case("gbh")
                 this % dftran % r__gbh(it3) = var
-            case("coolant mass flux, kg|(s*m^2)")
+            case("coolant mass flow, kg|(s*m^2)")
+                this % dftran % r__gbh(it3) = var * ksm2tolbhrft2
+            case("inlet coolant mass flow, kg/(s*m^2)")
                 this % dftran % r__gbh(it3) = var * ksm2tolbhrft2
             case("explenumt")
                 this % dftran % r__explenumt(it3) = var
@@ -1033,6 +1041,9 @@ contains
             case("linear power, w|cm")
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
+            case("linear power, w/cm")
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case default
                 call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
@@ -1095,6 +1106,9 @@ contains
                     / this % dfcon % r__totl / intoft ! 1/ft
                 this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
                 this % dfcon % r__qf(:) = (tmp3(:) + 1.D-10) / (sum(tmp3) + 1.D-10)
+                this % dfcon % r__axlinpower(:) = var(:)
+            case("linear power, w/cm")
+                call this % set_r8_1 ("linear power, w|cm", var)
             case("coolant temperature, c")
                 call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
                 this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
@@ -1200,22 +1214,49 @@ contains
                 ! User can set 'axpowprofile' for arbitrary axial mesh, however not 
                 ! at the central nodes, but at the last nodes (here n+1 nodes of the main mesh)
                 call linterp(var, this % dftran % axialmesh(:), tmp3, n)
+
                 tmp3(:) = (tmp3(:) + 1.D-12) / (sum(tmp3) + 1.D-12)
+
                 it = if_a_else_b(this % is_initdone, two, one)
                 do i = 1, n + 1
                     this % dftran % r__axpowprofile(2*i-1,it) = tmp3(i)
-                    this % dftran % r__axpowprofile(2*i  ,it) = this % dftran % axnodelevat(i)
                 enddo
                 ! linear power, W/cm -> average linear power, W/cm
                 a = sum( (/( var(i) * this % dftran % axialmesh(i), i = 1, n )/) ) / sum(this % dftran % axialmesh)
                 it3 = if_a_else_b(this % is_initdone, three, one)
                 ! average linear power, W/cm -> average linear power, kW/ft
                 this % dftran % r__RodAvePower(it3) = a * 1.D-3 / cm_to_ft
+                this % dftran % r__axlinpower(1:n) = var(:)
+            case("linear power, w/cm")
+                call this % set_r8_1('linear power, w|cm', var)
             case("axial mesh thickness, cm")
                 this % dftran % axialmesh(:) = var(:)
                 this % dftran % axnodelevat(1) = 0.D+0
                 this % dftran % axnodelevat(2:n+1) = (/( sum(var(1:i)), i = 1, n )/) * cm_to_ft
                 this % dftran % r__RodLength = sum(var) * cm_to_ft
+
+                do it = 1, 2
+                    do i = 1, n + 1
+                        this % dftran % r__axpowprofile(2*i,it) = this % dftran % axnodelevat(i)
+                    enddo
+                enddo
+
+                this % dftran % r__htclev(1:n) = this % dftran % axnodelevat(2:n+1)
+                this % dftran % r__zone = n
+
+            case('heat transfer coefficient, w/(k*m^2)')
+                it = if_a_else_b(this % is_initdone, three, one)
+                this % dftran % r__htca(it,1:n) = var(:)
+            case("bulk coolant temperature, c")
+                it = if_a_else_b(this % is_initdone, three, one)
+                this % dftran % r__tblka(it,1:n) = (/( tcf(var(i)), i = 1, n )/)
+            case("coolant temperature, c")
+                it = if_a_else_b(this % is_initdone, three, one)
+                this % dftran % r__tblka(it,1:n) = (/( tcf(var(i)), i = 1, n )/)
+            case('coolant pressure, mpa')
+                it = if_a_else_b(this % is_initdone, three, one)
+                this % dftran % r__coolpress(1:n) = var(:) * MPatoPSI
+                this % dftran % r__pbh(it) = var(1) * MPatoPSI
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1373,6 +1414,8 @@ contains
                       1.D+3 * cmtoft
             case('outlet coolant mass flux, kg|(s*m^2)')
                 var = this % dfcon % r__go(it) * lbhrft2toksm2
+            case('outlet coolant mass flow, kg/(s*m^2)')
+                var = this % dfcon % r__go(it) * lbhrft2toksm2
             case('plenum gas temperature, c')
                 var = tfc(this % dfcon % r__tplen)
             case('plenum gas pressure, mpa')
@@ -1432,6 +1475,8 @@ contains
                 var = this % dftran % r__gaspress(n+1) * PSItoMPa
             case('total water metal reaction energy, kw|m')
                 var = sum(this % dftran % r__watrmetlenrgy(1:n)) / fttom
+            case('outlet coolant mass flow, kg/(s*m^2)')
+                var = this % dftran % r__rmassflux(1) * lbhrft2toksm2
             case default
                 call error_message(key, 'real rank 0 in the fraptran get-list')
             end select
@@ -1472,6 +1517,10 @@ contains
     !                enddo
     !                var(i) = tfc(temper / volume)
     !            enddo
+
+
+            case("linear power, w/cm")
+                var(:) = this % dfcon % r__axlinpower(:)
             case('fuel volume average temperature, c')
                 var(:) = (/( tfc(this % dfcon % r__PelAveTemp(i)), i = 1, n )/)
             case('pellet average temperature, c')
@@ -1483,7 +1532,11 @@ contains
             case('bulk coolant temperature, c')
                 var(:) = 0.5d0 * ( this % dfcon % r__BulkCoolantTemp(1:n) + this % dfcon % r__BulkCoolantTemp(2:n+1) )
                 var(:) = (/( tfc(var(i)), i = 1, n )/)
+            case('coolant temperature, c')
+                call this % get_r8_1 ('bulk coolant temperature, c', var)
             case('total gap conductance, w|(m^2*k)')
+                var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
+            case('heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
@@ -1538,6 +1591,8 @@ contains
             case('cladding hydrogen concentration, ppm')
                 var(:) = this % dfcon % r__CladH2Concen(1:n)
             case('coolant density, kg|m^3')
+                var(:) = 0.5d0*(this % dfcon % r__rhof(1:n) + this % dfcon % r__rhof(2:n+1)) * lbft3tokgm3 
+            case('coolant density, kg/m^3')
                 var(:) = 0.5d0*(this % dfcon % r__rhof(1:n) + this % dfcon % r__rhof(2:n+1)) * lbft3tokgm3 
             case('coolant pressure, mpa')
                 var(:) = this % dfcon % r__coolantpressure(it,1:n) * PSItoMPa
@@ -1630,6 +1685,8 @@ contains
                 var(:) = this % dftran % r__CldStress(1:n,3) * PSItoMPa
             case('average cladding temperature, k')
                 var(:) = (/( tfk(this % dftran % r__CladAveTemp(i)), i = 1, n)/)
+            case('cladding average temperature, c')
+                var(:) = (/( tfc(this % dftran % r__CladAveTemp(i)), i = 1, n)/)
             case('cold state radius, mm')
                 var(:) = this % dftran % r__radialbound (1:n)
             case('cldpermaxstrn')
@@ -1651,6 +1708,8 @@ contains
             case('surface heat transfer coefficient, w|m^2k')
                 var(:) = this % dftran % r__filmcoeffav(1:n) * Bhft2FtoWm2K
             case('heat transfer coefficient, w|m^2k')
+                var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
+            case('heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
             case('outer oxide thickness, mm')
                 var(:) = this % dftran % r__eosoxidethick(1:n) * fttomm
@@ -1699,6 +1758,8 @@ contains
             case('structural gap interface pressure, mpa')
                 var(:) = this % dftran % r__TerfacePres(1:n) * PSItoMPa
             case('coolant density, kg|m^3')
+                var(:) = this % dftran % r__CoolDensity(1:n) * lbft3tokgm3
+            case('coolant density, kg/m^3')
                 var(:) = this % dftran % r__CoolDensity(1:n) * lbft3tokgm3
             case('pellet surface hoop strain, %')
                 var(:) = this % dftran % r__PelSrfStrn(1:n,1)
@@ -1773,8 +1834,10 @@ contains
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, k")
                 var(:) = (/( tfk(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
-            case("bulk coolant temperature, c")
-                var(:) = (/( tfk(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/) - 273.15D0
+            case("coolant temperature, c")
+                var(:) = (/( tfc(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
+            case("linear power, w/cm")
+                var(:) = this % dftran % r__axlinpower(1:n)
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select

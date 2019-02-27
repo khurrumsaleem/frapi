@@ -641,3 +641,4 @@ this % b__g2old                                 = this % r__g2old
 this % b__g3old                                 = this % r__g3old                                 
 this % b__g4old                                 = this % r__g4old                                 
 this % b__namerf                                = this % r__namerf                     
+this % b__axlinpower                            = this % r__axlinpower                            

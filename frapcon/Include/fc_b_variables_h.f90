@@ -641,3 +641,4 @@
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: b__g2old                                 
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: b__g3old                                 
     REAL        (r8k)    ,  DIMENSION(:,:,:), ALLOCATABLE :: b__g4old                                 
+    REAL        (r8k)    ,  DIMENSION(:),     ALLOCATABLE :: b__axlinpower                            

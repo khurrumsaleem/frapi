@@ -94,6 +94,7 @@ module fraptran2
         nfmesh = nfmesh_
         ncmesh = ncmesh_
         nce = ncmesh
+        npaxp = naxn
 
         ! Set the # of axial, radial and timesteps to allocate the code's values on.
         defsize = 2
@@ -412,7 +413,12 @@ module fraptran2
         CALL setup6
         ntstep = 0
         nsteadytrans = 1
-        call this % next(t1-t0)
+
+        ! TODO: must be tested !!!
+        do i = 1, 10
+            call this % next(t1-t0)
+        enddo
+
         nsteadytrans = 2
     end subroutine p_next0
 
@@ -502,7 +508,7 @@ module fraptran2
             hinta(3) = hcool * jkbtup
         endif
 
-        do while (error > 1)
+!        do while (error > 1)
 
             call comput
 
@@ -539,7 +545,7 @@ module fraptran2
 
             count = count + 1
 
-        enddo
+!        enddo
 
         inquire (unit = ounit, opened = is_open)
         if (is_open) close(ounit, status='delete')
@@ -556,6 +562,8 @@ module fraptran2
             this % is_driver_allocated = .false.
             deallocate(this % axialmesh)
         endif
+
+        call this % convergence % destroy ()
 
     end subroutine p_destroy
 

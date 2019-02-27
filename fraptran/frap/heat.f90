@@ -2,6 +2,7 @@ MODULE HeatSolution_fraptran
     USE Kinds_fraptran
     USE Oxidation_fraptran, ONLY : metwtb, chitox
     USE HeatTransferCoefficient_fraptran, ONLY : htrc, gaphtc
+    use variables_fraptran, only : count
     IMPLICIT NONE
     !
     CONTAINS
@@ -183,7 +184,7 @@ MODULE HeatSolution_fraptran
                 END SELECT
                 !
                 IF (k == 1) THEN ! The power is assumed to be zero at elevation z = 0.0
-                    !write(*,*) sechr, HeatFlux(k), (2.0_r8k * achnl), btuhkw , fecool , AxialPowr(k) , (2.0_r8k * achn)
+                !write(*,*) sechr, HeatFlux(k), (2.0_r8k * achnl), btuhkw , fecool , AxialPowr(k) , (2.0_r8k * achn)
                     qcool = sechr * HeatFlux(k) / (2.0_r8k * achnl) + btuhkw * fecool * AxialPowr(k) / (2.0_r8k * achn)
                 ELSE
                     qcool = sechr * (HeatFlux(k) + HeatFlux(k-1)) / (2.0_r8k * achnl) + btuhkw * fecool * &
@@ -971,6 +972,7 @@ MODULE HeatSolution_fraptran
 270         ENDDO
         ENDDO
     ENDDO
+
     !
     END SUBROUTINE heat
     !
@@ -1385,6 +1387,7 @@ MODULE HeatSolution_fraptran
     REAL(r8k), DIMENSION(:,:) :: pchn, paz, EnrgyMeltZ, EnrgyMeltZp1, BOSTemp, burad, radsrc
     !
     Time = Time0 + TimeIncrement
+
     IF (ndebug) WRITE(ounit,95) k, Time0, TimeIncrement, epsht1
 95  FORMAT(' HT1TDP, k = ',i3,' Time0 = ',e13.6,' TimeIncrement = ',e13.6,' epsht1 = ',e11.4)
     !
@@ -1706,7 +1709,10 @@ MODULE HeatSolution_fraptran
         ENDDO
     ENDDO
     !
-    IF (IterationCountTrans == noiter) RETURN
+    IF (IterationCountTrans == noiter) then
+        RETURN
+    endif
+
     IterationCountTrans = IterationCountTrans + 1
     errsw  = 0
     Finished = .TRUE.
@@ -1717,7 +1723,9 @@ MODULE HeatSolution_fraptran
     ENDDO
     PrevIterateTemp(nmesh,k) = FinalTemp(nmesh)
     ! is solution converged? - RETURN
-    IF (Finished) RETURN
+    IF (Finished) then
+        RETURN
+    endif
     errsw = 2
     ! get updated boundary conditions
     CALL bdcond (BoundaryCondition, Iflago, Iflagn)

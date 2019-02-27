@@ -1065,3 +1065,4 @@ write(ifile) this % r__bostemp
 write(ifile) this % r__cldstrn              
 write(ifile) this % r__grsv                 
 write(ifile) this % r__tplna                
+write(ifile) this % r__axlinpower

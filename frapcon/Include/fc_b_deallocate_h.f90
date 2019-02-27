@@ -338,3 +338,4 @@
     DEALLOCATE (this % b__tfuelr2)
     DEALLOCATE (this % b__creeptabtemp)
     DEALLOCATE (this % b__creeptabtime)
+    DEALLOCATE (this % b__axlinpower)

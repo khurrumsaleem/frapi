@@ -826,6 +826,12 @@ contains
     dspgw = Spring%dspgw
     dspg = Spring%dspg
 
+    if ( sum(deltaz) < 1.D-12 ) then
+        write(*,*) 'ERROR: the fuel rod length is set wrong!'
+        call backtrace
+        stop
+    endif
+
     qmpy(1) = qmpy(1) / kWtoBTUh * intoft * pi * totl / sum(deltaz(1:nt)/dco(1:nt)) ! kW/ft
 
     ! Check to see if $SpentFuel exists

@@ -1065,3 +1065,4 @@ real(r8k)                 , dimension(:,:)                            , pointer 
 real(r8k)                 , dimension(:,:)                            , pointer :: cldstrn 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: grsv 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: tplna 
+real(r8k)                 , dimension(:)                              , pointer :: axlinpower
