@@ -1196,10 +1196,7 @@ MODULE sth2x_fraptran
     ! No water file is supplied by the user or else the file supplied by user has problems. Use default water properties_fraptran.
 300 If (UseWaterProp) THEN
         WRITE (ounit, 203)
-<<<<<<< HEAD
         !js+WRITE (0, 203)
-=======
->>>>>>> 7a942df23e37179ca3f637fa1c8ffd629d8fe58f
         nt = 66
         np = 38
         ns = 47
