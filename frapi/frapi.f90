@@ -17,6 +17,7 @@ module frapi
     real(8), parameter :: fttocm = 0.3048D+2
     real(8), parameter :: mmtoin = 1.D0/25.4D0
     real(8), parameter :: cm2m   = 1.D-2
+    real(8), parameter :: cm_to_in = 1./2.54d0
     real(8), parameter :: cm_to_ft = 1./0.3048D+2
 
     type, public :: t_fuelrod
@@ -786,6 +787,8 @@ contains
                 continue
             case("outlet coolant enthalpy, j|kg")
                 continue
+            case("fuel pellet diameter, cm") !js+
+                continue
             case default
                 call error_message (key, 'real(8) rank 0 in the frapcon set-list')
             end select
@@ -793,6 +796,17 @@ contains
         case ('fraptran')
             it3 = if_a_else_b(this % is_initdone, 3, 1)
             select case (lower(key))
+            case("outer cladding diameter, cm") !js+
+                this % dftran % r__RodDiameter = var * cm_to_ft
+            case("gap thickness, cm") !js+
+                this % dftran % r__gapthk = var * cm_to_ft
+            case("fuel pellet diameter, cm") !js+
+                this % dftran % r__FuelPelDiam = var * cm_to_ft
+            case("fuel rod pitch, cm") !js+
+                this % dftran % r__pitch = var * cm_to_ft
+                !js+this % dftran % r__pitch = var * cmtom
+            case("cladding thickness, cm") !js+
+                continue
             case("splbp")
                 this % dftran % r__splbp = var
             case("tpowf")
@@ -807,8 +821,6 @@ contains
                 this % dftran % r__CladPower = var
             case("pitch")
                 this % dftran % r__pitch = var
-            case("fuel rod pitch, cm")
-                this % dftran % r__pitch = var * cmtom
             case("bowthr")
                 this % dftran % r__bowthr = var
             case("dofang")
@@ -1127,7 +1139,9 @@ contains
             case("gadoln")
                 this % dftran % r__gadoln(1:n) = var(:)
             case("gadolinia weight fraction")
-                this % dftran % r__gadoln(1:n) = var(:)
+                call linterp(var, this % dftran % axialmesh(:), tmp3, n)
+                this % dftran % r__gadoln(1:n) = tmp3(:)
+                !js+this % dftran % r__gadoln(1:n) = var(:)
             case("gbse")
                 this % dftran % r__gbse(1:n) = var(:)
             !case("gfrac")
