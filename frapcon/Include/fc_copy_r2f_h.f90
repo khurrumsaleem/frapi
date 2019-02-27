@@ -641,3 +641,4 @@ write(ifile) this % r__g2old
 write(ifile) this % r__g3old
 write(ifile) this % r__g4old
 write(ifile) this % r__namerf
+write(ifile) this % r__axlinpower

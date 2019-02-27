@@ -425,3 +425,4 @@ if(.not. allocated(dtdkta               ) ) allocate( dtdkta                    
 if(.not. allocated(dktouts              ) ) allocate( dktouts                      (1,1) )
 if(.not. allocated(buradv               ) ) allocate( buradv                      (1:naxialnodes,1:nradialnodes) )
 if(.not. allocated(bufrad               ) ) allocate( bufrad                      (1:nradialnodes,1:naxialnodes) )
+if(.not. allocated(axlinpower           ) ) allocate( axlinpower                  (1:naxialnodes) )

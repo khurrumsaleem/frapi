@@ -386,6 +386,7 @@ MODULE Read_Input_fraptran
             techfi(1:spefbz) = techf(1:spefbz)
         ENDIF
     ENDIF
+
     ! Heat option
     IF (heat == 'ON') THEN
         DO i = 2, zone
@@ -394,6 +395,7 @@ MODULE Read_Input_fraptran
         ENDDO
         nhtc = 1
         nqchn = 3
+
         IF (tape2 == 1) THEN
             nqchn = 4
             nvol = nvol2
@@ -2607,6 +2609,12 @@ MODULE Read_Input_fraptran
 !     rodavepower( (i-1)*4 + 4 ) = 4.13D-3
 !    enddo
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    if ( sum(AxPowProfile(:,:)) < 1.D-10) then
+        write(*,*) 'ERROR: axial power profile in FRAPTRAN is equal to zero'
+        stop
+    endif
+
 
     if (.not. is_export) then
         ! Write block being read to output file

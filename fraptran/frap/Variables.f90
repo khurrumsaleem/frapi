@@ -175,6 +175,9 @@ MODULE variables_fraptran
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: ispace
     ! Dimension = 21. Comdeck lacmdl
     CHARACTER(LEN=8), DIMENSION(:), ALLOCATABLE , target :: emflag
+
+    REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: axlinpower
+
     !comdeck thcntl
     TYPE thcntl_var
         !

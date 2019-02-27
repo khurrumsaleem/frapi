@@ -94,6 +94,7 @@ module fraptran2
         nfmesh = nfmesh_
         ncmesh = ncmesh_
         nce = ncmesh
+        npaxp = naxn
 
         ! Set the # of axial, radial and timesteps to allocate the code's values on.
         defsize = 2

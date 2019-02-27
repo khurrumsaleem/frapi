@@ -1001,6 +1001,7 @@ real(r8k)                 , dimension(:)                              , pointer 
 real(r8k)                 , dimension(:)                              , pointer :: gadolin 
 real(r8k)                 , dimension(:)                              , pointer :: htc_l 
 real(r8k)                 , dimension(:)                              , pointer :: oxipowergen 
+real(r8k)                 , dimension(:)                              , pointer :: axlinpower
 integer(ipk)              , dimension(:,:)                            , pointer :: icglob 
 integer(ipk)              , dimension(:,:)                            , pointer :: nrc 
 integer(ipk)              , dimension(:,:)                            , pointer :: iokold 
@@ -1065,3 +1066,4 @@ real(r8k)                 , dimension(:,:)                            , pointer 
 real(r8k)                 , dimension(:,:)                            , pointer :: cldstrn 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: grsv 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: tplna 
+

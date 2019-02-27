@@ -641,3 +641,4 @@ read(ifile) this % r__g2old
 read(ifile) this % r__g3old
 read(ifile) this % r__g4old
 read(ifile) this % r__namerf
+read(ifile) this % r__axlinpower

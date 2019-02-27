@@ -1065,3 +1065,4 @@ this % bostemp                 => bostemp
 this % cldstrn                 => cldstrn                       
 this % grsv                    => grsv                          
 this % tplna                   => tplna                         
+this % axlinpower              => axlinpower

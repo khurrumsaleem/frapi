@@ -426,6 +426,7 @@ deallocate ( this % r__bostemp )
 deallocate ( this % r__cldstrn )
 deallocate ( this % r__grsv )
 deallocate ( this % r__tplna )
+deallocate ( this % r__axlinpower )
 
 !deallocate ( this % r__is_export )
 !deallocate ( this % r__ndebug )

@@ -1,6 +1,6 @@
 MODULE HeatTransferCoefficient_fraptran
     !>@brief
-    !> This module contains the subroutines used to calculate the cladding to coolant _fraptran
+    !> This module contains the subroutines used to calculate the cladding to coolant
     !> heat transfer coefficient and the cladding to pellet gap heat transfer coefficient.
     !> Subroutines include htrc, qdot, root1, and gaphtc
     !>@author

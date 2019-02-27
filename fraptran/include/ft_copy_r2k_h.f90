@@ -1065,3 +1065,4 @@ this % bostemp                 = this % r__bostemp
 this % cldstrn                 = this % r__cldstrn             
 this % grsv                    = this % r__grsv                
 this % tplna                   = this % r__tplna               
+this % axlinpower              = this % r__axlinpower          
