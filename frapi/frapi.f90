@@ -1240,9 +1240,10 @@ contains
                 it = if_a_else_b(this % is_initdone, three, one)
                 this % dftran % r__tblka(it,1:n) = (/( tcf(var(i)), i = 1, n )/)
             case('coolant pressure, mpa')
+                a = sum(var(:)) / n * MPatoPSI
                 it = if_a_else_b(this % is_initdone, three, one)
-                this % dftran % r__coolpress(1:n) = var(:) * MPatoPSI
-                this % dftran % r__pbh(it) = var(1) * MPatoPSI
+                this % dftran % r__coolpress(1:n) = a ! TODO: distributed pressure does not work
+                this % dftran % r__pbh(it) = a
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1777,6 +1778,8 @@ contains
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, k")
                 var(:) = (/( tfk(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
+            case("bulk coolant temperature, c")
+                var(:) = (/( tfc(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
             case("coolant temperature, c")
                 var(:) = (/( tfc(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
             case("linear power, w/cm")

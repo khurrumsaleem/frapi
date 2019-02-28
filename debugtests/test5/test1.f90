@@ -15,7 +15,7 @@ program test2
     integer, parameter :: nr = 5           ! number of radial mesh nodes in pellet
     integer, parameter :: nc = 3           ! number of radial mesh nodes in cladding
     integer, parameter :: ng = 45          ! number of radial mesh nodes in pellet for gas release model
-    integer, parameter :: nt = 100000          ! number of time steps
+    integer, parameter :: nt = 10          ! number of time steps
 
     real(8), parameter :: dt = 1.D-3       ! time step, sec
     real(8), parameter :: tcool = 306.D0   ! inlet coolant temperature, C
@@ -38,8 +38,8 @@ program test2
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     call fuelrod % make(nr=nr, na=na, ngasr=ng, nce=nc, &
-                        ifixedcoolt = 0, &
-                        ifixedcoolp = 0, &
+                        ifixedcoolt = 1, &
+                        ifixedcoolp = 1, &
                         ifixedtsurf = 0, &
                         iq = 0, ivardm = 1, verbose = .true., frapmode='frapcon')
 
@@ -49,6 +49,10 @@ program test2
     call fuelrod % set_r8_0("inlet coolant temperature, C", tcool)
     call fuelrod % set_r8_0("inlet coolant pressure, MPa", pcool)
     call fuelrod % set_r8_0("inlet coolant mass flow, kg/(s*m^2)", fcool)
+    a = pcool
+    call fuelrod % set_r8_1("coolant pressure, mpa", a)
+    a = tcool
+    call fuelrod % set_r8_1("coolant temperature, c", a)
 
     call fuelrod % init()
 
@@ -70,14 +74,15 @@ program test2
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     call fuelrod % make(nr=nr, na=na, ngasr=ng, nce=nc, &
-                        ifixedcoolt = 0, &
-                        ifixedcoolp = 0, &
+                        ifixedcoolt = 1, &
+                        ifixedcoolp = 1, &
                         ifixedtsurf = 0, &
                         iq = 0, ivardm = 1, verbose = .true., frapmode='fraptran')
 
     call fuelrod % set_ch_0('restart file', './fuelrod-restart.txt')
 
-    call fuelrod % set_ch_0('coolant', 'on')
+    call fuelrod % set_ch_0('bheat', 'on')
+    call fuelrod % set_ch_0('coolant', 'off')
 
     w = power
 
@@ -86,6 +91,10 @@ program test2
     call fuelrod % set_r8_0("inlet coolant temperature, C", tcool)
     call fuelrod % set_r8_0("inlet coolant pressure, MPa", pcool)
     call fuelrod % set_r8_0("inlet coolant mass flow, kg/(s*m^2)", fcool)
+    a = pcool
+    call fuelrod % set_r8_1("coolant pressure, mpa", a)
+    a = tcool
+    call fuelrod % set_r8_1("coolant temperature, c", a)
 
     call fuelrod % init()
 
