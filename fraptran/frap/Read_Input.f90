@@ -2610,11 +2610,12 @@ MODULE Read_Input_fraptran
 !    enddo
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    if ( sum(AxPowProfile(:,:)) < 1.D-10) then
-        write(*,*) 'ERROR: axial power profile in FRAPTRAN is equal to zero'
-        stop
+    if (is_export) then
+        if ( sum(AxPowProfile(:,:)) < 1.D-10) then
+            write(*,*) 'ERROR: axial power profile in FRAPTRAN is equal to zero'
+            stop
+        endif
     endif
-
 
     if (.not. is_export) then
         ! Write block being read to output file
