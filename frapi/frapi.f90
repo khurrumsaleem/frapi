@@ -1637,7 +1637,6 @@ contains
             case('pellet doppler temperature, c')
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
-<<<<<<< HEAD
                 var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case('pellet doppler temperature 1, c')
                 tmp1(:) = 0d0
@@ -1660,11 +1659,9 @@ contains
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
                 var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
-=======
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case('film heat transfer coefficient, w/(k*m^2)')
                 var = 0.d0 !TODO: find the variable
->>>>>>> develop_js2
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
