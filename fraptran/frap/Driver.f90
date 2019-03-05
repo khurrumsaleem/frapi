@@ -546,8 +546,9 @@ module fraptran2
 
             count = count + 1
 
-            if (count == 1000) then
-                write(*,*) 'ERROR: initialization is failed'
+            if (count == 500) then
+                write(*,*) 'ERROR: fraptran outer cycle did not converge for ', count, ' iteration'
+                write(*,*) this % convergence % errors
                 stop
             endif
 

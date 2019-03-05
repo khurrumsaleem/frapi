@@ -11,8 +11,13 @@ im=38, na=11,
 mechan = 2, ngasr = 45,
 $end
 $frpcon
-enrch=4.5, fotmtl=2.0,
 dco=0.3743, thkcld=2.2677e-2, thkgap=3.2283e-3, totl=1.8668, cpl=5.528,
+dspg=0.315, dspgw=0.0315, vs=5,
+hplt=0.561, rc=0.0, hdish=1.209e-2, dishsd=0.0452,
+enrch=4.5, fotmtl=2.0,
+den=95.25, roughf=7.874e-5, rsntr=74.11,
+icm=4, cldwks=0.5, roughc=1.97e-5
+idxgas=6, fgpav=377.1, amfair=0.03846, amfhe=0.96154,
 iplant=-2,nsp=0, p2(1)=2248.08, tw(1)=600.0, go(1)=2.387e6, pitch=0.498,
 nunits=1, crephr=10.0, jdlpr=0, nplot=1, ntape=1,
 jn=11, jst(1:)=38*1, iq=0, fa=1,

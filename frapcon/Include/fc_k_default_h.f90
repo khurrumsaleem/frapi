@@ -26,7 +26,7 @@
         this % amfair              = 0.0d0                       ! Molar fraction of air
         this % amfarg              = 0.0d0                       ! Molar fraction of argon
         this % amffg               = 0.0d0                       ! Molar fraction of fission gas
-        this % amfhe               = 0.0d0                       ! Molar fraction of hellium
+        this % amfhe               = 1.0d0                       ! Molar fraction of hellium
         this % amfh2               = 0.0d0                       ! Molar fraction of hydrogen
         this % amfkry              = 0.0d0                       ! Molar fraction of krypton
         this % amfn2               = 0.0d0                       ! Molar fraction of nitrogen

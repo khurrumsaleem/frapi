@@ -1129,6 +1129,8 @@ contains
                 this % dfcon % r__gadoln(:)    = tmp3(:)
             case("cladding surface temperature, k")
                 this % dfcon % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
+            case("cladding outer surface temperature, c")
+                this % dfcon % r__cladt(:)     = (/( tcf(var(i)), i = 1, n )/)
             case("axial crud thickness multiplier")
                 this % dfcon % r__crudmult(:)  = var(:)
             case("neutron flux, 1|(cm^2*s)")
@@ -1136,6 +1138,8 @@ contains
             case("fuel enrichment by u-235, %")
                 call linterp(var,  this % dfcon % r__deltaz(1:n), tmp3, n)
                 this % dfcon % r__enrch(:) = tmp3(:)
+            case('film heat transfer coefficient, w/(k*m^2)')
+                continue ! TODO: check if there is
             case default
                 call error_message(key, 'real rank 1 in the frapcon set-list')
             end select
@@ -1227,6 +1231,10 @@ contains
                 ! average linear power, W/cm -> average linear power, kW/ft
                 this % dftran % r__RodAvePower(it3) = a * 1.D-3 / cm_to_ft
                 this % dftran % r__axlinpower(1:n) = var(:)
+                if (minval(var) < 1.D-9 ) then
+                    write(*,*) 'ERROR: given linear power distribution is too small', var
+                    call backtrace
+                endif
             case("linear power, w/cm")
                 call this % set_r8_1('linear power, w|cm', var)
             case("axial mesh thickness, cm")
@@ -1244,9 +1252,11 @@ contains
                 this % dftran % r__htclev(1:n) = this % dftran % axnodelevat(2:n+1)
                 this % dftran % r__zone = n
 
-            case('heat transfer coefficient, w/(k*m^2)')
+            case('film heat transfer coefficient, w/(k*m^2)')
                 it = if_a_else_b(this % is_initdone, three, one)
-                this % dftran % r__htca(it,1:n) = var(:)
+                !this % dftran % r__htca(it,1:n) = var(:) / Bhft2FtoWm2K
+                this % dftran % r__htca(it,1:n) = sum(var * this % dftran % axialmesh) &
+                                                / sum(this % dftran % axialmesh) / Bhft2FtoWm2K
             case("bulk coolant temperature, c")
                 it = if_a_else_b(this % is_initdone, three, one)
                 this % dftran % r__tblka(it,1:n) = (/( tcf(var(i)), i = 1, n )/)
@@ -1254,10 +1264,12 @@ contains
                 it = if_a_else_b(this % is_initdone, three, one)
                 this % dftran % r__tblka(it,1:n) = (/( tcf(var(i)), i = 1, n )/)
             case('coolant pressure, mpa')
-                a = sum(var(:)) / n * MPatoPSI
+                a = sum(var * this % dftran % axialmesh) / sum(this % dftran % axialmesh) * MPatoPSI
                 it = if_a_else_b(this % is_initdone, three, one)
                 this % dftran % r__coolpress(1:n) = a ! TODO: distributed pressure does not work
                 this % dftran % r__pbh(it) = a
+            case("cladding outer surface temperature, c")
+                continue ! TODO: check if there is this option
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1537,7 +1549,7 @@ contains
                 call this % get_r8_1 ('bulk coolant temperature, c', var)
             case('total gap conductance, w|(m^2*k)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
-            case('heat transfer coefficient, w/(k*m^2)')
+            case('gap heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
@@ -1625,6 +1637,7 @@ contains
             case('pellet doppler temperature, c')
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+<<<<<<< HEAD
                 var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case('pellet doppler temperature 1, c')
                 tmp1(:) = 0d0
@@ -1647,6 +1660,11 @@ contains
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
                 var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
+=======
+                var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
+            case('film heat transfer coefficient, w/(k*m^2)')
+                var = 0.d0 !TODO: find the variable
+>>>>>>> develop_js2
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
@@ -1710,7 +1728,7 @@ contains
                 var(:) = this % dftran % r__filmcoeffav(1:n) * Bhft2FtoWm2K
             case('heat transfer coefficient, w|m^2k')
                 var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
-            case('heat transfer coefficient, w/(k*m^2)')
+            case('gap heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
             case('outer oxide thickness, mm')
                 var(:) = this % dftran % r__eosoxidethick(1:n) * fttomm
@@ -1841,6 +1859,9 @@ contains
                 var(:) = (/( tfc(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
             case("linear power, w/cm")
                 var(:) = this % dftran % r__axlinpower(1:n)
+            case('film heat transfer coefficient, w/(k*m^2)')
+                it = if_a_else_b(this % is_initdone, three, one)
+                var(:) = this % dftran % r__htca(it,1:n) * Bhft2FtoWm2K
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select
