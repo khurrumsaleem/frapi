@@ -1032,6 +1032,14 @@ contains
             case("linear power, w/cm")
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
+
+            case("fuel pellet diameter, cm")
+                this % dftran % r__fuelpeldiam = var * cmtoft
+            case("gap thickness, cm")
+                this % dftran % r__gapthk = var * cmtoft
+            case("outer cladding diameter, cm")
+                this % dftran % r__roddiameter = var * cmtoft
+
             case default
                 call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
