@@ -1255,7 +1255,11 @@ contains
                 this % dftran % r__coolpress(1:n) = a ! TODO: distributed pressure does not work
                 this % dftran % r__pbh(it) = a
             case("cladding outer surface temperature, c")
-                continue ! TODO: check if there is this option
+                ! To set cladding temperatures, set the coolant temperature 
+                ! equal to the desired cladding temperature,
+                ! and enter a very large value for the heat transfer coefficient
+                call this % set_r8_1 ('bulk coolant temperature, c', var)
+                this % dftran % r__htca(it,1:n) = 2.d+6 / Bhft2FtoWm2K
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
