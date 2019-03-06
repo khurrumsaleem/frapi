@@ -1018,7 +1018,7 @@ contains
             case("gadolinia weight fraction")
                 this % dftran % r__gadoln(1:n) = var
             case("fuel enrichment by u-235, %")
-                continue
+                write(*,*) 'WARNING: the parameter is not available yet in FRAPTRAN: '//key
     !        case("ProfileStartTime")
     !            this % dftran % r__ProfileStartTime(it_) = var
             case("vplen")
@@ -1266,6 +1266,7 @@ contains
                 ! To set cladding temperatures, set the coolant temperature 
                 ! equal to the desired cladding temperature,
                 ! and enter a very large value for the heat transfer coefficient
+                it = if_a_else_b(this % is_initdone, three, one)
                 call this % set_r8_1 ('bulk coolant temperature, c', var)
                 this % dftran % r__htca(it,1:n) = 2.d+6 / Bhft2FtoWm2K
             case default
