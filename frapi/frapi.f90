@@ -814,7 +814,7 @@ contains
             case("pitch")
                 this % dftran % r__pitch = var
             case("fuel rod pitch, cm")
-                this % dftran % r__pitch = var * cmtom
+                this % dftran % r__pitch = var * cmtoft
             case("bowthr")
                 this % dftran % r__bowthr = var
             case("dofang")
