@@ -72,7 +72,7 @@ MODULE Restart_fraptran
     !
     Write_to_Output = .FALSE.
     trecrd = 0.0_r8k
-    
+
     ! Read through the FRAPCON-to-FRAPTRAN restart file for every FRAPTRAN problem time until the correct timestep 
     ! to read the restart data is reached
     Read_FRAPCON_Restart: DO
@@ -347,8 +347,12 @@ MODULE Restart_fraptran
         DEALLOCATE (tempfs, radfs, radfsn, FrapconTemp, burado, radpowo)
         
         ! Exit only if the correct time has been read from the FRAPCON restart information
-        IF (trecrd >= (trest - em03) ) EXIT Read_FRAPCON_Restart
-        !if ( .not. is_export ) exit read_frapcon_restart
+        if (is_export) then
+            exit read_frapcon_restart
+            trest = trecrd
+        else
+            IF (trecrd >= (trest - em03) ) EXIT Read_FRAPCON_Restart
+        endif
         
     END DO Read_FRAPCON_Restart
     !

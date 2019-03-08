@@ -965,6 +965,7 @@ contains
                 this % dftran % r__pbh(it3) = var
             case("inlet coolant pressure, mpa")
                 this % dftran % r__pbh(it3) = var * MPatoPSI
+                this % dftran % r__coolpress(1:n) = var * MPatoPSI
             case("inlet coolant temperature, c")
                 this % dftran % intcool = var + 273.15
             case("rodavepower")
@@ -1125,8 +1126,18 @@ contains
                 this % dfcon % r__gadoln(:)    = tmp3(:)
             case("cladding surface temperature, k")
                 this % dfcon % r__cladt(:)     = (/( tkf(var(i)), i = 1, n )/)
+                this % dfcon % r__go(:) = 0.d0
             case("cladding outer surface temperature, c")
-                this % dfcon % r__cladt(:)     = (/( tcf(var(i)), i = 1, n )/)
+                !Each time step where
+                !the temperature will be set by the
+                !user, the input variable, go, should
+                !be set equal to 0.0.
+                this % dfcon % r__go(:) = 0.d0
+                this % dfcon % r__cladt(:) = (/( tcf(var(i)), i = 1, n )/)
+                ! wtf?? : why it does metter for the 'ifixedtsurf = 1' case ?
+                this % dfcon % r__tw(it) = tcf(var(1))
+                this % dfcon % r__coolanttemp(it,1:n+1) = tcf(var(1))
+                this % dfcon % r__tcoolant(1:n+1) = tcf(var(1))
             case("axial crud thickness multiplier")
                 this % dfcon % r__crudmult(:)  = var(:)
             case("neutron flux, 1|(cm^2*s)")
@@ -1268,7 +1279,8 @@ contains
                 ! and enter a very large value for the heat transfer coefficient
                 it = if_a_else_b(this % is_initdone, three, one)
                 call this % set_r8_1 ('bulk coolant temperature, c', var)
-                this % dftran % r__htca(it,1:n) = 2.d+6 / Bhft2FtoWm2K
+                this % dftran % r__htca(it,1:n) = 2.d+9 / Bhft2FtoWm2K
+                this % dftran % r__gbh(it) = 0.d0
             case default
                 call error_message(key, 'real rank 1 in the fraptran set-list')
             end select
@@ -1547,8 +1559,14 @@ contains
                 call this % get_r8_1 ('bulk coolant temperature, c', var)
             case('total gap conductance, w|(m^2*k)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
-            case('gap heat transfer coefficient, w/(k*m^2)')
+            case('gap total heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
+            case('gap solid heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dfcon % r__SolidHgap(1:n) * Bhft2FtoWm2K
+            case('gap gas heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dfcon % r__GasHgap(1:n) * Bhft2FtoWm2K
+            case('gap radiation heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dfcon % r__RadHgap(1:n) * Bhft2FtoWm2K
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
             case('thermal gap thickness, um')
@@ -1701,8 +1719,14 @@ contains
                 var(:) = this % dftran % r__filmcoeffav(1:n) * Bhft2FtoWm2K
             case('heat transfer coefficient, w|m^2k')
                 var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
-            case('gap heat transfer coefficient, w/(k*m^2)')
-                var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
+            case('gap total heat transfer coefficient, w/(k*m^2)')
+                var(:) = (/( sum(this % dftran % r__htcgap(:,i)), i = 1, n )/) * Bhft2FtoWm2K
+            case('gap solid heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dftran % r__htcgap(3,1:n) * Bhft2FtoWm2K
+            case('gap gas heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dftran % r__htcgap(1,1:n) * Bhft2FtoWm2K
+            case('gap radiation heat transfer coefficient, w/(k*m^2)')
+                var(:) = this % dftran % r__htcgap(2,1:n) * Bhft2FtoWm2K
             case('outer oxide thickness, mm')
                 var(:) = this % dftran % r__eosoxidethick(1:n) * fttomm
             case('inner oxide thickness, mm')

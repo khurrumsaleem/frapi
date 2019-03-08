@@ -1064,5 +1064,6 @@ real(r8k)                 , dimension(:,:)      , allocatable          :: r__enr
 real(r8k)                 , dimension(:,:)      , allocatable          :: r__tplbot 
 real(r8k)                 , dimension(:,:)      , allocatable          :: r__bostemp 
 real(r8k)                 , dimension(:,:)      , allocatable          :: r__cldstrn 
+real(r8k)                 , dimension(:,:)      , allocatable          :: r__htcgap 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: r__grsv 
 real(r8k)                 , dimension(:,:,:)    , allocatable          :: r__tplna 

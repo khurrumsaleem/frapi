@@ -415,7 +415,7 @@ module fraptran2
         nsteadytrans = 1
 
         ! TODO: must be tested !!!
-        do i = 1, 10
+        do i = 1, 1
             call this % next(t1-t0)
         enddo
 
@@ -546,7 +546,7 @@ module fraptran2
 
             count = count + 1
 
-            if (count == 500) then
+            if (count == 1000) then
                 write(*,*) 'ERROR: fraptran outer cycle did not converge for ', count, ' iteration'
                 write(*,*) this % convergence % errors
                 stop

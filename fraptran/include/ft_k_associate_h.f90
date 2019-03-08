@@ -1066,3 +1066,4 @@ this % cldstrn                 => cldstrn
 this % grsv                    => grsv                          
 this % tplna                   => tplna                         
 this % axlinpower              => axlinpower
+this % htcgap                  => htcgap

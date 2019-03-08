@@ -1229,6 +1229,588 @@ MODULE Output_Data_frapcon
     !
     END SUBROUTINE fraptotrace
     !
+
+    SUBROUTINE print2_
+    USE Kinds_frapcon
+    USE conversions_frapcon
+    USE Material_Properties_frapcon, ONLY : MatProp
+    IMPLICIT NONE
+    !>@brief
+    !> Subroutine print2 produces the output file data
+    !
+    INTEGER(ipk) :: z, i, ii, nrp1, nrp2, itm1, l, im1na, im1na2, im1, ij, iwarn, im2, im2na, im2na2, &
+      &             iit, jpeak1, ii_Next, pknode
+    REAL(r8k) :: wtk, tsecon, tpsec, toxo, toxok, testr, tcom, tcim, tbark, tagk, siflmp, qcm, presg, &
+      &          powerm, pinsi, pinbr, oxmils, uo2llx, tsr, timday, tdays, tcl, resis, resi, radcnd, qpeakm, &
+      &          qavm, oxmicr, hgapsi, hfllsi, gthcon, tsrk, totcr, tclk, sigm3b, sigm3, sigm2b, sigm2, sigm1b, &
+      &          sigm1, gascnd, fulden, expnr, eps3, eps2, eps11, cpwx2, dpwx, dlrdsi, densix, deltp, &
+      &          delday, delbpm, creapl, crack, congap, concnd, cgapsi, bppm, bpm, tttk, totdsi, totcrm, swlrmc, &
+      &          rpm, roxm, rox, rfnci, relocs, relocm, rcom, rcohm, vva, vfrcrf, vfrcpr, vfrcgp, vfrcds, vfrccr, &
+      &          tsfk, tpcak, tnterk, thvvsi, tcrkk, tcrkf, tagak, tafak, rcoh, rcihm, rcih, radm, txefr, tkrfr, &
+      &          th2fr, tfgpct, tarfr, sigrab, sigra, sighpo, sighpi, sigaxb, sigax, sghpob, sghpib, exprmc, expnrm, &
+      &          expnrl, epsra, epshpo, epshpi, dpwx2, denrmc, delrng, crprml, crprmc, creapm, busi, tfrk, tcak, tblkk, &
+      &          sigrpo, sigrpi, sighab, sigha, sgrpob, sgrpib, fmgrpct, fdi, tblkf, srm, epsunp, epsrpo, epsrpi, &
+      &          epsha, epsax, epprpo, epprpi, eppra, epphpo, epphpi, eppha, eppax, epgro, cpdltx, creap, exprml, &
+      &          denrml, swlrml, pressMPa, bp, bpp, oxide
+    INTEGER(ipk), DIMENSION(2) :: icltemp
+    REAL(r8k), DIMENSION(20) :: aaa
+    !
+    iwarn = 0
+    !
+    ! Determine which array value to used based on whether the print is for the axial loop or summary
+    SELECT CASE (PrintType)
+    CASE ('Axial Loop')
+        z = j - 1
+        !
+        nrp1 = nr + 1
+        nrp2 = nr + 2
+        itm1 = it - 1
+        IF (it == 1) THEN
+            IF (j == jpeak(1)) THEN
+                dlrdsi = intomm * dlrod
+!                WRITE (ounit,400) dlrdsi, dlrod
+                dhfll = hfll - (totl * fttoin)
+                hfllsi = dhfll * intomm
+!                WRITE (ounit,401) hfllsi, dhfll
+            END IF
+            RETURN
+        END IF
+        IF (j == jmax + 1) THEN
+            ! End of timestep loop
+            buavearray(it-1) = bu
+            CALL pghead
+            busi = bu / 1000.0_r8k
+            rfnci = rfnvff * cfv
+            tagak = tfk(taga(it))
+            tafak = tfk(tafa(it))
+            tpcak = tfk (tpca)
+            tsfk = tfk(tsfa(it))
+            tnterk = tfk(tntera)
+            thvv = hpv + hgv + hdshv + hcrv + rfnci + hporv + hva
+            voidvolarray(it-1) = thvv
+            thvvsi = thvv * in3tocm3
+            tplens = tfk(tplen)
+            tcrkf = 0.0_r8k
+            DO i = (jmin - 1), (jmax - 1)
+                tcrkf = tcrkf + (FuelTempRestruRad(i) + PelSurfTemp(i)) / 2.0_r8k * deltaz(i)
+            END DO
+            tcrkf = tcrkf / totl
+            tcrkk = tfk(tcrkf)
+            vfrcpl = hpv / thvv
+            vfrccr = hcrv / thvv
+            vfrcds = hdshv / thvv
+            vva = hva / thvv
+            vfrcpr = hporv / thvv
+            vfrcrf = rfnci / thvv
+            vfrcgp = hgv / thvv
+            SELECT CASE (imox)
+            CASE (0)
+                tkrfr = 0.15_r8k * tfgfr
+                txefr = 0.85_r8k * tfgfr
+            CASE (1, 2)
+                tkrfr = 0.0588_r8k * tfgfr
+                txefr = 0.9412_r8k * tfgfr
+            END SELECT
+            tarfr = 0.0_r8k
+            th2fr = 0.0_r8k
+            tfgpct = tfgfr * 100.0_r8k
+            pressMPa = press * PSItoMPa
+!            WRITE (ounit,780) itm1
+!            WRITE (ounit, 790) busi, bu, thefr, amfhe, th2fr, amfh2
+!            WRITE (ounit,810) tplens, tplen, vfrcpl, tn2fr, amfn2
+!            WRITE (ounit,820) tagak, taga(it), vfrcgp, tarfr, amfarg
+
+!            SELECT CASE (ngasmod)
+!            CASE (1, 2, 3)
+!                WRITE (ounit,830) tsfk, tsfa(it), vfrcrf, tkrfr, amfkry
+!                IF (hdish > 0.0_r8k) WRITE (ounit,840) tafak, tafa(it), vfrcds, txefr, amfxe
+!                IF (rc(1) > 0.0_r8k .AND. hdish == 0.0_r8k) WRITE (ounit,842) tpcak, tpca, vva, txefr, amfxe
+!            CASE (4)
+!                WRITE (ounit,831) tsfk, tsfa(it), vfrcrf, th2ofr, amfh2o
+!                IF (hdish > 0.0_r8k) WRITE (ounit,841) tafak, tafa(it), vfrcds
+!                IF (rc(1) > 0.0_r8k .AND. hdish == 0.0_r8k) WRITE (ounit,843) tpcak, tpca, vva
+!            END SELECT
+!            IF (hdish == 0.0_r8k .AND. rc(1) == 0.0_r8k) WRITE (ounit,853) tnterk, tntera, vfrcds, txefr, amfxe
+
+!            SELECT CASE (ngasmod)
+!            CASE (1, 2, 3)
+!                WRITE (ounit,850) tafak, tafa(it), vfrcpr, th2ofr, amfh2o
+!            CASE (4)
+!                WRITE (ounit,851) tafak, tafa(it), vfrcpr
+!            END SELECT
+
+!            WRITE (ounit,852) tcrkk, tcrkf, vfrccr
+
+!            IF (hdish == 0.0_r8k .AND. rc(1) > 0.0_r8k) WRITE (ounit,854) tnterk, tntera, vfrcds
+!            IF (rc(1) > 0.0_r8k .AND. hdish > 0.0_r8k) WRITE (ounit,855) tpcak, tpca, vva
+
+!            SELECT CASE (ngasmod)
+!            CASE (1, 2, 3)
+!                WRITE (ounit,800) thvvsi, thvv, gasmo(itm1), pressMPa, press, tfgpct
+!            CASE (4)
+!                WRITE (ounit,800) thvvsi, thvv, gasmo(itm1), pressMPa, press, SUM(RB_rod(:,it))*100.0_r8k
+!                ! Output gas release fractions based on ANS 5.4 2011 (by G. Longoni, April 2015)
+!                WRITE (ounit,'(/,32x,a,2x,a)') 'ANS 5.4 2011 - Fuel Rod Cumulative Fission Gas Release Fractions (Release/Birth)'
+!                WRITE (ounit,'(/,32x,a,2x,a)') 'Short Lived Nuclides (Half Life <6 h)', &
+!                  &                            '| Long Lived Nuclides (6 h < Half Life < 60 days)'
+!                WRITE (ounit,'(/,40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-135m',RB_rod(1,it),'Xe-133',RB_rod(12,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-137',RB_rod(2,it),'Xe-135',RB_rod(13,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-138',RB_rod(3,it),'I-131',RB_rod(14,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-139',RB_rod(4,it),'I-133',RB_rod(15,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-85m',RB_rod(5,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-87',RB_rod(6,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-88',RB_rod(7,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-89',RB_rod(8,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-90',RB_rod(9,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'I-132',RB_rod(10,it)
+!                WRITE (ounit,'(40x,a8,2x,es12.2)') 'I-134',RB_rod(11,it)
+!                WRITE (ounit,'(/,41x,a8,1x,es12.2,18x,a8,es12.2)') 'Total ::',SUM(RB_rod(1:11,it)),'Total ::',SUM(RB_rod(12:15,it))
+!                WRITE (ounit,*)
+!            END SELECT          
+!            WRITE (ounit,940)
+!            SELECT CASE (mechan)
+!            CASE (1)
+!                WRITE (ounit,920)
+!                WRITE (ounit,860)
+!            CASE (2)
+!                WRITE (ounit,910)
+!                WRITE (ounit,860)
+!            END SELECT
+            DO i = (jmin - 1), (jmax - 1)
+                im1 = i - 1
+                im1na = im1 + na
+                im1na2 = im1na + na
+                sigra = sig(i,3) * PSItoMPa
+                sigrab = sig(i,3)
+                sigax = sig(i,2) * PSItoMPa
+                sigaxb = sig(i,2)
+                sighpo = sig(i,1) * PSItoMPa
+                sighpi = sighpo
+                sghpob = sig(i,1)
+                sghpib = sghpob
+                epshpo = eps(i,1) * 1.0e2_r8k
+                epshpi = epshpo
+                epsra = eps(i,3) * 1.0e2_r8k
+                epsax = eps(i,2) * 1.0e2_r8k
+!                WRITE (ounit,870) i,sigra,sigrab,sighpi,sghpib,sighpo,sghpob,sigax, &
+!                  &               sigaxb,epsra,epshpi,epshpo,epsax
+            END DO
+!            WRITE (ounit,903)
+!903         FORMAT (/,' cladding H2 concentration and its effect on ductility')
+!            WRITE (ounit,905)
+!905         FORMAT (/,1x,'axial',9x,'H2',10x,'excess H2',6x,'uniform',8x,'Fuel',11x,'Oxide layer',15x,'Fast', &
+!              &    7x,'Cumulative Fission Gas')
+!            WRITE (ounit,907)
+!907         FORMAT (' region   concentration  concentration    strain',9x,'Duty',12x,'thickness',14x,'Fluence',9x,'Release,')
+!            WRITE (ounit,908)
+!908         FORMAT (15x,'ppm',13x,'ppm',10x,'%',12x,'Index',9x,'mils   (microns)',9x, 'n/m^2',11x,'percent')
+            DO i = jmin, jmax
+                oxmils = EOSZrO2Thk(i-1) * 12000.0_r8k
+                oxmicr = oxmils * intomm
+                im1 = i - 1
+                fmgrpct = rdotwrt(im1) * 100.0_r8k
+                epsunp = 100.0_r8k * UniformAxNodStrn(im1)
+                IF (epsunp < 0.0_r8k) THEN
+                    epsunp = 0.0_r8k
+                    iwarn = 1
+                END IF
+                !
+                IF (it == 1) THEN
+                    FDItave(im1) = MAX(580.0_r8k, SurfTempOxide(im1))
+                ELSE
+                    FDItave(im1) = (FDItave(im1) * ProblemTime(it-1) + MAX(580.0_r8k, &
+                      &             SurfTempOxide(im1)) * (ProblemTime(it) - ProblemTime(it-1))) / ProblemTime(it)
+                END IF
+                fdi = (MAX(0.0_r8k, (FDItave(im1) - 580.0_r8k) / 100.0_r8k * ProblemTime(it) * sectohr / 1000.0_r8k)) ** 2
+!                SELECT CASE (ngasmod)
+!                CASE (1, 2, 3)
+!                    WRITE (ounit,909) im1, CladH2Concen(im1), ExcessH2Concen(im1), epsunp, fdi, &
+!                      &               oxmils, oxmicr, FastFluence(i-1), fmgrpct
+!                CASE (4)
+!                    WRITE (ounit,909) im1, CladH2Concen(im1), ExcessH2Concen(im1), epsunp, fdi, &
+!                      &               oxmils, oxmicr, FastFluence(i-1), SUM(RB_axial(:,im1))*100.0_r8k
+!                END SELECT
+!909             FORMAT (2x,i3,6x,f8.2,8x,f8.2,6x,f6.3,6x,f8.2,9x,f7.4,1x,'(',f7.3,')', 7x, e11.4, 7x, f6.2)
+            END DO
+!            IF (iwarn == 1) WRITE (ounit,906)
+!906         FORMAT ('***Warning:  Calculated values of uniform strain were negative.  They have been set equal to 0.0.  ***')
+            iwarn = 0
+!            WRITE (ounit,880)
+            DO i = jmin, jmax
+                im1 = i - 1
+                im2 = i - 2
+                im2na = im2 + na
+                im2na2 = im2na + na
+                eppra = epp(i-1,3) * 100.0_r8k
+                eppax = epp(i-1,2) * 100.0_r8k
+                epphpi = epp(i-1,1) * 100.0_r8k
+                epphpo = epphpi
+                ij = nr * i - 1
+                cpdltx = StoredEnergy(im1) * BTUlbtoJkg
+                tcak = tfk(CladAveTemp(im1))
+                tbark = tfk(PelAveTemp(im1))
+                tfrk = tfk(tmpfuel(nr,im1))
+                tblkf = (BulkCoolantTemp(im1) + BulkCoolantTemp(i)) / 2.0_r8k
+                tblkk = tfk(tblkf)
+                epgro = CladIrradGrowStrn(i-1) * 100.0_r8k
+!                WRITE (ounit,890) im1, tfrk, tmpfuel(nr,im1), tbark, PelAveTemp(im1), tcak, CladAveTemp(im1),  &
+!                     &              tblkk, tblkf, cpdltx, StoredEnergy(im1), eppra, epphpi, epphpo, eppax, epgro
+                IF (tfrk > ftmelt) THEN
+                    imelt = 1
+!                    WRITE (ounit,331) im1, tfrk, ftmelt
+                    WRITE (*,331) im1, tfrk, ftmelt
+331                 FORMAT ('Fuel has melted.  FRAPCON-4 is not validated beyond melting point.',/, &
+                      &     'Centerline temperature at node ',i2,' is', f10.2,'K.',/, &
+                      &     'Fuel melting temperature is ',f10.2,'K.',/,'Code execution continuing.')
+                END IF
+                IF (tcak > ctmelt) THEN
+!                    WRITE (ounit,332) im1, tcak, ctmelt
+                    WRITE (*,332) im1, tcak, ctmelt
+332                 FORMAT ('Cladding has melted.  FRAPCON-4 is not validated beyond melting point.',/, &
+                      &     'Cladding average temperature at node',i2,' is', f10.2,'K.',/, &
+                      &     'Cladding melting temperature is ',f10.2,'K.',/,'Code execution stopped.')
+                    STOP
+                END IF
+            END DO
+            dlrdsi = dlrod * intomm
+!            WRITE (ounit,750) dlrdsi, dlrod
+            dhfll = hfll - (totl * fttoin)
+            hfllsi = dhfll * intomm
+!            WRITE (ounit,751) hfllsi, dhfll
+        ELSE
+            ! Print data for the axial node
+            IF (j == jpeak(1) .OR. jdlpr /= 1) THEN
+                IF (jdlpr >= 0) CALL pghead
+            END IF
+            fulden = den * 0.01_r8k
+            tpsec = ProblemTime(it-1)
+            IF (tpsec <= 0.001_r8k) tpsec = 0.0_r8k
+            tsecon = ProblemTime(it)
+            qcm = qc(j-1) * Bhft2toWm2
+            !
+            ! These adjustments by 10 should be removed when the cause is found_frapcon.
+            !
+            bpp = BOSNodeburnup(j-1) / 10.0_r8k
+            bp = EOSNodeburnup(j-1) / 10.0_r8k
+            buarray(it-1,j-1) = bp * 10.0_r8k
+            fuelburntot(j-1) = buarray(it-1,j-1)
+            delbp = StepNodeburnup(j-1) / 10.0_r8k
+            !
+            bpm = bp / 1000.0_r8k
+            bppm = bpp / 1000.0_r8k
+            delbpm = delbp / 1000.0_r8k
+            wt = (BulkCoolantTemp(j) + BulkCoolantTemp(j-1)) / 2.0_r8k
+            wtk = tfk(wt)
+            oxide = EOSZrO2Thk(j-1) * fttoin
+            oxmils = oxide * 1000.0_r8k
+            oxidelayer(j-1) = oxmils
+            oxmicr = oxmils * intomm
+            hflmp = FilmCoefficient(j-1)
+            siflmp = hflmp * Bhft2FtoWm2K
+            toxo = SurfTempOxide(j-1)
+            toxok = tfk(toxo)
+            tci = CladInSurfTemp(j-1)
+            tco = CladOutSurfTemp(j-1)
+            tcom = tfk(tco)
+            tcim = tfk(tci)
+            hgapt = TotalHgap(j-1)
+            hsolid = SolidHgap(j-1)
+            hgap = GasHgap(j-1)
+            hgapr = RadHgap(j-1)
+            hgapsi = hgapt * Bhft2FtoWm2K
+            gapHTC(j-1) = hgapsi
+            testr = 0.0_r8k
+            pinbr = MAX(RinterfacPress(j-1), testr)
+            pinsi = pinbr * PSItoMPa
+            crack = FuelCondFactor(j-1)
+            tagk = tfk(GapAveTemp(j-1))
+            presg = press * PSItoPa
+            cgapsi = MatProp ('GAS', 'THERMCOND', tagk)
+            congap = cgapsi * WmKtoBhftF
+            tbark = tfk(PelAveTemp(j-1))
+            Powerm = Power(j-1) * mtoft
+            tdays = ProblemTime(itm1) * sectoday
+            qpeakm = qpeak * mtoft
+            qavm = qav * mtoft
+            uo2llx = 0.0_r8k
+            dpwx = 0.0_r8k
+            dpwx2 = 0.0_r8k
+            densix = 0.0_r8k
+            gascnd = hgap / hgapt
+            concnd = hsolid / hgapt
+            radcnd = hgapr / hgapt
+            resi = 1.0_r8k / hgapsi
+            resis = 1.0_r8k / hgapt
+            timday = tsecon * sectoday
+            tdays = tpsec * sectoday
+            deltp = tsecon - tpsec
+            delday = deltp * sectoday
+            tsr = tmpfuel(1,j-1)
+            tcl = tmpfuel(nr,j-1)
+            cltemparray(it-1,j-1) = tcl
+            storedearray(it-1,j-1) = StoredEnergy(j-1)
+            tclk = tfk(tcl)
+            tsrk = tfk(tsr)
+            eps11 = eps(j-1,1) * 100.0_r8k
+            eps2 = eps(j-1,2) * 100.0_r8k
+            eps3 = eps(j-1,3) * 100.0_r8k
+            totcr = eps11
+            creap = eppsv(j-1,1) * 100.0_r8k
+            expnr = totcr - creap
+            sigm1b = sig(j-1,1) / 1.0e3_r8k
+            sigm2b = sig(j-1,2) / 1.0e3_r8k
+            sigm3b = sig(j-1,3) / 1.0e3_r8k
+            sigm1 = sigm1b * PSItoKPa
+            sigm2 = sigm2b * PSItoKPa
+            sigm3 = sigm3b * PSItoKPa
+            crack = 1.0_r8k
+            strainarray(it-1,j-1) = eps11
+            creaparray(it-1,j-1) = epp(j-1,1)
+            IF (it == 2) THEN
+                straindiffarray(it-1,j-1) = 0.0_r8k
+                creapratearray(j-1) = creaparray(it-1,j-1) / ProblemTime(it)
+            ELSE
+                straindiffarray(it-1,j-1) = strainarray(it-1,j-1) - strainarray(it-2,j-1)
+                creapratearray(j-1) = (creaparray(it-1,j-1) - creaparray(it-2,j-1)) / (ProblemTime(it) - ProblemTime(it-1))
+            END IF
+            creapl = creap * (rco - 0.5_r8k * tcc) * 10.0_r8k
+            cladcrptot(j-1) = creapl
+            creapm = creapl * intomm
+            expnrl = expnr * (rco - 0.5_r8k * tcc) * 10.0_r8k + eps3 * 0.5_r8k * tcc * 10.0_r8k
+            expnrm = expnrl * intomm
+            totcrl(j-1) = creapl + expnrl
+            totcrm = totcrl(j-1) * intomm
+            rcih = CladDiamHot(j-1) / 2.0_r8k
+            rcoh = rcih + tcc * (1.0_r8k + eps3 / 100.0_r8k)
+            rox = rcoh + oxide
+            rcihm = rcih * intocm
+            rcohm = rcoh * intocm
+            roxm = rox * intocm
+            !
+            DO i = 2, nr
+                l = nr + 1 - i
+                ij = nr * (j-1) + l - 1
+                delrng = (crad(l,j-1) - crad(l+1,j-1))
+                uo2llx = uo2llx + delrng * uo2exp(l,j-1)
+                IF (i == 1) uo2llx = uo2llx + delrng * uo2exp(l,j-1)
+                dpwx = dpwx + delrng * dpw(l,j-1)
+                densix = densix + delrng * densf(l,j-1)
+            END DO
+            dpwxarray(it-1,j-1) = dpwx / crad(1,j-1)
+            IF (it == 2) THEN
+                dpwxrate(j-1) = dpwxarray(it-1,j-1) / ProblemTime(it)
+            ELSE
+                dpwxrate(j-1) = (dpwxarray(it-1,j-1) - dpwxarray(it-2,j-1)) / (ProblemTime(it) - ProblemTime(it-1))
+            END IF
+            rpm = rp * intocm
+            rcom = rco * intocm
+            denrml = densix * 1000.0_r8k
+            fueldentot(j-1) = denrml   ! Total densification for axial node
+            denrmc = denrml * intomm
+            swlrml = dpwx * 1000.0_r8k
+            fuelswltot(j-1) = swlrml   ! Total swelling for axial node
+            swlrmc = swlrml * intomm
+            exprml = uo2llx * 1000.0_r8k
+            fuelexptot(j-1) = exprml   ! Total thermal expansion for axial node
+            exprmc = exprml * intomm
+            relocm = Relocation(j-1) * 1000.0_r8k
+            relocm_true = relocm
+            totdef(j-1) = denrml + swlrml + exprml + relocm
+            totinner(j-1) = eps11 * (rco + rci) * 0.5_r8k * 10.0_r8k - eps3 * (rco - rci) * 0.5_r8k * 10.0_r8k
+            gapmech(j-1) = thkgap(j-1) * 1000.0_r8k - totdef(j-1) + totinner(j-1)
+            gapthrm(j-1) = cgapsi / (hgapsi * gascnd) * mtoin * 1000.0_r8k
+            relocm = relocm + gapmech(j-1) - gapthrm(j-1)
+            relocm_mod = relocm
+            fuelrelmod(j-1) = relocm
+            relocs = relocm * intomm
+            totdef(j-1) = denrml + swlrml + exprml + relocm
+            gapmech(j-1) = thkgap(j-1) * 1000.0_r8k - (denrml + swlrml + exprml + 0.5_r8k * relocm_true) + totinner(j-1)
+            gapplot(j-1) = thkgap(j-1) * 1000.0_r8k - totdef(j-1) + totinner(j-1)
+            ! colddef = cold displacement of fuel radius (inches) (passed to rstfs)
+            colddef(z) = (totdef(j-1) - relocm - exprml) / 1000.0_r8k
+            totdsi = totdef(j-1) * intomm
+            IF (j /= jpeak(1) .AND. jdlpr == 1) RETURN
+            IF (jdlpr < 0) RETURN
+!            WRITE (ounit,410) j-1, itm1
+!            WRITE (ounit,420) qavm, qav
+!            WRITE (ounit,430) Powerm, Power(j-1), qcm, qc(j-1)
+!            WRITE (ounit,440) qpeakm, qpeak
+!            WRITE (ounit,450) tdays, tpsec, bppm, bpp
+!            WRITE (ounit,460) delday, deltp, delbpm, delbp
+!            WRITE (ounit,470) timday, tsecon, bpm, bp
+!            WRITE (ounit,480)
+            radm = hrad(nr,j-1) * intocm
+!            WRITE (ounit,490) radm, hrad(nr,j-1), tclk, tcl, rapow(nr,j-1)
+            DO ii = 1, (nr - 2)
+                i = nr - ii
+                tttk = tfk(tmpfuel(i,j-1))
+                radm = hrad(i,j-1) * intocm
+!                WRITE (ounit,510) radm, hrad(i,j-1), tttk, tmpfuel(i,j-1), rapow(i,j-1)
+            END DO
+            radm = hrad(1,j-1) * intocm
+            PelletRad(j-1) = hrad(1,j-1)
+!            WRITE (ounit,540) radm, hrad(1,j-1), tsrk, tsr, rapow(1,j-1)
+!            WRITE (ounit,550) rcihm, rcih, tcim, tci
+!            WRITE (ounit,560) rcohm, rcoh, tcom, tco
+!            WRITE (ounit,570) roxm, rox, toxok, toxo
+!            WRITE (ounit,580) wtk, wt
+!            WRITE (ounit,590) rp, rpm
+!            WRITE (ounit,600) cgapsi, sigm3, sigm3b, eps3, congap, sigm2, sigm2b, eps2
+!            WRITE (ounit,610) sigm1, sigm1b, eps11
+!            WRITE (ounit,620) denrml, denrmc, hgapsi
+!            WRITE (ounit,630) swlrml, swlrmc, hgapt
+!            WRITE (ounit,640) exprml, exprmc
+!            WRITE (ounit,650) relocm, relocs, resi, resis, totdef(j-1), totdsi, siflmp, hflmp, crdtt(j-1)
+!            WRITE (ounit,660) rco, rcom
+!            WRITE (ounit,680) gascnd
+!            WRITE (ounit,700) creapl, creapm, concnd
+            ! define colddec= cladding permanent displacement (radial inches) for FRAPTRAN restart file
+            colddec(z) = creapl / 1000.0_r8k
+!            WRITE (ounit,720) expnrl, expnrm, radcnd
+!            WRITE (ounit,741) totcrl(j-1), totcrm, pinsi, pinbr
+            totinner(j-1) = eps11 * (rco + rci) * 0.5_r8k * 10.0_r8k - eps3 * (rco - rci) * 0.5_r8k * 10.0_r8k
+            cladinpermdef(j-1) = (eps11 * (rco + rci) * 0.5_r8k * 10.0_r8k - eps3 * (rco - rci) * 0.5_r8k * 10.0_r8k) * 0.001_r8k
+!            WRITE (ounit,742) rci, rci * intocm, totinner(j-1), totinner(j-1) * intomm
+        END IF
+    CASE ('Summary')
+        !
+        ! Summary report
+        !
+        jpeak(1) = jfix
+        z = jfix
+        ii_Next = 2
+        DO ii = 2, im
+            IF (ii == ii_Next) THEN
+                ii_Next = ii + 50
+                CALL pghead
+!                WRITE (ounit,960)
+!                IF (nunits == 1) WRITE (ounit,970)
+!                IF (nunits == 0) WRITE (ounit,980)
+            END IF
+            iit = ii - 1
+            jpeak1 = jpeak(jst(ii)) - 1
+            aaa = 0.0_r8k
+            SELECT CASE (nunits)
+            CASE (0)
+                aaa(1) = ProblemTime(ii) * sectoday
+                aaa(2) = pkBurnup(iit) * 1.0e-3_r8k
+                aaa(3) = pkPower(iit) * mtoft
+                aaa(4) = tfk(pkODCladTemp(iit))
+                aaa(5) = tfk(pkAveCladTemp(iit))
+                aaa(6) = tfk(pkIDCladTemp(iit))
+                aaa(7) = pkGap(iit) * intomm
+                aaa(8) = pkFisGasRelFrac(iit) * 100.0_r8k
+                aaa(9) = tfk(pkPelSurfTemp(iit))
+                aaa(10) = tfk(pkPelAveTemp(iit))
+                aaa(11) = tfk(pkPelCentTemp(iit))
+                aaa(12) = pkIntefacePres(iit) * PSItoMPa
+                aaa(13) = pkHoopStres(iit) * PSItoMPa
+                aaa(14) = pkAxlStres(iit) * PSItoMPa
+                aaa(15) = pkHoopStrain(iit) * 100.0_r8k
+                aaa(16) = pkFuelPelOD(iit) * intomm
+                aaa(17) = pkGapCond(iit) * Bhft2FtoWm2K
+                aaa(18) = pit(iit) * PSItoMPa
+                aaa(19) = pkZrO2(iit) * intomm
+                aaa(20) = pkH2up(iit)
+!                SELECT CASE (ngasmod)
+!                CASE (1, 2, 3)
+!                    WRITE (ounit,1000) iit, aaa(1), jpeak1, (aaa(i), i=2, 7), (aaa(i), i=9, 18), aaa(8), aaa(19), aaa(20)
+!                CASE (4)
+!                    WRITE (ounit,1000) iit, aaa(1), jpeak1, (aaa(i), i=2, 7), (aaa(i), i=9, 18), &
+!                      &                SUM(RB_rod(:,ii))*100.0_r8k, aaa(19), aaa(20)
+!                END SELECT
+            CASE (1)
+                aaa(1) = ProblemTime(ii) * sectoday
+                aaa(2) = pkBurnup(iit) * 1.0e-3_r8k
+                aaa(3) = pkPower(iit)
+                aaa(4) = pkODCladTemp(iit)
+                aaa(5) = pkAveCladTemp(iit)
+                aaa(6) = pkIDCladTemp(iit)
+                aaa(7) = pkGap(iit)
+                aaa(8) = pkFisGasRelFrac(iit) * 100.0_r8k
+                aaa(9) = pkPelSurfTemp(iit)
+                aaa(10) = pkPelAveTemp(iit)
+                aaa(11) = pkPelCentTemp(iit)
+                aaa(12) = pkIntefacePres(iit)
+                aaa(13) = pkHoopStres(iit)
+                aaa(14) = pkAxlStres(iit)
+                aaa(15) = pkHoopStrain(iit) * 100.0_r8k
+                aaa(16) = pkFuelPelOD(iit)
+                aaa(17) = pkGapCond(iit)
+                aaa(18) = pit(iit)
+                aaa(19) = pkZrO2(iit)
+                aaa(20) = pkH2up(iit)
+!                SELECT CASE (ngasmod)
+!                CASE (1, 2, 3)
+!                    WRITE (ounit,990) iit, aaa(1), jpeak1, (aaa(i), i=2, 7), (aaa(i), i=9, 18), aaa(8), aaa(19), aaa(20)
+!                CASE (4)
+!                    WRITE (ounit,990) iit, aaa(1), jpeak1, (aaa(i), i=2, 7), (aaa(i), i=9, 18), &
+!                      &               SUM(RB_rod(:,ii))*100.0_r8k, aaa(19), aaa(20)
+!                END SELECT
+            END SELECT
+        END DO
+        srm = 100.0_r8k
+        DO i = 1, im
+            srm = MIN(pkHoopStrain(i-1), srm)
+        END DO
+        CALL pghead
+!        WRITE (ounit,1010) ABS(pkHoopStrain(im-1) - srm)
+!        SELECT CASE (ngasmod)
+!        CASE (1, 2, 3)
+!            WRITE (ounit,1020) tfgfr
+!        CASE (4)
+!            WRITE (ounit,1020) SUM(RB_rod(:,im))
+!            ! Output gas release fractions based on ANS 5.4 2011 (by G. Longoni, April 2015)
+!            WRITE (ounit,'(/,32x,a,2x,a)') 'ANS 5.4 2011 - Fuel Rod Cumulative Fission Gas Release Fractions (Release/Birth)'
+!            WRITE (ounit,'(/,32x,a,2x,a)') 'Short Lived Nuclides (Half Life <6 h)', &
+!              &                            '| Long Lived Nuclides (6 h < Half Life < 60 days)'
+!            WRITE (ounit,'(/,40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-135m',RB_rod(1,im),'Xe-133',RB_rod(12,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-137',RB_rod(2,im),'Xe-135',RB_rod(13,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-138',RB_rod(3,im),'I-131',RB_rod(14,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2,16x,a8,2x,es12.2)') 'Xe-139',RB_rod(4,im),'I-133',RB_rod(15,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-85m',RB_rod(5,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-87',RB_rod(6,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-88',RB_rod(7,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-89',RB_rod(8,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'Kr-90',RB_rod(9,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'I-132',RB_rod(10,im)
+!            WRITE (ounit,'(40x,a8,2x,es12.2)') 'I-134',RB_rod(11,im)
+!            WRITE (ounit,'(/,41x,a8,1x,es12.2,18x,a8,es12.2)') 'Total ::',SUM(RB_rod(1:11,im)),'Total ::',SUM(RB_rod(12:15,im))
+!        END SELECT
+!        IF (icm <= 7) WRITE (ounit,1030) pkZrO2WtGain
+        ! Ouputs of regulatory interest
+        ! Rod internal pressure
+        ! Set peak node location. The - 1 is because the array starts at node 0_frapcon.
+        pknode = MAXLOC(pit, DIM=1) - 1
+!        SELECT CASE (ngasmod)
+!        CASE (1, 2, 3)
+!            WRITE (ounit,2001) cvv, MAXVAL(pit), pkBurnup(pknode) / 1000.0_r8k, &
+!              &                 buavearray(pknode) / 1000.0_r8k, voidvolarray(pknode), &
+!              &                 pkFisGasRelFrac(pknode) * 100.0_r8k, ProblemTime(pknode+1) * sectoday
+!        CASE (4)
+!            WRITE (ounit,2001) cvv, MAXVAL(pit), pkBurnup(pknode) / 1000.0_r8k, &
+!              &                 buavearray(pknode) / 1000.0_r8k, voidvolarray(pknode), &
+!              &                 SUM(RB_rod(:,im)) * 100.0_r8k, ProblemTime(pknode+1) * sectoday
+!        END SELECT
+        ! Centerline temp
+        icltemp = MAXLOC(cltemparray)
+!        WRITE (ounit,2002) MAXVAL(cltemparray), icltemp(2), storedearray(icltemp(1), icltemp(2)), &
+!          &               buarray(icltemp(1), icltemp(2)) / 1000.0_r8k, buavearray(icltemp(1)) / 1000.0_r8k, &
+!          &               ProblemTime(icltemp(1) + 1) * sectoday
+!        ! Strain increment
+        icltemp = MAXLOC(straindiffarray)
+!        WRITE (ounit,2003) MAXVAL(straindiffarray), icltemp(2), buarray(icltemp(1), icltemp(2)) / 1000.0_r8k, &
+!          &               buavearray(icltemp(1)) / 1000.0_r8k, ProblemTime(icltemp(1) + 1) * sectoday
+        ! Fuel melting
+!        IF (imelt == 1) THEN
+!            WRITE (ounit,2004)
+!        ELSE
+!            WRITE (ounit,2005)
+!        END IF
+    END SELECT
+    END SUBROUTINE print2_
+
+
 END MODULE Output_Data_frapcon
 
 

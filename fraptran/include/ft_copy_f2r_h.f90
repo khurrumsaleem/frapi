@@ -1066,3 +1066,4 @@ read(ifile) this % r__cldstrn
 read(ifile) this % r__grsv                 
 read(ifile) this % r__tplna                
 read(ifile) this % r__axlinpower           
+read(ifile) this % r__htcgap               

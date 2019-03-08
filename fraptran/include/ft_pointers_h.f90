@@ -1064,6 +1064,7 @@ real(r8k)                 , dimension(:,:)                            , pointer 
 real(r8k)                 , dimension(:,:)                            , pointer :: tplbot 
 real(r8k)                 , dimension(:,:)                            , pointer :: bostemp 
 real(r8k)                 , dimension(:,:)                            , pointer :: cldstrn 
+real(r8k)                 , dimension(:,:)                            , pointer :: htcgap 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: grsv 
 real(r8k)                 , dimension(:,:,:)                          , pointer :: tplna 
 

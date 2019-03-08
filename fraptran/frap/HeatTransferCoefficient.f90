@@ -1984,6 +1984,7 @@ MODULE HeatTransferCoefficient_fraptran
     USE emssf_fraptran, ONLY : emssf2
     USE Material_Properties_fraptran, ONLY : MatProperty
     USE NCGases_fraptran, ONLY : ngases, ncGasProperties
+    USE Dyna_h_fraptran, only : htcgap
     IMPLICIT NONE
     !>@brief
     !> Model for gap conductance computed by this subroutine is described in report BNWL-1894
@@ -2108,6 +2109,17 @@ MODULE HeatTransferCoefficient_fraptran
     hgap = gascon / (gpthk + djmpft)
     ! Sum up Open gap conductance contributions and convert to BTU/hr-ft2-F
     hgapt = (hgap + hgapr) * sechr
+    htcgap(1,node) = hgap * sechr
+    htcgap(2,node) = hgapr * sechr
+    htcgap(3,node) = 0.d0
+
+
+!if (node == 4) then
+!write(*,*) '///////////////// HTC.f90: ', node, gpthk, gascon, djump, hgapt
+!stop
+!endif   
+
+
     !
     IF (ndebug) WRITE(ounit,915) hgapt, hgap, gapmin, djmpft
 915 FORMAT('     Open Gap: hgapt = ',e11.4,' hgap = ',e11.4,' gapmin = ',e11.4,' djmpft = ',e11.4)
@@ -2170,6 +2182,9 @@ MODULE HeatTransferCoefficient_fraptran
         hgap = gascon / thc
         ! Sum up closed gap contributions and convert to BTU/hr-ft2-F
         hgapt = (hgap + hgapr + hsolid) * sechr
+        htcgap(1,node) = hgap * sechr
+        htcgap(2,node) = hgapr * sechr
+        htcgap(3,node) = hsolid * sechr
         IF (ndebug) WRITE(ounit,919) hgap, hgapr, hsolid
 919     FORMAT(' GAPHTC; hgap = ',e11.4,' hgapr = ',e11.4,' hsolid = ',e11.4)
         !

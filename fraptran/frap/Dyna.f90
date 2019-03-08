@@ -418,6 +418,7 @@ MODULE Dyna_h_fraptran
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: DeformedRadiusOfMesh
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: WorkSpaceEPP1
     REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: buradv
+    REAL(r8k), DIMENSION(:,:), ALLOCATABLE , target :: htcgap
     REAL(r8k) , target :: gapmin
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: WorkSpacePINT
     REAL(r8k), DIMENSION(:), ALLOCATABLE , target :: WorkSpaceRCI

@@ -427,6 +427,7 @@ deallocate ( this % b__cldstrn )
 deallocate ( this % b__grsv )
 deallocate ( this % b__tplna )
 deallocate ( this % b__axlinpower )
+deallocate ( this % b__htcgap )
 
 !deallocate ( this % b__is_export )
 !deallocate ( this % b__ndebug )

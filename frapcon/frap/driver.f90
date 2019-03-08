@@ -768,7 +768,7 @@ contains
         creaparray(1,1:na)        = creaparray(2,1:na)      
         dumarray3(1,1:na)         = dumarray3(2,1:na)       
         cladtarray(1,1:na+1)      = cladtarray(2,1:na+1)    
-        
+
         RB_rod(15,1)              = RB_rod(15,2)            
         prdct(1:ngasr,1:na,1)     = prdct(1:ngasr,1:na,2)   
         ansd(1:ngasr,1:na,1)      = ansd(1:ngasr,1:na,2)    
@@ -1469,6 +1469,12 @@ contains
         inquire (unit = ftunit, opened = is_open)
         if (is_open) close (unit = ftunit)
         open (unit = ftunit, file = namerf)
+
+        DO j = jmin, jmax + 1
+            PrintType = 'Axial Loop'
+            call print2_
+        END DO
+
         call restfs
         close (ftunit)
     end subroutine driver_restfs

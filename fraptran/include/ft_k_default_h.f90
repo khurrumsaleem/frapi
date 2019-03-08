@@ -756,3 +756,4 @@ this % reflood   = 'OFF' !     ch_0   off            ! core reflood after loss o
 this % radiation = 'OFF' !     ch_0   off            ! model a rod within a flow shroud
 this % coolant   = 'OFF'  !  
 this % axlinpower= 0.d0  !  
+this % htcgap = 0.d0  !  

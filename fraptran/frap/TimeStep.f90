@@ -1241,6 +1241,7 @@ MODULE timestep_fraptran
                 BOSGapIndex(k) = BOSGapIndex0(k)
             ENDDO
         ENDDO
+
         ! Compute deformations and stresses in each fuel rod
         ies(1) = 0
         ! Check to see If cladding failed or instability strain exceeded
