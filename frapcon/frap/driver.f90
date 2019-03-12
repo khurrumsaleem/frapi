@@ -211,6 +211,8 @@ contains
 
         INTEGER(ipk) :: jj
 
+        firstcall = .true.
+
         im = 1
 
         jn(:)  = na         ! # of qf, x pairs for each axial power shape
@@ -658,13 +660,18 @@ contains
         !
         ! Provide the axial node output. Check to see if need to output this timestep
         !
-        IF (nopt == 0 .AND. gasflg) THEN
-            DO ij = jmin, jmax + 1
-                j = ij
-                PrintType = 'Axial Loop'
-                if (this % verbose) CALL print2
-            END DO
-        END IF
+!        IF (nopt == 0 .AND. gasflg) THEN
+!            DO ij = jmin, jmax + 1
+!                j = ij
+!                PrintType = 'Axial Loop'
+!                if (this % verbose) CALL print2
+!            END DO
+!        END IF
+
+        DO j = jmin, jmax + 1
+            PrintType = 'Axial Loop'
+            call print2_
+        END DO
         !
         ! This is the FRAPCON to TRACE Data.
         !
@@ -1470,10 +1477,10 @@ contains
         if (is_open) close (unit = ftunit)
         open (unit = ftunit, file = namerf)
 
-        DO j = jmin, jmax + 1
-            PrintType = 'Axial Loop'
-            call print2_
-        END DO
+!        DO j = jmin, jmax + 1
+!            PrintType = 'Axial Loop'
+!            call print2_
+!        END DO
 
         call restfs
         close (ftunit)

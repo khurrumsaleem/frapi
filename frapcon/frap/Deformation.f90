@@ -479,6 +479,7 @@ MODULE Deformation_frapcon
             rfeps(k,2) = feps(k,2)
             CladInSurDisp(k) = 0.5_r8k * (rco(k) + rci(k)) * eps(k,1) - 0.5_r8k * (rco(k) - rci(k)) * eps(k,3)
             FuelCladGap(k) = CladInSurDisp(k) + delta(k) - FuelSurfDispl(k)
+
             IF (FuelCladGap(k) <= 0.0_r8k) ERRORMSG = 1.0_r8k
             RinterfacPress(k) = 0.0_r8k
             epp(k,1) = epp1(k,1)

@@ -178,6 +178,7 @@ MODULE Gas_frapcon
         WRITE (0,100) property
         WRITE (ounit,100) property
 100     FORMAT ('Error in Module Gas_frapcon. Invalid material property ID. Material Property ID = ',a20)
+        call backtrace
         STOP
     END SELECT
     !
@@ -361,6 +362,7 @@ MODULE Gas_frapcon
         WRITE (0,180) gtempK, gases
         WRITE (ounit,180) gtempK, gases
 180     FORMAT (' Error in gthcon. Bad input. gtempK= ',e12.4,' K',/,' Gas Fractions ',7(e12.4,3x))
+        call backtrace
         STOP
     END IF
     !
@@ -389,6 +391,7 @@ MODULE Gas_frapcon
             WRITE (0,101) i
             WRITE (ounit,101) i
 101         FORMAT ('Error in subroutine gthcon. Wrong Gas ID called. GasID = ',i7)
+            call backtrace
             STOP
         END SELECT
     END DO
@@ -465,6 +468,7 @@ MODULE Gas_frapcon
         WRITE (0,180) gtempK, gases
         WRITE (ounit,180) gtempK, gases
 180     FORMAT (' Error in gvisco2. Bad input. gtempK= ',e12.4,' K',/,' Gas Fractions ',7(e12.4,3x))
+        call backtrace
         STOP
     END IF
     !
@@ -487,6 +491,7 @@ MODULE Gas_frapcon
             WRITE (0,101) i
             WRITE (ounit,101) i
 101         FORMAT ('Error in subroutine gvisco. Wrong Gas ID called. GasID = ',i7)
+            call backtrace
             STOP
         END SELECT
     END DO
@@ -550,6 +555,7 @@ MODULE Gas_frapcon
         WRITE (0, 180) gtempK, gases
         WRITE (ounit, 180) gtempK, gases
 180     FORMAT (' Error in gascp. Bad input. gtempK= ',e12.4,' K',/,' Gas Fractions ',7(e12.4,3x))
+        call backtrace
         STOP
     END IF
     !
@@ -579,6 +585,7 @@ MODULE Gas_frapcon
             WRITE (0,101) i
             WRITE (ounit,101) i
 101         FORMAT ('Error in subroutine GasCP. Wrong Gas ID called. GasID = ',i7)
+            call backtrace
             STOP
         END SELECT
     END DO
@@ -660,6 +667,7 @@ MODULE Gas_frapcon
         WRITE (0,180) gtempK, gases
         WRITE (ounit,180) gtempK, gases
 180     FORMAT (' Error in GasRho. Bad input. gtempK= ',e12.4,' K',/,' Gas Fractions ',7(e12.4,3x))
+        call backtrace
         STOP
     END IF
     !
@@ -722,6 +730,7 @@ MODULE Gas_frapcon
         WRITE (0,180) gases
         WRITE (ounit,180) gases
 180     FORMAT (' Error in GasMWt. Bad input. Gas Fractions ',7(e12.4,3x))
+        call backtrace
         STOP
     END IF
     !

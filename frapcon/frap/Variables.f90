@@ -573,6 +573,8 @@ MODULE variables_frapcon
     ! 
     ! flag to indicate the iapws-if97 version of steam table  to be used (default : true)
     LOGICAL ,TARGET :: flag_iapws = .true.
+    !
+    LOGICAL, TARGET :: FirstCall = .TRUE.
     ! 
     ! Arrays
     !

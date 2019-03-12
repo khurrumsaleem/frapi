@@ -347,13 +347,8 @@ MODULE Restart_fraptran
         DEALLOCATE (tempfs, radfs, radfsn, FrapconTemp, burado, radpowo)
         
         ! Exit only if the correct time has been read from the FRAPCON restart information
-        if (is_export) then
-            exit read_frapcon_restart
-            trest = trecrd
-        else
-            IF (trecrd >= (trest - em03) ) EXIT Read_FRAPCON_Restart
-        endif
-        
+        IF (trecrd >= (trest - em03) ) EXIT Read_FRAPCON_Restart
+
     END DO Read_FRAPCON_Restart
     !
 101 FORMAT (2x,30(e11.4,2x))

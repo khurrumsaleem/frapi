@@ -1201,6 +1201,7 @@ MODULE Initialization_fraptran
             EOSRad(l,k) = RadialBoundO(l,k)
             BOSRad(l,k) = EOSRad(l,k)
         ENDDO
+
     ENDDO
     ! LOJ qt15: Rod average burnup
     IF (Dsum > 0.0_r8k) bup = Dsum / Csum

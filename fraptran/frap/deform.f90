@@ -483,6 +483,7 @@ MODULE deformation_fraptran
                     ENDDO
                 ENDIF
             ENDIF
+
             ! JK End 02
             ! WRITE(10,1053) Time,mmax, urcir(igpnod), urrad(igpnod)
             ! 1053 FORMAT(e11.4,5x,i3,5x,e11.4,5x,e11.4)
@@ -496,6 +497,7 @@ MODULE deformation_fraptran
                     DeformedRadiusOfMesh(m,k) = RadialBoundO(m,k) + urcir(m)
                 ENDDO
             ENDIF
+
             !
             CrackVolume(k) = CrakWidth
             ! Temporarily store crack widths at fuel outer surface in CldPermStrn
@@ -947,6 +949,7 @@ MODULE deformation_fraptran
         !
         dcldh = dcldh / ftin
         ! axial loop
+
         DO k = 1, naxn
             ! get local total hydrogen for cladding properties
             cexh2l = cexh2a(k)
@@ -988,6 +991,7 @@ MODULE deformation_fraptran
             ! EffStrain(k) = 0.0_r8k
             StressAtInstStrain(k) = 0.0_r8k
             CladYieldStress(k) = 0.0_r8k
+
             IF (IFail /= 1 .AND. IFail /= 4) THEN
                 ! check for cladding failure
                 IF (pfail <= 2.0_r8k) THEN
@@ -1488,6 +1492,7 @@ MODULE deformation_fraptran
     csig(1) = (rci * pg - rco * pc) / CladThickness0
     csig(2) = (pi * (rci ** 2 * pg - rco ** 2 * pc) + fs) / (pi * (rco ** 2 - rci ** 2))
     csig(3) = - 0.5_r8k * (pg + pc)
+
     ! If internal pressure equals coolant pressure, assume cladding has failed,
     ! and is hydrostically loaded and that no plastic deformation should occur.
     CladEffStress(k) = SQRT(0.5_r8k * ((csig(1) - csig(2)) ** 2 + (csig(2) - csig(3)) ** 2 &

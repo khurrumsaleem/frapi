@@ -8,6 +8,7 @@ MODULE Plenum_frapcon
     USE CorrosionData_frapcon
     USE Temperature_frapcon
     USE Refabrication_frapcon, ONLY : jmax, irefab
+    use variables_frapcon, only : firstcall
     IMPLICIT NONE
     !>@brief
     !> This module contains the calculations needed to estimate the plenum temperature_frapcon
@@ -17,7 +18,7 @@ MODULE Plenum_frapcon
     !> 4/28/2015
     !
     ! Flag to identify if the first call to subroutine plnt2
-    LOGICAL, PRIVATE :: FirstCall = .TRUE.
+    !LOGICAL, PRIVATE :: FirstCall = .TRUE.
     ! Flag for printing a warning message for prandtl calculation
     !LOGICAL, PRIVATE :: PrandtlWarning = .TRUE.
     LOGICAL, PRIVATE :: PrandtlWarning = .FALSE.   ! Supressing warning messages

@@ -35,8 +35,14 @@ module m_convergence
         integer :: i
         real(8) :: x(:)
         real(8) :: locerr
-        this % errors(i) = norm2( (this % vstate(i,:) - x(:)) / &
-                          (this % atol + this % rtol * x(:) ) ) / this % ndim**0.5
+!        this % errors(i) = norm2( (this % vstate(i,:) - x(:)) / &
+!                          (this % atol + this % rtol * x(:) ) ) / this % ndim**0.5
+
+        this % errors(i) = maxval( (abs(this % vstate(i,:)) - abs(x)) / &
+                          ( this % atol + this % rtol * abs(x) ) )
+
+        !write(*,'(I5,2F16.6)') i, maxval(this % vstate(i,:)), this % errors(i)
+
         this % vstate(i,:) = x(:)
     end subroutine p_update
 

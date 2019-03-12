@@ -785,13 +785,18 @@ contains
             case("gadolinia weight fraction")
                 this % dfcon % r__gadoln(:) = var
             case("coolant pressure, mpa")
-                this % dfcon % r__p2(it) = var * MPatoPSI
-                this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
-                this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
+                !this % dfcon % r__p2(it) = var * MPatoPSI
+                !this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
+                !this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case("inlet coolant enthalpy, j|kg")
                 continue
             case("outlet coolant enthalpy, j|kg")
                 continue
+            case("cladding outer surface temperature, c")
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case default
                 call error_message (key, 'real(8) rank 0 in the frapcon set-list')
             end select
@@ -1040,7 +1045,12 @@ contains
                 this % dftran % r__gapthk = var * cmtoft
             case("outer cladding diameter, cm")
                 this % dftran % r__roddiameter = var * cmtoft
-
+            case("cladding outer surface temperature, c")
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
+            case('coolant pressure, mpa')
+                tmp4(:) = var
+                call this % set_r8_1 (key, tmp4)
             case default
                 call error_message(key, 'real(8) rank 0 in the fraptran set-list')
             end select
@@ -1111,10 +1121,16 @@ contains
                 this % dfcon % r__coolanttemp(it,1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
                 this % dfcon % r__tcoolant(1:n+1) = (/( tcf(tmp3(i)), i = 1, n+1 )/)
             case("coolant pressure, mpa")
-                call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
-                this % dfcon % r__p2(it) = var(1) * MPatoPSI
-                this % dfcon % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
-                this % dfcon % r__pcoolant(1:n+1) = tmp3(:) * MPatoPSI
+                ! FRAPTRAN does not work well with the distributed pressure
+                ! For the sake of consitancy an average pressure is used here
+                !call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
+                !this % dfcon % r__p2(it) = var(1) * MPatoPSI
+                !this % dfcon % r__coolantpressure(it,1:n+1) = tmp3(:) * MPatoPSI
+                !this % dfcon % r__pcoolant(1:n+1) = tmp3(:) * MPatoPSI
+                a = sum(var * this % dfcon % r__deltaz(1:n)) / sum(this % dfcon % r__deltaz(1:n)) * MPatoPSI
+                this % dfcon % r__p2(it) = a
+                this % dfcon % r__coolantpressure(it,1:n+1) = a
+                this % dfcon % r__pcoolant(1:n+1) = a
             case("input fuel burnup")
                 this % dfcon % r__buin(:)      = var(:) * MWskgUtoMWdMTU
             case("puo2 weight percent if mox fuel, wt%")
@@ -1571,8 +1587,12 @@ contains
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
             case('thermal gap thickness, um')
                 var(:) = this % dfcon % r__gapplot(1:n) * miltoum
+            case('thermal gap thickness, mm')
+                var(:) = this % dfcon % r__gapplot(1:n) * miltomm
             case('mechanical gap thickness, um')
                 var(:) = this % dfcon % r__FuelCladGap(1:n) * 1.D+3 * miltoum
+            case('mechanical gap thickness, mm')
+                var(:) = this % dfcon % r__FuelCladGap(1:n) * 1.D+3 * miltomm
             case('gap pressure, mpa')
                 var(:) = this % dfcon % r__GapPress(1:n) * PSItoMPa
             case('cladding total hoop strain, %')
@@ -1765,6 +1785,8 @@ contains
                 var(:) = this % dftran % r__CldStress(:,2)
             case('thermal radial gap, mm')
                 var(:) = this % dftran % r__gapthick (1:n) * 1.2D+4 * miltomm
+            case("mechanical gap thickness, mm")
+                var(:) = this % dftran % r__RInterfacGap (1:n) * fttomm
             case('cladding effective elastic-plastic strain, %')
                 var(:) = this % dftran % r__EffStrainPNNL(1:n)
             case('coolant mass flux, kg|(s*m^2)')

@@ -100,7 +100,7 @@
         this % nfrttr              = 0                           ! Specifies to create the output file read by the NRC's Internal AIG for TRACE Runs (0 = no, 1 = yes)
         this % nread               = 0                           ! Specifies to start from a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
         this % nrestr              = 0                           ! Specifies to write a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
-        this % cpl                 = 6.3386d0                    ! Cold plenum length, in
+        this % cpl                 = 2.d0                        ! Cold plenum length, in
         this % crdt                = 0.d0                        ! Crud thickness, in
         this % thkcld              = 0.0224d0                    ! Thickness of cladding, in
         this % thkgap              = 0.0033d0                    ! Thickness of gap, in

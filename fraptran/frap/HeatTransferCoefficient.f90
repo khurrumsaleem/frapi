@@ -2107,19 +2107,12 @@ MODULE HeatTransferCoefficient_fraptran
     ! hgap is in BTU/s-ft2-F
     ! hgap = gascon/(gpthk + djmpft + cruf/12.)
     hgap = gascon / (gpthk + djmpft)
+
     ! Sum up Open gap conductance contributions and convert to BTU/hr-ft2-F
     hgapt = (hgap + hgapr) * sechr
     htcgap(1,node) = hgap * sechr
     htcgap(2,node) = hgapr * sechr
     htcgap(3,node) = 0.d0
-
-
-!if (node == 4) then
-!write(*,*) '///////////////// HTC.f90: ', node, gpthk, gascon, djump, hgapt
-!stop
-!endif   
-
-
     !
     IF (ndebug) WRITE(ounit,915) hgapt, hgap, gapmin, djmpft
 915 FORMAT('     Open Gap: hgapt = ',e11.4,' hgap = ',e11.4,' gapmin = ',e11.4,' djmpft = ',e11.4)
