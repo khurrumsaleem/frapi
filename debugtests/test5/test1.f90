@@ -13,13 +13,13 @@ module m_od
 
     real(8), parameter :: dt = 1.D-3       ! time step, sec
     real(8), parameter :: tcool = 296.D0   ! inlet coolant temperature, C
-    real(8), parameter :: tclad = 310.D0   ! cladding surface temperature, C
+    real(8), parameter :: tclad = 300.D0   ! cladding surface temperature, C
     real(8), parameter :: pcool = 15.5D0   ! inlet coolant pressure, MPa
     real(8), parameter :: fcool = 3101.d0    ! coolant mass flux, kg/(m*2*s)
     real(8), parameter :: dz = 365.D0 / na ! thickness of axial mesh, cm
-    real(8), parameter :: lpower = 100.d0
+    real(8), parameter :: lpower = 150.d0
 
-    real(8) :: tmp_r8_1(na)
+    real(8) :: tmp_r8_1(na), tmp_r8_2(nr+nc,na)
 
     contains
 
@@ -30,22 +30,26 @@ module m_od
         type(t_fuelrod), intent(inout) :: fuelrod
         integer :: i
         real(8) :: time
-        real(8) :: output(na, 10)
+        real(8) :: output(na, 14)
 
         output = 0.d0
 
-        call fuelrod % get_r8_1('bulk coolant temperature, c', output(:,1))
-        call fuelrod % get_r8_1('pellet surface temperature, c', output(:,2))
-        call fuelrod % get_r8_1('pellet centerline temperature, c', output(:,3))
-        call fuelrod % get_r8_1('coolant density, kg/m^3', output(:,4))
+        call fuelrod % get_r8_1('cladding outer temperature, c', output(:,1))
+        call fuelrod % get_r8_1('cladding inner temperature, c', output(:,2))
+        call fuelrod % get_r8_1('pellet surface temperature, c', output(:,3))
+        call fuelrod % get_r8_1('pellet centerline temperature, c', output(:,4))
         call fuelrod % get_r8_1('gap total heat transfer coefficient, w/(k*m^2)', output(:,5))
         call fuelrod % get_r8_1('gap solid heat transfer coefficient, w/(k*m^2)', output(:,6))
         call fuelrod % get_r8_1('gap gas heat transfer coefficient, w/(k*m^2)', output(:,7))
         call fuelrod % get_r8_1('gap radiation heat transfer coefficient, w/(k*m^2)', output(:,8))
-        call fuelrod % get_r8_1('mechanical gap thickness, mm', output(:,9))
+        call fuelrod % get_r8_1('mechanical gap thickness, um', output(:,9))
         call fuelrod % get_r8_1('gap pressure, mpa', output(:,10))
+        call fuelrod % get_r8_1('cladding hoop stress, mpa', output(:,11))
+        call fuelrod % get_r8_1('deformed pellet radius, mm', output(:,12))
+        call fuelrod % get_r8_1('deformed cladding inner radius, mm', output(:,13))
+        call fuelrod % get_r8_1('deformed cladding outer radius, mm', output(:,14))
 
-        write(*,'(I10,11F12.3)') i, time, (/( maxval(output(:,i)), i = 1, 10 )/)
+        write(*,'(I10,16F12.3)') i, time, (/( maxval(output(:,i)), i = 1, 14 )/)
 
     end subroutine odprint
 
@@ -72,7 +76,7 @@ program test2
     real(8) :: time = 0
     integer :: i_rod, i = 0
 
-    write(*,'(A10,9A12)') '','Time (s)', 'P (W)', 'Tcb (C)', 'Tfs (C)', 'Tfc (C)', 'Dc (kg/cm3)', 'HTC'
+    write(*,'(A10,16A12)') 'N','Time (s)', 'Tco (C)', 'Tci (C)', 'Tfs (C)', 'Tfc (C)', 'Tot HTC', 'Solid HTC', 'Gas HTC', 'Rad HTC', 'Gap (um)', 'Gap P (MPa)', 'HStress (MPa)', 'Rp (mm)', 'Rci (mm)', 'Rco (mm)'
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !                            FRAPCON Calculation                            !
@@ -95,7 +99,7 @@ program test2
     call fuelrod % init()
 
     do i = 1, 10
-        call fuelrod % next(100.d0)
+        call fuelrod % next(1.d0)
         call odprint(i, time, fuelrod)
     enddo
 
@@ -115,7 +119,7 @@ program test2
                         ifixedtsurf = 1, &
                         iq = 0, ivardm = 1, verbose = .true., frapmode='fraptran')
 
-!    call fuelrod % set_ch_0('restart file', './fuelrod-restart.txt')
+    call fuelrod % set_ch_0('restart file', './fuelrod-restart.txt')
 
     call fuelrod % set_ch_0('bheat', 'on')
     call fuelrod % set_ch_0('coolant', 'off')
@@ -127,9 +131,9 @@ program test2
 !    call fuelrod % set_r8_0("inlet coolant mass flow, kg/(s*m^2)", fcool)
     call fuelrod % set_r8_0("cladding outer surface temperature, c", tclad)
 
-    call fuelrod % dftran % copy_f2r( './frod-0055.txt' )
+!    call fuelrod % dftran % copy_f2r( './frod-0055.txt' )
 
-    call fuelrod % set_ch_0('restart file', './rest-0054.txt')
+!    call fuelrod % set_ch_0('restart file', './rest-0055.txt')
 
     call fuelrod % init()
 

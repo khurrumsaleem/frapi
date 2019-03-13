@@ -41,6 +41,9 @@ MODULE conversions_fraptran
     REAL(r8k), PARAMETER :: intom = 1.d0 / 12.d0 * 0.3048d0
     REAL(r8k), PARAMETER :: intomm = intom * 1.D+3
     REAL(r8k), PARAMETER :: fttomm = ftom * 1.D+3
+    REAL(r8k), PARAMETER :: fttoum = fttomm * 1.D+3
+    REAL(r8k), PARAMETER :: mmtoft = 1.d0 / fttomm
+
     !
     !
     ! ** Energy **

@@ -102,9 +102,9 @@
         this % nrestr              = 0                           ! Specifies to write a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
         this % cpl                 = 2.d0                        ! Cold plenum length, in
         this % crdt                = 0.d0                        ! Crud thickness, in
-        this % thkcld              = 0.0224d0                    ! Thickness of cladding, in
-        this % thkgap              = 0.0033d0                    ! Thickness of gap, in
-        this % dco                 = 0.3740d0                    ! Outer cladding diameter, in
+        this % thkcld              = 0.64d0 * mmtoin             ! Thickness of cladding, in
+        this % thkgap              = 0.10d0 * mmtoin             ! Thickness of gap, in
+        this % dco                 = 4.86d0 * mmtoin * 2.d0      ! Outer cladding diameter, in
         this % pitch               = 0.5_r8k                     ! Center to center rod distance, in
         this % rc                  = 0.0_r8k                     ! Radius of the fuel pellet central annulus, in
         this % fotmtl              = 2.d0                        ! Fuel oxygen-to-metal ratio
@@ -121,7 +121,7 @@
         this % idxgas              = 1                           ! Fill gas type (1 = He, 2 = Air, 3 = N2, 4 = FG, 5 = Ar, 6 = User-Specified)
         this % iplant              =-2                           ! Plant type, -2: PWR, -3: BWR, -4: HBWR
         this % imox                = 0                           ! Fuel type, 0: UO_2
-        this % totl                = 1.3100_r8k                  ! Total length of active fuel, ft
+        this % totl                = 569.d0 * mmtoft             ! Total length of active fuel, ft
         this % roughc              = 1.97d-5                     ! Clad roughness, in
         this % roughf              = 7.87d-5                     ! Fuel roughness, in
         this % vs                  = 30.d0                       ! Number of spring turns

@@ -12,10 +12,9 @@ module frapi
     integer, parameter :: one = 1, two = 2, three = 3
 
     real(8), parameter :: intoum = 25.4D+3
-    real(8), parameter :: fttom = 0.3048D+0
+    real(8), parameter :: fttom  = 0.3048D+0
     real(8), parameter :: fttomm = 0.3048D+3
     real(8), parameter :: fttocm = 0.3048D+2
-    real(8), parameter :: mmtoin = 1.D0/25.4D0
     real(8), parameter :: cm2m   = 1.D-2
     real(8), parameter :: cm_to_ft = 1./0.3048D+2
 
@@ -1529,7 +1528,7 @@ contains
         class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
-        integer      :: it
+        integer      :: it, np, nc
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
@@ -1590,9 +1589,9 @@ contains
             case('thermal gap thickness, mm')
                 var(:) = this % dfcon % r__gapplot(1:n) * miltomm
             case('mechanical gap thickness, um')
-                var(:) = this % dfcon % r__FuelCladGap(1:n) * 1.D+3 * miltoum
+                var(:) = this % dfcon % r__FuelCladGap(1:n) * intoum
             case('mechanical gap thickness, mm')
-                var(:) = this % dfcon % r__FuelCladGap(1:n) * 1.D+3 * miltomm
+                var(:) = this % dfcon % r__FuelCladGap(1:n) * intomm
             case('gap pressure, mpa')
                 var(:) = this % dfcon % r__GapPress(1:n) * PSItoMPa
             case('cladding total hoop strain, %')
@@ -1663,9 +1662,6 @@ contains
                 var(:) = (/(tfc(this % dfcon % r__CladOutSurfTemp(i)), i = 1, n )/)  
             case('cladding middle temperature, c')
                 var(:) = (/(tfc(this % dfcon % r__CladOutSurfTemp(i) + this % dfcon % r__CladOutSurfTemp(i))*0.5d0, i = 1, n )/)  
-            case('radial meshes, cm')
-                var(:) = (/(this % dfcon % r__hrad(m - i + 1, 1), i = 0, m )/) 
-                var(:) = var(:) * intocm
             case('pellet centerline temperature, c')
                 var(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
             case('pellet surface temperature, c')
@@ -1674,12 +1670,26 @@ contains
                 tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
+            case ('deformed pellet radius, mm')
+                var(:) = this % dfcon % r__hrad(1,1:n) * intomm
+            case ('deformed cladding inner radius, mm')
+                var(:) = this % dfcon % r__dci(1:n) + &
+                         0.5d0 * (this % dfcon % r__dco(1:n) + this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,1) - &
+                  &      0.5d0 * (this % dfcon % r__dco(1:n) - this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,3)
+                var(:) = 0.5d0 * var(:) * intomm
+            case ('deformed cladding outer radius, mm')
+                var(:) = this % dfcon % r__dco(1:n) - &
+                         0.5d0 * (this % dfcon % r__dco(1:n) + this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,1) + &
+                  &      0.5d0 * (this % dfcon % r__dco(1:n) - this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,3)
+                var(:) = 0.5d0 * var(:) * intomm
             case('film heat transfer coefficient, w/(k*m^2)')
                 var = 0.d0 !TODO: find the variable
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
         case('fraptran')
+            np = this % dftran % r__nfmesh
+            nc = this % dftran % r__ncmesh
             select case (lower(key))
             case("axial mesh thickness, cm")
                 var(:) = this % dftran % axialmesh(1:n)
@@ -1785,14 +1795,16 @@ contains
                 var(:) = this % dftran % r__CldStress(:,2)
             case('thermal radial gap, mm')
                 var(:) = this % dftran % r__gapthick (1:n) * 1.2D+4 * miltomm
+            case("mechanical gap thickness, um")
+                var(:) = this % dftran % r__RInterfacGap (1:n) * ftoum
             case("mechanical gap thickness, mm")
-                var(:) = this % dftran % r__RInterfacGap (1:n) * fttomm
+                var(:) = this % dftran % r__RInterfacGap (1:n) * ftomm
             case('cladding effective elastic-plastic strain, %')
                 var(:) = this % dftran % r__EffStrainPNNL(1:n)
             case('coolant mass flux, kg|(s*m^2)')
                 var(:) = this % dftran % r__rmassflux(1:n) * lbhrft2toksm2
             case('pellet surface displacement, mm')
-                var(:) = this % dftran % r__PelSrfDispl(1:n) * fttomm
+                var(:) = this % dftran % r__PelSrfDispl(1:n) * ftomm
             case('structural gap interface pressure, mpa')
                 var(:) = this % dftran % r__TerfacePres(1:n) * PSItoMPa
             case('coolant density, kg|m^3')
@@ -1849,6 +1861,10 @@ contains
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, k")
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__nmesh, i)), i = 1, n )/)
+            case('cladding inner temperature, c')
+                var(:) = (/( tfc(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
+            case("cladding outer temperature, c")
+                var(:) = (/( tfc(this % dftran % r__eostemp(this % dftran % r__nmesh, i)), i = 1, n )/)
             case("bulk coolant temperature, k")
                 var(:) = (/( tfk(this % dftran % r__BulkCoolTemp(i)), i = 1, n )/)
             case("bulk coolant temperature, c")
@@ -1860,6 +1876,12 @@ contains
             case('film heat transfer coefficient, w/(k*m^2)')
                 it = if_a_else_b(this % is_initdone, three, one)
                 var(:) = this % dftran % r__htca(it,1:n) * Bhft2FtoWm2K
+            case ('deformed pellet radius, mm')
+                var(:) = this % dftran % r__DeformedRadiusOfMesh (np,1:n) * fttomm
+            case ('deformed cladding inner radius, mm')
+                var(:) = this % dftran % r__DeformedRadiusOfMesh (np+1,1:n) * fttomm
+            case ('deformed cladding outer radius, mm')
+                var(:) = this % dftran % r__DeformedRadiusOfMesh (np+nc,1:n) * fttomm
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select
@@ -1886,6 +1908,13 @@ contains
                         var(j,i) = tfc(this % dfcon % r__tmpfuel(m + 2 - j, i))
                     enddo
                 enddo 
+            case('deformed radial mesh, mm')
+                do i = 1, m
+                    var(i,:) = this % dfcon % r__hrad(m - i + 1, 1:na)
+                enddo
+!                var(m+1,:) = var(m,:) + this % dfcom % thkgap(1:na)
+!                var(m+1,:) = var(m+nce,:) + CladDiamHot(1:na)
+                var = var * intomm
             case default
                 call error_message(key, 'real rank 2 in frapcon get-list')
             end select
@@ -1895,12 +1924,12 @@ contains
             select case (lower(key))
             case('eos temperature, k')
                 var(:,:) = (this % dftran % r__eostemp (1:nr, 1:na) + 4.5967D+2) / 1.8D+0
-            case('eos radius, mm')
+            case('eos radial mesh, mm')
                 var(:,:) = this % dftran % r__eosrad (1:nr, 1:na) * fttomm
             case('energy absorbed in melting')
                 var(:,:) = this % dftran % r__enrgymeltz (1:nr,1:na)
-            case('deformedradiusofmesh')
-                var(:,:) = this % dftran % r__DeformedRadiusOfMesh (1:m,1:n) * fttomm
+            case('deformed radial mesh, mm')
+                var(:,:) = this % dftran % r__DeformedRadiusOfMesh (1:nr,1:na) * fttomm
             case default
                 call error_message(key, 'real rank 2 in fraptran get-list')
             end select
