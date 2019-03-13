@@ -640,6 +640,8 @@ contains
                 this % dfcon % r__pitch = var * cmtoin
             case("as-fabricated apparent fuel density, %td")
                 this % dfcon % r__den = var
+            case("coolant mass flux, kg|(s*m^2)")
+                this % dfcon % r__go(it) = var * ksm2tolbhrft2
             case("coolant mass flow, kg|(s*m^2)")
                 this % dfcon % r__go(it) = var * ksm2tolbhrft2
             case("inlet coolant mass flow, kg/(s*m^2)")
@@ -785,15 +787,17 @@ contains
             case("gadolinia weight fraction")
                 this % dfcon % r__gadoln(:) = var
             case("coolant pressure, mpa")
-                !this % dfcon % r__p2(it) = var * MPatoPSI
-                !this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
-                !this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
+                !js+this % dfcon % r__p2(it) = var * MPatoPSI
+                !js+this % dfcon % r__coolantpressure(it,1:n+1) = var * MPatoPSI
+                !js+this % dfcon % r__pcoolant(1:n+1) = var * MPatoPSI
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
             case("inlet coolant enthalpy, j|kg")
                 continue
             case("outlet coolant enthalpy, j|kg")
                 continue
+            case("fuel pellet diameter, cm") !js+
+                continue                     !js+
             case("cladding outer surface temperature, c")
                 tmp4(:) = var
                 call this % set_r8_1 (key, tmp4)
@@ -804,6 +808,8 @@ contains
         case ('fraptran')
             it3 = if_a_else_b(this % is_initdone, 3, 1)
             select case (lower(key))
+            case("cladding thickness, cm")                      !js+
+                continue                                        !js+
             case("splbp")
                 this % dftran % r__splbp = var
             case("tpowf")
@@ -960,6 +966,8 @@ contains
                 this % dftran % r__hinta(it3) = var * jkbtup
             case("gbh")
                 this % dftran % r__gbh(it3) = var
+            case("coolant mass flux, kg|(s*m^2)")
+                this % dftran % r__gbh(it3) = var * ksm2tolbhrft2
             case("coolant mass flow, kg|(s*m^2)")
                 this % dftran % r__gbh(it3) = var * ksm2tolbhrft2
             case("inlet coolant mass flow, kg/(s*m^2)")
@@ -1024,7 +1032,8 @@ contains
             case("gadolinia weight fraction")
                 this % dftran % r__gadoln(1:n) = var
             case("fuel enrichment by u-235, %")
-                write(*,*) 'WARNING: the parameter is not available yet in FRAPTRAN: '//key
+                continue
+                !js+write(*,*) 'WARNING: the parameter is not available yet in FRAPTRAN: '//key
     !        case("ProfileStartTime")
     !            this % dftran % r__ProfileStartTime(it_) = var
             case("vplen")
@@ -1530,6 +1539,7 @@ contains
 
         character(*) :: key
         integer      :: it
+        integer      :: ir
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
@@ -1574,6 +1584,8 @@ contains
             case('coolant temperature, c')
                 call this % get_r8_1 ('bulk coolant temperature, c', var)
             case('total gap conductance, w|(m^2*k)')
+                var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
+            case('heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
             case('gap total heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dfcon % r__TotalHgap(1:n) * Bhft2FtoWm2K
@@ -1676,6 +1688,27 @@ contains
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case('film heat transfer coefficient, w/(k*m^2)')
                 var = 0.d0 !TODO: find the variable
+            case('pellet doppler temperature 1, c')
+                tmp1(:) = 0d0
+                do ir = 2, m+1
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dfcon % r__tmpfuel(ir,i)), i = 1, n )/)
+                enddo
+                tmp1(:) = tmp1(:) / real(m, 8)
+                !js+tmp1(:) = (/( tfc(this % dfcon % r__PelAveTemp(i)), i = 1, n )/)
+                var(:) = tmp1(:)
+            case('pellet doppler temperature 2, c')
+                tmp1(:) = 0d0
+                do ir = 2, m+1
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dfcon % r__tmpfuel(ir,i)), i = 1, n )/)
+                enddo
+                tmp1(:) = tmp1(:) / real(m, 8)
+                !js+tmp1(:) = (/( tfc(this % dfcon % r__PelAveTemp(i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+                var(:) = 0.92d0 * tmp1(:) + 0.08d0 * tmp4(:)
+            case('pellet doppler temperature 3, c')
+                tmp1(:) = (/( tfc(this % dfcon % r__tmpfuel(m+1,i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case default
                 call error_message(key, 'real rank 1 in the frapcon get-list')
             end select
@@ -1738,6 +1771,8 @@ contains
             case('surface heat transfer coefficient, w|m^2k')
                 var(:) = this % dftran % r__filmcoeffav(1:n) * Bhft2FtoWm2K
             case('heat transfer coefficient, w|m^2k')
+                var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
+            case('heat transfer coefficient, w/(k*m^2)')
                 var(:) = this % dftran % r__hgapav(1:n) * Bhft2FtoWm2K
             case('gap total heat transfer coefficient, w/(k*m^2)')
                 var(:) = (/( sum(this % dftran % r__htcgap(:,i)), i = 1, n )/) * Bhft2FtoWm2K
@@ -1845,6 +1880,27 @@ contains
                 tmp1(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
                 tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
+            case('pellet doppler temperature 1, c')
+                tmp1(:) = 0d0
+                do ir = 1, this % dftran % r__igpnod
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dftran % r__eostemp(ir,i)), i = 1, n )/)
+                enddo
+                tmp1(:) = tmp1(:) / real(this % dftran % r__igpnod, 8)
+                !js+tmp1(:) = !TODO: fuel volume average temperature
+                var(:) = tmp1(:)
+            case('pellet doppler temperature 2, c')
+                tmp1(:) = 0d0
+                do ir = 1, this % dftran % r__igpnod
+                   tmp1(:) = tmp1(:) + (/( tfc(this % dftran % r__eostemp(ir,i)), i = 1, n )/)
+                enddo
+                tmp1(:) = tmp1(:) / real(this % dftran % r__igpnod, 8)
+                !js+tmp1(:) = !TODO: fuel volume average temperature
+                tmp4(:) = (/( tfc(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/)
+                var(:) = 0.92d0 * tmp1(:) + 0.08d0 * tmp4(:)
+            case('pellet doppler temperature 3, c')
+                tmp1(:) = (/( tfc(this % dftran % r__eostemp(1,i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/)
+                var(:) = 0.3d0 * tmp1(:) + 0.7d0 * tmp4(:)
             case('cladding inner temperature, k')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
             case("cladding outer temperature, k")
