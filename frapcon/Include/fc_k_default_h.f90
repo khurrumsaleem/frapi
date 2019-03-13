@@ -102,10 +102,10 @@
         this % nrestr              = 0                           ! Specifies to write a FRAPCON-to-FRAPCON restart tape (0 = no, 1 = yes)
         this % cpl                 = 2.d0                        ! Cold plenum length, in
         this % crdt                = 0.d0                        ! Crud thickness, in
-        this % thkcld              = 0.0224d0                    ! Thickness of cladding, in
-        this % thkgap              = 0.0033d0                    ! Thickness of gap, in
-        this % dco                 = 0.3740d0                    ! Outer cladding diameter, in
-        this % pitch               = 0.5_r8k                     ! Center to center rod distance, in
+        this % thkcld              = 0.025d0 !0.0224d0           ! Thickness of cladding, in
+        this % thkgap              = 0.00334645669d0 !0.0033d0   ! Thickness of gap, in
+        this % dco                 = 0.38188976378d0 !0.3740d0   ! Outer cladding diameter, in
+        this % pitch               = 0.50590551181d0 !0.5_r8k    ! Center to center rod distance, in
         this % rc                  = 0.0_r8k                     ! Radius of the fuel pellet central annulus, in
         this % fotmtl              = 2.d0                        ! Fuel oxygen-to-metal ratio
         this % dishsd              = 0.0d0                       ! Dish shoulder width, in
