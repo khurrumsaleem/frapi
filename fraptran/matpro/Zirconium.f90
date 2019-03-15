@@ -691,7 +691,7 @@ MODULE zirconium_fraptran_fraptran
     !
     !
     !
-    REAL(r8k) PURE FUNCTION zoemis (Zirc) RESULT (emissv)
+    REAL(r8k) FUNCTION zoemis (Zirc) RESULT (emissv)
     USE Kinds_fraptran
     USE conversions_fraptran
     IMPLICIT NONE

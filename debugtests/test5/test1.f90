@@ -12,12 +12,12 @@ module m_od
     integer, parameter :: nt = 1           ! number of time steps
 
     real(8), parameter :: dt = 1.D-3       ! time step, sec
-    real(8), parameter :: tcool = 296.D0   ! inlet coolant temperature, C
-    real(8), parameter :: tclad = 300.D0   ! cladding surface temperature, C
+    real(8) :: tcool = 296.D0   ! inlet coolant temperature, C
+    real(8) :: tclad = 300.D0   ! cladding surface temperature, C
     real(8), parameter :: pcool = 15.5D0   ! inlet coolant pressure, MPa
     real(8), parameter :: fcool = 3101.d0    ! coolant mass flux, kg/(m*2*s)
     real(8), parameter :: dz = 365.D0 / na ! thickness of axial mesh, cm
-    real(8), parameter :: lpower = 150.d0
+    real(8) :: lpower = 150.d0
 
     real(8) :: tmp_r8_1(na), tmp_r8_2(nr+nc,na)
 
@@ -30,7 +30,7 @@ module m_od
         type(t_fuelrod), intent(inout) :: fuelrod
         integer :: i
         real(8) :: time
-        real(8) :: output(na, 14)
+        real(8) :: output(na, 17)
 
         output = 0.d0
 
@@ -42,14 +42,17 @@ module m_od
         call fuelrod % get_r8_1('gap solid heat transfer coefficient, w/(k*m^2)', output(:,6))
         call fuelrod % get_r8_1('gap gas heat transfer coefficient, w/(k*m^2)', output(:,7))
         call fuelrod % get_r8_1('gap radiation heat transfer coefficient, w/(k*m^2)', output(:,8))
-        call fuelrod % get_r8_1('mechanical gap thickness, um', output(:,9))
+        call fuelrod % get_r8_1('deformed gap thickness, um', output(:,9))
         call fuelrod % get_r8_1('gap pressure, mpa', output(:,10))
         call fuelrod % get_r8_1('cladding hoop stress, mpa', output(:,11))
         call fuelrod % get_r8_1('deformed pellet radius, mm', output(:,12))
         call fuelrod % get_r8_1('deformed cladding inner radius, mm', output(:,13))
         call fuelrod % get_r8_1('deformed cladding outer radius, mm', output(:,14))
+        call fuelrod % get_r8_1('fuel pellet thermal expansion, um', output(:,15))
+        call fuelrod % get_r8_1('fuel pellet swelling and densification, um', output(:,16))
+        call fuelrod % get_r8_1('fuel pellet relocation, um', output(:,17))
 
-        write(*,'(I10,16F12.3)') i, time, (/( maxval(output(:,i)), i = 1, 14 )/)
+        write(*,'(I5,19F11.3)') i, time, (/( maxval(output(:,i)), i = 1, 17 )/)
 
     end subroutine odprint
 
@@ -76,7 +79,7 @@ program test2
     real(8) :: time = 0
     integer :: i_rod, i = 0
 
-    write(*,'(A10,16A12)') 'N','Time (s)', 'Tco (C)', 'Tci (C)', 'Tfs (C)', 'Tfc (C)', 'Tot HTC', 'Solid HTC', 'Gas HTC', 'Rad HTC', 'Gap (um)', 'Gap P (MPa)', 'HStress (MPa)', 'Rp (mm)', 'Rci (mm)', 'Rco (mm)'
+    write(*,'(A5,19A11)') 'N','Time (s)', 'Tco (C)', 'Tci (C)', 'Tfs (C)', 'Tfc (C)', 'Tot HTC', 'Solid HTC', 'Gas HTC', 'Rad HTC', 'Gap (um)', 'Gap P (MPa)', 'HoopS (MPa)', 'Rp (mm)', 'Rci (mm)', 'Rco (mm)', 'dth', 'sw+dens', 'rel'
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !                            FRAPCON Calculation                            !
@@ -98,8 +101,10 @@ program test2
 
     call fuelrod % init()
 
-    do i = 1, 10
-        call fuelrod % next(1.d0)
+    call odprint(i, time, fuelrod)
+
+    do i = 1, 1
+        call fuelrod % next(1.d3)
         call odprint(i, time, fuelrod)
     enddo
 

@@ -93,7 +93,7 @@
         this % cladelmod           =-1.0d0                       ! User-supplied value for cladding elastic modulus (Pa)
         this % relocmodel          = 'FRAPCON-3.5'               ! Specifies fuel relocation model
         this % fuelreloc           =-1.0d0                       ! User-supplied value for fuel relocation
-        this % gaprecov            = 0.5d0                       ! User-supplied value for gap recovery
+        this % gaprecov            = 0.45d0                      ! User-supplied value for gap recovery
         this % TimeIntegration     = 0                           ! Specify time integration technique (0 = None, 1 = Linear Interpolation, 2 = Histogram)
         this % newtimestep         = 1.0d0                       ! The new timestep value to use for the calculation_frapcon. (days) Used when TimeIntegration = 1 or 2
         this % RestartTime         =-1.0d0                       ! Problem Time (s) to use for a restart calculation_frapcon
@@ -165,3 +165,4 @@
         this % rprm1               = 3.45d0                      !
         this % ctmax               = 386.33d0                    !
         this % namerf              = 'rf.txt'                    !
+        this % zro2o               = 0.d0                        !

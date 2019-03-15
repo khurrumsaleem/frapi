@@ -11,7 +11,6 @@ module frapi
 
     integer, parameter :: one = 1, two = 2, three = 3
 
-    real(8), parameter :: intoum = 25.4D+3
     real(8), parameter :: fttom  = 0.3048D+0
     real(8), parameter :: fttomm = 0.3048D+3
     real(8), parameter :: fttocm = 0.3048D+2
@@ -1528,7 +1527,7 @@ contains
         class (t_fuelrod), intent(in) :: this
 
         character(*) :: key
-        integer      :: it, np, nc
+        integer      :: it, np, nc, nr
         real(8)      :: var(:) ! array (n,)
 !        real(8)      :: ra, rb, ya, yb, h, temper, volume
 !        real(8)      :: linteg ! integral of linear function
@@ -1584,6 +1583,8 @@ contains
                 var(:) = this % dfcon % r__RadHgap(1:n) * Bhft2FtoWm2K
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
+            case("deformed gap thickness, um")
+                var(:) = this % dfcon % r__HotThermalGap (1:n) * intoum * 0.5d0
             case('thermal gap thickness, um')
                 var(:) = this % dfcon % r__gapplot(1:n) * miltoum
             case('thermal gap thickness, mm')
@@ -1620,22 +1621,26 @@ contains
                 var(:) = this % dfcon  % sig(1:n,3) * PSItoMPa
             case('cladding inner radius displacement, mm')
                 var(:) = this % dfcon % r__totinner(1:n) * intomm
+            case('cladding inner radius displacement, um')
+                var(:) = this % dfcon % r__totinner(1:n) * intoum
             case('cladding outer radius displacement, mm')
                 var(:) = this % dfcon % r__totcrl(1:n) * intomm
             case('cladding creep rate')
                 var(:) = this % dfcon % r__creapratearray(1:n)
             case('fuel surface outward displacement, mm')
                 var(:) = this % dfcon % r__totdef(1:n) * intomm
-            case('fuel thermal expansion, mm')
-                var(:) = this % dfcon % r__fuelexptot(1:n) * intomm
-            case('fuel swelling, um')
-                var(:) = this % dfcon % r__fuelswltot(1:n) * intoum
             case('fuel creep, mm')
                 var(:) = this % dfcon % r__fuelcreeptot(1:n) * intomm
-            case('fuel densification, mm')
-                var(:) = this % dfcon % r__fueldentot(1:n) * intomm
-            case('fuel relocation, mm')
-                var(:) = this % dfcon % r__relocation(1:n) * intomm
+            case('fuel pellet thermal expansion, um')
+                var(:) = this % dfcon % r__fuelexptot(1:n) * intoum * 1.D-3
+            case('fuel pellet swelling, um')
+                var(:) = this % dfcon % r__fuelswltot(1:n) * intoum * 1.D-3
+            case('fuel pellet densification, um')
+                var(:) = this % dfcon % r__fueldentot(1:n) * intoum * 1.D-3
+            case('fuel pellet swelling and densification, um')
+                var(:) = (this % dfcon % r__fuelswltot(1:n) + this % dfcon % r__fueldentot(1:n) ) * intoum * 1.D-3
+            case('fuel pellet relocation, um')
+                var(:) = this % dfcon % r__relocation(1:n) * intoum * 0.5d0
             case('cladding hydrogen concentration, ppm')
                 var(:) = this % dfcon % r__CladH2Concen(1:n)
             case('coolant density, kg|m^3')
@@ -1671,7 +1676,9 @@ contains
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case ('deformed pellet radius, mm')
-                var(:) = this % dfcon % r__hrad(1,1:n) * intomm
+                var(:) = 0.5 * this % dfcon % r__dp(1:n) * intomm + this % dfcon % r__totdef(1:n) * miltomm
+            case ('cold pellet radius, mm')
+                var(:) = 0.5 * this % dfcon % r__dp(1:n) * intomm
             case ('deformed cladding inner radius, mm')
                 var(:) = this % dfcon % r__dci(1:n) + &
                          0.5d0 * (this % dfcon % r__dco(1:n) + this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,1) - &
@@ -1795,6 +1802,8 @@ contains
                 var(:) = this % dftran % r__CldStress(:,2)
             case('thermal radial gap, mm')
                 var(:) = this % dftran % r__gapthick (1:n) * 1.2D+4 * miltomm
+            case("deformed gap thickness, um")
+                var(:) = this % dftran % r__RInterfacGap (1:n) * ftoum
             case("mechanical gap thickness, um")
                 var(:) = this % dftran % r__RInterfacGap (1:n) * ftoum
             case("mechanical gap thickness, mm")
@@ -1882,6 +1891,16 @@ contains
                 var(:) = this % dftran % r__DeformedRadiusOfMesh (np+1,1:n) * fttomm
             case ('deformed cladding outer radius, mm')
                 var(:) = this % dftran % r__DeformedRadiusOfMesh (np+nc,1:n) * fttomm
+            case('fuel pellet thermal expansion, um')
+                var(:) = ( this % dftran % r__DeformedRadiusOfMesh(np,1:n) - &
+                           this % dftran % r__RadialBound(np) - &
+                           this % dftran % r__SwellDispl(1:n) - &
+                           this % dftran % r__ureloc(1:n) ) * fttoum
+            case('fuel pellet swelling and densification, um')
+                var(:) = this % dftran % r__SwellDispl(1:n) * fttoum
+            case('fuel pellet relocation, um')
+                var(:) = this % dftran % r__ureloc(1:n) * fttoum
+
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select

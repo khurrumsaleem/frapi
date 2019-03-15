@@ -497,7 +497,6 @@ MODULE deformation_fraptran
                     DeformedRadiusOfMesh(m,k) = RadialBoundO(m,k) + urcir(m)
                 ENDDO
             ENDIF
-
             !
             CrackVolume(k) = CrakWidth
             ! Temporarily store crack widths at fuel outer surface in CldPermStrn

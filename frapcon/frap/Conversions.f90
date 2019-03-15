@@ -41,6 +41,7 @@ MODULE conversions_frapcon
     REAL(r8k), PARAMETER :: ftomm = (fttoin * intocm) * 1.D+1        ! (mm / ft)
     ! Convert feet to um
     REAL(r8k), PARAMETER :: ftoum = (fttoin * intocm) * 1.D+4        ! (um / ft)
+    REAL(r8k), PARAMETER :: fttoum = (fttoin * intocm) * 1.D+4        ! (um / ft)
     ! Convert feet to m
     REAL(r8k), PARAMETER :: ftom = ftocm / 100.0_r8k                 ! (meter / ft)
     ! Convert inches to to feet
@@ -50,6 +51,7 @@ MODULE conversions_frapcon
     REAL(r8k), PARAMETER :: mmtoin = 1.d0 / intomm
     ! Convert inches to meter
     REAL(r8k), PARAMETER :: intom = 0.01_r8k * intocm                ! (m / in)
+    REAL(r8k), PARAMETER :: intoum = 1000.d0 * intomm                ! (m / in)
     ! Convert meter to feet
     REAL(r8k), PARAMETER :: mtoft = 1.0_r8k / ftom                   ! (ft / m)
     ! Convert cm to feet

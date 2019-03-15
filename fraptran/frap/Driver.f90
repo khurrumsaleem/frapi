@@ -547,7 +547,7 @@ module fraptran2
             count = count + 1
 
             if (count == 1000) then
-                write(*,*) 'ERROR: fraptran time step cycle does not converge for ', count, ' iteration'
+                write(*,*) 'ERROR: fraptran time step cycle does not converge for ', count, ' iteration. Error is ', error
                 exit
             endif
 
