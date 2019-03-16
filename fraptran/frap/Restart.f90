@@ -345,7 +345,12 @@ MODULE Restart_fraptran
         ! iteration is in case the restart file is ever modified to only print out the refabricated area, and the number of
         ! nodes possibly switching.
         DEALLOCATE (tempfs, radfs, radfsn, FrapconTemp, burado, radpowo)
-        
+
+        if (is_export) then
+            CldPlasStrn(1:naxn,1:3) = 0.5 * CldPlasStrnFrapcon(1:naxn,1:3)
+            ureloc(:) = 2.d0 * ureloc(:) !WTF??: because of that multiplier there is a large difference in a gap HTC between FRAPCON and FRAPTRAN
+        endif
+
         ! Exit only if the correct time has been read from the FRAPCON restart information
         IF (trecrd >= (trest - em03) ) EXIT Read_FRAPCON_Restart
 

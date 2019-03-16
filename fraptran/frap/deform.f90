@@ -353,6 +353,7 @@ MODULE deformation_fraptran
     tmeltf = pelprm(7)
     Time = pelprm(28)
     t0k = MAX(300.0_r8k, tfk(tempcs))
+
     delthx = 0.0_r8k
     !
     eth0 = MatProperty (Material='FUEL', Property='THEXP', Temperature=t0k, Fraction_Melt=zero, Pu=compmt)
@@ -981,6 +982,7 @@ MODULE deformation_fraptran
             DO lnod = ncladi, nmesh
                 DeformedRadiusOfMesh(lnod,k) = EOSRad(lnod,k)
             ENDDO
+
             !
             CladThickness = DeformedRadiusOfMesh(nmesh,k) - DeformedRadiusOfMesh(ncladi,k)
             ! IFail1 is indicator of overall rod failure at start of time step
@@ -1061,6 +1063,7 @@ MODULE deformation_fraptran
                 StressAtInstStrain(k) = 0.0_r8k
                 CladYieldStress(k) = 0.0_r8k
                 epeff = ABS(EffStrain(k))
+
                 ! find effective stress at instability strain
                 CALL stress (StressAtInstStrain(k), eistab, dep, tcladf, edot1, edot2, edot3, tcmaxf, coldw, k)
                 !
@@ -1167,7 +1170,6 @@ MODULE deformation_fraptran
     ! Find free clad displacement due to internal and external pressures. Compute a gap width.
     nconvg = 1
     !
-
     DO k = 1, naxn
         rci = RadialBoundO(ncladi,k) * ftin
         rco = RadialBoundO(nmesh,k) * ftin
@@ -2148,6 +2150,7 @@ MODULE deformation_fraptran
     REAL(r8k), PARAMETER :: dep_min = -0.001_r8k
     !
     epplas = LOG(eplase + 1.0_r8k)
+
     TempK = tfk(temp)
     ! Cladding elastic modulus
     e = MatProperty (Material='CLAD', Property='YOUNG_MOD', Temperature=TempK, ColdWork=EffColdWkStrenCoef(k), &

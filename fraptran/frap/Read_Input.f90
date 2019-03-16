@@ -790,7 +790,7 @@ MODULE Read_Input_fraptran
     spl(1) = 0.0_r8k
     splbp = 0.0_r8k
     swd(1) = 0.0_r8k
-    tempcs = 77.0
+    tempcs = 77.0d0
     tgas0 = 0.0_r8k
     tsntrk = 0.0_r8k
     volbp = 0.0_r8k

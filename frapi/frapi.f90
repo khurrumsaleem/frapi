@@ -1584,7 +1584,7 @@ contains
             case('oxide thickness, um')
                 var(:) = this % dfcon % r__EOSZrO2Thk(1:n) * fttomil * miltoum
             case("deformed gap thickness, um")
-                var(:) = this % dfcon % r__HotThermalGap (1:n) * intoum * 0.5d0
+                var(:) = this % dfcon % r__FuelCladGap(1:n) * intoum
             case('thermal gap thickness, um')
                 var(:) = this % dfcon % r__gapplot(1:n) * miltoum
             case('thermal gap thickness, mm')
@@ -1620,9 +1620,9 @@ contains
             case('cladding radial stress, mpa')
                 var(:) = this % dfcon  % sig(1:n,3) * PSItoMPa
             case('cladding inner radius displacement, mm')
-                var(:) = this % dfcon % r__totinner(1:n) * intomm
+                var(:) = this % dfcon % r__totinner(1:n) * intomm * 1.D-3
             case('cladding inner radius displacement, um')
-                var(:) = this % dfcon % r__totinner(1:n) * intoum
+                var(:) = this % dfcon % r__totinner(1:n) * intoum * 1.D-3
             case('cladding outer radius displacement, mm')
                 var(:) = this % dfcon % r__totcrl(1:n) * intomm
             case('cladding creep rate')
@@ -1640,7 +1640,7 @@ contains
             case('fuel pellet swelling and densification, um')
                 var(:) = (this % dfcon % r__fuelswltot(1:n) + this % dfcon % r__fueldentot(1:n) ) * intoum * 1.D-3
             case('fuel pellet relocation, um')
-                var(:) = this % dfcon % r__relocation(1:n) * intoum * 0.5d0
+                var(:) = this % dfcon % r__relocation(1:n) * intoum
             case('cladding hydrogen concentration, ppm')
                 var(:) = this % dfcon % r__CladH2Concen(1:n)
             case('coolant density, kg|m^3')
@@ -1676,19 +1676,19 @@ contains
                 tmp4(:) = (/( tfc(this % dfcon % r__tmpfuel(1,i)), i = 1, n )/)
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case ('deformed pellet radius, mm')
-                var(:) = 0.5 * this % dfcon % r__dp(1:n) * intomm + this % dfcon % r__totdef(1:n) * miltomm
+                var(:) = ( 0.5 * this % dfcon % r__dp(1:n) + &
+                            this % dfcon % r__fueldentot(1:n) * 1.D-3 + &
+                            this % dfcon % r__fuelswltot(1:n) * 1.D-3 + &
+                            this % dfcon % r__fuelexptot(1:n) * 1.D-3 + &
+                            this % dfcon % r__relocation(1:n) ) * intomm
             case ('cold pellet radius, mm')
                 var(:) = 0.5 * this % dfcon % r__dp(1:n) * intomm
             case ('deformed cladding inner radius, mm')
-                var(:) = this % dfcon % r__dci(1:n) + &
-                         0.5d0 * (this % dfcon % r__dco(1:n) + this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,1) - &
-                  &      0.5d0 * (this % dfcon % r__dco(1:n) - this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,3)
-                var(:) = 0.5d0 * var(:) * intomm
+                var(:) = 0.5d0 * this % dfcon % r__dci(1:n) + this % dfcon % r__totinner(1:n) * 1.D-3
+                var(:) = var(:) * intomm
             case ('deformed cladding outer radius, mm')
-                var(:) = this % dfcon % r__dco(1:n) - &
-                         0.5d0 * (this % dfcon % r__dco(1:n) + this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,1) + &
-                  &      0.5d0 * (this % dfcon % r__dco(1:n) - this % dfcon % r__dci(1:n)) * this % dfcon % r__eps(1:n,3)
-                var(:) = 0.5d0 * var(:) * intomm
+                var(:) = 0.5d0 * this % dfcon % r__dco(1:n) + this % dfcon % r__totcrl(1:n) * 1.D-3
+                var(:) = var(:) * intomm
             case('film heat transfer coefficient, w/(k*m^2)')
                 var = 0.d0 !TODO: find the variable
             case default
@@ -1885,6 +1885,8 @@ contains
             case('film heat transfer coefficient, w/(k*m^2)')
                 it = if_a_else_b(this % is_initdone, three, one)
                 var(:) = this % dftran % r__htca(it,1:n) * Bhft2FtoWm2K
+            case('cladding inner radius displacement, um')
+                var(:) = this % dftran % r__DeformedRadiusOfMesh (np+1,1:n) * fttoum - this % dftran % r__RadialBound(np+1) * fttoum
             case ('deformed pellet radius, mm')
                 var(:) = this % dftran % r__DeformedRadiusOfMesh (np,1:n) * fttomm
             case ('deformed cladding inner radius, mm')

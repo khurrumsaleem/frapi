@@ -543,7 +543,9 @@ contains
                     !
                     ! Calculate the new thermal gap
                     !
+
                     CALL newgap
+
                     !
                     ! Check for convergence
                     !
@@ -635,6 +637,7 @@ contains
             if (this % DoRodrefabrication) call UpdateRefabGases
             !
             iter = iter + 1
+
         END DO
         !
         ! ********************************************************************

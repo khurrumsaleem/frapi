@@ -11,13 +11,13 @@ module m_od
     integer, parameter :: ng = 45          ! number of radial mesh nodes in pellet for gas release model
     integer, parameter :: nt = 1           ! number of time steps
 
-    real(8), parameter :: dt = 1.D-3       ! time step, sec
+    real(8) :: dt = 1.D-3       ! time step, sec
     real(8) :: tcool = 296.D0   ! inlet coolant temperature, C
     real(8) :: tclad = 300.D0   ! cladding surface temperature, C
     real(8), parameter :: pcool = 15.5D0   ! inlet coolant pressure, MPa
     real(8), parameter :: fcool = 3101.d0    ! coolant mass flux, kg/(m*2*s)
     real(8), parameter :: dz = 365.D0 / na ! thickness of axial mesh, cm
-    real(8) :: lpower = 150.d0
+    real(8) :: lpower = 250.d0
 
     real(8) :: tmp_r8_1(na), tmp_r8_2(nr+nc,na)
 
@@ -30,7 +30,7 @@ module m_od
         type(t_fuelrod), intent(inout) :: fuelrod
         integer :: i
         real(8) :: time
-        real(8) :: output(na, 17)
+        real(8) :: output(na, 18)
 
         output = 0.d0
 
@@ -51,8 +51,9 @@ module m_od
         call fuelrod % get_r8_1('fuel pellet thermal expansion, um', output(:,15))
         call fuelrod % get_r8_1('fuel pellet swelling and densification, um', output(:,16))
         call fuelrod % get_r8_1('fuel pellet relocation, um', output(:,17))
+        call fuelrod % get_r8_1('cladding inner radius displacement, um', output(:,18))
 
-        write(*,'(I5,19F11.3)') i, time, (/( maxval(output(:,i)), i = 1, 17 )/)
+        write(*,'(I5,20F10.3)') i, time, (/( maxval(output(:,i)), i = 1, 18 )/)
 
     end subroutine odprint
 
@@ -79,7 +80,7 @@ program test2
     real(8) :: time = 0
     integer :: i_rod, i = 0
 
-    write(*,'(A5,19A11)') 'N','Time (s)', 'Tco (C)', 'Tci (C)', 'Tfs (C)', 'Tfc (C)', 'Tot HTC', 'Solid HTC', 'Gas HTC', 'Rad HTC', 'Gap (um)', 'Gap P (MPa)', 'HoopS (MPa)', 'Rp (mm)', 'Rci (mm)', 'Rco (mm)', 'dth', 'sw+dens', 'rel'
+    write(*,'(A5,20A10)') 'N','Time (s)', 'Tco (C)', 'Tci (C)', 'Tfs (C)', 'Tfc (C)', 'Tot HTC', 'Solid HTC', 'Gas HTC', 'Rad HTC', 'Gap (um)', 'Gap P (MPa)', 'HoopS (MPa)', 'Rp (mm)', 'Rci (mm)', 'Rco (mm)', 'ftexp', 'sw+dens', 'rel', 'ctexp'
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !                            FRAPCON Calculation                            !
@@ -101,12 +102,19 @@ program test2
 
     call fuelrod % init()
 
+    time = 0.d0
+    dt = 10.d0
+
     call odprint(i, time, fuelrod)
 
-    do i = 1, 1
-        call fuelrod % next(1.d3)
-        call odprint(i, time, fuelrod)
+    do i = 1, 100
+        time = time + dt
+        call fuelrod % next(dt)
+        call fuelrod % set_r8_0("coolant pressure, MPa", pcool)
+        call fuelrod % set_r8_0("cladding outer surface temperature, c", tclad)
     enddo
+
+    call odprint(i, time, fuelrod)
 
     call fuelrod % makerf()
 
@@ -138,19 +146,23 @@ program test2
 
 !    call fuelrod % dftran % copy_f2r( './frod-0055.txt' )
 
-!    call fuelrod % set_ch_0('restart file', './rest-0055.txt')
+!    call fuelrod % set_ch_0('restart file', './rest-0054.txt')
 
     call fuelrod % init()
 
 
     time = 0.d0
+    dt = 1.d-1
     i = 0
 
     call odprint(i, time, fuelrod)
 
-    do i = 1, nt
+    do i = 1, 100!nt
+        lpower = 450.d0
         time = time + dt
+        call fuelrod % next(dt)
         call odprint(i, time, fuelrod)
+        call fuelrod % set_r8_0("linear power, W/cm", lpower)
     enddo
 
     call fuelrod % destroy ()

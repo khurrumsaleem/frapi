@@ -1978,7 +1978,7 @@ MODULE HeatTransferCoefficient_fraptran
     SUBROUTINE gaphtc (gpthki, rf, pfc, tg, tf, tc, pg, GasFraction, flux, tflux, rufc, ruff, frden, &
       &                coldw, zro, fotmtl, tempcm, modfd, hgapt, gadolin, bulocal, gapmin, node)
     USE Kinds_fraptran
-    USE conversions_fraptran, ONLY : sechr, tfk, tfr, tfc
+    USE conversions_fraptran, ONLY : sechr, tfk, tfr, tfc, fttoum
     USE variables_fraptran, ONLY : ounit, Time, ndebug
     USE phypro_h_fraptran
     USE emssf_fraptran, ONLY : emssf2
@@ -2107,7 +2107,7 @@ MODULE HeatTransferCoefficient_fraptran
     ! hgap is in BTU/s-ft2-F
     ! hgap = gascon/(gpthk + djmpft + cruf/12.)
     hgap = gascon / (gpthk + djmpft)
-!write(*,*) '///////////// FRAPTRAN: ', gpthk * fttomm
+!write(*,*) '///////////// FRAPTRAN: ', gpthk * fttoum
 
     ! Sum up Open gap conductance contributions and convert to BTU/hr-ft2-F
     hgapt = (hgap + hgapr) * sechr
