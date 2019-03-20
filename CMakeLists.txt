@@ -7,7 +7,7 @@ enable_language (Fortran)
 #set(CMAKE_Fortran_COMPILER )
 
 set(CMAKE_Fortran_FLAGS "-std=gnu -D -cpp")
-set(CMAKE_Fortran_FLAGS_DEBUG "-g -pg -Wall -fbounds-check -ffpe-trap=zero,invalid,overflow,underflow,denormal -fbacktrace -std=gnu")
+set(CMAKE_Fortran_FLAGS_DEBUG "-g -Wall -fbounds-check -ffpe-trap=zero,invalid,overflow,underflow,denormal -fbacktrace -std=gnu")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
 
 file(GLOB math_src     "math/*.f90")
@@ -34,9 +34,9 @@ include_directories(./frapcon/Include ./fraptran/include ./include)
 
 message("-- frapi build type: " ${CMAKE_BUILD_TYPE})
 
-add_library(frapcon   SHARED ${frapcon_src} ${math_src})
-add_library(fraptran  SHARED ${fraptran_src} ${math_src})
-add_library(frapi     SHARED ${frapi_src})
+add_library(frapcon   ${frapcon_src} ${math_src})
+add_library(fraptran  ${fraptran_src} ${math_src})
+add_library(frapi     ${frapi_src})
 
 target_link_libraries(frapi frapcon fraptran)
 
