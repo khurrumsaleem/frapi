@@ -38,7 +38,7 @@ module m_convergence
 !        this % errors(i) = norm2( (this % vstate(i,:) - x(:)) / &
 !                          (this % atol + this % rtol * x(:) ) ) / this % ndim**0.5
 
-        this % errors(i) = maxval( (abs(this % vstate(i,:)) - abs(x)) / &
+        this % errors(i) = maxval( abs(abs(this % vstate(i,:)) - abs(x)) / &
                           ( this % atol + this % rtol * abs(x) ) )
 
         !write(*,'(I5,2F16.6)') i, maxval(this % vstate(i,:)), this % errors(i)

@@ -807,7 +807,8 @@ contains
             this % is_driver_allocated = .false.
         endif
 
-        !if (.not. this % verbose) close(ounit, status='delete')
+        inquire (unit = ounit, opened = is_open)
+        if (is_open) close(ounit, status='delete')
 
     end subroutine driver_destroy
 

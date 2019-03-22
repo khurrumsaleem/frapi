@@ -851,7 +851,6 @@ MODULE timestep_fraptran
     IF(ntstep==0) Iflag(1:ngasr,1:2)=0
     !
     !ConvgLoop: DO
-
 60  CONTINUE
         !
         ! Update the radial power profile in the fuel and cladding
@@ -1291,7 +1290,7 @@ MODULE timestep_fraptran
         IF (TranSwell == 1) TranFuelSwell = polate (FuelGasSwell, Time, nFuelSwellPairs)
         !
         ! Call FRACAS-1 (deform)
-        CALL deform
+        if (is_deform) CALL deform
 
         modfal(1) = Ifstor(13)
         flowbk = flwblk(1)
@@ -1938,7 +1937,7 @@ MODULE timestep_fraptran
     !
     SUBROUTINE timstp
     USE Kinds_fraptran
-    USE variables_fraptran, ONLY : ounit, timeincrement, dtp, nitdt, dtenfb, dtenfo, dtold
+    USE variables_fraptran, ONLY : ounit, timeincrement, dtp, nitdt, dtenfb, dtenfo, dtold, global_count
     IMPLICIT NONE
     !> @brief
     !> Subroutine computes new time step. extimate is made of largest
@@ -1971,6 +1970,7 @@ MODULE timestep_fraptran
     !
     END SUBROUTINE timstp
 !
+
 END MODULE timestep_fraptran
 
 

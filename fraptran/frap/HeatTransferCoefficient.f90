@@ -2107,7 +2107,6 @@ MODULE HeatTransferCoefficient_fraptran
     ! hgap is in BTU/s-ft2-F
     ! hgap = gascon/(gpthk + djmpft + cruf/12.)
     hgap = gascon / (gpthk + djmpft)
-!write(*,*) '///////////// FRAPTRAN: ', gpthk * fttoum
 
     ! Sum up Open gap conductance contributions and convert to BTU/hr-ft2-F
     hgapt = (hgap + hgapr) * sechr

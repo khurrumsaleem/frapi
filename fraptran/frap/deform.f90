@@ -2,6 +2,7 @@ MODULE deformation_fraptran
     USE Kinds_fraptran
     USE conversions_fraptran
     USE zrmodels_fraptran, ONLY : cmlimt, cstrni
+    use variables_fraptran, only : global_count
     !
     CONTAINS
     !

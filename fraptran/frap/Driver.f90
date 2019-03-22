@@ -32,6 +32,7 @@ module fraptran2
     use m_state, only : printstate
     use m_convergence, only : t_convergence
     use sth2x_fraptran, only : sth2x3
+    use conversions_fraptran
 
     implicit none
 
@@ -52,6 +53,8 @@ module fraptran2
         real(r8k) :: intcool ! inlet coolant temperature, F
         logical :: is_driver_allocated = .false.
         logical, pointer :: is_kernel_allocated
+
+        logical :: is_deformation = .true.
 
         contains
 
@@ -420,6 +423,7 @@ module fraptran2
         enddo
 
         nsteadytrans = 2
+
     end subroutine p_next0
 
     subroutine p_deft(this)
@@ -480,10 +484,16 @@ module fraptran2
 
         class (fraptran_driver), intent(inout) :: this
 
-        integer :: count
+        integer :: count, i
         real(8) :: dt, h0 = 1.D-30
         real(8) :: rtol = 1.D-6, atol = 1.D-10, error
         real(8) :: tcool, pcool, hcool
+
+        global_count = global_count + 1
+
+        is_deform = this % is_deformation
+
+        if (global_count == 50) dt = dt * 1.d-2
 
         ! convergence critaria
         prsacc = 0.001
@@ -547,8 +557,10 @@ module fraptran2
             count = count + 1
 
             if (count == 1000) then
-                write(*,*) 'ERROR: fraptran time step cycle does not converge for ', count, ' iteration. Error is ', error
-                exit
+                write(*,*) 'ERROR: fraptran time step cycle does not converge for ', &
+                               count, ' iteration. Error is ', error
+                write(*,*) 'Smaller time step is needed'
+                stop
             endif
 
         enddo
