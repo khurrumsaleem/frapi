@@ -493,8 +493,6 @@ module fraptran2
 
         is_deform = this % is_deformation
 
-        if (global_count == 50) dt = dt * 1.d-2
-
         ! convergence critaria
         prsacc = 0.001
         tmpac1 = 0.001
