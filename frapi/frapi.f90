@@ -1413,6 +1413,8 @@ contains
             select case (lower(key))
             case default
                 call error_message(key, 'integer rank 1 in the frapcon get-list')
+            case("cladding failure indicator")
+                var(:) = 0 ! TODO: find the indicator in frapcon
             end select
         case ('fraptran')
             select case(lower(key))
@@ -1422,8 +1424,8 @@ contains
                 var(:) = this % dftran % r__ruptfailindex (1:n)
             case('buckled cladding indicator')
                 var(:) = this % dftran % r__cladcollapseindex (1:n)
-            case("index failure indicator")
-                var(:) = this % dftran % r__iffrp (1:n)
+            case("cladding failure indicator")
+                var(:) = this % dftran % r__rodfailindex(1:n) !iffrp (1:n)
             case default
                 call error_message(key, 'integer rank 1 in the fraptran get-list')
             end select

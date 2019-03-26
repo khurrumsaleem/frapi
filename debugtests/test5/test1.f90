@@ -103,7 +103,7 @@ program test2
     call fuelrod % init()
 
     time = 0.d0
-    dt = 10.d0
+    dt = 1.d0
 
     call odprint(i, time, fuelrod)
 
@@ -152,13 +152,13 @@ program test2
 
 
     time = 0.d0
-    dt = 1.d-1
+    dt = 1.d-3
     i = 0
 
     call odprint(i, time, fuelrod)
 
-    do i = 1, 100!nt
-        lpower = 450.d0
+    do i = 1, nt
+        !lpower = 450.d0
         time = time + dt
         call fuelrod % next(dt)
         call odprint(i, time, fuelrod)
