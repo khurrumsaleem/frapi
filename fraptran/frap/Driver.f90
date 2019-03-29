@@ -55,6 +55,7 @@ module fraptran2
         logical, pointer :: is_kernel_allocated
 
         logical :: is_deformation = .true.
+        logical :: is_gaphtc = .true.
 
         contains
 
@@ -492,6 +493,7 @@ module fraptran2
         global_count = global_count + 1
 
         is_deform = this % is_deformation
+        is_gaphtc = this % is_gaphtc
 
         ! convergence critaria
         prsacc = 0.001
@@ -555,10 +557,8 @@ module fraptran2
             count = count + 1
 
             if (count == 1000) then
-                write(*,*) 'ERROR: fraptran time step cycle does not converge for ', &
-                               count, ' iteration. Error is ', error
-                write(*,*) 'Smaller time step is needed'
-                stop
+                write(*,'(A,E20.6)') 'WARNING: fraptran outer iteration does not converge for dt = ', dt
+                exit
             endif
 
         enddo

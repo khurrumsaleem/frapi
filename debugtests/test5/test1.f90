@@ -17,7 +17,7 @@ module m_od
     real(8), parameter :: pcool = 15.5D0   ! inlet coolant pressure, MPa
     real(8), parameter :: fcool = 3101.d0    ! coolant mass flux, kg/(m*2*s)
     real(8), parameter :: dz = 365.D0 / na ! thickness of axial mesh, cm
-    real(8) :: lpower = 250.d0
+    real(8) :: lpower = 150.d0
 
     real(8) :: tmp_r8_1(na), tmp_r8_2(nr+nc,na)
 
@@ -107,7 +107,7 @@ program test2
 
     call odprint(i, time, fuelrod)
 
-    do i = 1, 100
+    do i = 1, 1
         time = time + dt
         call fuelrod % next(dt)
         call fuelrod % set_r8_0("coolant pressure, MPa", pcool)
@@ -152,17 +152,19 @@ program test2
 
 
     time = 0.d0
-    dt = 1.d-3
+    dt = 1.d-2
     i = 0
 
     call odprint(i, time, fuelrod)
 
-    do i = 1, nt
-        !lpower = 450.d0
+    do i = 1, 20!nt
+        lpower = 1000.d0
         time = time + dt
         call fuelrod % next(dt)
         call odprint(i, time, fuelrod)
         call fuelrod % set_r8_0("linear power, W/cm", lpower)
+        call fuelrod % set_l1_0('deformation', .true.)
+        call fuelrod % set_l1_0('gaphtc', .false.)
     enddo
 
     call fuelrod % destroy ()

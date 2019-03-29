@@ -1979,7 +1979,7 @@ MODULE HeatTransferCoefficient_fraptran
       &                coldw, zro, fotmtl, tempcm, modfd, hgapt, gadolin, bulocal, gapmin, node)
     USE Kinds_fraptran
     USE conversions_fraptran, ONLY : sechr, tfk, tfr, tfc, fttoum
-    USE variables_fraptran, ONLY : ounit, Time, ndebug
+    USE variables_fraptran, ONLY : ounit, Time, ndebug, is_gaphtc
     USE phypro_h_fraptran
     USE emssf_fraptran, ONLY : emssf2
     USE Material_Properties_fraptran, ONLY : MatProperty
@@ -2057,7 +2057,7 @@ MODULE HeatTransferCoefficient_fraptran
     tgk = tfk(tg)
     tfsi = tfk(tf)
     tcsi = tfk(tc)
-    
+
     ! Compute conductivity of gas in gap, convert from W/m-K to BTU/ft-F-sec
     gascon = MatProperty (Material='GAS', Property='THERMCOND', Temperature=tgk, Pressure=gpsi, GasComposition=GasFraction) / &
       &      (convk * sechr)
@@ -2110,9 +2110,15 @@ MODULE HeatTransferCoefficient_fraptran
 
     ! Sum up Open gap conductance contributions and convert to BTU/hr-ft2-F
     hgapt = (hgap + hgapr) * sechr
-    htcgap(1,node) = hgap * sechr
-    htcgap(2,node) = hgapr * sechr
-    htcgap(3,node) = 0.d0
+
+    if (is_gaphtc) then
+        htcgap(1,node) = hgap * sechr
+        htcgap(2,node) = hgapr * sechr
+        htcgap(3,node) = 0.d0
+    else
+        hgapt = htcgap(1,node) + htcgap(2,node) + htcgap(3,node)
+    endif
+
     !
     IF (ndebug) WRITE(ounit,915) hgapt, hgap, gapmin, djmpft
 915 FORMAT('     Open Gap: hgapt = ',e11.4,' hgap = ',e11.4,' gapmin = ',e11.4,' djmpft = ',e11.4)
@@ -2175,9 +2181,14 @@ MODULE HeatTransferCoefficient_fraptran
         hgap = gascon / thc
         ! Sum up closed gap contributions and convert to BTU/hr-ft2-F
         hgapt = (hgap + hgapr + hsolid) * sechr
-        htcgap(1,node) = hgap * sechr
-        htcgap(2,node) = hgapr * sechr
-        htcgap(3,node) = hsolid * sechr
+        if (is_gaphtc) then
+            htcgap(1,node) = hgap * sechr
+            htcgap(2,node) = hgapr * sechr
+            htcgap(3,node) = hsolid * sechr
+        else
+            hgapt = htcgap(1,node) + htcgap(2,node) + htcgap(3,node)
+        endif
+
         IF (ndebug) WRITE(ounit,919) hgap, hgapr, hsolid
 919     FORMAT(' GAPHTC; hgap = ',e11.4,' hgapr = ',e11.4,' hsolid = ',e11.4)
         !

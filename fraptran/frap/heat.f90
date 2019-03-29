@@ -578,8 +578,8 @@ MODULE HeatSolution_fraptran
                     bulocal = burad(k,igpnod)
                     !
                     CALL gaphtc (gasgpi, fulori, pfci, gptemp, ftemp, ctemp, GasPress(k), GasFraction, &
-                      &          FastFlux(k), tflux, roucih, roufih, frden, coldw, zroi, fotmtl, &
-                      &          CladMaxT(k), modfd, hgap, gadolin(k), bulocal, gapmin, k)
+                          &          FastFlux(k), tflux, roucih, roufih, frden, coldw, zroi, fotmtl, &
+                          &          CladMaxT(k), modfd, hgap, gadolin(k), bulocal, gapmin, k)
                     !
                     IF (naxn <= 20) hgap = fdial(k) * hgap
                     IF (nphgap == 1) WRITE(ounit,933) GapThick(k), gasgpi, frcgap(ngapi), hgap

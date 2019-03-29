@@ -39,6 +39,7 @@ module frapi
         procedure :: get_array => frod_get_r8_1    ! Get variable array
         !--------------------------------------------------------------------
 
+        procedure :: set_l1_0  => frod_set_l1_0     ! set variable of type logical and rank 0
         procedure :: set_ch_0  => frod_set_ch_0     ! set variable of type character and rank 0
         procedure :: set_i4_0  => frod_set_i4_0     ! set variable of type integer and rank 0
         procedure :: set_i4_1  => frod_set_i4_1     ! set variable of type integer and rank 1
@@ -339,6 +340,38 @@ contains
         end select
 
     end subroutine frod_save
+
+    subroutine frod_set_l1_0(this, key, var)
+
+        class (t_fuelrod), intent(inout) :: this
+
+        character(*) :: key
+        logical      :: var
+
+        select case (this % frapmode)
+        case ('frapcon')
+            select case (lower(key))
+            case ("deformation")
+                continue
+            case ("gapgas")
+                continue
+            case default
+                call error_message(key, 'logical rank 0 in the frapcon set-list')
+            end select
+
+        case ('fraptran') 
+            select case (lower(key))
+            case ("deformation")
+                this % dftran % is_deformation = var
+            case ("gaphtc")
+                this % dftran % is_gaphtc = var
+            case default
+                call error_message(key, 'character rank 0 in the fraptran set-list')
+            end select
+        end select
+
+    end subroutine frod_set_l1_0
+
 
 
     subroutine frod_set_ch_0(this, key, var)
@@ -1663,6 +1696,8 @@ contains
                 var(:) = this % dfcon % r__StoredEnergy(1:n) * BTUlbtoJkg
             case('fuel burnup, mw*d|kg')
                 var(:) = this % dfcon % r__EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
+            case('fuel burnup, mw*d/kg')
+                var(:) = this % dfcon % r__EOSNodeburnup(1:n) * 1.D-3 ! / MWskgUtoMWdMTU
             case('cladding inner temperature, c')
                 var(:) = (/(tfc(this % dfcon % r__CladInSurfTemp(i)), i = 1, n )/) 
             case('cladding outer temperature, c')
@@ -1865,8 +1900,8 @@ contains
             case('pellet surface temperature, c')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
             case('pellet doppler temperature, c')
-                tmp1(:) = (/( tfk(this % dftran % r__eostemp(1,i)), i = 1, n )/) - 273.15D0
-                tmp4(:) = (/( tkf(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/) - 273.15D0
+                tmp1(:) = (/( tfc(this % dftran % r__eostemp(1,i)), i = 1, n )/)
+                tmp4(:) = (/( tfc(this % dftran % r__eostemp(this % dftran % r__igpnod,i)), i = 1, n )/)
                 var(:) = 0.93 * tmp1(:) + 0.07 * tmp4(:)
             case('cladding inner temperature, k')
                 var(:) = (/( tfk(this % dftran % r__eostemp(this % dftran % r__ncladi,i)), i = 1, n )/)
@@ -1904,7 +1939,9 @@ contains
                 var(:) = this % dftran % r__SwellDispl(1:n) * fttoum
             case('fuel pellet relocation, um')
                 var(:) = this % dftran % r__ureloc(1:n) * fttoum
-
+            case('fuel burnup, mw*d/kg')
+                var(:) = (/( sum( this % dftran % r__burad(i,1:np+nc) ) , i = 1, n)/)
+                var(:) = var(:) / (np+nc) / 3600.d0 / 24.d0
             case default
                 call error_message(key, 'real rank 1 in the fraptran get-list')
             end select

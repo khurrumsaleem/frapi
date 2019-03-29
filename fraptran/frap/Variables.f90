@@ -21,6 +21,7 @@ MODULE variables_fraptran
     !
     logical, target :: is_export = .false. ! Flag denotes whether fraptran is used as an exported function or not
     logical, target :: is_deform = .true. ! Flag specified if deformation is needed
+    logical, target :: is_gaphtc = .true. ! 
     !
     REAL(r8k), target :: maxfueltemp = 0.0_r8k
     !
