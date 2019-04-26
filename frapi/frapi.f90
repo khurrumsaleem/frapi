@@ -16,6 +16,7 @@ module frapi
     real(8), parameter :: fttocm = 0.3048D+2
     real(8), parameter :: cm2m   = 1.D-2
     real(8), parameter :: cm_to_ft = 1./0.3048D+2
+    real(8), parameter :: MIN_POWER = 1.D-6
 
     type, public :: t_fuelrod
         type( frapcon_driver) :: dfcon              ! Burnup steady-state calculations
@@ -1138,13 +1139,21 @@ contains
             ! ----------------------------------------------------------------------------------------
 
             case("linear power, w|cm")
-                call linterp(var, this % dfcon % r__deltaz(1:n), tmp3, n)
-                a = sum( var(:) * this % dfcon % r__deltaz(1:n) ) / this % dfcon % r__totl /cmtoft ! W/ft
+
+                this % dfcon % r__axlinpower(:) = var(:)
+
+                ! small linear power can not be processed
+                do i = 1, size(var)
+                    if (var(i) < MIN_POWER) this % dfcon % r__axlinpower(i) = MIN_POWER
+                enddo
+
+                call linterp(this % dfcon % r__axlinpower, this % dfcon % r__deltaz(1:n), tmp3, n)
+                a = sum( this % dfcon % r__axlinpower(:) * this % dfcon % r__deltaz(1:n) ) / this % dfcon % r__totl /cmtoft ! W/ft
                 b = sum( this % dfcon % r__deltaz(1:n) / this % dfcon % r__dco(1:n) ) &
                     / this % dfcon % r__totl / intoft ! 1/ft
                 this % dfcon % r__qmpy(it) = a * b / pi * WtoBTUh ! BTUh/ft^2
                 this % dfcon % r__qf(:) = (tmp3(:) + 1.D-10) / (sum(tmp3) + 1.D-10)
-                this % dfcon % r__axlinpower(:) = var(:)
+
             case("linear power, w/cm")
                 call this % set_r8_1 ("linear power, w|cm", var)
             case("coolant temperature, c")
@@ -1269,7 +1278,15 @@ contains
                 ! 'fraptran' re-interpolates the linear power for the main axial mesh with n central nodes
                 ! User can set 'axpowprofile' for arbitrary axial mesh, however not 
                 ! at the central nodes, but at the last nodes (here n+1 nodes of the main mesh)
-                call linterp(var, this % dftran % axialmesh(:), tmp3, n)
+
+                this % dftran % r__axlinpower(1:n) = var(:)
+
+                ! small linear power can not be processed
+                do i = 1, size(var)
+                    if (var(i) < MIN_POWER) this % dfcon % r__axlinpower(i) = MIN_POWER
+                enddo
+
+                call linterp(this % dftran % r__axlinpower(1:n), this % dftran % axialmesh(:), tmp3, n)
 
                 tmp3(:) = (tmp3(:) + 1.D-12) / (sum(tmp3) + 1.D-12)
 
@@ -1278,15 +1295,11 @@ contains
                     this % dftran % r__axpowprofile(2*i-1,it) = tmp3(i)
                 enddo
                 ! linear power, W/cm -> average linear power, W/cm
-                a = sum( (/( var(i) * this % dftran % axialmesh(i), i = 1, n )/) ) / sum(this % dftran % axialmesh)
+                a = sum( (/( this % dftran % r__axlinpower(i) * this % dftran % axialmesh(i), i = 1, n )/) ) &
+                             / sum(this % dftran % axialmesh)
                 it3 = if_a_else_b(this % is_initdone, three, one)
                 ! average linear power, W/cm -> average linear power, kW/ft
                 this % dftran % r__RodAvePower(it3) = a * 1.D-3 / cm_to_ft
-                this % dftran % r__axlinpower(1:n) = var(:)
-                if (minval(var) < 1.D-9 ) then
-                    write(*,*) 'ERROR: given linear power distribution is too small', var
-                    call backtrace
-                endif
             case("linear power, w/cm")
                 call this % set_r8_1('linear power, w|cm', var)
             case("axial mesh thickness, cm")

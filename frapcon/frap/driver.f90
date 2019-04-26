@@ -1479,15 +1479,12 @@ contains
 
         inquire (unit = ftunit, opened = is_open)
         if (is_open) close (unit = ftunit)
-        open (unit = ftunit, file = namerf)
-
-!        DO j = jmin, jmax + 1
-!            PrintType = 'Axial Loop'
-!            call print2_
-!        END DO
+        open (unit = ftunit, file = trim(namerf))
 
         call restfs
+
         close (ftunit)
+
     end subroutine driver_restfs
 
 end module frapcon4
